@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+    width: 0px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  
+  ::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  
+  a:-webkit-any-link {
+    text-decoration: none !important;
+  }
+  
+  a:hover -webkit-any-link {
+    text-decoration: none !important;
+  
+  }
+  
+  a:hover {
+    text-decoration: "none";
+  }
+  
+  :-webkit-any(input) {
+    outline: none;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .main-topnav {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: auto;
+    z-index: 200;
+  }
