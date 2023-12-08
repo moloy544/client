@@ -1,10 +1,7 @@
 const { createSlice } = require("@reduxjs/toolkit");
 
 const initialState = {
-    loading: false,
-    pageLimit: 30,
     moviesData: [],
-    endOfData: false,
     isDataFetched: false,
 };
 

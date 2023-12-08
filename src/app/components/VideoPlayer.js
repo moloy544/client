@@ -5,12 +5,11 @@ export default function Videoplayer() {
 
     const searchParams = useSearchParams();
 
-    const sourceUrl = searchParams.get('watchurl');
+    const sourceUrl = searchParams.get('movie');
 
+    const decoded = decodeURIComponent(sourceUrl);
+  
   return (
-    <video className="h-auto max-h-[450px] w-full min-w-[300px] border border-gray-200 rounded-lg dark:border-gray-700" autoPlay controls>
-        <source src={sourceUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-      </video>
+    <iframe className="fixed top-0 left-0 w-full h-full border-none z-[600]" src={decoded} allowFullScreen="allowfullscreen"></iframe>
   )
 }
