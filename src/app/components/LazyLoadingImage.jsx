@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import { useEffect, useRef, useState } from 'react';
 
 function LazyLoadingImage({ imageStyle, actualSrc, alt }) {
@@ -30,6 +30,7 @@ function LazyLoadingImage({ imageStyle, actualSrc, alt }) {
     }, []);
   
     return (
+
       <img
         ref={imageRef}
         className={imageStyle}

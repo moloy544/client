@@ -2,15 +2,15 @@
 import axios from "axios";
 import { useState } from "react";
 
-function Page() {
+function AddMoviesPage() {
     
     const [state, setState] = useState({
         thambnail: '',
         title: '',
         releaseYear: 2021,
-        category: 'hollywood',
+        category: 'bollywood',
         type: 'movie',
-        language: 'hindi dubbed',
+        language: 'hindi',
         genre: [], // Change genre to an array
         watchLink: ''
     });
@@ -68,7 +68,7 @@ function Page() {
 
     return (
         
-        <div className="mx-10 mt-28">
+        <div className="mx-10 mt-5">
             <div className="flex flex-col my-3">
                 <label className="font-bold">Thambnail</label>
                 <input className="border border-black rounded-sm" type="text" value={state.thambnail} onChange={(e) => handleInputChange(e, 'thambnail')} />
@@ -117,4 +117,4 @@ function Page() {
     );
 }
 
-export default Page;
+export default AddMoviesPage;

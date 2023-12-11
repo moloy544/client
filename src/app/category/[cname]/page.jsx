@@ -2,14 +2,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios from 'axios';
 import MoviesCard from '@/app/components/MoviesCard';
-import CategoryGroupSlider from '@/app/components/CategoryGroupSlider';
+import Navbar from "@/app/components/Navbar";
 
-export default function page({ params }) {
+export default function CategoriesMovies({ params }) {
 
-    const category = params.cname.toLowerCase().replace(/[-]/g, ' ');
+    const editParamsQuery = params.cname.toLowerCase().replace(/[-]/g, ' ');
+
+    const query = editParamsQuery === "new release" ? 2023 : editParamsQuery;
 
     // Set all state
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [moviesData, setMoviesData] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
@@ -31,7 +33,7 @@ export default function page({ params }) {
 
             setEndOfData(false);
 
-            const response = await axios.post(`http://localhost:4000/api/v1/movies/get/${category}`, {
+            const response = await axios.post(`http://localhost:4000/api/v1/movies/get/${query}`, {
                 limit: 20,
                 page: currentPage,
                 cancelToken: cancelToken.token
@@ -46,13 +48,13 @@ export default function page({ params }) {
 
             //get end of data 
             const dataIsEnd = response.data.endOfData;
-          
+
             if (page === 1) {
 
                 setMoviesData(filterMoviedData);
-            
+
             } else {
-            
+
                 setMoviesData((prevData) => [...prevData, ...filterMoviedData]);
             };
 
@@ -120,27 +122,29 @@ export default function page({ params }) {
 
     return (
 
-        <main className="min-h-screen bg-gray-100">
+        <>
+            <Navbar />
 
-            <CategoryGroupSlider />
+            <main className="min-h-screen bg-gray-100">
 
-            <div className="w-full h-full my-5 mobile:my-1 px-2 gap-2 md:gap-3 grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(160px,1fr))]">
+                <div className="w-full h-full my-5 mobile:my-1 px-2 gap-2 md:gap-3 grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(160px,1fr))]">
 
-                <MoviesCard isLoading={loading} serverMovies={moviesData} />
+                    <MoviesCard isLoading={loading} moviesData={moviesData} />
 
-                {loading && moviesData.length > 0 && (
-                    <>
-                        {Array.from({ length: 20 }, (_, index) => (
-                            <div key={index} className="bg-gray-300 w-full object-cover h-64 rounded-[4px]"></div>
-                        ))}
-                    </>
-                )}
+                    {loading && moviesData.length > 0 && (
+                        <>
+                            {Array.from({ length: 20 }, (_, index) => (
+                                <div key={index} className="bg-gray-300 w-full object-cover h-64 rounded-[4px]"></div>
+                            ))}
+                        </>
+                    )}
 
-            </div>
+                </div>
 
-            {/* Intersection Observer target */}
-            <div ref={observerRef} id="bottom_observerElement"></div>
+                {/* Intersection Observer target */}
+                <div ref={observerRef} id="bottom_observerElement"></div>
 
-        </main>
+            </main>
+        </>
     )
 }

@@ -1,13 +1,13 @@
-"use client"
+'use client'
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios from 'axios';
-import CategoryGroupSlider from './components/CategoryGroupSlider';
 import MoviesCard from './components/MoviesCard';
+import Navbar from "./components/Navbar";
 
 export default function HomePage() {
 
   // Set all state
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [moviesData, setMoviesData] = useState([]);
   const [endOfData, setEndOfData] = useState(false);
@@ -29,7 +29,7 @@ export default function HomePage() {
 
       setEndOfData(false);
 
-      const response = await axios.post("http://localhost:4000/api/v1/movies/get/hollywood", {
+      const response = await axios.post('http://localhost:4000/api/v1/movies/get/all', {
         limit: 20,
         page: currentPage,
         cancelToken: cancelToken.token
@@ -44,13 +44,13 @@ export default function HomePage() {
 
       //get end of data 
       const dataIsEnd = response.data.endOfData;
-    
+
       if (page === 1) {
 
         setMoviesData(filterMoviedData);
-     
+
       } else {
-       
+
         setMoviesData((prevData) => [...prevData, ...filterMoviedData]);
       };
 
@@ -117,14 +117,14 @@ export default function HomePage() {
 
 
   return (
+    <>
+      <Navbar />
 
-    <main className="min-h-screen bg-gray-100">
-
-      <CategoryGroupSlider />
+      <main className="min-h-screen bg-gray-100">
 
       <div className="w-full h-full my-5 mobile:my-1 px-2 gap-2 md:gap-3 grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(160px,1fr))]">
 
-        <MoviesCard isLoading={loading} serverMovies={moviesData} />
+        <MoviesCard isLoading={loading} moviesData={moviesData} />
 
         {loading && moviesData.length > 0 && (
           <>
@@ -140,6 +140,7 @@ export default function HomePage() {
       <div ref={observerRef} id="bottom_observerElement"></div>
 
     </main>
+    </>
   )
 }
 
