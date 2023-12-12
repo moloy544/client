@@ -8,7 +8,7 @@ export default function CategoryGroupSlider() {
     'Hollywood',
     'Web Series',
     'Hindi Dubbed',
-    'SiFy',
+    'Sci-Fi',
     'Comedy',
     'Romance',
     'South',
@@ -17,7 +17,7 @@ export default function CategoryGroupSlider() {
   ]
 
   return (
-    <div className="w-full h-auto bg-white flex flex-row items-center lg:justify-around overflow-y-scroll whitespace-nowrap gap-3 px-2 py-4 mobile:pt-2 mobile:py-0">
+    <div className="w-full h-auto bg-white flex flex-row items-center lg:justify-around overflow-y-scroll whitespace-nowrap gap-3 px-2 py-4 mobile:pt-2 mobile:py-0 border border-b-gray-300 scroll-smooth">
 
       {categoryArray.map((category) => (
         <Link
