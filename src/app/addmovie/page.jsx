@@ -1,4 +1,5 @@
 'use client'
+import { appConfig } from "@/config/config";
 import axios from "axios";
 import { useState } from "react";
 
@@ -33,7 +34,7 @@ function AddMoviesPage() {
                 return;
               }
 
-            const addResponse = await axios.post('http://localhost:4000/api/v1/seller/movies/add', state);
+            const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/seller/movies/add`, state);
 
             if (addResponse.status === 200) {
                 alert("Movies Add Successful");

@@ -4,6 +4,7 @@ import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import MoviesCard from "../components/MoviesCard";
 import axios from "axios";
 import Link from "next/link";
+import { appConfig } from "@/config/config";
 
 function SearchPage() {
 
@@ -51,7 +52,7 @@ function SearchPage() {
 
             setEndOfData(false);
 
-            const response = await axios.post(`http://localhost:4000/api/v1/movies/get/${query}`, {
+            const response = await axios.post(`${appConfig.backendUrl}/api/v1/movies/get/${query}`, {
                 limit: 20,
                 page: currentPage,
                 cancelToken: cancelToken.token

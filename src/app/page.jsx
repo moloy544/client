@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import axios from 'axios';
 import MoviesCard from './components/MoviesCard';
 import Navbar from "./components/Navbar";
+import { appConfig } from "@/config/config";
 
 export default function HomePage() {
 
@@ -29,7 +30,7 @@ export default function HomePage() {
 
       setEndOfData(false);
 
-      const response = await axios.post('http://localhost:4000/api/v1/movies/get/all', {
+      const response = await axios.post(`${appConfig.backendUrl}/api/v1/movies/get/all`, {
         limit: 20,
         page: currentPage,
         cancelToken: cancelToken.token

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import axios from 'axios';
 import MoviesCard from '@/app/components/MoviesCard';
 import Navbar from "@/app/components/Navbar";
+import { appConfig } from "@/config/config";
 
 export default function CategoriesMovies({ params }) {
 
@@ -33,7 +34,7 @@ export default function CategoriesMovies({ params }) {
 
             setEndOfData(false);
 
-            const response = await axios.post(`http://localhost:4000/api/v1/movies/get/${query}`, {
+            const response = await axios.post(`${appConfig.backendUrl}/api/v1/movies/get/${query}`, {
                 limit: 20,
                 page: currentPage,
                 cancelToken: cancelToken.token
