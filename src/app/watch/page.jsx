@@ -1,5 +1,8 @@
 import Videoplayer from "../components/VideoPlayer";
 
+export const metadata = {
+  title: 'Watch'
+}
 
 export default function page() {
 

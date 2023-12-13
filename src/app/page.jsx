@@ -1,6 +1,6 @@
 import { appConfig } from "@/config/config";
 import { fetchMoviesFromServer } from "../utils";
-import MoviesSection from "./components/MoviesSection";
+import MoviesGirdWarper from "./components/MoviesGirdWarper";
 import Navbar from "./components/Navbar";
 
 async function getPosts(query) {
@@ -23,7 +23,7 @@ export default async function Page() {
   return (
     <>
       <Navbar />
-      <MoviesSection query="all" initialMovies={filterResponse} isDataEnd={dataIsEnd} />
+      <MoviesGirdWarper query="all" initialMovies={filterResponse} isDataEnd={dataIsEnd} />
     </>
   )
 }

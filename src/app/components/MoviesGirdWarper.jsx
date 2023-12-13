@@ -1,10 +1,10 @@
 'use client'
 import { appConfig } from "@/config/config";
 import { useEffect, useRef, useState } from "react";
-import MoviesCardsGirdWarper from "./MoviesCardsGirdWarper";
+import MoviesCard from "./MoviesCard";
 import { fetchMoviesFromServer } from "@/utils";
 
-function MoviesSection({ query, initialMovies, isDataEnd }) {
+function MoviesGirdWarper({ query, initialMovies, isDataEnd }) {
 
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -43,42 +43,43 @@ function MoviesSection({ query, initialMovies, isDataEnd }) {
     useEffect(() => {
 
         if (page !== 1) {
-    
-        const getMovies = async () => {
-            setLoading(true);
-            setEndOfData(false);
 
-            const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
-                apiPath: `${appConfig.backendUrl}/api/v1/movies/get/${query}`,
-                limitPerPage: 20,
-                page: page,
-            });
+            const getMovies = async () => {
+                setLoading(true);
+                setEndOfData(false);
 
-            setMoreMoviesData((prevData) => [...prevData, ...filterResponse]);
+                const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
+                    apiPath: `${appConfig.backendUrl}/api/v1/movies/get/${query}`,
+                    limitPerPage: 20,
+                    page: page,
+                });
 
-            if (dataIsEnd) {
-                setEndOfData(true);
-            }
+                setMoreMoviesData((prevData) => [...prevData, ...filterResponse]);
 
-            setLoading(false);
-        };
+                if (dataIsEnd) {
+                    setEndOfData(true);
+                }
 
-        getMovies();
+                setLoading(false);
+            };
 
-    }
+            getMovies();
+
+        }
 
     }, [page]);
 
     return (
-            <main className="w-full h-auto bg-gray-100 my-2">
-                <MoviesCardsGirdWarper
-                    isLoading={loading}
-                    moviesData={moreMoviesData}
-                />
-                <div id="bottom_observerElement" ref={observerRef}></div>
+        <main className="w-full h-auto bg-cyan-50 py-3 mobile:py-2 overflow-x-hidden">
 
-            </main>
+            <div className="w-full h-auto mobile:my-1 px-2 gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] overflow-x-hidden">
+
+                <MoviesCard isLoading={loading} moviesData={moreMoviesData} />
+
+            </div>
+            <div id="bottom_observerElement" ref={observerRef}></div>
+        </main>
     );
 };
 
-export default MoviesSection;
+export default MoviesGirdWarper;

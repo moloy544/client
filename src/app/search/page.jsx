@@ -4,7 +4,7 @@ import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import Link from "next/link";
 import { appConfig } from "@/config/config";
 import { fetchMoviesFromServer } from "../../utils";
-import MoviesCardsGirdWarper from "../components/MoviesCardsGirdWarper";
+import MoviesCard from "../components/MoviesCard";
 
 function SearchPage() {
 
@@ -96,7 +96,6 @@ function SearchPage() {
                 };
 
                 setLoading(false);
-
             };
 
             getMovies();
@@ -106,28 +105,25 @@ function SearchPage() {
 
     return (
         <>
-
             <div className="sticky top-0 z-50 w-full h-auto border bg-white border-gray-100 shadow-md">
 
                 <div className="w-full h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2 border">
-                    <Link href="/" className="text-xl text-purple-800 text-ellipsis font-bold block mobile:hidden">Movies Bazzer</Link>
+                    <Link href="/" className="text-xl text-purple-900 text-ellipsis font-bold block mobile:hidden">Movies Bazzer</Link>
                     <input onChange={handleSearch} type="text" placeholder="Search movies web series and etc" className="border-2 border-purple-400 w-2/4 mobile:w-full h-10 rounded-md px-2 text-base mobile:text-sm placeholder:text-gray-500" />
                 </div>
 
                 <CategoryGroupSlider />
-
+                
             </div>
 
-            <main className="min-h-screen bg-gray-100">
+            <main className="w-full h-auto bg-cyan-50 my-3 mobile:my-2 overflow-x-hidden">
+            <div className="w-full h-auto mobile:my-1 px-2 gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] overflow-x-hidden">
 
-                {searchQuery !== "" && (
-
-                   <MoviesCardsGirdWarper isLoading={loading} moviesData={moviesData} /> 
-                )}
-
+                    {searchQuery !== "" && (<MoviesCard isLoading={loading} moviesData={moviesData} />)}
+                    
+                </div>
                 {/* Intersection Observer target */}
                 <div ref={observerRef} id="bottom_observerElement"></div>
-
             </main>
         </>
     )

@@ -1,27 +1,33 @@
 import { fetchMoviesFromServer } from "@/utils";
 import { appConfig } from "@/config/config";
-import MoviesSection from "@/app/components/MoviesSection";
+import MoviesGirdWarper from "@/app/components/MoviesGirdWarper";
 import CategoryGroupSlider from "@/app/components/CategoryGroupSlider";
 import NavigateBack from "@/app/components/NavigateBack";
+import Link from "next/link";
 
-const transformToCapitalizeQuery = (value) => {
+const transformToCapitalizeQuery = (text) => {
+  // Split the text into an array of words
+  const words = text.split('-');
 
-  const editCapitalize = value.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
-    .join(' ');
+  // Capitalize the first letter of each word and join them with a space
+  const capitalizedWords = words.map(word => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
 
-  return editCapitalize;
+  // Join the words with a space and return the result
+  return capitalizedWords.join(' ');
 };
 
 export async function generateMetadata({ params }) {
 
-  const editParamsQuery = transformToCapitalizeQuery(params.cname.replace(/[-]/g, ' '))
+  const editParamsQuery = transformToCapitalizeQuery(params.cname)
 
   return {
     title: `${editParamsQuery} movies`,
-    description: `Download latest release ${editParamsQuery} movies online Movies Bazzer`,
+    description: `Watch ${editParamsQuery} movies online Movies Bazzer`,
     openGraph: {
       title: `${editParamsQuery} movies`,
-      description: `Download latest release ${editParamsQuery} movies online Movies Bazzer`,
+      description: `Watch ${editParamsQuery} movies online Movies Bazzer`,
     },
   }
 };
@@ -42,9 +48,9 @@ async function getPosts(query) {
 
 export default async function Page({ params }) {
 
-  const editParamsQuery = params.cname.toLowerCase();
+  const editParamsQuery = params.cname.toLowerCase().replace(/[-]/g, ' ');
 
-  const editCapitalizeParamsQuery = transformToCapitalizeQuery(params.cname.replace(/[-]/g, ' '));
+  const editCapitalizeParamsQuery = transformToCapitalizeQuery(params.cname);
 
   function filterQueryParam() {
 
@@ -66,23 +72,20 @@ export default async function Page({ params }) {
 
   return (
     <>
-      <div className="sticky top-0 z-50 w-full h-auto bg-gray-900">
-        
-        <div className="w-auto h-auto flex items-center py-4 px-4 mobile:px-2">
+      <div className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-gray-900 px-2 border-b border-b-red-700">
 
-        <NavigateBack className="bi bi-arrow-left text-white text-3xl mobile:text-[22px] cursor-pointer float-left" />
-
-        <div className="px-5 mobile:px-2 text-yellow-400 text-xl mobile:text-base text-center justify-self-center truncate">
-          {editCapitalizeParamsQuery} Movies
+        <div className="w-auto h-auto flex items-center py-4 mobile:py-2">
+          <NavigateBack className="bi bi-arrow-left text-white text-3xl mobile:text-[22px] cursor-pointer" />
+          <div className="px-5 mobile:px-2 text-yellow-400 text-xl mobile:text-base text-center justify-self-center truncate">
+            {editCapitalizeParamsQuery}
+          </div>
         </div>
-
-        </div>
-
-        <CategoryGroupSlider />
-
+        <Link href="/search" className="mr-20 mobile:mr-3 p-1 text-2xl mobile:text-xl text-white">
+          <i className="bi bi-search"></i>
+        </Link>
       </div>
 
-      <MoviesSection query={query} initialMovies={filterResponse} isDataEnd={dataIsEnd} />
+      <MoviesGirdWarper query={query} initialMovies={filterResponse} isDataEnd={dataIsEnd} />
     </>
   )
 };

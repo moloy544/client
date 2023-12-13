@@ -56,3 +56,32 @@
   }
 
 
+  .movies_card_pre-loader {
+    animation: fade-in 2s ease-in-out;
+    ;
+    /* 2s duration with ease-in-out timing function */
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0.80;
+        /* Starting opacity (low) */
+    }
+
+    40% {
+        opacity: 0.50;
+        /* Starting opacity (low) */
+    }
+
+    70% {
+        opacity: 0.80;
+        /* Starting opacity (low) */
+    }
+
+    100% {
+        opacity: 1;
+        /* Ending opacity (high) */
+    }
+}
+
+

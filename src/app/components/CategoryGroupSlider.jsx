@@ -6,14 +6,14 @@ export default function CategoryGroupSlider() {
     'New Release',
     'Bollywood',
     'Hollywood',
+    'South',
     'Web Series',
     'Hindi Dubbed',
     'Sci-Fi',
     'Comedy',
     'Romance',
-    'South',
     'Animation',
-    'Horror'
+    'Horror',
   ]
 
   return (
@@ -23,7 +23,7 @@ export default function CategoryGroupSlider() {
         <Link
           key={category}
           href={`/category/${category.toLowerCase().replace(/[' ']/g, '-')}`}
-          className="bg-purple-600 w-auto h-auto px-5 py-[10px] mobile:py-2 mobile:px-3 rounded-[4px] text-sm mobile:text-xs font-normal text-white cursor-pointer">
+          className="bg-purple-600 w-auto h-auto px-4 py-2 mobile:px-3 rounded-[4px] text-sm mobile:text-xs font-normal text-white cursor-pointer">
           {category}
         </Link>
       ))}
