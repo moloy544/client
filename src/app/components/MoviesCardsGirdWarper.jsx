@@ -10,7 +10,7 @@ export default function MoviesCardsGirdWarper({ isLoading, moviesData }) {
 
         const encoded = encodeURIComponent(url);
 
-        router.push(`/watch?movie=${encoded}`, { scroll: false });
+        router.back();
     };
 
     if (isLoading && moviesData.length < 1) {

@@ -1,6 +1,7 @@
 import { appConfig } from "@/config/config";
 import { fetchMoviesFromServer } from "../utils";
 import MoviesSection from "./components/MoviesSection";
+import Navbar from "./components/Navbar";
 
 async function getPosts(query) {
 
@@ -18,8 +19,13 @@ async function getPosts(query) {
 export default async function Page() {
   // Fetch data directly in a Server Component
   const { filterResponse, dataIsEnd } = await getPosts('all')
-  
-  return <MoviesSection query="all" initialMovies={filterResponse} isDataEnd={dataIsEnd} />
+
+  return (
+    <>
+      <Navbar />
+      <MoviesSection query="all" initialMovies={filterResponse} isDataEnd={dataIsEnd} />
+    </>
+  )
 }
 
 
