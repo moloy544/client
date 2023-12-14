@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const fetchMoviesFromServer = async ({ apiPath, limitPerPage, page }) => {
+export const fetchMoviesFromServer = async ({ methood = 'post', apiPath, limitPerPage, page }) => {
 
   // Create a new instance of AbortController
   const abortController = new AbortController();
@@ -10,7 +10,7 @@ export const fetchMoviesFromServer = async ({ apiPath, limitPerPage, page }) => 
 
   try {
 
-    const response = await axios.post(apiPath, {
+    const response = await axios[methood](apiPath, {
       limit: limitPerPage,
       page,
       cancelToken: cancelToken.token
@@ -29,7 +29,7 @@ export const fetchMoviesFromServer = async ({ apiPath, limitPerPage, page }) => 
     return { filterResponse, dataIsEnd };
 
   } catch (error) {
-  
+
     if (axios.isCancel(error)) {
       // Handle request cancellation
       console.log('Request canceled:', error.message);

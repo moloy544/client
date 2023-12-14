@@ -37,23 +37,43 @@
   }
 
   .movies_image_container{
-    width: auto; /* Adjust as needed */
-    max-width: 250px;
-    height: auto; /* Adjust as needed */
-    display: flex; /* Adjust as needed */
-    flex-wrap: wrap; /* Adjust as needed */
-    background: linear-gradient(to right, rgb(16, 77, 247), rgb(233, 3, 3)); /* Gradient background */
-    border: 1.50px solid transparent; /* Border thickness and initial color */
-    border-radius: 4px; /* Adjust the border-radius as needed */
+    width: auto; 
+    max-width: 200px;
+    height: auto; 
+    display: flex; 
+    flex-wrap: wrap; 
+    border-radius: 4px; 
     cursor: pointer;
 }
 
-.truncate-lines-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+.movies_image_container .movie_name_container{
+  width: 100%;
+  height: auto;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.80);
+  padding-block: 3px;
+  padding-inline: 4px;
+  position: absolute;
+  bottom: 0;
+  z-index: 4;
+}
+
+.truncate-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Default value */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.truncate-lines-3 {
+  -webkit-line-clamp: 3;
+}
+
+.truncate-lines-4 {
+  -webkit-line-clamp: 4;
+}
+
+
 
 
   .movies_card_pre-loader {

@@ -1,15 +1,15 @@
 'use client'
 import { useRouter } from 'next/navigation'
 
-function NavigateBack({className}) {
+function NavigateBack({ className }) {
 
-const router = useRouter();
+  const router = useRouter();
 
-const back = ()=>{
+  const back = () => {
     router.back();
-};
+  };
 
-  return<div onClick={back} className={className}></div>
+  return <div onClick={back} className={className}></div>
 
 };
 

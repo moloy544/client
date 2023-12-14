@@ -1,7 +1,6 @@
 import { fetchMoviesFromServer } from "@/utils";
 import { appConfig } from "@/config/config";
 import MoviesGirdWarper from "@/app/components/MoviesGirdWarper";
-import CategoryGroupSlider from "@/app/components/CategoryGroupSlider";
 import NavigateBack from "@/app/components/NavigateBack";
 import Link from "next/link";
 
@@ -24,19 +23,21 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${editParamsQuery} movies`,
-    description: `Watch ${editParamsQuery} movies online Movies Bazzer`,
+    description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
     openGraph: {
       title: `${editParamsQuery} movies`,
-      description: `Watch ${editParamsQuery} movies online Movies Bazzer`,
+      description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
+      url: `https://movies-bazaar.vercel.app/category/${params.cname}`
     },
   }
 };
 
-async function getPosts(query) {
+async function getMovies(query) {
 
   const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
+
     apiPath: `${appConfig.backendUrl}/api/v1/movies/get/${query}`,
-    limitPerPage: 20,
+    limitPerPage: 30,
     page: 1
   });
 
@@ -49,8 +50,6 @@ async function getPosts(query) {
 export default async function Page({ params }) {
 
   const editParamsQuery = params.cname.toLowerCase().replace(/[-]/g, ' ');
-
-  const editCapitalizeParamsQuery = transformToCapitalizeQuery(params.cname);
 
   function filterQueryParam() {
 
@@ -67,25 +66,27 @@ export default async function Page({ params }) {
 
   const query = filterQueryParam();
 
-  // Fetch data directly in a Server Component
-  const { filterResponse, dataIsEnd } = await getPosts(query);
+  const { filterResponse, dataIsEnd } = await getMovies(query);
+
+  const categoryName = transformToCapitalizeQuery(params.cname);
 
   return (
     <>
-      <div className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-gray-900 px-2 border-b border-b-red-700">
+      <div className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-red-800 px-2 border-b border-b-yellow-700">
 
         <div className="w-auto h-auto flex items-center py-4 mobile:py-2">
-          <NavigateBack className="bi bi-arrow-left text-white text-3xl mobile:text-[22px] cursor-pointer" />
+          <NavigateBack className="bi bi-arrow-left text-white text-3xl mobile:text-[25px] cursor-pointer" />
           <div className="px-5 mobile:px-2 text-yellow-400 text-xl mobile:text-base text-center justify-self-center truncate">
-            {editCapitalizeParamsQuery}
+            {categoryName}
           </div>
         </div>
-        <Link href="/search" className="mr-20 mobile:mr-3 p-1 text-2xl mobile:text-xl text-white">
+        <Link href="/search" className="text-white mr-20 mobile:mr-3 p-1 text-2xl mobile:text-xl">
           <i className="bi bi-search"></i>
         </Link>
       </div>
-
-      <MoviesGirdWarper query={query} initialMovies={filterResponse} isDataEnd={dataIsEnd} />
+      <div className="w-full h-full bg-gray-800 py-3 mobile:py-2">
+        <MoviesGirdWarper query={query} initialMovies={filterResponse} isDataEnd={dataIsEnd} />
+      </div>
     </>
   )
 };

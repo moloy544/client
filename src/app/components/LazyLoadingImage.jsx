@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react';
 
-function LazyLoadingImage({ imageStyle, actualSrc, alt }) {
+function LazyLoadingImage({ className, actualSrc, alt }) {
 
     const placeholderSrc = "https://th.bing.com/th/id/OIP.cwVFTGI_fvDRm8qmZbt86wAAAA?pid=ImgDet&w=188&h=332&c=7&dpr=1.5";
 
@@ -33,7 +33,7 @@ function LazyLoadingImage({ imageStyle, actualSrc, alt }) {
 
       <img
         ref={imageRef}
-        className={imageStyle}
+        className={className}
         src={isIntersecting ? actualSrc : placeholderSrc}
         alt={alt}
       />

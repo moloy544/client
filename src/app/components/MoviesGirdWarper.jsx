@@ -8,7 +8,7 @@ function MoviesGirdWarper({ query, initialMovies, isDataEnd }) {
 
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
-    const [moreMoviesData, setMoreMoviesData] = useState(initialMovies || []);
+    const [moviesData, setMoviesData] = useState(initialMovies || []);
     const [endOfData, setEndOfData] = useState(isDataEnd || false);
 
     const observerRef = useRef(null);
@@ -23,11 +23,11 @@ function MoviesGirdWarper({ query, initialMovies, isDataEnd }) {
     useEffect(() => {
         observerRef.current = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "10px",
+            rootMargin: "50px",
             threshold: 1.0,
         });
 
-        if (moreMoviesData.length > 0) {
+        if (moviesData.length > 0) {
             observerRef.current.observe(
                 document.getElementById("bottom_observerElement")
             );
@@ -38,7 +38,7 @@ function MoviesGirdWarper({ query, initialMovies, isDataEnd }) {
                 observerRef.current.disconnect();
             }
         };
-    }, [moreMoviesData]);
+    }, [moviesData]);
 
     useEffect(() => {
 
@@ -50,11 +50,11 @@ function MoviesGirdWarper({ query, initialMovies, isDataEnd }) {
 
                 const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
                     apiPath: `${appConfig.backendUrl}/api/v1/movies/get/${query}`,
-                    limitPerPage: 20,
+                    limitPerPage: initialMovies?.length,
                     page: page,
                 });
 
-                setMoreMoviesData((prevData) => [...prevData, ...filterResponse]);
+                setMoviesData((prevData) => [...prevData, ...filterResponse]);
 
                 if (dataIsEnd) {
                     setEndOfData(true);
@@ -65,16 +65,16 @@ function MoviesGirdWarper({ query, initialMovies, isDataEnd }) {
 
             getMovies();
 
-        }
+        };
 
     }, [page]);
 
     return (
-        <main className="w-full h-auto bg-cyan-50 py-3 mobile:py-2 overflow-x-hidden">
+        <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
 
-            <div className="w-full h-auto mobile:my-1 px-2 gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] overflow-x-hidden">
+            <div className="w-full h-auto grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(135px,1fr))] gap-[6px] mobile:gap-1  mobile:my-1 px-1.5 overflow-x-hidden">
 
-                <MoviesCard isLoading={loading} moviesData={moreMoviesData} />
+                <MoviesCard isLoading={loading} moviesData={moviesData} />
 
             </div>
             <div id="bottom_observerElement" ref={observerRef}></div>

@@ -115,11 +115,11 @@ function AddMoviesPage() {
                     <div className="flex gap-5">
                         <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                             Hindi
-                            <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi" name="language" checked={state.language === 'hindi'}  />
+                            <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi" name="language" checked={state.category === 'bollywood'}  />
                         </label>
                         <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                             Hindi Dubbed
-                            <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi dubbed" name="language" checked={state.language === 'hindi dubbed'}  />
+                            <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi dubbed" name="language" checked={state.category !== 'bollywood'}  />
                         </label>
                     </div>
                 </div>
@@ -137,7 +137,7 @@ function AddMoviesPage() {
                 </div>
 
                 <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add</div>
-                <p>Page 6 complete Bollywood movies</p>
+                <p>Page 8 complete Bollywood movies</p>
             </div>
 
         </div>

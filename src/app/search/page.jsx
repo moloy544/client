@@ -105,11 +105,11 @@ function SearchPage() {
 
     return (
         <>
-            <div className="sticky top-0 z-50 w-full h-auto border bg-white border-gray-100 shadow-md">
+            <div className="sticky top-0 left-0 z-50 w-full h-auto bg-white">
 
-                <div className="w-full h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2 border">
-                    <Link href="/" className="text-xl text-purple-900 text-ellipsis font-bold block mobile:hidden">Movies Bazzer</Link>
-                    <input onChange={handleSearch} type="text" placeholder="Search movies web series and etc" className="border-2 border-purple-400 w-2/4 mobile:w-full h-10 rounded-md px-2 text-base mobile:text-sm placeholder:text-gray-500" />
+                <div className="w-full bg-red-800 mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2 border">
+                    <Link href="/" className="text-xl text-yellow-300 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
+                    <input onChange={handleSearch} type="text" placeholder="Search movies web series and etc" className="border-2 border-red-800 w-[45%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base mobile:text-sm placeholder:text-gray-500 shadow-2xl" autoFocus />
                 </div>
 
                 <CategoryGroupSlider />
