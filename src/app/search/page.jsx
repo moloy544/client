@@ -1,10 +1,12 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import Link from "next/link";
 import { appConfig } from "@/config/config";
 import { fetchMoviesFromServer } from "../../utils";
-import MoviesCard from "../components/MoviesCard";
+
+const MoviesCard = dynamic(() => import('../components/MoviesCard'), { ssr: false })
 
 function SearchPage() {
 
@@ -32,7 +34,7 @@ function SearchPage() {
                 setMoviesData([])
             };
 
-        }, 800);
+        }, 1500);
 
     };
 

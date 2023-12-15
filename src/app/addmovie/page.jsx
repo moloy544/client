@@ -137,7 +137,7 @@ function AddMoviesPage() {
                 </div>
 
                 <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add</div>
-                <p>Page 8 complete Bollywood movies</p>
+                <p>Page 11 complete Bollywood movies</p>
             </div>
 
         </div>

@@ -17,7 +17,7 @@ export default function CategoryGroupSlider() {
   ];
 
   return (
-    <div className="w-full h-auto bg-red-100 flex flex-row items-center lg:justify-around overflow-y-scroll whitespace-nowrap gap-3 p-2 mobile:pt-2 mobile:py-0 border border-b-gray-300 scroll-smooth">
+    <div className="w-full h-auto bg-red-50 flex flex-row items-center lg:justify-around overflow-y-scroll whitespace-nowrap gap-3 p-2 mobile:pt-2 mobile:py-0 border border-b-gray-300 scroll-smooth">
 
       {categoryArray.map((category) => (
         <Link

@@ -12,7 +12,6 @@ const loaderSkleatons = () => {
     )
 };
 
-
 export default function MoviesCard({ isLoading, moviesData }) {
 
     if (isLoading && moviesData.length < 1) {
@@ -31,7 +30,11 @@ export default function MoviesCard({ isLoading, moviesData }) {
     return (
         <>
             {moviesData?.map((data) => (
-                <Link key={data._id} href={`/watch?movie=${data.watchLink.replace('https://', '')}`}>
+
+                <Link key={data._id} href={{ 
+                    pathname: '/watch', 
+                    query: { movie: data.watchLink.replace('https://', '') } 
+                    }}>
 
                     <div className="movies_image_container cursor-pointer relative">
 

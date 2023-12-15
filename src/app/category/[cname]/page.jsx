@@ -5,6 +5,7 @@ import NavigateBack from "@/app/components/NavigateBack";
 import Link from "next/link";
 
 const transformToCapitalizeQuery = (text) => {
+
   // Split the text into an array of words
   const words = text.split('-');
 
@@ -32,20 +33,6 @@ export async function generateMetadata({ params }) {
   }
 };
 
-async function getMovies(query) {
-
-  const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
-
-    apiPath: `${appConfig.backendUrl}/api/v1/movies/get/${query}`,
-    limitPerPage: 30,
-    page: 1
-  });
-
-  const responseData = { filterResponse, dataIsEnd };
-
-  return responseData;
-
-};
 
 export default async function Page({ params }) {
 
@@ -66,7 +53,12 @@ export default async function Page({ params }) {
 
   const query = filterQueryParam();
 
-  const { filterResponse, dataIsEnd } = await getMovies(query);
+  const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
+
+    apiPath: `${appConfig.backendUrl}/api/v1/movies/get/${query}`,
+    limitPerPage: 30,
+    page: 1
+  });;
 
   const categoryName = transformToCapitalizeQuery(params.cname);
 
