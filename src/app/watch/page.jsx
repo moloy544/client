@@ -4,7 +4,7 @@ export const metadata = {
   title: 'Watch'
 }
 
-export default function page({ searchParams }) {
+export default function Page({ searchParams }) {
 
   const videoSource = searchParams?.movie;
 
