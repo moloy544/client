@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 
 export default function CategoryPage() {
-    const router = useRouter()
+    const router = useRouter();
     router.replace('/');
-    return;
+    return null;
 }
