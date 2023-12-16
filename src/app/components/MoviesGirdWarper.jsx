@@ -1,10 +1,9 @@
 'use client'
-import { appConfig } from "@/config/config";
 import { useEffect, useRef, useState } from "react";
 import MoviesCard from "./MoviesCard";
 import { fetchMoviesFromServer } from "@/utils";
 
-function MoviesGirdWarper({ query, initialMovies, isDataEnd }) {
+function MoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -31,7 +30,7 @@ function MoviesGirdWarper({ query, initialMovies, isDataEnd }) {
             observerRef.current.observe(
                 document.getElementById("bottom_observerElement")
             );
-        }
+        };
 
         return () => {
             if (observerRef.current) {
@@ -49,7 +48,7 @@ function MoviesGirdWarper({ query, initialMovies, isDataEnd }) {
                 setEndOfData(false);
 
                 const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
-                    apiPath: `${appConfig.backendUrl}/api/v1/movies/get/${query}`,
+                    apiPath: apiUrl,
                     limitPerPage: initialMovies?.length,
                     page: page,
                 });

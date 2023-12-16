@@ -21,8 +21,6 @@ function SearchPage() {
 
     const handleSearch = (event) => {
 
-        setTimeout(() => {
-
             const trimValue = event.target.value.replace(/ +/g, ' ');
 
             // Update the controlled input value in state
@@ -33,9 +31,6 @@ function SearchPage() {
                 setEndOfData(false);
                 setMoviesData([])
             };
-
-        }, 1500);
-
     };
 
     //Load More Items Window Bottom Observer function
@@ -79,7 +74,7 @@ function SearchPage() {
                 setEndOfData(false);
 
                 const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
-                    apiPath: `${appConfig.backendUrl}/api/v1/movies/get/${searchQuery}`,
+                    apiPath: `${appConfig.backendUrl}/api/v1/movies/search?q=${searchQuery}`,
                     limitPerPage: 15,
                     page: page
                 });

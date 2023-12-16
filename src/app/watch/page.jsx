@@ -4,11 +4,15 @@ export const metadata = {
   title: 'Watch'
 }
 
-export default function page() {
+export default function page({ searchParams }) {
+
+  const videoSource = searchParams?.movie;
 
   return (
     <div className="flex justify-center mt-24 mobile:mt-32 mb-10 w-full h-full px-20">
-      <Videoplayer />
+
+      <Videoplayer movieSource={videoSource} />
+
     </div>
   )
 }

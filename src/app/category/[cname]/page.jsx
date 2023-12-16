@@ -53,9 +53,11 @@ export default async function Page({ params }) {
 
   const query = filterQueryParam();
 
+  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/clisting/${query}`;
+
   const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
 
-    apiPath: `${appConfig.backendUrl}/api/v1/movies/get/${query}`,
+    apiPath: apiUrl,
     limitPerPage: 30,
     page: 1
   });;
@@ -77,7 +79,11 @@ export default async function Page({ params }) {
         </Link>
       </div>
       <div className="w-full h-full bg-gray-800 py-3 mobile:py-2">
-        <MoviesGirdWarper query={query} initialMovies={filterResponse} isDataEnd={dataIsEnd} />
+        <MoviesGirdWarper
+          apiUrl={apiUrl}
+          query={query}
+          initialMovies={filterResponse}
+          isDataEnd={dataIsEnd} />
       </div>
     </>
   )

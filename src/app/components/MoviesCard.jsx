@@ -33,13 +33,13 @@ export default function MoviesCard({ isLoading, moviesData }) {
 
                 <Link key={data._id} href={{ 
                     pathname: '/watch', 
-                    query: { movie: data.watchLink.replace('https://', '') } 
+                    query: { movie: data.watchLink.replace('https://traze-cocarruptoo-i-266.site/play/', '') } 
                     }}>
 
                     <div className="movies_image_container cursor-pointer relative">
 
-                        <div className="relative w-full object-cover h-[13rem] max-h-64 mobile:max-h-44 bg-white rounded-[4px]">
-                            <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[4px]"
+                        <div className="relative w-full object-cover h-[13rem] max-h-64 mobile:max-h-44 bg-white rounded-[3px]">
+                            <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
                                 actualSrc={data.thambnail}
                                 alt="Movies poster" />
                         </div>
