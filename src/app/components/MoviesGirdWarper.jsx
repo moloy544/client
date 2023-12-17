@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
 import MoviesCard from "./MoviesCard";
-import { fetchMoviesFromServer } from "@/utils";
+import { fetchLoadMoreMovies } from "@/utils";
 
 function MoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
@@ -47,7 +47,7 @@ function MoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
                 setLoading(true);
                 setEndOfData(false);
 
-                const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
+                const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
                     apiPath: apiUrl,
                     limitPerPage: initialMovies?.length,
                     page: page,

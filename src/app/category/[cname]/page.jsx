@@ -1,4 +1,4 @@
-import { fetchMoviesFromServer } from "@/utils";
+import { fetchLoadMoreMovies } from "@/utils";
 import { appConfig } from "@/config/config";
 import MoviesGirdWarper from "@/app/components/MoviesGirdWarper";
 import NavigateBack from "@/app/components/NavigateBack";
@@ -55,7 +55,7 @@ export default async function Page({ params }) {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/clisting/${query}`;
 
-  const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
+  const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
 
     apiPath: apiUrl,
     limitPerPage: 30,

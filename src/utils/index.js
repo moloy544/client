@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const fetchMoviesFromServer = async ({ methood = 'post', apiPath, limitPerPage, page }) => {
+export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerPage, page }) => {
 
   // Create a new instance of AbortController
   const abortController = new AbortController();

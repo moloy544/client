@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import Link from "next/link";
 import { appConfig } from "@/config/config";
-import { fetchMoviesFromServer } from "../../utils";
+import { fetchLoadMoreMovies } from "@/utils";
 
 const MoviesCard = dynamic(() => import('../components/MoviesCard'), { ssr: false })
 
@@ -73,7 +73,7 @@ function SearchPage() {
 
                 setEndOfData(false);
 
-                const { filterResponse, dataIsEnd } = await fetchMoviesFromServer({
+                const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
                     apiPath: `${appConfig.backendUrl}/api/v1/movies/search?q=${searchQuery}`,
                     limitPerPage: 15,
                     page: page
