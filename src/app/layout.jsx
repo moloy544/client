@@ -21,8 +21,7 @@ export const metadata = {
       template: '%s | Movies Bazaar',
     },
     description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazaar',
-    keywords: 'online movies, watch movies online, movie streaming, film, cinema, entertainment, Hollywood movies, Hollywood dubbed movies, South movies, South dubbed movies, Bollywood movies',
-    url: 'https://movies-bazaar.vercel.app'
+    url: 'https://moviesbazaar.vercel.app'
   },
 }
 

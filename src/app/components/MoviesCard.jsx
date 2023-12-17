@@ -31,10 +31,7 @@ export default function MoviesCard({ isLoading, moviesData }) {
         <>
             {moviesData?.map((data) => (
 
-                <Link key={data._id} href={{ 
-                    pathname: '/watch', 
-                    query: { movie: data.watchLink.replace('https://traze-cocarruptoo-i-266.site/play/', '') } 
-                    }}>
+                <Link key={data._id} href={`/watch/${data._id}`}>
 
                     <div className="movies_image_container cursor-pointer relative">
 

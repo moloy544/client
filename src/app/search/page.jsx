@@ -3,8 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import Link from "next/link";
-import { appConfig } from "@/config/config";
 import { fetchLoadMoreMovies } from "@/utils";
+import { appConfig } from "@/config/config";
 
 const MoviesCard = dynamic(() => import('../components/MoviesCard'), { ssr: false })
 
@@ -75,7 +75,7 @@ function SearchPage() {
 
                 const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
                     apiPath: `${appConfig.backendUrl}/api/v1/movies/search?q=${searchQuery}`,
-                    limitPerPage: 15,
+                    limitPerPage: 30,
                     page: page
                 });
 

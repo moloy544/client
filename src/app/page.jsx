@@ -11,7 +11,7 @@ export default async function Page() {
 
   const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
     apiPath: apiUrl,
-    limitPerPage: 30,
+    limitPerPage: 100,
     page: 1
   });
 

@@ -28,7 +28,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: `${editParamsQuery} movies`,
       description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
-      url: `https://movies-bazaar.vercel.app/category/${params.cname}`
+      url: `https://moviesbazaar.vercel.app/category/${params.cname}`
     },
   }
 };
@@ -58,7 +58,7 @@ export default async function Page({ params }) {
   const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
 
     apiPath: apiUrl,
-    limitPerPage: 30,
+    limitPerPage: 100,
     page: 1
   });;
 
