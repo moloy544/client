@@ -74,7 +74,7 @@ function SearchPage() {
                 setEndOfData(false);
 
                 const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
-                    apiPath: `${appConfig.backendUrl}/api/v1/movies/search?q=${searchQuery}`,
+                    apiPath: `https://grocerit-server.vercel.app/api/v1/movies/search?q=${searchQuery}`,
                     limitPerPage: 30,
                     page: page
                 });
