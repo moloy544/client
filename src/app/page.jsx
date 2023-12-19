@@ -12,56 +12,43 @@ export default async function Page() {
 
   const { latestMovies, bollywoodMovies, southMovies } = response.data;
 
+  const firstSectionData = [{
+    title: 'Hollywood latest movies',
+    linkUrl: '/category/hollywood',
+    moviesData: latestMovies
+  }, {
+    title: 'Bollywood latest movies',
+    linkUrl: '/category/bollywood ',
+    moviesData: bollywoodMovies
+  }, {
+    title: 'South latest movies',
+    linkUrl: '/category/south',
+    moviesData: southMovies
+  },]
+
   return (
     <>
       <Navbar />
 
-      <main className="w-full h-full bg-gray-800 py-2 m-0">
+      <main className="w-full h-full bg-gray-100 m-0">
 
-        <section className="w-full h-auto py-3 mobile:py-1">
+        {firstSectionData.map((data) => (
 
-          <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
-            <h2 className="text-white text-2xl mobile:text-sm font-bold">Hollywood latest movies</h2>
-            <Link href="/category/hollywood" className="text-lg mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
-          </div>
+          <section key={data.title} className="w-full h-auto py-3 mobile:py-1">
 
-          <div className="w-full h-auto flex flex-row overflow-x-scroll whitespace-nowrap gap-2 px-2">
+            <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
+              <h2 className="text-gray-900 text-2xl mobile:text-sm font-bold">{data.title}</h2>
+              <Link href={data.linkUrl} className="text-lg mobile:text-[12px] text-blue-700 font-semibold">See more</Link>
+            </div>
 
-          <MoviesCard moviesData={latestMovies} />
+            <div className="w-full h-auto flex flex-row overflow-x-scroll whitespace-nowrap gap-2 px-2">
 
-          </div>
+              <MoviesCard moviesData={data.moviesData} />
 
-        </section>
+            </div>
 
-        <section className="w-full h-auto py-3 mobile:py-1">
-
-          <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
-            <h2 className="text-white text-2xl mobile:text-sm font-bold">Bollywood latest movies</h2>
-            <Link href="/category/bollywood" className="text-lg mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
-          </div>
-
-          <div className="w-full h-auto flex flex-row overflow-x-scroll whitespace-nowrap gap-2 px-2">
-
-          <MoviesCard moviesData={bollywoodMovies} />
-
-          </div>
-
-        </section>
-
-        <section className="w-full h-auto py-3 mobile:py-1">
-
-          <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
-            <h2 className="text-white text-2xl mobile:text-sm font-bold">South latest movies</h2>
-            <Link href="/category/south" className="text-lg mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
-          </div>
-
-          <div className="w-full h-auto flex flex-row overflow-x-scroll whitespace-nowrap gap-2 px-2">
-
-          <MoviesCard moviesData={southMovies} />
-
-          </div>
-
-        </section>
+          </section>
+        ))}
 
       </main>
     </>
