@@ -4,9 +4,8 @@ import dynamic from "next/dynamic";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import Link from "next/link";
 import { fetchLoadMoreMovies } from "@/utils";
-import { appConfig } from "@/config/config";
 
-const MoviesCard = dynamic(() => import('../components/MoviesCard'), { ssr: false })
+const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'), { ssr: false })
 
 function SearchPage() {
 
@@ -19,18 +18,32 @@ function SearchPage() {
 
     const observerRef = useRef(null);
 
-    const handleSearch = (event) => {
+    // Debounce function
+    const debounce = (func, delay) => {
+        let timeoutId;
+        return function (...args) {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    };
 
-            const trimValue = event.target.value.replace(/ +/g, ' ');
+    // Debounced handleSearch function with a delay of 500 milliseconds
+    const debouncedHandleSearch = useCallback(
+        debounce((value) => {
+            setSearchQuery(value.trim());
+            setPage(1);
+            setEndOfData(false);
+            setMoviesData([]);
+        }, 1200),
+        []
+    );
 
-            // Update the controlled input value in state
-            if (trimValue !== ' ') {
-
-                setSearchQuery(trimValue);
-                setPage(1);
-                setEndOfData(false);
-                setMoviesData([])
-            };
+    // Event handler for input change
+    const handleSearchInputChange = (event) => {
+        const trimValue = event.target.value.replace(/ +/g, ' ');
+        debouncedHandleSearch(trimValue);
     };
 
     //Load More Items Window Bottom Observer function
@@ -104,24 +117,31 @@ function SearchPage() {
         <>
             <div className="sticky top-0 left-0 z-50 w-full h-auto bg-white">
 
-                <div className="w-full bg-red-800 mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2 border">
+                <div className="w-full bg-red-800 mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
                     <Link href="/" className="text-xl text-yellow-300 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
-                    <input onChange={handleSearch} type="text" placeholder="Search movies web series and etc" className="border-2 border-red-800 w-[45%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base mobile:text-sm placeholder:text-gray-500 shadow-2xl" autoFocus />
+                    <input onChange={handleSearchInputChange} type="text" placeholder="Search movies web series and etc" className="border-2 border-red-800 w-[45%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base mobile:text-sm placeholder:text-gray-500 shadow-2xl" autoFocus />
                 </div>
 
                 <CategoryGroupSlider />
-                
+
             </div>
 
-            <main className="w-full h-auto bg-cyan-50 my-3 mobile:my-2 overflow-x-hidden">
-            <div className="w-full h-auto mobile:my-1 px-2 gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] overflow-x-hidden">
+            <div className="w-full h-auto bg-white py-3 mobile:py-2 overflow-x-hidden">
 
-                    {searchQuery !== "" && (<MoviesCard isLoading={loading} moviesData={moviesData} />)}
-                    
-                </div>
+                {searchQuery !== "" ? (
+
+                    <main className="w-full h-auto bg-cyan-50 mobile:my-1 px-2 gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] overflow-x-hidden">
+
+                        <LoadMoreMoviesCard isLoading={loading} moviesData={moviesData} />
+
+                    </main>
+                ) : (
+                    <h2 className="my-14 text-gray-500 text-xl mobile:text-base text-center font-semibold">Search Movies and Series</h2>
+                )}
+
                 {/* Intersection Observer target */}
                 <div ref={observerRef} id="bottom_observerElement"></div>
-            </main>
+            </div>
         </>
     )
 }

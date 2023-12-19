@@ -9,15 +9,17 @@ export default function CategoryGroupSlider() {
     'South',
     'Web Series',
     'Hindi Dubbed',
-    'Sci-Fi',
-    'Comedy',
+    'Thriller',
+    'Action',
     'Romance',
-    'Animation',
+    'Comedy',
     'Horror',
+    'Sci-Fi',
+    'Animation',
   ];
 
   return (
-    <div className="w-full h-auto bg-red-50 flex flex-row items-center lg:justify-around overflow-y-scroll whitespace-nowrap gap-3 p-2 mobile:pt-2 mobile:py-0 border border-b-gray-300 scroll-smooth">
+    <div className="w-full h-auto bg-red-50 flex flex-row items-center overflow-y-scroll gap-3 mobile:gap-2 whitespace-nowrap pt-4 px-2 border border-b-gray-300 scroll-smooth">
 
       {categoryArray.map((category) => (
         <Link

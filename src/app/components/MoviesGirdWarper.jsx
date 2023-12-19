@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
-import MoviesCard from "./MoviesCard";
 import { fetchLoadMoreMovies } from "@/utils";
+import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 
 function MoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
@@ -22,7 +22,7 @@ function MoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
     useEffect(() => {
         observerRef.current = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "50px",
+            rootMargin: "200px",
             threshold: 1.0,
         });
 
@@ -73,7 +73,7 @@ function MoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
             <div className="w-full h-auto grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(135px,1fr))] gap-[6px] mobile:gap-1  mobile:my-1 px-1.5 overflow-x-hidden">
 
-                <MoviesCard isLoading={loading} moviesData={moviesData} />
+                <LoadMoreMoviesCard isLoading={loading} moviesData={moviesData} />
 
             </div>
             <div id="bottom_observerElement" ref={observerRef}></div>
@@ -82,3 +82,6 @@ function MoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 };
 
 export default MoviesGirdWarper;
+
+
+

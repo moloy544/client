@@ -1,37 +1,69 @@
 import { appConfig } from "@/config/config";
-import MoviesGirdWarper from "./components/MoviesGirdWarper";
 import Navbar from "./components/Navbar";
-import { fetchLoadMoreMovies } from "@/utils";
+import Link from "next/link";
+import axios from "axios";
+import MoviesCard from "./components/MoviesCard";
 
 export default async function Page() {
 
-  const query = 2023;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/home_layout`
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/clisting/${query}`
+  const response = await axios.get(apiUrl);
 
-  const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
-    apiPath: apiUrl,
-    limitPerPage: 30,
-    page: 1
-  });
+  const { latestMovies, bollywoodMovies, southMovies } = response.data;
 
   return (
     <>
       <Navbar />
 
-      <div className="w-full h-full bg-gray-800 py-2 m-0">
+      <main className="w-full h-full bg-gray-800 py-2 m-0">
 
-        <h2 className="text-white text-2xl mx-2 mt-3 mb-1 mobile:mt-1 mobile:text-sm mobile:mb-0 font-bold">Latest release movies</h2>
+        <section className="w-full h-auto py-3 mobile:py-1">
 
-        <MoviesGirdWarper
-          apiUrl={apiUrl}
-          query={query}
-          initialMovies={filterResponse}
-          isDataEnd={dataIsEnd} />
+          <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
+            <h2 className="text-white text-2xl mobile:text-sm font-bold">Hollywood latest movies</h2>
+            <Link href="/category/hollywood" className="text-lg mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
+          </div>
 
-      </div>
+          <div className="w-full h-auto flex flex-row overflow-x-scroll whitespace-nowrap gap-2 px-2">
+
+          <MoviesCard moviesData={latestMovies} />
+
+          </div>
+
+        </section>
+
+        <section className="w-full h-auto py-3 mobile:py-1">
+
+          <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
+            <h2 className="text-white text-2xl mobile:text-sm font-bold">Bollywood latest movies</h2>
+            <Link href="/category/bollywood" className="text-lg mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
+          </div>
+
+          <div className="w-full h-auto flex flex-row overflow-x-scroll whitespace-nowrap gap-2 px-2">
+
+          <MoviesCard moviesData={bollywoodMovies} />
+
+          </div>
+
+        </section>
+
+        <section className="w-full h-auto py-3 mobile:py-1">
+
+          <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
+            <h2 className="text-white text-2xl mobile:text-sm font-bold">South latest movies</h2>
+            <Link href="/category/south" className="text-lg mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
+          </div>
+
+          <div className="w-full h-auto flex flex-row overflow-x-scroll whitespace-nowrap gap-2 px-2">
+
+          <MoviesCard moviesData={southMovies} />
+
+          </div>
+
+        </section>
+
+      </main>
     </>
   )
 }
-
-

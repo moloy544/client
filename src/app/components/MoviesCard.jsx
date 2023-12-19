@@ -1,41 +1,17 @@
-import LazyLoadingImage from "./LazyLoadingImage";
-import Link from "next/link";
+import Link from "next/link"
+import LazyLoadingImage from "./LazyLoadingImage"
 
-const loaderSkleatons = () => {
-    return (
-        <>
-            {Array.from({ length: 20 }, (_, index) => (
-                <div key={index} className="bg-gray-300 w-auto min-h-[11rem] max-h-64 mobile:max-h-44 rounded-[4px] movies_card_pre-loader">
-                </div>
-            ))}
-        </>
-    )
-};
-
-export default function MoviesCard({ isLoading, moviesData }) {
-
-    if (isLoading && moviesData.length < 1) {
-
-        return loaderSkleatons();
-    };
-
-    if (!isLoading && moviesData.length < 1) {
-        return <div className="w-full h-auto bg-white px-3">
-            <div className="min-h-[70vh] flex justify-center items-center text-lg text-gray-800 text-center font-bold font-sans">
-                No Movies Found
-            </div>
-        </div>
-    };
+const MoviesCard = ({ moviesData }) => {
 
     return (
         <>
             {moviesData?.map((data) => (
 
-                <Link key={data._id} href={`/watch/${data._id}`}>
+                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-auto flex-none">
 
                     <div className="movies_image_container cursor-pointer relative">
 
-                        <div className="relative w-full object-cover h-[13rem] max-h-64 mobile:max-h-44 bg-white rounded-[3px]">
+                        <div className="relative w-full object-cover max-w-[140px] h-[13rem] max-h-64 mobile:max-h-44 bg-white rounded-[3px]">
                             <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
                                 actualSrc={data.thambnail}
                                 alt="Movies poster" />
@@ -52,10 +28,11 @@ export default function MoviesCard({ isLoading, moviesData }) {
                         </div>
                     </div>
                 </Link>
+
             ))}
-
-            {isLoading && moviesData.length > 0 && loaderSkleatons()}
-
         </>
+
     )
 }
+
+export default MoviesCard
