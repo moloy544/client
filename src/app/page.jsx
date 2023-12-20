@@ -30,15 +30,15 @@ export default async function Page() {
     <>
       <Navbar />
 
-      <main className="w-full h-full bg-gray-100 m-0">
+      <main className="w-full h-full bg-gray-800 m-0">
 
         {firstSectionData.map((data) => (
 
-          <section key={data.title} className="w-full h-auto py-3 mobile:py-1">
+          <section key={data.title} className="w-full h-auto py-2 mobile:py-1">
 
             <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
-              <h2 className="text-gray-900 text-2xl mobile:text-sm font-bold">{data.title}</h2>
-              <Link href={data.linkUrl} className="text-lg mobile:text-[12px] text-blue-700 font-semibold">See more</Link>
+              <h2 className="text-gray-300 text-2xl mobile:text-sm font-semibold">{data.title}</h2>
+              <Link href={data.linkUrl} className="text-lg mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
             </div>
 
             <div className="w-full h-auto flex flex-row overflow-x-scroll whitespace-nowrap gap-2 px-2">

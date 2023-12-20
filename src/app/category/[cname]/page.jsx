@@ -78,6 +78,7 @@ export default async function Page({ params }) {
           <i className="bi bi-search"></i>
         </Link>
       </div>
+      
       <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2">
         <MoviesGirdWarper
           apiUrl={apiUrl}

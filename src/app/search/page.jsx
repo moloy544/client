@@ -4,10 +4,13 @@ import dynamic from "next/dynamic";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import Link from "next/link";
 import { fetchLoadMoreMovies } from "@/utils";
+import { appConfig } from "@/config/config";
 
 const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'), { ssr: false })
 
 function SearchPage() {
+
+    const backendServer = appConfig.backendUrl || appConfig.localhostUrl;
 
     // Set all state
     const [searchQuery, setSearchQuery] = useState('');
@@ -87,7 +90,7 @@ function SearchPage() {
                 setEndOfData(false);
 
                 const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
-                    apiPath: `https://grocerit-server.vercel.app/api/v1/movies/search?q=${searchQuery}`,
+                    apiPath: `${backendServer}/api/v1/movies/search?q=${searchQuery}`,
                     limitPerPage: 30,
                     page: page
                 });
@@ -126,11 +129,11 @@ function SearchPage() {
 
             </div>
 
-            <div className="w-full h-auto bg-white py-3 mobile:py-2 overflow-x-hidden">
+            <div className="w-full h-auto overflow-x-hidden">
 
                 {searchQuery !== "" ? (
 
-                    <main className="w-full h-auto bg-cyan-50 mobile:my-1 px-2 gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] overflow-x-hidden">
+                    <main className="w-full h-auto bg-gray-800 py-3 mobile:py-2 px-2 gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] overflow-x-hidden">
 
                         <LoadMoreMoviesCard isLoading={loading} moviesData={moviesData} />
 

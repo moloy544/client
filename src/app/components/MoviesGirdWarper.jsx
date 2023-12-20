@@ -71,7 +71,7 @@ function MoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
     return (
         <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
 
-            <div className="w-full h-auto grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(135px,1fr))] gap-[6px] mobile:gap-1  mobile:my-1 px-1.5 overflow-x-hidden">
+            <div className="w-full h-auto grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] mobile:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-[6px] mobile:gap-1 mobile:my-1 px-1.5 overflow-x-hidden">
 
                 <LoadMoreMoviesCard isLoading={loading} moviesData={moviesData} />
 

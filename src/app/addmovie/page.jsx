@@ -1,9 +1,11 @@
 'use client'
 import { appConfig } from "@/config/config";
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function AddMoviesPage() {
+
+    const backendServer = appConfig.backendUrl || appConfig.localhostUrl;
 
     const [state, setState] = useState({
         thambnail: '',
@@ -13,28 +15,20 @@ function AddMoviesPage() {
         type: 'movie',
         language: 'hindi',
         genre: [], // Change genre to an array
-        watchLink: ''
+        watchLink: '',
+        castDetails: [],
+        searchKeywords: '',
     });
+
+    const genreRef = useRef(null);
+    const castRef = useRef(null)
 
     const sendMoviesToBackend = async () => {
 
         try {
 
-            const checkAllFields = Object.entries(state).some(([key, data]) => {
-                if (key === 'genre') {
-                    // If the key is 'genre', check if it's an array
-                    return Array.isArray(data) && data.length === 0;
-                }
-                // For other fields, check if data is a string and empty
-                return typeof data === 'string' && data.trim() === '';
-            });
 
-            if (checkAllFields) {
-                console.log("All fields are required");
-                return;
-            }
-
-            const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/seller/movies/add`, state);
+            const addResponse = await axios.post(`${backendServer}/api/v1/movies/add_movie`, state);
 
             if (addResponse.status === 200) {
                 alert("Movies Add Successful");
@@ -58,14 +52,54 @@ function AddMoviesPage() {
         }));
     };
 
-    const handleGenreInputChange = (e) => {
-        // Split the input based on commas and spaces
-        const genreArray = e.target.value.split(/[, ]+/).map(item => item.trim());
+    //Add Genre Array In State
+    const addGenreToArray = (e) => {
+
+        const inputText = genreRef.current.value;
+
         setState(prevState => ({
             ...prevState,
-            genre: genreArray
+            genre: [...state.genre, inputText]
+        }));
+
+        genreRef.current.value = '';
+    };
+
+    //Remove genre from state 
+    const removeGenreFromArray = (genreName)=>{
+
+        const updateGenre = state.genre?.filter(genre=> genre !== genreName)
+
+        setState(prevState => ({
+            ...prevState,
+            genre: updateGenre
+        })); 
+    }
+
+    //Add Cast details Array in State
+    const addCastToArray = (e) => {
+
+        const inputText = castRef.current.value;
+
+        setState(prevState => ({
+            ...prevState,
+            castDetails: [...state.castDetails, inputText]
+        }));
+
+        castRef.current.value = '';
+    };
+
+    //Remove cast
+    const removeCastFromArray = (castName) => {
+
+      const updateCast = state.castDetails?.filter(cast=> cast !== castName)
+
+        setState(prevState => ({
+            ...prevState,
+            castDetails: updateCast
         }));
     };
+    
 
     return (
 
@@ -115,28 +149,60 @@ function AddMoviesPage() {
                     <div className="flex gap-5">
                         <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                             Hindi
-                            <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi" name="language" checked={state.category === 'bollywood'}  />
+                            <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi" name="language" checked={state.category === 'bollywood'} />
                         </label>
                         <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                             Hindi Dubbed
-                            <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi dubbed" name="language" checked={state.category !== 'bollywood'}  />
+                            <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi dubbed" name="language" checked={state.category !== 'bollywood'} />
                         </label>
                     </div>
                 </div>
 
+                <div className="flex gap-2">
+                    {state.genre?.map((genre) => (
+                        <div key={genre} className="w-auto h-auto relative py-3">
+                        <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
+                            <span className="text-gray-800 text-sm ">{genre}</span>
+                              </div>
+                              <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={()=> removeGenreFromArray(genre)}></i>
+                        </div>
+                    ))}
+                </div>
+
                 <div className="flex flex-col my-3">
-                    <label className="font-bold">Genre</label>
-                    <input className="border border-black rounded-sm" type="text"
-                        value={state.genre.join(', ')} // Join the array values for display
-                        onChange={handleGenreInputChange}
-                    />         </div>
+                    <label className="font-bold">Genre Details</label>
+                    <input ref={genreRef} className="border border-black rounded-sm" type="text" />
+                    <button type="button" onClick={addGenreToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-1.5 my-1">Add</button>
+                </div>
 
                 <div className="flex flex-col my-3">
                     <label className="font-bold">WatchLink</label>
                     <input className="border border-black rounded-sm" type="text" value={state.watchLink} onChange={(e) => handleInputChange(e, 'watchLink')} />
                 </div>
 
-                <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add</div>
+                <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
+                    {state.castDetails?.map((cast) => (
+                        <div key={cast} className="w-auto h-auto relative py-3">
+                        <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
+                            <span className="text-gray-800 text-sm ">{cast}</span>
+                              </div>
+                              <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={()=>removeCastFromArray(cast)}></i>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="flex flex-col my-3">
+                    <label className="font-bold">Cast Details</label>
+                    <input ref={castRef} className="border border-black rounded-sm" type="text" />
+                    <button type="button" onClick={addCastToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-1.5 my-1">Add</button>
+                </div>
+
+                <div className="flex flex-col my-3">
+                    <label className="font-bold">SearchKeywords</label>
+                    <input className="border border-black rounded-sm" type="text" value={state.searchKeywords} onChange={(e) => handleInputChange(e, 'searchKeywords')} />
+                </div>
+
+                <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Send Server</div>
                 <p>Page 11 complete Bollywood movies</p>
             </div>
 

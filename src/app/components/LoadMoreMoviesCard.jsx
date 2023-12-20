@@ -31,11 +31,11 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData }) {
         <>
             {moviesData?.map((data) => (
 
-                <Link key={data._id} href={`/watch/${data._id}`}>
+                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-auto max-w-[160px]">
 
-                    <div className="movies_image_container cursor-pointer relative">
+                    <div className="movies_card">
 
-                        <div className="relative w-full object-cover h-[13rem] max-h-64 mobile:max-h-44 bg-white rounded-[3px]">
+                        <div className="relative w-full object-cover h-[12rem] max-h-56 mobile:max-h-40 bg-white rounded-[3px]">
                             <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
                                 actualSrc={data.thambnail}
                                 alt="Movies poster" />

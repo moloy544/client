@@ -36,18 +36,17 @@
     scroll-behavior: smooth;
   }
 
-  .movies_image_container{
+  .movies_card{
     width: auto; 
-    max-width: 200px;
+    max-width: 160px;
     height: auto; 
-    display: flex; 
-    flex-wrap: wrap; 
     border: solid rgb(106, 140, 140) 1.40px;
     border-radius: 4px; 
     cursor: pointer;
+    position: relative;
 }
 
-.movies_image_container .movie_name_container{
+.movies_card .movie_name_container{
   width: 100%;
   height: auto;
   font-weight: 500;
