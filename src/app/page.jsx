@@ -6,7 +6,7 @@ import MoviesCard from "./components/MoviesCard";
 
 export default async function Page() {
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/home_layout`
+  const apiUrl = `${appConfig.backendUrl }/api/v1/landing_page`;
 
   const response = await axios.get(apiUrl);
 

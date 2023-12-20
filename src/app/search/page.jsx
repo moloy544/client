@@ -10,7 +10,7 @@ const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCar
 
 function SearchPage() {
 
-    const backendServer = appConfig.backendUrl || appConfig.localhostUrl;
+    const backendServer = appConfig.backendUrl;
 
     // Set all state
     const [searchQuery, setSearchQuery] = useState('');

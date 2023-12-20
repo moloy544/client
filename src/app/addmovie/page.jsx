@@ -28,7 +28,7 @@ function AddMoviesPage() {
         try {
 
 
-            const addResponse = await axios.post(`${backendServer}/api/v1/movies/add_movie`, state);
+            const addResponse = await axios.post(`${backendServer}/api/v1/admin/add_movie`, state);
 
             if (addResponse.status === 200) {
                 alert("Movies Add Successful");
