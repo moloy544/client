@@ -144,10 +144,10 @@ function SearchPage() {
 
                 {searchQuery !== "" ? (
 
-                    <main className="w-full h-auto bg-gray-800 py-3 mobile:py-2 px-2 gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] overflow-x-hidden">
-
-                        <LoadMoreMoviesCard isLoading={loading} moviesData={moviesData} />
-
+                    <main className="w-full min-h-[80vh] bg-gray-800 py-3 mobile:py-2 px-2 overflow-x-hidden">
+                        <div className="w-auto h-fit gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))]">
+                            <LoadMoreMoviesCard isLoading={loading} moviesData={moviesData} />
+                        </div>
                     </main>
                 ) : (
                     <h2 className="my-14 text-gray-500 text-xl mobile:text-base text-center font-semibold">Search Movies and Series</h2>
@@ -155,7 +155,7 @@ function SearchPage() {
 
                 {/* Intersection Observer target */}
                 <div ref={observerRef} id="bottom_observerElement"></div>
-            </div>
+            </div >
         </>
     )
 }

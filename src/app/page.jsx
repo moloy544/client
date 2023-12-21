@@ -6,7 +6,7 @@ import MoviesCard from "./components/MoviesCard";
 
 export default async function Page() {
 
-  const apiUrl = `${appConfig.backendUrl }/api/v1/landing_page`;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/landing_page`;
 
   const response = await axios.get(apiUrl);
 
@@ -30,14 +30,14 @@ export default async function Page() {
     <>
       <Navbar />
 
-      <main className="w-full h-full bg-gray-800 m-0">
+      <main className="w-full h-full bg-gray-800 m-0 py-2">
 
         {firstSectionData.map((data) => (
 
           <section key={data.title} className="w-full h-auto py-2 mobile:py-1">
 
             <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
-              <h2 className="text-gray-300 text-2xl mobile:text-sm font-semibold">{data.title}</h2>
+              <h2 className="text-gray-200 text-2xl mobile:text-sm font-semibold">{data.title}</h2>
               <Link href={data.linkUrl} className="text-lg mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
             </div>
 

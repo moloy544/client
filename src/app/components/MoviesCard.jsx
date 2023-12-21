@@ -11,7 +11,7 @@ const MoviesCard = ({ moviesData }) => {
 
                     <div className="movies_card">
 
-                        <div className="relative object-cover w-[130px] h-[180px] mobile:w-[100px] mobile:h-[160px] bg-white rounded-[3px]">
+                        <div className="relative object-cover w-[130px] h-[180px] mobile:w-[110px] mobile:h-[160px] bg-white rounded-[3px]">
                             <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
                                 actualSrc={data.thambnail}
                                 alt={data.title} />

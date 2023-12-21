@@ -1,3 +1,3 @@
 export const appConfig = {
-    backendUrl: process.env.BACKEND_SERVER_URL || 'http://localhost:4000',
+    backendUrl: process.env.BACKEND_SERVER_URL,
 }

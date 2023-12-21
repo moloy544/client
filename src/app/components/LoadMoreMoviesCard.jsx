@@ -19,19 +19,11 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData }) {
         return loaderSkleatons();
     };
 
-    if (!isLoading && moviesData.length < 1) {
-        return <div className="w-full h-auto bg-white px-3">
-            <div className="min-h-[70vh] flex justify-center items-center text-lg text-gray-800 text-center font-bold font-sans">
-                No Movies Found
-            </div>
-        </div>
-    };
-
     return (
         <>
             {moviesData?.map((data) => (
 
-                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-auto max-w-[160px]">
+                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-fit max-w-[160px]">
 
                     <div className="movies_card">
 
