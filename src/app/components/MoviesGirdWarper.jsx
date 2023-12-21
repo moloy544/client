@@ -52,7 +52,7 @@ function MoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
                     limitPerPage: initialMovies?.length,
                     page: page,
                 });
-
+        
                 setMoviesData((prevData) => [...prevData, ...filterResponse]);
 
                 if (dataIsEnd) {
