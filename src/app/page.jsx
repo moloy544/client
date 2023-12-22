@@ -3,10 +3,12 @@ import Navbar from "./components/Navbar";
 import Link from "next/link";
 import axios from "axios";
 import MoviesCard from "./components/MoviesCard";
+import LazyLoadingImage from "./components/LazyLoadingImage";
+import ActressLayout from "./ActressLayout";
 
 export default async function Page() {
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/landing_page`;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/landing_page?offset=1`;
 
   const response = await axios.get(apiUrl);
 
@@ -49,6 +51,8 @@ export default async function Page() {
 
           </section>
         ))}
+
+        <ActressLayout apiUrl={apiUrl} />
 
       </main>
     </>
