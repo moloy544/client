@@ -9,7 +9,7 @@ const MoviesCard = ({ moviesData }) => {
 
                 <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-auto">
 
-                    <div className="movies_card">
+                    <div className="movies_card border border-yellow-600">
 
                         <div className="relative object-cover w-[130px] h-[180px] mobile:w-[110px] mobile:h-[160px] bg-white rounded-[3px]">
                             <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"

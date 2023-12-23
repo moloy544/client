@@ -3,6 +3,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Inter } from 'next/font/google'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import NextTopLoader from 'nextjs-toploader';
+import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,7 +31,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        
+
         <NextTopLoader
           color="#2299DD"
           initialPosition={0.08}
@@ -43,7 +44,9 @@ export default function RootLayout({ children }) {
           shadow="0 0 10px #2299DD,0 0 5px #2299DD"
         />
 
-        {children}
+        <ReduxStatePrivider>
+          {children}
+        </ReduxStatePrivider>
 
         <SpeedInsights />
 

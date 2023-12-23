@@ -5,7 +5,7 @@ const loaderSkleatons = () => {
     return (
         <>
             {Array.from({ length: 20 }, (_, index) => (
-                <div key={index} className="bg-gray-300 w-auto min-h-[11rem] max-h-64 mobile:max-h-44 rounded-[4px] movies_card_pre-loader">
+                <div key={index} className="bg-gray-300 w-auto min-h-[11rem] max-h-64 mobile:max-h-44 rounded-[4px] animate-pulse">
                 </div>
             ))}
         </>
@@ -25,7 +25,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData }) {
 
                 <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-fit max-w-[160px]">
 
-                    <div className="movies_card">
+                    <div className="movies_card border border-yellow-600">
 
                         <div className="relative w-full object-cover h-[12rem] max-h-56 mobile:max-h-40 bg-white rounded-[3px]">
                             <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"

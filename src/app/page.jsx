@@ -4,7 +4,6 @@ import Link from "next/link";
 import axios from "axios";
 import MoviesCard from "./components/MoviesCard";
 import LazyLoadingImage from "./components/LazyLoadingImage";
-import ActressLayout from "./ActressLayout";
 
 export default async function Page() {
 
@@ -12,7 +11,7 @@ export default async function Page() {
 
   const response = await axios.get(apiUrl);
 
-  const { latestMovies, bollywoodMovies, southMovies } = response.data;
+  const { latestMovies, bollywoodMovies, southMovies, topActressData } = response.data;
 
   const firstSectionData = [{
     title: 'Hollywood latest movies',
@@ -36,7 +35,7 @@ export default async function Page() {
 
         {firstSectionData.map((data) => (
 
-          <section key={data.title} className="w-full h-auto py-2 mobile:py-1">
+          <section key={data.title} className="w-full h-auto pt-2 mobile:pt-1">
 
             <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
               <h2 className="text-gray-200 text-2xl mobile:text-sm font-semibold">{data.title}</h2>
@@ -52,7 +51,33 @@ export default async function Page() {
           </section>
         ))}
 
-        <ActressLayout apiUrl={apiUrl} />
+        <section className="w-full h-fit bg-gray-800 pt-2">
+
+          <h1 className="text-xl mobile:text-sm text-gray-200 text-center mx-2 my-2 font-semibold">
+            Top Actress
+          </h1>
+
+          <div className="w-full h-fit flex flex-row overflow-x-scroll overflow-y-hidden whitespace-nowrap gap-2 md:gap-5 px-2 py-3">
+
+            {topActressData?.map((actor) => (
+              <div key={actor._id} className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
+                <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-500">
+                  <LazyLoadingImage
+                    className="w-full h-full object-fill pointer-events-none select-none rounded-full"
+                    actualSrc={actor.avatar}
+                    alt={actor.name}
+                  />
+                </div>
+                <div className="w-24 h-auto mobile:w-20 text-gray-900 overflow-hidden py-1.5">
+                  <p className="whitespace-normal text-xs font-semibold font-sans text-center leading-[14px]">
+                    {actor.name}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </section>
 
       </main>
     </>

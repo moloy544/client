@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.0.1",
     "@vercel/speed-insights": "^1.0.1",
     "axios": "^1.6.1",
     "bootstrap-icons": "^1.10.5",
     "next": "^14.0.4",
     "nextjs-toploader": "^1.6.4",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-redux": "^9.0.4"
   },
   "devDependencies": {
     "autoprefixer": "latest",
