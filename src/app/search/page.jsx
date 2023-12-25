@@ -7,7 +7,7 @@ import { fetchLoadMoreMovies } from "@/utils";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
 
-const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'), { ssr: false })
+const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
 
 function SearchPage() {
 

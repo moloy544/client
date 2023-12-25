@@ -78,7 +78,7 @@ export const categoryArray = [
     },
     {
       id: 878,
-      name: "Science Fiction"
+      name: "Sci-Fi"
     },
     {
       id: 53,

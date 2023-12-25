@@ -1,22 +1,23 @@
 import LazyLoadingImage from "./LazyLoadingImage";
 import Link from "next/link";
 
-const loaderSkleatons = () => {
+const LoaderSkleaton = ({ limit }) => {
     return (
         <>
-            {Array.from({ length: 20 }, (_, index) => (
-                <div key={index} className="bg-gray-300 w-auto min-h-[11rem] max-h-64 mobile:max-h-44 rounded-[4px] animate-pulse">
+            {Array.from({ length: limit }, (_, index) => (
+                <div key={index} className="bg-gray-200 w-auto min-h-[11rem] max-h-64 mobile:max-h-44 rounded-[4px] animate-pulse relative">
+                    <div className="w-auto h-auto px-4 py-2 bg-gray-300 absolute right-1 top-1 rounded-md"></div>
                 </div>
             ))}
         </>
     )
 };
 
-export default function LoadMoreMoviesCard({ isLoading, moviesData }) {
+export default function LoadMoreMoviesCard({ isLoading, moviesData, resultLimit }) {
 
     if (isLoading && moviesData.length < 1) {
 
-        return loaderSkleatons();
+        return <LoaderSkleaton limit={resultLimit} />;
     };
 
     return (
@@ -46,7 +47,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData }) {
                 </Link>
             ))}
 
-            {isLoading && moviesData.length > 0 && loaderSkleatons()}
+            {isLoading && moviesData.length > 0 && <LoaderSkleaton limit={resultLimit} />}
 
         </>
     )

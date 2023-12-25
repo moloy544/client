@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { fetchLoadMoreMovies } from "@/utils";
 import { appConfig } from "@/config/config";
-import MoviesGirdWarper from "@/app/components/MoviesGirdWarper";
 import NavigateBack from "@/app/components/NavigateBack";
-import Link from "next/link";
+import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 
 const transformToCapitalizeQuery = (text) => {
 
@@ -20,40 +20,44 @@ const transformToCapitalizeQuery = (text) => {
 
 export async function generateMetadata({ params }) {
 
-  const editParamsQuery = transformToCapitalizeQuery(params.cname)
+  const editParamsQuery = transformToCapitalizeQuery(params.categoryName);
 
-  return {
+  const metaData = {
     title: `${editParamsQuery} movies`,
     description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
+    keywords: `${editParamsQuery} movie, Watch ${editParamsQuery} movie online, ${editParamsQuery} movie watch free online, Where to watch ${editParamsQuery} movies online`,
+
     openGraph: {
       title: `${editParamsQuery} movies`,
       description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
-      url: `https://moviesbazaar.vercel.app/category/${params.cname}`
+      url: `https://moviesbazaar.vercel.app/listing/category/${params.categoryName}`
     },
-  }
+  };
+
+  return metaData;
 };
 
 
 export default async function Page({ params }) {
 
-  const editParamsQuery = params.cname.toLowerCase().replace(/[-]/g, ' ');
+  const category = params?.categoryName;
 
   function filterQueryParam() {
 
-    switch (editParamsQuery) {
+    switch (category) {
 
-      case 'new release':
+      case 'new-release':
         return 2023;
-      case 'sci fi':
+      case 'sci-fi':
         return 'Sci-Fi';
       default:
-        return editParamsQuery;
+        return category;
     };
   };
 
   const query = filterQueryParam();
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/clisting/${query}`;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${query}`;
 
   const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
 
@@ -62,7 +66,7 @@ export default async function Page({ params }) {
     page: 1
   });;
 
-  const categoryName = transformToCapitalizeQuery(params.cname);
+  const categoryName = transformToCapitalizeQuery(params.categoryName);
 
   return (
     <>
@@ -80,11 +84,13 @@ export default async function Page({ params }) {
       </div>
       
       <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2">
-        <MoviesGirdWarper
+       
+          <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
           query={query}
           initialMovies={filterResponse}
           isDataEnd={dataIsEnd} />
+
       </div>
     </>
   )
