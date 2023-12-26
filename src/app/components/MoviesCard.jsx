@@ -7,18 +7,18 @@ const MoviesCard = ({ moviesData }) => {
         <>
             {moviesData?.map((data) => (
 
-                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-auto">
+                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-fit flex-none">
 
-                    <div className="movies_card border border-yellow-600">
+                    <div className="movie_card border border-yellow-600">
 
-                        <div className="relative object-cover w-[130px] h-[180px] mobile:w-[110px] mobile:h-[160px] bg-white rounded-[3px]">
+                        <div className="relative w-32 mobile:w-28 h-[180px] mobile:h-40 bg-white rounded-[3px] object-cover">
                             <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
                                 actualSrc={data.thambnail}
-                                alt={data.title} />
+                                alt="Movies poster" />
                         </div>
 
                         <div className="movie_name_container">
-                            <span className="w-auto text-white text-[11px] mobile:text-[9px] font-sans truncate-lines truncate-lines-3">
+                            <span className="w-auto text-white text-[11px] mobile:text-[9px] font-sans truncate-lines-2">
                                 {data.title}
                             </span>
                         </div>

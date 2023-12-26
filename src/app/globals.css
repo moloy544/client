@@ -36,7 +36,7 @@
     scroll-behavior: smooth;
   }
 
-  .movies_card{
+  .movie_card{
     width: auto; 
     max-width: 160px;
     height: auto; 
@@ -45,7 +45,7 @@
     position: relative;
 }
 
-.movies_card .movie_name_container{
+.movie_card .movie_name_container{
   width: 100%;
   height: auto;
   font-weight: 500;
@@ -59,50 +59,9 @@
   border-bottom-right-radius: 3px;
 }
 
-.truncate-lines {
+.truncate-lines-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2; /* Default value */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-.truncate-lines-3 {
-  -webkit-line-clamp: 3;
-}
-
-.truncate-lines-4 {
-  -webkit-line-clamp: 4;
-}
-
-
-
-
-  .movies_card_pre-loader {
-    animation: fade-in 2s ease-in-out;
-    ;
-    /* 2s duration with ease-in-out timing function */
-}
-
-@keyframes fade-in {
-    0% {
-        opacity: 0.80;
-        /* Starting opacity (low) */
-    }
-
-    40% {
-        opacity: 0.50;
-        /* Starting opacity (low) */
-    }
-
-    70% {
-        opacity: 0.80;
-        /* Starting opacity (low) */
-    }
-
-    100% {
-        opacity: 1;
-        /* Ending opacity (high) */
-    }
-}
-
-

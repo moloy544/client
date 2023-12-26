@@ -13,20 +13,20 @@ const LoaderSkleaton = ({ limit }) => {
     )
 };
 
-export default function LoadMoreMoviesCard({ isLoading, moviesData, resultLimit }) {
+export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
 
     if (isLoading && moviesData.length < 1) {
 
-        return <LoaderSkleaton limit={resultLimit} />;
+        return <LoaderSkleaton limit={limit} />;
     };
 
     return (
         <>
             {moviesData?.map((data) => (
 
-                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-fit max-w-[160px]">
+                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-auto max-w-[160px]">
 
-                    <div className="movies_card border border-yellow-600">
+                    <div className="movie_card border border-yellow-600">
 
                         <div className="relative w-full object-cover h-[12rem] max-h-56 mobile:max-h-40 bg-white rounded-[3px]">
                             <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
@@ -35,7 +35,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, resultLimit 
                         </div>
 
                         <div className="movie_name_container">
-                            <span className="w-auto text-white text-[11px] mobile:text-[9px] font-sans truncate-lines truncate-lines-3">
+                            <span className="w-auto text-white text-[11px] mobile:text-[9px] font-sans truncate-lines-2">
                                 {data.title}
                             </span>
                         </div>

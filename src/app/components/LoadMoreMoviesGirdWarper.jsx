@@ -97,12 +97,12 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
             <div className="w-full h-auto grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] mobile:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-[6px] mobile:gap-1 mobile:my-1 px-1.5 overflow-x-hidden">
 
-                <LoadMoreMoviesCard resultLimit={initialMovies?.length} isLoading={loading} moviesData={loadMoviesData} />
+                <LoadMoreMoviesCard limit={initialMovies?.length || 25} isLoading={loading} moviesData={loadMoviesData} />
 
             </div>
 
             <div id="bottom_observerElement" ref={observerRef}></div>
-            
+
         </main>
     );
 };

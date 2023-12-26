@@ -8,7 +8,7 @@ import LazyLoadingImage from "./components/LazyLoadingImage";
 export default async function Page() {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/landing_page?offset=1`;
-s
+
   const response = await axios.get(apiUrl);
 
   const { latestMovies, bollywoodMovies, southMovies, topActressData } = response.data;
@@ -16,17 +16,17 @@ s
   const firstSectionData = [
     {
       title: 'Hollywood latest movies',
-      linkUrl: '/category/hollywood',
+      linkUrl: 'listing/category/hollywood',
       moviesData: latestMovies
     },
     {
       title: 'Bollywood latest movies',
-      linkUrl: '/category/bollywood ',
+      linkUrl: 'listing/category/bollywood ',
       moviesData: bollywoodMovies
     },
     {
       title: 'South latest movies',
-      linkUrl: '/category/south',
+      linkUrl: 'listing/category/south',
       moviesData: southMovies
     }
   ]
