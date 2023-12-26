@@ -47,7 +47,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
                 </Link>
             ))}
 
-            {isLoading && moviesData.length > 0 && <LoaderSkleaton limit={resultLimit} />}
+            {isLoading && moviesData.length > 0 && <LoaderSkleaton limit={limit} />}
 
         </>
     )
