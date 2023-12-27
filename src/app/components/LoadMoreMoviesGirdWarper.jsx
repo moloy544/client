@@ -17,9 +17,11 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [endOfData, setEndOfData] = useState(isDataEnd || false);
+    const moviesData = patname !== loadMoviesPathname ? initialMovies || [] : loadMoviesData;
 
     const observerRef = useRef(null);
 
+    //Set movies data 
     useEffect(() => {
 
         if (loadMoviesPathname !== patname) {
@@ -29,9 +31,10 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
                 loadMoviesData: initialMovies || [],
                 isAllDataLoad: false
             }));
-        }
+        };
 
-    }, [patname])
+    }, [patname, loadMoviesPathname]);
+
 
     const handleObserver = (entries) => {
         const target = entries[0];
@@ -47,7 +50,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
             threshold: 1.0,
         });
 
-        if (loadMoviesData.length > 0) {
+        if (moviesData?.length > 0) {
             observerRef.current.observe(
                 document.getElementById("bottom_observerElement")
             );
@@ -58,7 +61,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
                 observerRef.current.disconnect();
             }
         };
-    }, [loadMoviesData]);
+    }, [moviesData]);
 
     useEffect(() => {
 
@@ -97,7 +100,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
             <div className="w-full h-auto grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] mobile:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-[6px] mobile:gap-1 mobile:my-1 px-1.5 overflow-x-hidden">
 
-                <LoadMoreMoviesCard limit={initialMovies?.length || 25} isLoading={loading} moviesData={loadMoviesData} />
+                <LoadMoreMoviesCard limit={initialMovies?.length || 25} isLoading={loading} moviesData={moviesData} />
 
             </div>
 
