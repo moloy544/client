@@ -3,48 +3,56 @@ import { fetchLoadMoreMovies } from "@/utils";
 import { appConfig } from "@/config/config";
 import NavigateBack from "@/app/components/NavigateBack";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
+import axios from "axios";
 
-const transformToCapitalizeQuery = (text) => {
+const transformToCapitalize = (text) => {
 
   // Split the text into an array of words
-  const words = text.split('-');
+  const words = text?.split('-');
 
   // Capitalize the first letter of each word and join them with a space
-  const capitalizedWords = words.map(word => {
+  const capitalizedWords = words?.map(word => {
     return word.charAt(0).toUpperCase() + word.slice(1);
   });
 
   // Join the words with a space and return the result
-  return capitalizedWords.join(' ');
+  return capitalizedWords?.join(' ');
 };
 
 export async function generateMetadata({ params }) {
 
-  const editParamsQuery = transformToCapitalizeQuery(params.actorName);
+  try {
+    const actorName = params?.actorName;
 
-  const metaData = {
-    title: `${editParamsQuery} movies`,
-    description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
-    keywords: `${editParamsQuery} movie, Watch ${editParamsQuery} movie online, ${editParamsQuery} movie watch free online, Where to watch ${editParamsQuery} movies online`,
+    const actor = await axios.post(`${appConfig.backendUrl}/api/v1/actress/info/${actorName}`);
 
-    openGraph: {
-      title: `${editParamsQuery} movies`,
-      description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
-      url: `https://moviesbazaar.vercel.app/listing/actress/${params.actorName}`
-    },
+    const { name, avatar } = actor.data?.actor;
+
+    const metaData = {
+      title: `${name} movies`,
+      description: `Watch ${name} movies online Movies Bazaar`,
+      keywords: `${name} movie, Watch ${name} movie online, ${name} movie watch free online, Where to watch ${name} movies online`,
+
+      openGraph: {
+        images: avatar,
+        title: `${name} movies`,
+        description: `Watch ${name} movies online Movies Bazaar`,
+        url: `https://moviesbazaar.vercel.app/listing/actress/${params?.actorName}`
+      },
+    };
+
+    return metaData;
+  } catch (error) {
+    console.log("No Actor Found")
   };
-
-  return metaData;
 };
 
 
 export default async function Page({ params }) {
 
-  const editParamsQuery = params.actorName;
+  const query = params?.actorName;
 
-  const query = editParamsQuery;
-
-  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/actor/${query}`;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction/${query}`;
 
   const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
 
@@ -53,7 +61,7 @@ export default async function Page({ params }) {
     page: 1
   });;
 
-  const actorName = transformToCapitalizeQuery(params.actorName);
+  const actorName = transformToCapitalize(query)
 
   return (
     <>
@@ -75,7 +83,7 @@ export default async function Page({ params }) {
         {filterResponse.length > 1 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
-            query={query}
+            initialPage={1}
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd} />
         ) : (

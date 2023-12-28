@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
 
         <NextTopLoader
-          color="rgb(215, 215, 2)"
+          color="rgb(255, 171, 15)"
           initialPosition={0.08}
           crawlSpeed={200}
           height={3}

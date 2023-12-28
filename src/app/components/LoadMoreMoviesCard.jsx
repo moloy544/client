@@ -28,7 +28,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
 
                     <div className="movie_card border border-yellow-600">
 
-                        <div className="relative w-full object-cover h-[12rem] max-h-56 mobile:max-h-40 bg-white rounded-[3px]">
+                        <div className="relative w-full object-cover h-[12rem] max-h-[190px] mobile:max-h-40 bg-white rounded-[3px]">
                             <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
                                 actualSrc={data.thambnail}
                                 alt="Movies poster" />

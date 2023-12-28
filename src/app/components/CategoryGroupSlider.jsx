@@ -11,8 +11,8 @@ export default function CategoryGroupSlider() {
         <Link 
           key={category.id}
           href={`/listing/category/${category.name.toLowerCase().replace(/[' ']/g, '-')}`}
-          className="bg-red-800 w-auto h-auto px-4 py-2 mobile:px-3 rounded-[4px]">
-          <span className="w-auto h-auto text-sm mobile:text-xs font-normal text-white">{category.name}</span>
+          className="bg-red-800 w-auto h-auto py-1 px-3 rounded-[4px]">
+          <span className="w-auto h-auto text-xs font-normal text-white">{category.name}</span>
         </Link>
       ))}
 

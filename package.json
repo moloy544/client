@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-printstore",
+  "name": "moviesbazaar",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -24,7 +24,6 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
-    "tailwindcss": "latest",
-    "video.js": "^8.5.2"
+    "tailwindcss": "latest"
   }
 }

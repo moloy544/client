@@ -40,15 +40,15 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
 
-  const category = params?.categoryName;
+  const category = params?.categoryName.toLowerCase().replace(/[-]/g, ' ');
 
   function filterQueryParam() {
 
     switch (category) {
 
-      case 'new-release':
+      case 'new release':
         return 2023;
-      case 'sci-fi':
+      case 'sci fi':
         return 'Sci-Fi';
       default:
         return category;
@@ -87,7 +87,7 @@ export default async function Page({ params }) {
        
           <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
-          query={query}
+          initialPage={1}
           initialMovies={filterResponse}
           isDataEnd={dataIsEnd} />
 

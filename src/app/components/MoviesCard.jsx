@@ -7,7 +7,7 @@ const MoviesCard = ({ moviesData }) => {
         <>
             {moviesData?.map((data) => (
 
-                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-fit flex-none">
+                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-fit flex-none" prefetch={false}>
 
                     <div className="movie_card border border-yellow-600">
 

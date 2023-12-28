@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import { usePathname } from "next/navigation";
 
-function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
+function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEnd }) {
 
     const patname = usePathname();
 
@@ -15,9 +15,9 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
     const { loadMoviesPathname, isAllDataLoad, loadMoviesData } = useSelector((state) => state.loadMovies);
 
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(initialPage || 1);
     const [endOfData, setEndOfData] = useState(isDataEnd || false);
-    const moviesData = patname !== loadMoviesPathname ? initialMovies || [] : loadMoviesData;
+    const moviesData = loadMoviesPathname !== patname ? initialMovies || [] : loadMoviesData;
 
     const observerRef = useRef(null);
 
@@ -44,6 +44,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
     };
 
     useEffect(() => {
+
         observerRef.current = new IntersectionObserver(handleObserver, {
             root: null,
             rootMargin: "200px",
@@ -65,7 +66,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
     useEffect(() => {
 
-        if (page !== 1 && !isAllDataLoad && loadMoviesPathname === patname) {
+        if (!isAllDataLoad && loadMoviesPathname === patname && page !== 1) {
 
             const getMovies = async () => {
 
@@ -98,7 +99,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
     return (
         <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
 
-            <div className="w-full h-auto grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] mobile:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-[6px] mobile:gap-1 mobile:my-1 px-1.5 overflow-x-hidden">
+            <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(130px,1fr))] px-2">
 
                 <LoadMoreMoviesCard limit={initialMovies?.length || 25} isLoading={loading} moviesData={moviesData} />
 

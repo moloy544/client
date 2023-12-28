@@ -72,7 +72,7 @@ export default async function Page() {
               <Link
                 href={`/listing/actress/${actor.name.toLowerCase().replace(/[' ']/g, '-')}`}
                 key={actor._id}
-                className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
+                className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md" prefetch={false}>
 
                 <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-500">
                   <LazyLoadingImage
