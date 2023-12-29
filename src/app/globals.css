@@ -49,19 +49,12 @@
   width: 100%;
   height: auto;
   font-weight: 500;
-  background-color: rgba(0, 0, 0, 0.80);
-  padding-block: 3px;
+  background-color: rgba(0, 0, 0, 0.70);
+  padding-block: 5px;
   padding-inline: 4px;
   position: absolute;
   bottom: 0;
   z-index: 4;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-}
-
-.truncate-lines-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* Default value */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }

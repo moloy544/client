@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
           showSpinner={false}
           easing="ease"
           speed={300}
-          shadow="0 0 10px #2299DD,0 0 5px #2299DD"
+          shadow="0 0 10px rgb(250, 250, 24),0 0 5px rgb(250, 250, 24)"
         />
 
         <ReduxStatePrivider>

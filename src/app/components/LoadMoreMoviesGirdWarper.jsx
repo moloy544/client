@@ -13,7 +13,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
     const dispatch = useDispatch();
 
     const { loadMoviesPathname, isAllDataLoad, loadMoviesData } = useSelector((state) => state.loadMovies);
-
+   
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(initialPage || 1);
     const [endOfData, setEndOfData] = useState(isDataEnd || false);
@@ -99,7 +99,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
     return (
         <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
 
-            <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(130px,1fr))] px-2">
+            <div className="w-auto h-fit gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(130px,1fr))] px-2">
 
                 <LoadMoreMoviesCard limit={initialMovies?.length || 25} isLoading={loading} moviesData={moviesData} />
 

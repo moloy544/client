@@ -15,6 +15,7 @@ function SearchPage() {
 
     // Set all state
     const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(false);
     const [moviesData, setMoviesData] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
 
@@ -22,19 +23,28 @@ function SearchPage() {
 
     const getMovies = async (query) => {
 
-        setEndOfData(false);
+        try {
+            if (endOfData) {
+                setEndOfData(false);
+            };
 
-        const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
-            apiPath: `${backendServer}/api/v1/movies/search?q=${query}`,
-            limitPerPage: 30,
-            page: 1
-        });
+            const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
+                apiPath: `${backendServer}/api/v1/movies/search?q=${query}`,
+                limitPerPage: 30,
+                page: 1
+            });
 
-        setMoviesData(filterResponse);
+            setMoviesData(filterResponse);
 
-        if (dataIsEnd) {
-            setEndOfData(true);
-        };
+            if (dataIsEnd) {
+                setEndOfData(true);
+            };
+
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
     };
 
     // Debounce function
@@ -51,8 +61,9 @@ function SearchPage() {
     // Debounced handleSearch function with a delay of 500 milliseconds
     const debouncedHandleSearch = useCallback(
         debounce((value) => {
-            getMovies(value);
-            setMoviesData([]);
+            if (value?.trim() !== '') {
+                getMovies(value);
+            } 
         }, 1200), []);
 
     // Event handler for input change
@@ -62,11 +73,12 @@ function SearchPage() {
 
         debouncedHandleSearch(trimValue);
 
-    // Update the controlled input value in state
-    if (event.target.value !== " ") {
-     
-        setSearchQuery(trimValue);
-    };
+        // Update the controlled input value in state
+        if (event.target.value !== " ") {
+            setLoading(true);
+            setMoviesData([]);
+            setSearchQuery(trimValue);
+        };
 
     };
 
@@ -95,15 +107,33 @@ function SearchPage() {
 
             <div className="w-full h-auto overflow-x-hidden">
 
-                {searchQuery !== "" ? (
+                {searchQuery?.trim() !== '' ? (
 
                     <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2">
 
-                        <LoadMoreMoviesGirdWarper
-                            apiUrl={`${backendServer}/api/v1/movies/search?q=${searchQuery}`}
-                            initialPage={1}
-                            initialMovies={moviesData}
-                            isDataEnd={endOfData} />
+                        {moviesData.length > 0 && !loading ? (
+                            <LoadMoreMoviesGirdWarper
+                                apiUrl={`${backendServer}/api/v1/movies/search?q=${searchQuery}`}
+                                initialPage={1}
+                                initialMovies={moviesData}
+                                isDataEnd={endOfData} />
+                        ) : (
+                            <>
+                                {loading && moviesData.length < 1 && (
+                                    <div className="w-full min-h-[70vh] py-5 flex justify-center items-center">
+                                        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-white motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                                            role="status">
+                                            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                                            >Loading...</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {!loading && moviesData.length < 1 && (
+                                    <h2 className="my-20 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
+                                )}
+                            </>
+                        )}
+
                     </div>
                 ) : (
                     <h2 className="my-14 text-gray-500 text-xl mobile:text-base text-center font-semibold">Search Movies and Series</h2>

@@ -4,32 +4,15 @@ import Link from "next/link";
 import axios from "axios";
 import MoviesCard from "./components/MoviesCard";
 import LazyLoadingImage from "./components/LazyLoadingImage";
+import HomePageLayout from "./HomePageLayout";
 
 export default async function Page() {
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/landing_page?offset=1`;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/landing_page`;
 
-  const response = await axios.get(apiUrl);
+  const response = await axios.post(apiUrl, { offset: 1 });
 
-  const { latestMovies, bollywoodMovies, southMovies, topActressData } = response.data;
-
-  const firstSectionData = [
-    {
-      title: 'Hollywood latest movies',
-      linkUrl: 'listing/category/hollywood',
-      moviesData: latestMovies
-    },
-    {
-      title: 'Bollywood latest movies',
-      linkUrl: 'listing/category/bollywood ',
-      moviesData: bollywoodMovies
-    },
-    {
-      title: 'South latest movies',
-      linkUrl: 'listing/category/south',
-      moviesData: southMovies
-    }
-  ]
+  const { firstSectionData } = response.data;
 
   return (
     <>
@@ -37,16 +20,16 @@ export default async function Page() {
 
       <main className="w-full h-full bg-gray-800 m-0 py-2">
 
-        {firstSectionData.map((data) => (
+        {firstSectionData?.sliderMovies?.map((data) => (
 
-          <section key={data.title} className="w-full h-auto pt-2 mobile:pt-1">
- 
-            <div className="w-full h-auto flex justify-between items-center px-2 pb-2">
-              <h2 className="text-gray-200 text-2xl mobile:text-sm font-semibold">{data.title}</h2>
-              <Link href={data.linkUrl} className="text-lg mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
+          <section key={data.title} className="w-full h-auto pt-2.5 mobile:pt-1">
+
+            <div className="w-full h-auto flex justify-between items-center px-2.5 pb-2">
+              <h2 className="text-gray-200 text-xl mobile:text-sm font-semibold">{data.title}</h2>
+              <Link href={data.linkUrl} className="text-base mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
             </div>
 
-            <div className="w-full h-auto flex flex-row overflow-x-scroll whitespace-nowrap gap-2 px-2">
+            <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2 px-2">
 
               <MoviesCard moviesData={data.moviesData} />
 
@@ -55,19 +38,19 @@ export default async function Page() {
           </section>
         ))}
 
-        <section className="w-full h-fit bg-gray-800 pt-2">
+        <section className="w-full h-fit pt-2">
 
-          <div className="w-full h-auto flex justify-center items-center mx-2 my-2">
+          <div className="w-full h-auto flex justify-center items-center mx-2.5 my-2">
             <div className="w-fit h-auto border-b-2 border-b-yellow-500 px-10 mobile:px-5 pb-0.5">
-            <h1 className="text-xl mobile:text-sm text-gray-200 text-center font-semibold">
-              Top Actress
-            </h1>
+              <h1 className="text-xl mobile:text-sm text-gray-200 text-center font-semibold">
+                Bollywood Top Actress
+              </h1>
             </div>
           </div>
 
           <div className="w-full h-fit flex flex-row overflow-x-scroll overflow-y-hidden whitespace-nowrap gap-2 md:gap-5 px-2 py-3">
 
-            {topActressData?.map((actor) => (
+            {firstSectionData?.topActressData?.map((actor) => (
 
               <Link
                 href={`/listing/actress/${actor.name.toLowerCase().replace(/[' ']/g, '-')}`}
@@ -94,6 +77,8 @@ export default async function Page() {
           </div>
 
         </section>
+
+        <HomePageLayout />
 
       </main>
     </>
