@@ -93,20 +93,14 @@ function SearchPage() {
         <>
             <div className="sticky top-0 left-0 z-50 w-full h-auto bg-red-800">
 
-                <div className="w-auto h-auto flex gap-2 items-center">
+                <div className="w-auto h-auto flex gap-1 items-center">
 
                     <NavigateBack className="bi bi-arrow-left text-gray-100 ml-4 mobile:ml-2 text-3xl mobile:text-[25px] cursor-pointer w-fit" />
 
                     <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
                         <Link href="/" className="text-xl text-yellow-300 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
-                        <input onChange={handleSearchInputChange} value={searchQuery} type="text" placeholder="Search movies web series and etc" className="border-2 border-red-800 w-[45%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base mobile:text-sm placeholder:text-gray-500 shadow-2xl" autoFocus />
+                        <input onChange={handleSearchInputChange} value={searchQuery} type="text" placeholder="Search movies web series and etc" className="border-2 border-red-800 w-[42%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base mobile:text-sm placeholder:text-gray-500 shadow-2xl" autoFocus />
                     </div>
-
-                </div>
-
-                <div className="w-auto h-auto mobile:hidden">
-
-                    <CategoryGroupSlider />
 
                 </div>
 

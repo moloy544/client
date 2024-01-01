@@ -5,6 +5,7 @@ import axios from "axios";
 import LazyLoadingImage from "./components/LazyLoadingImage";
 import HomePageLayout from "./HomePageLayout";
 import SliderMoviesShowcase from "./components/SliderMoviesShowcase";
+import FixedSearchIcon from "./components/FixedSearchIcon";
 
 export default async function Page() {
 
@@ -68,6 +69,8 @@ export default async function Page() {
         <HomePageLayout />
 
       </main>
+
+      <FixedSearchIcon />
     </>
   )
 }

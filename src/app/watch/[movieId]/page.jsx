@@ -68,7 +68,7 @@ export default async function Page({ params }) {
   };
 
   const videoSource = movieData?.watchLink;
-
+console.log(movieData.watchLink)
   return (
        <Videoplayer videoSource={videoSource} />
   )
