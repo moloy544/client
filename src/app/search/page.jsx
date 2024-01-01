@@ -62,9 +62,9 @@ function SearchPage() {
     // Debounced handleSearch function with a delay of 500 milliseconds
     const debouncedHandleSearch = useCallback(
         debounce((value) => {
-        
-                getMovies(value);
-                
+
+            getMovies(value);
+
         }, 1200), []);
 
     // Event handler for input change
@@ -77,10 +77,10 @@ function SearchPage() {
             setSearchQuery(userSearchText);
 
             if (!loading) {
-                setLoading(true);    
+                setLoading(true);
             };
 
-            if (moviesData.length >0) {
+            if (moviesData.length > 0) {
                 setMoviesData([]);
             }
 
@@ -120,13 +120,15 @@ function SearchPage() {
 
                         {moviesData.length > 0 && !loading ? (
                             <>
-                            <h3 className="text-gray-300 text-base mobile:text-sm py-2 font-bold px-2">Results for "{searchQuery}"</h3>
-                            <LoadMoreMoviesGirdWarper
-                                apiUrl={`${backendServer}/api/v1/movies/search?q=${searchQuery}`}
-                                initialPage={1}
-                                initialMovies={moviesData}
-                                isDataEnd={endOfData} />
-                                </>
+                                <h3 className="text-gray-300 text-base mobile:text-sm py-2 font-bold px-2">
+                                    Results for <span className=" text-cyan-500">{searchQuery}</span>
+                                </h3>
+                                <LoadMoreMoviesGirdWarper
+                                    apiUrl={`${backendServer}/api/v1/movies/search?q=${searchQuery}`}
+                                    initialPage={1}
+                                    initialMovies={moviesData}
+                                    isDataEnd={endOfData} />
+                            </>
                         ) : (
                             <>
                                 {loading && moviesData.length < 1 && (
@@ -147,7 +149,7 @@ function SearchPage() {
                     </div>
                 ) : (
                     <div className="w-full h-full min-h-[80vh] py-3 mobile:py-2">
-                    <h2 className="my-28 text-gray-300 text-xl mobile:text-base text-center font-semibold">Search Movies and Series</h2>
+                        <h2 className="my-28 text-gray-300 text-xl mobile:text-base text-center font-semibold">Search Movies and Series</h2>
                     </div>
                 )}
 
