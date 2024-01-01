@@ -59,12 +59,12 @@ function SearchPage() {
     };
 
     // Debounced handleSearch function with a delay of 500 milliseconds
-    const debouncedHandleSearch = useCallback(
+    const debouncedHandleSearch = 
         debounce((value) => {
             if (value?.trim() !== '') {
                 getMovies(value);
             } 
-        }, 1200), []);
+        }, 1200);
 
     // Event handler for input change
     const handleSearchInputChange = (event) => {
