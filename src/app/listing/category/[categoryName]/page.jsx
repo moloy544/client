@@ -42,23 +42,9 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
 
-  const category = params?.categoryName.toLowerCase().replace(/[-]/g, ' ');
+  const category = params?.categoryName;
 
-  function filterQueryParam() {
-
-    switch (category) {
-
-      case 'new release':
-        return 2023;
-        
-      default:
-        return category;
-    };
-  };
-
-  const query = filterQueryParam();
-
-  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${query}`;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${category}`;
 
   const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
 

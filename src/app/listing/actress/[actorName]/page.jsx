@@ -57,18 +57,24 @@ export default async function Page({ params }) {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction/${query}`;
 
-  const { status, name } = await getActorData(query);
+  const [actorData, moviesData] = await Promise.all([
 
-  if (status!==200) {
+    getActorData(query),
+
+    fetchLoadMoreMovies({
+      apiPath: apiUrl,
+      limitPerPage: 30,
+      page: 1
+    })
+  ]);
+
+  const { status, name } = actorData;
+
+  if (status === 404) {
     notFound();
   };
 
-  const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
-
-    apiPath: apiUrl,
-    limitPerPage: 30,
-    page: 1
-  });;
+  const { filterResponse, dataIsEnd } = moviesData;
 
   const actorName = name;
 

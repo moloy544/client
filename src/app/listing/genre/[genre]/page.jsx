@@ -42,22 +42,9 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
 
-    const genre = params?.genre.toLowerCase().replace(/[-]/g, ' ');
+    const genre = params?.genre;
 
-    function filterQueryParam() {
-
-        switch (genre) {
-
-            case 'sci fi':
-                return 'Sci-Fi';
-            default:
-                return genre;
-        };
-    };
-
-    const query = filterQueryParam();
-
-    const apiUrl = `${appConfig.backendUrl}/api/v1/movies/genre/${query}`;
+    const apiUrl = `${appConfig.backendUrl}/api/v1/movies/genre/${genre}`;
 
     const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
         
@@ -66,7 +53,7 @@ export default async function Page({ params }) {
         page: 1
     });;
 
-    const genreName = transformToCapitalizeQuery(params.genre);
+    const capitalizeGenre = transformToCapitalizeQuery(genre);
 
     return (
         <>
@@ -75,7 +62,7 @@ export default async function Page({ params }) {
                 <div className="w-auto h-auto flex items-center py-4 mobile:py-2">
                     <NavigateBack className="bi bi-arrow-left text-white text-3xl mobile:text-[25px] cursor-pointer" />
                     <div className="px-5 mobile:px-2 text-yellow-400 text-xl mobile:text-base text-center justify-self-center truncate">
-                        {genreName}
+                        {capitalizeGenre}
                     </div>
                 </div>
                 <Link href="/search" className="text-white mr-20 mobile:mr-3 p-1 text-2xl mobile:text-xl">
@@ -95,7 +82,6 @@ export default async function Page({ params }) {
                     isDataEnd={dataIsEnd} />
 
             </div>
-
         </>
     )
 };

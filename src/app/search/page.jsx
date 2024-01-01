@@ -24,6 +24,7 @@ function SearchPage() {
     const getMovies = async (query) => {
 
         try {
+
             if (endOfData) {
                 setEndOfData(false);
             };
@@ -59,26 +60,32 @@ function SearchPage() {
     };
 
     // Debounced handleSearch function with a delay of 500 milliseconds
-    const debouncedHandleSearch = 
+    const debouncedHandleSearch = useCallback(
         debounce((value) => {
-            if (value?.trim() !== '') {
+        
                 getMovies(value);
-            } 
-        }, 1200);
+                
+        }, 1200), []);
 
     // Event handler for input change
     const handleSearchInputChange = (event) => {
 
-        const trimValue = event.target.value.replace(/ +/g, ' ');
+        const userSearchText = event.target.value.replace(/ +/g, ' ').trim();
 
-        debouncedHandleSearch(trimValue);
+        if (userSearchText !== " ") {
 
-        // Update the controlled input value in state
-        if (event.target.value !== " ") {
-            setLoading(true);
-            setMoviesData([]);
-            setSearchQuery(trimValue);
-        };
+            setSearchQuery(userSearchText);
+
+            if (!loading) {
+                setLoading(true);    
+            };
+
+            if (moviesData.length >0) {
+                setMoviesData([]);
+            }
+
+            debouncedHandleSearch(userSearchText);
+        }
 
     };
 
