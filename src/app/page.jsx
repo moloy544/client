@@ -2,9 +2,9 @@ import { appConfig } from "@/config/config";
 import Navbar from "./components/Navbar";
 import Link from "next/link";
 import axios from "axios";
-import MoviesCard from "./components/MoviesCard";
 import LazyLoadingImage from "./components/LazyLoadingImage";
 import HomePageLayout from "./HomePageLayout";
+import SliderMoviesShowcase from "./components/SliderMoviesShowcase";
 
 export default async function Page() {
 
@@ -18,24 +18,11 @@ export default async function Page() {
     <>
       <Navbar />
 
-      <main className="w-full h-full bg-gray-800 m-0 py-2">
+      <main className="w-full overflow-x-hidden h-full bg-gray-800 py-2">
 
         {firstSectionData?.sliderMovies?.map((data) => (
 
-          <section key={data.title} className="w-full h-auto pt-2.5 mobile:pt-1">
-
-            <div className="w-full h-auto flex justify-between items-center px-2.5 pb-2">
-              <h2 className="text-gray-200 text-xl mobile:text-sm font-semibold">{data.title}</h2>
-              <Link href={data.linkUrl} className="text-base mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
-            </div>
-
-            <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2 px-2">
-
-              <MoviesCard moviesData={data.moviesData} />
-
-            </div>
-
-          </section>
+          <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
         ))}
 
         <section className="w-full h-fit pt-2">
@@ -48,14 +35,14 @@ export default async function Page() {
             </div>
           </div>
 
-          <div className="w-full h-fit flex flex-row overflow-x-scroll overflow-y-hidden whitespace-nowrap gap-2 md:gap-5 px-2 py-3">
+          <div className="w-full h-fit flex flex-row overflow-x-scroll overflow-y-hidden whitespace-nowrap gap-2 md:gap-5 px-2 py-3 scrollbar-hidden">
 
             {firstSectionData?.topActressData?.map((actor) => (
 
               <Link
                 href={`/listing/actress/${actor.name.toLowerCase().replace(/[' ']/g, '-')}`}
                 key={actor._id}
-                className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md" prefetch={false}>
+                className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
 
                 <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-500">
                   <LazyLoadingImage

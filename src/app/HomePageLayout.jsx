@@ -5,8 +5,7 @@ import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import MoviesCard from "./components/MoviesCard";
-import Link from "next/link";
+import SliderMoviesShowcase from "./components/SliderMoviesShowcase";
 
 function HomePageLayout() {
 
@@ -92,25 +91,11 @@ function HomePageLayout() {
         <>
             {secondSectionData && (
                 <>
-
                     {secondSectionData?.sliderMovies?.map((data) => (
-                        <section key={data.title} className="w-full h-auto pt-2.5 mobile:pt-1">
+                        <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
 
-                            <div className="w-full h-auto flex justify-between items-center px-2.5 pb-2">
-                                <h2 className="text-gray-200 text-xl mobile:text-sm font-semibold">{data.title}</h2>
-                                <Link href={data.linkUrl} className="text-base mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
-                            </div>
-
-                            <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2 px-2">
-
-                                <MoviesCard moviesData={data.movies} />
-
-                            </div>
-
-                        </section>
                     ))}
                 </>
-
             )}
 
             {thirdSectionData && (
@@ -118,20 +103,8 @@ function HomePageLayout() {
 
                     {thirdSectionData?.sliderMovies?.map((data) => (
 
-                        <section key={data.title} className="w-full h-auto pt-2.5 mobile:pt-1">
+                        <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
 
-                            <div className="w-full h-auto flex justify-between items-center px-2.5 pb-2">
-                                <h2 className="text-gray-200 text-xl mobile:text-sm font-semibold">{data.title}</h2>
-                                <Link href={data.linkUrl} className="text-base mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
-                            </div>
-
-                            <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2 px-2">
-
-                                <MoviesCard moviesData={data.movies} />
-
-                            </div>
-
-                        </section>
                     ))}
                 </>
             )}
@@ -145,7 +118,6 @@ function HomePageLayout() {
                     </div>
                 </div>
             )}
-
 
             <div id="bottom_observerElement" ref={observerRef}></div>
         </>

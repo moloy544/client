@@ -70,10 +70,6 @@ export default async function Page({ params }) {
   const videoSource = movieData?.watchLink;
 
   return (
-    <div className="flex justify-center mt-24 mobile:mt-32 mb-10 w-full h-full px-20">
-
-      <Videoplayer videoSource={videoSource} />
-
-    </div>
+       <Videoplayer videoSource={videoSource} />
   )
 }

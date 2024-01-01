@@ -2,17 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
+.scrollbar-hidden::-webkit-scrollbar {
     width: 0px;
   }
   
-  ::-webkit-scrollbar-track {
+  .scrollbar-hidden::-webkit-scrollbar-track {
     background: transparent;
   }
   
   
-  ::-webkit-scrollbar-thumb {
+.scrollbar-hidden::-webkit-scrollbar-thumb {
     background: transparent;
+    color: rgb(222, 145, 2);
   }
   
   a:-webkit-any-link {

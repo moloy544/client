@@ -4,19 +4,20 @@ import { appConfig } from "@/config/config";
 import NavigateBack from "@/app/components/NavigateBack";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import axios from "axios";
+import { notFound } from "next/navigation";
 
-const transformToCapitalize = (text) => {
+const getActorData = async (actorName) => {
 
-  // Split the text into an array of words
-  const words = text?.split('-');
+  try {
+    const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/info/${actorName}`);
+    const status = response.status;
+    const { name, avatar } = response.data?.actor;
+    return { status, name, avatar };
+  } catch (error) {
+    console.log(error);
+    return { status: 404, name: null, avatar: null };
 
-  // Capitalize the first letter of each word and join them with a space
-  const capitalizedWords = words?.map(word => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  });
-
-  // Join the words with a space and return the result
-  return capitalizedWords?.join(' ');
+  }
 };
 
 export async function generateMetadata({ params }) {
@@ -24,24 +25,26 @@ export async function generateMetadata({ params }) {
   try {
     const actorName = params?.actorName;
 
-    const actor = await axios.post(`${appConfig.backendUrl}/api/v1/actress/info/${actorName}`);
+    const { status, name, avatar } = await getActorData(actorName);
 
-    const { name, avatar } = actor.data?.actor;
+    if (status === 200) {
 
-    const metaData = {
-      title: `${name} movies`,
-      description: `Watch ${name} movies online Movies Bazaar`,
-      keywords: `${name} movie, Watch ${name} movie online, ${name} movie watch free online, Where to watch ${name} movies online`,
-
-      openGraph: {
-        images: avatar,
+      const metaData = {
         title: `${name} movies`,
         description: `Watch ${name} movies online Movies Bazaar`,
-        url: `https://moviesbazaar.vercel.app/listing/actress/${params?.actorName}`
-      },
-    };
+        keywords: `${name} movie, Watch ${name} movie online, ${name} movie watch free online, Where to watch ${name} movies online`,
 
-    return metaData;
+        openGraph: {
+          images: avatar,
+          title: `${name} movies`,
+          description: `Watch ${name} movies online Movies Bazaar`,
+          url: `https://moviesbazaar.vercel.app/listing/actress/${params?.actorName}`
+        },
+      };
+
+      return metaData;
+
+    }
   } catch (error) {
     console.log("No Actor Found")
   };
@@ -54,6 +57,12 @@ export default async function Page({ params }) {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction/${query}`;
 
+  const { status, name } = await getActorData(query);
+
+  if (status!==200) {
+    notFound();
+  };
+
   const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
 
     apiPath: apiUrl,
@@ -61,7 +70,7 @@ export default async function Page({ params }) {
     page: 1
   });;
 
-  const actorName = transformToCapitalize(query)
+  const actorName = name;
 
   return (
     <>
