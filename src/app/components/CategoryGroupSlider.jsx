@@ -9,8 +9,8 @@ const LinkButton = ({ linkData, linkUrl }) => {
       (<Link
         key={data.id}
         href={linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')}
-        className="bg-cyan-600 w-auto h-auto py-1 px-3 rounded-[5px]">
-        <span className="w-auto h-auto text-xs font-normal text-gray-200">{data.name}</span>
+        className="bg-cyan-500 w-auto h-auto py-1 px-3 rounded-[5px]">
+        <span className="w-auto h-auto text-xs font-semibold text-gray-800">{data.name}</span>
       </Link>
       ))}
     </>
