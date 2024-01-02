@@ -8,10 +8,11 @@ const backendServer = appConfig.backendUrl || appConfig.localhostUrl;
 function AddMoviesPage() {
 
     const [state, setState] = useState({
-        imbdId: '',
+        imdbId: '',
         thambnail: '',
         title: '',
         releaseYear: 0,
+        fullReleaseDate: '',
         category: 'bollywood',
         type: 'movie',
         language: 'hindi',
@@ -26,26 +27,28 @@ function AddMoviesPage() {
 
     const getImbdResponse = async (id) => {
 
-        if (id.length >=8) {
-        
-        const response = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${id}`);
+        if (id.length >= 8) {
 
-        const { Title, Year, Poster, Genre, Actors } = response.data;
+            const response = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${id}`);
 
-        const genreAray = Genre.split(',').map(genre => genre.trim());
+            const { Title, Year, Released, Poster, Genre, Actors } = response.data;
 
-        const actorsArray = Actors.split(',').map(actor => actor.trim());
+            const genreAray = Genre.split(',').map(genre => genre.trim());
 
-        setState(prevState => ({
-            ...prevState,
-            thambnail: Poster,
-            title: Title,
-            releaseYear: Year,
-            genre: genreAray,
-            castDetails: actorsArray,
-        }));
+            const actorsArray = Actors.split(',').map(actor => actor.trim());
 
-    }
+            setState(prevState => ({
+                ...prevState,
+                thambnail: Poster,
+                title: Title,
+                releaseYear: Year,
+                fullReleaseDate: Released,
+                genre: genreAray,
+                castDetails: actorsArray,
+                searchKeywords: ''
+            }));
+
+        }
 
     };
 
@@ -56,26 +59,27 @@ function AddMoviesPage() {
 
 
             const addResponse = await axios.post(`${backendServer}/api/v1/admin/add_movie`, state);
-
+            const responseMessage = addResponse.data?.message;
             if (addResponse.status === 200) {
-                alert("Movies Add Successful");
+
+                alert(responseMessage);
+
                 setState(prevState => ({
                     ...prevState,
-                    imbdId: '',
+                    imdbId: '',
                     thambnail: '',
                     title: '',
                     releaseYear: 0,
+                    fullReleaseDate: '',
                     genre: [],
                     castDetails: [],
                     watchLink: '',
                     searchKeywords: ''
                 }));
             } else {
-                alert("Can't Add Movies");
+                alert(responseMessage);
             }
-
             console.log(addResponse.data);
-
 
         } catch (error) {
             console.error('Error sending movies to backend:', error);
@@ -88,14 +92,14 @@ function AddMoviesPage() {
         if (field == 'watchLink') {
 
             const watchLink = e.target.value.split('/');
-            const imbdId = watchLink[watchLink.length - 1];
+            const imdbId = watchLink[watchLink.length - 1];
 
             setState(prevState => ({
                 ...prevState,
-                imbdId: imbdId
+                imdbId: imdbId
             }));
-                getImbdResponse(imbdId);
-            
+            getImbdResponse(imdbId);
+
         };
 
         if (field == 'category') {
@@ -106,13 +110,13 @@ function AddMoviesPage() {
                     ...prevState,
                     language: 'hindi'
                 }));
-            }else{
+            } else {
                 setState(prevState => ({
                     ...prevState,
                     language: 'hindi dubbed'
-                }));  
+                }));
             }
-           
+
         };
 
         setState(prevState => ({
@@ -180,9 +184,9 @@ function AddMoviesPage() {
                     <div className="w-auto h-auto">
 
                         <div className="flex flex-col my-3">
-                            <label className="font-bold">IMBD ID</label>
+                            <label className="font-bold">IMDB ID</label>
                             <div className="flex gap-1">
-                                <input className="border border-black rounded-sm w-32" type="text" value={state.imbdId} onChange={(e) => handleInputChange(e, 'imbdId')} />
+                                <input className="border border-black rounded-sm w-32" type="text" value={state.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
                                 <button className="w-16 h-6 bg-green-700 text-sm text-white font-semibold text-center" type="button" onClick={getImbdResponse}>Get</button>
                             </div>
                         </div>
@@ -208,6 +212,11 @@ function AddMoviesPage() {
                         <div className="flex flex-col my-3">
                             <label className="font-bold">Release Year</label>
                             <input className="border border-black rounded-sm" type="text" value={state.releaseYear} onChange={(e) => handleInputChange(e, 'releaseYear')} />
+                        </div>
+
+                        <div className="flex flex-col my-3">
+                            <label className="font-bold">Full release date</label>
+                            <input className="border border-black rounded-sm" type="text" value={state.fullReleaseDate} onChange={(e) => handleInputChange(e, 'fullReleaseDate')} />
                         </div>
 
                         <div className="flex flex-col my-3">
@@ -292,7 +301,7 @@ function AddMoviesPage() {
 
                         <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add movie</div>
                         <p>Page 22 complete Bollywood movies</p>
-                        <p>Page 22 complete home page movies hollywood select</p>
+                        <p>Page 32 complete home page movies</p>
                     </div>
                 </div>
 

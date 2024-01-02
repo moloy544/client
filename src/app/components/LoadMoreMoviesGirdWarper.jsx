@@ -17,7 +17,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(initialPage || 1);
     const [endOfData, setEndOfData] = useState(isDataEnd || false);
-    const moviesData = loadMoviesPathname !== patname ? initialMovies || [] : loadMoviesData;
+
+    const moviesData = (loadMoviesPathname !== patname || page === 1) ? (initialMovies || []) : loadMoviesData;
 
     const observerRef = useRef(null);
 
@@ -33,7 +34,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
             }));
         };
 
-    }, [patname, loadMoviesPathname, initialMovies]);
+    }, [patname, loadMoviesPathname, initialMovies, initialPage]);
 
 
     const handleObserver = (entries) => {
@@ -47,7 +48,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
 
         observerRef.current = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "200px",
+            rootMargin: "100px",
             threshold: 1.0,
         });
 
@@ -62,7 +63,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
                 observerRef.current.disconnect();
             }
         };
-    }, [moviesData, handleObserver]);
+    }, [moviesData]);
 
     useEffect(() => {
 
@@ -94,7 +95,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
 
         };
 
-    }, [page]);
+    }, [page, isAllDataLoad]);
 
     return (
         <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">

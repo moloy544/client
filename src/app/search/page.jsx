@@ -1,7 +1,6 @@
 'use client'
 import { useCallback, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import Link from "next/link";
 import { fetchLoadMoreMovies } from "@/utils";
 import { appConfig } from "@/config/config";
@@ -44,7 +43,8 @@ function SearchPage() {
         } catch (error) {
             console.log(error)
         } finally {
-            setLoading(false)
+            setLoading(false);
+            
         }
     };
 
@@ -70,10 +70,10 @@ function SearchPage() {
     // Event handler for input change
     const handleSearchInputChange = (event) => {
 
-        const userSearchText = event.target.value.replace(/ +/g, ' ').trim();
-
+        const userSearchText = event.target.value.replace(/ +/g, ' ');
+        
         if (userSearchText !== " ") {
-
+           
             setSearchQuery(userSearchText);
 
             if (!loading) {
@@ -86,7 +86,6 @@ function SearchPage() {
 
             debouncedHandleSearch(userSearchText);
         }
-
     };
 
     return (

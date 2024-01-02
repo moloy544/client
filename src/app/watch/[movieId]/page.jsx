@@ -1,7 +1,8 @@
 import axios from "axios";
-import Videoplayer from "../../components/VideoPlayer";
+//import Videoplayer from "../../components/VideoPlayer";
 import { appConfig } from "@/config/config";
 import { notFound } from "next/navigation";
+import Videoplayer from "@/app/components/VideoPlayer";
 
 async function getMovieDeatils(movieId) {
 
@@ -67,9 +68,7 @@ export default async function Page({ params }) {
     notFound();
   };
 
-  const videoSource = movieData?.watchLink;
-console.log(movieData.watchLink)
   return (
-       <Videoplayer videoSource={videoSource} />
+    <Videoplayer videoSource={movieData.watchLink} />
   )
 }
