@@ -45,3 +45,13 @@ export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerP
   };
 
 };
+
+export const formatMovieTitle = (title) => {
+
+  // Remove non-alphanumeric characters and replace spaces with hyphens
+  const formattedTitle = title.replace(/[^a-zA-Z0-9\s]/g, '') // Remove non-alphanumeric characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .toLowerCase(); // Convert to lowercase
+
+  return formattedTitle;
+}

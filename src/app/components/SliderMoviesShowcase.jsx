@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import LazyLoadingImage from './LazyLoadingImage'
+import { formatMovieTitle } from '@/utils'
 
 function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
@@ -9,7 +10,7 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
         <section className="w-full h-auto pt-2.5 mobile:pt-1">
 
             <div className="w-full h-auto flex justify-between items-center px-2.5 pb-2">
-                <h2 className="text-gray-200 text-xl mobile:text-sm font-semibold">{title}</h2>
+                <h2 className="text-gray-100 text-xl mobile:text-sm font-semibold">{title}</h2>
                 <Link href={linkUrl} className="text-base mobile:text-[12px] text-cyan-400 font-semibold">See more</Link>
             </div>
 
@@ -17,11 +18,15 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
                 {moviesData?.map((data) => (
 
-                    <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-auto max-w-[160px]" prefetch={false}>
+                    <Link
+                        key={data._id}
+                        href={`/watch/${data.type}/${formatMovieTitle(data.title)}/${data._id}`}
+                        className="w-auto h-auto max-w-[160px]"
+                        prefetch={false}>
 
                         <div className="movie_card border border-yellow-600">
 
-                            <div className="relative w-32 mobile:w-28 h-[170px] mobile:h-40 bg-white rounded-[3px] object-cover">
+                            <div className="relative w-[135px] h-[180px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
                                 <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
                                     actualSrc={data.thambnail}
                                     alt="Movies poster" />

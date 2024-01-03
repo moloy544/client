@@ -1,3 +1,4 @@
+import { formatMovieTitle } from "@/utils";
 import LazyLoadingImage from "./LazyLoadingImage";
 import Link from "next/link";
 
@@ -24,8 +25,11 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
         <>
             {moviesData?.map((data) => (
 
-                <Link key={data._id} href={`/watch/${data._id}`} className="w-auto h-auto max-w-[160px]">
-
+                <Link
+                    key={data._id}
+                    href={`/watch/${data.type}/${formatMovieTitle(data.title)}/${data._id}`}
+                    className="w-auto h-auto max-w-[160px]"
+                    prefetch={false}>
                     <div className="movie_card border border-yellow-600">
 
                         <div className="relative w-full object-cover h-[11.5rem] max-h-[180px] mobile:max-h-40 bg-white rounded-[3px]">
@@ -43,7 +47,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
                         <div className="absolute top-0.5 right-0.5 z-10 w-auto h-auto px-1 py-0.5 bg-gray-900 text-yellow-400 text-[10px] text-center font-sans font-semibold rounded-md">
                             {data.releaseYear}
                         </div>
-                        
+
                     </div>
                 </Link>
             ))}

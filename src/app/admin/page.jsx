@@ -1,6 +1,7 @@
 'use client'
 import { appConfig } from "@/config/config";
 import axios from "axios";
+import Link from "next/link";
 import { useRef, useState } from "react";
 
 const backendServer = appConfig.backendUrl || appConfig.localhostUrl;
@@ -176,7 +177,9 @@ function AddMoviesPage() {
 
     return (
         <>
-
+          <div className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2 py-3 text-base text-gray-200 bg-purple-600 shadow-md">
+            <Link href="/admin/update">Update</Link>
+          </div>
             <div className="w-auto h-auto flex justify-center">
 
                 <div className="mx-10 mt-5 md:flex md:gap-10">
@@ -301,7 +304,7 @@ function AddMoviesPage() {
 
                         <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add movie</div>
                         <p>Page 22 complete Bollywood movies</p>
-                        <p>Page 32 complete home page movies</p>
+                        <p>Page 42 complete home page movies</p>
                     </div>
                 </div>
 

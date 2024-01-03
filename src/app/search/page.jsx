@@ -134,7 +134,7 @@ function SearchPage() {
                                     </div>
                                 )}
                                 {!loading && moviesData.length < 1 && (
-                                    <h2 className="my-20 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
+                                    <h2 className="my-40 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
                                 )}
                             </>
                         )}

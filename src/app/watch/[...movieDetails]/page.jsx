@@ -3,6 +3,7 @@ import axios from "axios";
 import { appConfig } from "@/config/config";
 import { notFound } from "next/navigation";
 import Videoplayer from "@/app/components/VideoPlayer";
+import { formatMovieTitle } from "@/utils";
 
 async function getMovieDeatils(movieId) {
 
@@ -25,7 +26,7 @@ async function getMovieDeatils(movieId) {
 
 export async function generateMetadata({ params }) {
 
-  const movieId = params?.movieId;
+  const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
 
   const { movieData, status } = await getMovieDeatils(movieId);
 
@@ -43,6 +44,10 @@ export async function generateMetadata({ params }) {
 
   const language = movieData?.language;
 
+  const fromatedTitle = formatMovieTitle(movieName);
+
+  const ogUrl = `https://moviesbazaar.vercel.app/watch/${movieType}/${fromatedTitle}/${movieId}`;
+
   return {
 
     title: `${movieName}`,
@@ -53,14 +58,14 @@ export async function generateMetadata({ params }) {
       images: movieThambnail,
       title: `${movieName} movies`,
       description: `Watch ${movieName} movie online Movies Bazaar`,
-      url: `https://moviesbazaar.vercel.app/watch/${movieId}`
+      url: ogUrl
     },
   }
 };
 
 export default async function Page({ params }) {
 
-  const movieId = params?.movieId;
+  const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
 
   const { movieData, status } = await getMovieDeatils(movieId);
 

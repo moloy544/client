@@ -5,7 +5,7 @@ export const categoryArray = {
   category: [
     {
       id: 1,
-      name: "New release"
+      name: "New release (2023)"
     },
     {
       id: 2,
@@ -40,11 +40,11 @@ export const moviesGenreArray = {
     },
     {
       id: 12,
-      name: "Adventure"
+      name: "Thriller"
     },
     {
       id: 16,
-      name: "Animation"
+      name: "Romance"
     },
     {
       id: 35,
@@ -56,7 +56,7 @@ export const moviesGenreArray = {
     },
     {
       id: 99,
-      name: "Documentary"
+      name: "War"
     },
     {
       id: 18,
@@ -72,7 +72,7 @@ export const moviesGenreArray = {
     },
     {
       id: 36,
-      name: "History"
+      name: "Sci-Fi"
     },
     {
       id: 27,
@@ -88,19 +88,19 @@ export const moviesGenreArray = {
     },
     {
       id: 10749,
-      name: "Romance"
+      name: "Adventure"
     },
     {
       id: 878,
-      name: "Sci-Fi"
+      name: "History"
     },
     {
       id: 53,
-      name: "Thriller"
+      name: "Animation"
     },
     {
       id: 10752,
-      name: "War"
+      name: "Documentary"
     }
   ]
 };
