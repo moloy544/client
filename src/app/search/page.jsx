@@ -6,7 +6,7 @@ import { fetchLoadMoreMovies } from "@/utils";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
 
-const LoadMoreMoviesGirdWarper = dynamic(() => import("../components/LoadMoreMoviesGirdWarper"));
+const LoadMoreMoviesGirdWarper = dynamic(() => import('../components/LoadMoreMoviesGirdWarper'));
 
 function SearchPage() {
 
@@ -141,7 +141,7 @@ function SearchPage() {
 
                     </div>
                 ) : (
-                    <div className="w-full h-full min-h-[80vh] py-3 mobile:py-2">
+                    <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
                         <h2 className="my-28 text-gray-300 text-xl mobile:text-base text-center font-semibold">Search Movies and Series</h2>
                     </div>
                 )}
