@@ -5,7 +5,7 @@ export const categoryArray = {
   category: [
     {
       id: 1,
-      name: "New release (2023)"
+      name: "New release"
     },
     {
       id: 2,

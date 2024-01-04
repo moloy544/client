@@ -47,7 +47,7 @@ export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerP
 };
 
 //Format movie title url
-export const formatMovieTitle = (title) => {
+export const creatUrlLink = (title) => {
 
   // Remove non-alphanumeric characters and replace spaces with hyphens
   const formattedTitle = title.replace(/[^a-zA-Z0-9\s]/g, '') // Remove non-alphanumeric characters

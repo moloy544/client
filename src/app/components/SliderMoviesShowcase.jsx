@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 import LazyLoadingImage from './LazyLoadingImage'
-import { formatMovieTitle } from '@/utils'
+import { creatUrlLink } from '@/utils'
 
 function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
@@ -20,7 +20,7 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
                     <Link
                         key={data._id}
-                        href={`/watch/${data.type}/${formatMovieTitle(data.title)}/${data._id}`}
+                        href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data._id}`}
                         className="w-auto h-auto max-w-[160px]"
                         prefetch={false}>
 

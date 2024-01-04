@@ -6,6 +6,7 @@ import LazyLoadingImage from "./components/LazyLoadingImage";
 import HomePageLayout from "./HomePageLayout";
 import SliderMoviesShowcase from "./components/SliderMoviesShowcase";
 import FixedSearchIcon from "./components/FixedSearchIcon";
+import { creatUrlLink } from "@/utils";
 
 //Revalidate page every 30 minutes
 export const revalidate = 1800;
@@ -35,7 +36,7 @@ export default async function Page() {
 
             <div className="w-full h-auto flex justify-center items-center my-2">
               <div className="w-fit h-auto border-b-2 border-b-yellow-500 px-10 mobile:px-5 pb-0.5">
-                <h1 className="text-xl mobile:text-sm text-gray-200 text-center font-semibold">
+                <h1 className="text-xl mobile:text-sm text-gray-100 text-center font-semibold">
                   Bollywood Top Actress
                 </h1>
               </div>
@@ -50,7 +51,7 @@ export default async function Page() {
             {firstSectionData?.bollywoodActressData?.map((actor) => (
 
               <Link
-                href={`/actress/${actor.industry?.toLowerCase()}/${actor.name.toLowerCase().replace(/[' ']/g, '-')}`}
+                href={`/actress/${actor.industry?.toLowerCase()}/${creatUrlLink(actor.name)}`}
                 key={actor._id}
                 className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
 

@@ -1,4 +1,4 @@
-import { formatMovieTitle } from "@/utils";
+import { creatUrlLink } from "@/utils";
 import LazyLoadingImage from "./LazyLoadingImage";
 import Link from "next/link";
 
@@ -27,7 +27,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
 
                 <Link
                     key={data._id}
-                    href={`/watch/${data.type}/${formatMovieTitle(data.title)}/${data._id}`}
+                    href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data._id}`}
                     className="w-auto h-auto max-w-[160px]"
                     prefetch={false}>
                     <div className="movie_card border border-yellow-600">

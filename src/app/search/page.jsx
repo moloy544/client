@@ -90,15 +90,15 @@ function SearchPage() {
 
     return (
         <>
-            <div className="sticky top-0 left-0 z-50 w-full h-auto bg-red-800">
+            <div className="sticky top-0 left-0 z-50 w-full h-auto bg-gray-900 border-b border-b-cyan-700">
 
                 <div className="w-auto h-auto flex gap-1 items-center">
 
-                    <NavigateBack className="bi bi-arrow-left text-gray-100 ml-4 mobile:ml-2 text-3xl mobile:text-[25px] cursor-pointer w-fit" />
+                    <NavigateBack className="bi bi-arrow-left text-yellow-500 ml-4 mobile:ml-2 text-3xl mobile:text-[25px] cursor-pointer w-fit" />
 
                     <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
-                        <Link href="/" className="text-xl text-yellow-300 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
-                        <input onChange={handleSearchInputChange} value={searchQuery} type="text" placeholder="Search movies web series and etc" className="border-2 border-red-800 w-[42%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base mobile:text-sm placeholder:text-gray-500 shadow-2xl" autoFocus />
+                        <Link href="/" className="text-xl text-cyan-500 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
+                        <input onChange={handleSearchInputChange} value={searchQuery} type="text" placeholder="Search movies web series and etc" className="border-2 border-yellow-600 w-[42%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
                     </div>
 
                 </div>
@@ -142,7 +142,7 @@ function SearchPage() {
                     </div>
                 ) : (
                     <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
-                        <h2 className="my-28 text-gray-300 text-xl mobile:text-base text-center font-semibold">Search Movies and Series</h2>
+                        <h2 className="my-28 text-gray-300 text-xl mobile:text-base text-center font-semibold">Search movies and series</h2>
                     </div>
                 )}
 

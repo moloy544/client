@@ -3,7 +3,7 @@ import axios from "axios";
 import { appConfig } from "@/config/config";
 import { notFound } from "next/navigation";
 import Videoplayer from "@/app/components/VideoPlayer";
-import { formatMovieTitle } from "@/utils";
+import { creatUrlLink } from "@/utils";
 
 async function getMovieDeatils(movieId) {
 
@@ -44,20 +44,20 @@ export async function generateMetadata({ params }) {
 
   const language = movieData?.language;
 
-  const fromatedTitle = formatMovieTitle(movieName);
+  const fromatedTitle = creatUrlLink(movieName);
 
   const ogUrl = `https://moviesbazaar.vercel.app/watch/${movieType}/${fromatedTitle}/${movieId}`;
 
   return {
 
-    title: `${movieName}`,
-    description: `Watch ${movieName} movie online Movies Bazaar`,
-    keywords: `${movieName} movie, Watch ${movieName} online, Stream ${movieName} online, Watch ${movieName} movie online, ${movieName} online streaming, ${movieName} movie watch free online, ${movieName + ' ' + movieType} streaming, Watch ${movieName} HD online, ${movieName} online watch free, ${movieName} movie stream HD, Where to watch ${movieName} online, Watch ${genres + ' ' + movieType} online, Watch ${language + ' ' + movieType} online`,
+    title: movieName + ' ' + movieType,
+    description: `Watch ${movieName+ ' '+ movieType} online Movies Bazaar`,
+    keywords: `${movieName+ ' '+ movieType}, Watch ${movieName} online, Stream ${movieName} online, Watch ${movieName+ ' '+ movieType} online, ${movieName} online streaming, ${movieName+ ' '+ movieType} watch free online, ${movieName + ' ' + movieType} streaming, Watch ${movieName} HD online, ${movieName} online watch free, ${movieName+ ' '+ movieType} stream HD, Where to watch ${movieName} online, Watch ${genres + ' ' + movieType} online, Watch ${language + ' ' + movieType} online`,
 
     openGraph: {
       images: movieThambnail,
-      title: `${movieName} movies`,
-      description: `Watch ${movieName} movie online Movies Bazaar`,
+      title: movieName + ' ' + movieType,
+      description: `Watch ${movieName+ ' '+ movieType} online Movies Bazaar`,
       url: ogUrl
     },
   }
