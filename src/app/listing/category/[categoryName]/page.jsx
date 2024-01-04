@@ -1,28 +1,13 @@
-import Link from "next/link";
-import { fetchLoadMoreMovies } from "@/utils";
+import { fetchLoadMoreMovies, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
-import NavigateBack from "@/app/components/NavigateBack";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import { moviesGenreArray } from "@/constant/constsnt";
 import MoviesFilterDropDown from "../../MoviesFilterDropDown";
-
-const transformToCapitalizeQuery = (text) => {
-
-  // Split the text into an array of words
-  const words = text.split('-');
-
-  // Capitalize the first letter of each word and join them with a space
-  const capitalizedWords = words.map(word => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  });
-
-  // Join the words with a space and return the result
-  return capitalizedWords.join(' ');
-};
+import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 
 export async function generateMetadata({ params }) {
 
-  const editParamsQuery = transformToCapitalizeQuery(params.categoryName);
+  const editParamsQuery = transformToCapitalize(params.categoryName);
 
   const metaData = {
     title: `${editParamsQuery} movies`,
@@ -39,6 +24,8 @@ export async function generateMetadata({ params }) {
   return metaData;
 };
 
+//Revalidate page every 30 minutes
+export const revalidate = 1800;
 
 export default async function Page({ params }) {
 
@@ -52,38 +39,26 @@ export default async function Page({ params }) {
     limitPerPage: 30,
     page: 1
   });
-  
-  const categoryName = transformToCapitalizeQuery(params.categoryName);
+
+  const categoryName = transformToCapitalize(params.categoryName);
 
   return (
     <>
-      <div className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-red-800 px-2 border-b border-b-yellow-700">
-
-        <div className="w-auto h-auto flex items-center py-4 mobile:py-2">
-          <NavigateBack className="bi bi-arrow-left text-white text-3xl mobile:text-[25px] cursor-pointer" />
-          <div className="px-5 mobile:px-2 text-yellow-400 text-xl mobile:text-base text-center justify-self-center truncate">
-            {categoryName}
-          </div>
-        </div>
-        <Link href="/search" className="text-white mr-20 mobile:mr-3 p-1 text-2xl mobile:text-xl">
-          <i className="bi bi-search"></i>
-        </Link>
-
-      </div>
+      <NavigateBackTopNav title={categoryName} />
 
       <MoviesFilterDropDown filterData={moviesGenreArray.genre} />
 
       <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2">
 
-        {filterResponse.length>0?(
-        <LoadMoreMoviesGirdWarper
-          apiUrl={apiUrl}
-          initialPage={1}
-          initialMovies={filterResponse}
-          isDataEnd={dataIsEnd} />
-        ): (
+        {filterResponse.length > 0 ? (
+          <LoadMoreMoviesGirdWarper
+            apiUrl={apiUrl}
+            initialPage={1}
+            initialMovies={filterResponse}
+            isDataEnd={dataIsEnd} />
+        ) : (
           <h2 className="my-40 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
-                         
+
         )}
 
       </div>

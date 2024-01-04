@@ -132,12 +132,16 @@ function AddMoviesPage() {
 
         const inputText = genreRef.current.value;
 
-        setState(prevState => ({
-            ...prevState,
-            genre: [...state.genre, inputText]
-        }));
+        if (inputText.length >= 2) {
 
-        genreRef.current.value = '';
+            setState(prevState => ({
+                ...prevState,
+                genre: [...state.genre, inputText]
+            }));
+
+            genreRef.current.value = '';
+
+        }
     };
 
     //Remove genre from state 
@@ -156,12 +160,16 @@ function AddMoviesPage() {
 
         const inputText = castRef.current.value;
 
-        setState(prevState => ({
-            ...prevState,
-            castDetails: [...state.castDetails, inputText]
-        }));
+        if (inputText.length >= 2) {
 
-        castRef.current.value = '';
+            setState(prevState => ({
+                ...prevState,
+                castDetails: [...state.castDetails, inputText]
+            }));
+
+            castRef.current.value = '';
+
+        }
     };
 
     //Remove cast
@@ -177,9 +185,9 @@ function AddMoviesPage() {
 
     return (
         <>
-          <div className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2 py-3 text-base text-gray-200 bg-purple-600 shadow-md">
-            <Link href="/admin/update">Update</Link>
-          </div>
+            <div className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2 py-3 text-base text-gray-200 bg-purple-600 shadow-md">
+                <Link href="/admin/update">Update</Link>
+            </div>
             <div className="w-auto h-auto flex justify-center">
 
                 <div className="mx-10 mt-5 md:flex md:gap-10">
@@ -304,7 +312,7 @@ function AddMoviesPage() {
 
                         <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add movie</div>
                         <p>Page 22 complete Bollywood movies</p>
-                        <p>Page 42 complete home page movies</p>
+                        <p>Page 57 complete home page movies</p>
                     </div>
                 </div>
 
@@ -324,6 +332,7 @@ function AddActorSertion() {
     const [actorState, setActorState] = useState({
         avatar: '',
         name: '',
+        industry: '',
     });
 
     const handleInputChange = (e, field) => {
@@ -374,6 +383,23 @@ function AddActorSertion() {
                         <label className="font-bold">Actor name</label>
                         <input className="border border-black rounded-sm" type="text" value={actorState.name} onChange={(e) => handleInputChange(e, 'name')} />
                     </div>
+                    <div className="flex flex-col my-3">
+                            <label className="font-bold">Actor industry {actorState.industry}</label>
+                            <div className="flex gap-5">
+                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                    Bollywood
+                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="bollywood" name="industry" checked={actorState.industry === 'bollywood'} />
+                                </label>
+                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                    Hollywood
+                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="hollywood" name="industry" checked={actorState.industry === 'hollywood'} />
+                                </label>
+                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                    South
+                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="south" name="industry" checked={actorState.industry === 'south'} />
+                                </label>
+                            </div>
+                        </div>
                     <div onClick={sendActorData} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add actor</div>
 
                 </div>

@@ -11,7 +11,12 @@ function HomePageLayout() {
 
     const homePageState = useSelector((state) => state.homePage);
 
-    const { isAllLoad, secondSectionData, thirdSectionData } = homePageState;
+    const {
+        isAllLoad,
+        secondSectionData,
+        thirdSectionData,
+        forthSectionData
+    } = homePageState;
 
     const dispatch = useDispatch();
 
@@ -77,17 +82,17 @@ function HomePageLayout() {
 
                 setLoading(false);
 
-                if (offset == 3) {
+                if (offset === maxOffset) {
                     dispatch(updateHomePageState({ isAllLoad: true }));
                 }
             }
         };
 
-        if (!isAllLoad && offset !== maxOffset) {
+        if (!isAllLoad && offset !== 1) {
             getData();
         }
 
-    }, [offset, isAllLoad]);
+    }, [offset]);
 
     return (
         <>
@@ -104,6 +109,17 @@ function HomePageLayout() {
                 <>
 
                     {thirdSectionData?.sliderMovies?.map((data) => (
+
+                        <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
+
+                    ))}
+                </>
+            )}
+
+            {forthSectionData && (
+                <>
+
+                    {forthSectionData?.sliderMovies?.map((data) => (
 
                         <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
 
