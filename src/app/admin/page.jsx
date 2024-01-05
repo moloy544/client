@@ -312,7 +312,7 @@ function AddMoviesPage() {
 
                         <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add movie</div>
                         <p>Page 22 complete Bollywood movies</p>
-                        <p>Page 57 complete home page movies</p>
+                        <p>Page 62 complete home page movies</p>
                     </div>
                 </div>
 

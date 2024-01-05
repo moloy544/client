@@ -21,7 +21,7 @@ export default function CategoryGroupSlider() {
 
   return (
 
-    <div className="sticky top-0 z-50 w-auto h-auto bg-gray-900 flex flex-row items-center overflow-y-scroll gap-3 mobile:gap-2 whitespace-nowrap pt-4 px-2 border-b border-cyan-700 scroll-smooth scrollbar-hidden">
+    <div className="sticky top-0 z-50 w-auto h-auto bg-gray-900 flex flex-row items-center overflow-y-scroll gap-3 mobile:gap-2 whitespace-nowrap pt-4 px-2 border-b border-cyan-800 scroll-smooth scrollbar-hidden">
       <>
         <LinkButton linkData={categoryArray.category} linkUrl={categoryArray.linkUrl} />
 

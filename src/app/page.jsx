@@ -42,7 +42,7 @@ export default async function Page() {
               </div>
             </div>
 
-            <Link href="/actress/bollywood" className="text-base mobile:text-[12px] text-cyan-400 font-semibold flex-none">See more</Link>
+            <Link href="/actress/bollywood" className="text-base mobile:text-[12px] text-cyan-400 flex-none">See more</Link>
 
           </div>
 

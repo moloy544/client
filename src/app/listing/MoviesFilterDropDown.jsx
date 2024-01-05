@@ -1,6 +1,5 @@
-import React from 'react'
-
 function MoviesFilterDropDown({ filterData }) {
+
     return (
         <div className="space-y-2 fixed top-[70px] right-4 z-50">
             <details
