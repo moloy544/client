@@ -6,12 +6,12 @@ const LinkButton = ({ linkData, linkUrl }) => {
   return (
     <>
       {linkData?.map((data) =>
-      (<Link
+      (<div className="bg-rose-600 w-auto h-auto py-1 px-3 rounded-[5px] flex-none"><Link
         key={data.id}
-        href={linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')}
-        className="bg-cyan-500 w-auto h-auto py-1 px-3 rounded-[5px]">
-        <span className="w-auto h-auto text-xs font-semibold text-gray-900">{data.name}</span>
+        href={linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')}>
+        <span className="w-auto h-auto text-xs text-gray-100">{data.name}</span>
       </Link>
+      </div>
       ))}
     </>
   )
@@ -20,14 +20,15 @@ const LinkButton = ({ linkData, linkUrl }) => {
 export default function CategoryGroupSlider() {
 
   return (
+<div className="sticky top-0 z-30 w-full h-fit bg-gray-900">
 
-    <div className="sticky top-0 z-50 w-auto h-auto bg-gray-900 flex flex-row items-center overflow-y-scroll gap-3 mobile:gap-2 whitespace-nowrap pt-4 px-2 border-b border-cyan-800 scroll-smooth scrollbar-hidden">
-      <>
+    <div className="w-auto h-auto-fit flex items-center flex-row overflow-y-scroll gap-3 mobile:gap-2 px-2 pt-3.5 border-b border-cyan-800 scroll-smooth scrollbar-hidden">
+
         <LinkButton linkData={categoryArray.category} linkUrl={categoryArray.linkUrl} />
-
+      
         <LinkButton linkData={moviesGenreArray.genre} linkUrl={moviesGenreArray.linkUrl} />
-      </>
-
+      
+    </div>
     </div>
 
   )

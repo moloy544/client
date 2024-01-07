@@ -2,43 +2,24 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { fetchLoadMoreMovies } from "@/utils";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
-import LoadMoreMoviesCard from "../components/LoadMoreMoviesCard";
 
-const LoadMoreMoviesGirdWarper = dynamic(() => import('../components/LoadMoreMoviesGirdWarper'));
+const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
 
 function SearchPage() {
 
     const backendServer = appConfig.backendUrl;
 
-    const searchParams = useSearchParams();
-    const router = useRouter();
-
-    const searchQuery = searchParams.get('q') || '';
-
     // Set all state
+    const [searchQuery, setSearchQuery] = useState("")
     const [loading, setLoading] = useState(false);
-    const [moviesData, setMoviesData] = useState([]);
     const [page, setPage] = useState(1);
+    const [moviesData, setMoviesData] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
 
     const observerRef = useRef(null);
-
-    useEffect(() => {
-
-        if (searchQuery !== " " && searchQuery.length >= 1) {
-
-            if (!loading) {
-                setLoading(true);
-            };
-
-            debouncedHandleSearch(searchQuery);
-        }
-    }, [searchQuery])
 
     // Debounce function
     const debounce = (func, delay) => {
@@ -64,15 +45,15 @@ function SearchPage() {
             }
 
             const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
-                apiPath: `${backendServer}/api/v1/movies/search?q=${searchQuery}`,
+                apiPath: `${backendServer}/api/v1/movies/search?q=${query}`,
                 limitPerPage: 30,
                 page: page
             });
 
             if (page === 1) {
                 setMoviesData(filterResponse);
-            }else{
-                setMoviesData(prevData=> [...prevData, ...filterResponse])
+            } else {
+                setMoviesData(prevData => [...prevData, ...filterResponse])
             }
 
             if (dataIsEnd) {
@@ -103,17 +84,15 @@ function SearchPage() {
 
         if (userSearchText !== " ") {
 
+            setSearchQuery(userSearchText);
+
+            debouncedHandleSearch(userSearchText);
+
             if (moviesData.length > 0) {
                 setMoviesData([]);
             }
             if (page !== 1) {
                 setPage(1)
-            }
-
-            if (userSearchText.length >= 1) {
-                router.replace(`?q=${userSearchText}`);
-            } else {
-                router.replace('/search');
             }
         }
     };
@@ -150,7 +129,7 @@ function SearchPage() {
     useEffect(() => {
 
         if (page !== 1) {
-            getMovies()
+            getMovies(searchQuery)
         }
 
     }, [page])
@@ -188,7 +167,7 @@ function SearchPage() {
                                     <LoadMoreMoviesCard limit={25} isLoading={loading} moviesData={moviesData} />
 
                                 </div>
-                                
+
                             </>
                         ) : (
                             <>
