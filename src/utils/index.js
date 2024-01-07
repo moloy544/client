@@ -1,22 +1,17 @@
 import axios from "axios";
 
-export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerPage, page }) => {
-
-  // Create a new instance of AbortController
-  const abortController = new AbortController();
-
-  // Create a cancel token using the controller's signal
-  const cancelToken = axios.CancelToken.source(abortController.signal);
+export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerPage, skip = 0 }) => {
 
   try {
 
     const response = await axios[methood](apiPath, {
       limit: limitPerPage,
-      page,
-      cancelToken: cancelToken.token
+      skip
     });
 
-    if (response.status !== 200) {
+    const status = response.status;
+
+    if (status !== 200) {
       throw new Error('Network response was not ok');
     };
 
@@ -26,24 +21,11 @@ export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerP
     //get end of data 
     const dataIsEnd = response.data.endOfData;
 
-    return { filterResponse, dataIsEnd };
+    return { status, filterResponse, dataIsEnd };
 
   } catch (error) {
-
-    if (axios.isCancel(error)) {
-      // Handle request cancellation
-      console.log('Request canceled:', error.message);
-      return { filterResponse: [], dataIsEnd: true };
-    } else {
-      // Handle other errors
-      console.error('Error fetching data:', error);
-      return { filterResponse: [], dataIsEnd: true };
-    };
-
-  } finally {
-    abortController.abort();
-  };
-
+    console.log(error);
+  }
 };
 
 //Format movie title url
@@ -65,7 +47,7 @@ export const transformToCapitalize = (text) => {
 
   // Capitalize the first letter of each word and join them with a space
   const capitalizedWords = words.map(word => {
-      return word.charAt(0).toUpperCase() + word.slice(1);
+    return word.charAt(0).toUpperCase() + word.slice(1);
   });
 
   // Join the words with a space and return the result

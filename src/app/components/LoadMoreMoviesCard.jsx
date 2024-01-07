@@ -2,7 +2,7 @@ import { creatUrlLink } from "@/utils";
 import LazyLoadingImage from "./LazyLoadingImage";
 import Link from "next/link";
 
-const LoaderSkleaton = ({ limit }) => {
+const LoaderSkleaton = ({ limit = 15 }) => {
     return (
         <>
             {Array.from({ length: limit }, (_, index) => (

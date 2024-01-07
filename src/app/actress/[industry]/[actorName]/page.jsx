@@ -1,10 +1,8 @@
-import Link from "next/link";
-import { fetchLoadMoreMovies } from "@/utils";
-import { appConfig } from "@/config/config";
-import NavigateBack from "@/app/components/NavigateBack";
-import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import axios from "axios";
 import { notFound } from "next/navigation";
+import { fetchLoadMoreMovies } from "@/utils";
+import { appConfig } from "@/config/config";
+import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 
 const getActorData = async (actorName) => {
@@ -67,7 +65,6 @@ export default async function Page({ params }) {
     fetchLoadMoreMovies({
       apiPath: apiUrl,
       limitPerPage: 30,
-      page: 1
     })
   ]);
 
@@ -90,7 +87,6 @@ export default async function Page({ params }) {
         {filterResponse.length > 1 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
-            initialPage={1}
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd} />
         ) : (

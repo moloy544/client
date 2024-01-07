@@ -1,12 +1,12 @@
 'use client'
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchLoadMoreMovies } from "@/utils";
 import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
-import { useDispatch, useSelector } from "react-redux";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
-import { usePathname } from "next/navigation";
 
-function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEnd }) {
+function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
     const patname = usePathname();
 
@@ -15,32 +15,17 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
     const { loadMoviesPathname, isAllDataLoad, loadMoviesData } = useSelector((state) => state.loadMovies);
 
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(initialPage || 1);
+    const [page, setPage] = useState(1);
     const [endOfData, setEndOfData] = useState(isDataEnd || false);
-
     const moviesData = (loadMoviesPathname !== patname) ? (initialMovies || []) : loadMoviesData;
 
     const observerRef = useRef(null);
-
-    //Set movies data 
-    useEffect(() => {
-
-        if (loadMoviesPathname !== patname) {
-
-            dispatch(updateLoadMovies({
-                loadMoviesPathname: patname,
-                loadMoviesData: initialMovies || [],
-                isAllDataLoad: false
-            }));
-        };
-
-    }, [patname, loadMoviesPathname, initialMovies, initialPage]);
 
 
     const handleObserver = (entries) => {
         const target = entries[0];
         if (target.isIntersecting && !loading && !endOfData) {
-            setPage((prevPage) => prevPage + 1);
+            setPage((prevPage) => prevPage + 1)
         }
     };
 
@@ -53,6 +38,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
         });
 
         if (moviesData?.length > 0) {
+            console.log(" i observ")
             observerRef.current.observe(
                 document.getElementById("bottom_observerElement")
             );
@@ -67,42 +53,60 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
 
     useEffect(() => {
 
+        //First component mount set states
+        if (loadMoviesPathname !== patname) {
+
+            dispatch(updateLoadMovies({
+                loadMoviesPathname: patname,
+                loadMoviesData: initialMovies || [],
+                isAllDataLoad: isDataEnd || false
+            }));
+        };
+
+        //Load more movies 
         if (!isAllDataLoad && loadMoviesPathname === patname && page !== 1) {
 
-            const getMovies = async () => {
+            const loadMoreData = async () => {
 
-                setLoading(true);
+                try {
 
-                setEndOfData(false);
+                    setLoading(true);
 
-                const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
-                    apiPath: apiUrl,
-                    limitPerPage: initialMovies?.length,
-                    page: page,
-                });
+                    const { status, filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
+                        apiPath: apiUrl,
+                        limitPerPage: initialMovies?.length,
+                        skip: moviesData?.length,
+                    });
 
-                dispatch(updateLoadMovies({ loadMoviesData: [...loadMoviesData, ...filterResponse] }));
+                    if (status === 200) {
 
-                if (dataIsEnd) {
-                    setEndOfData(true);
-                    dispatch(updateLoadMovies({ isAllDataLoad: true }));
-                }
+                        dispatch(updateLoadMovies({ loadMoviesData: [...moviesData, ...filterResponse] }));
 
-                setLoading(false);
+                        if (dataIsEnd) {
+                            setEndOfData(true);
+                            dispatch(updateLoadMovies({ isAllDataLoad: true }));
+                        };
+                    };
+
+                } catch (error) {
+                    console.log(error);
+                } finally {
+                    setLoading(false)
+                };
             };
 
-            getMovies();
+            loadMoreData();
 
         };
 
-    }, [page, isAllDataLoad]);
+    }, [isAllDataLoad, loadMoviesPathname, patname, page, initialMovies, isDataEnd]);
 
     return (
         <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
 
             <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(130px,1fr))] px-2">
 
-                <LoadMoreMoviesCard limit={initialMovies?.length || 25} isLoading={loading} moviesData={moviesData} />
+                <LoadMoreMoviesCard limit={20} isLoading={loading} moviesData={moviesData} />
 
             </div>
 
@@ -113,6 +117,5 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialPage, initialMovies, isDataEn
 };
 
 export default LoadMoreMoviesGirdWarper;
-
 
 

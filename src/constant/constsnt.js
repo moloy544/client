@@ -1,7 +1,7 @@
-const categoryListingLinkUrl = "/listing/category"
-const genreListingLinkUrl = "/listing/genre"
 export const categoryArray = {
-  linkUrl: categoryListingLinkUrl,
+
+  linkUrl: "/movies/category",
+  
   category: [
     {
       id: 1,
@@ -32,7 +32,9 @@ export const categoryArray = {
 };
 
 export const moviesGenreArray = {
-  linkUrl: genreListingLinkUrl,
+
+  linkUrl: "/movies/genre",
+
   genre: [
     {
       id: 28,

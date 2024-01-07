@@ -36,8 +36,7 @@ export default async function Page({ params }) {
   const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
 
     apiPath: apiUrl,
-    limitPerPage: 30,
-    page: 1
+    limitPerPage: 30
   });
 
   const categoryName = transformToCapitalize(params.categoryName);
@@ -53,7 +52,6 @@ export default async function Page({ params }) {
         {filterResponse.length > 0 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
-            initialPage={1}
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd} />
         ) : (

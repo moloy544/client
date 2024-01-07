@@ -34,11 +34,10 @@ export default async function Page({ params }) {
     const apiUrl = `${appConfig.backendUrl}/api/v1/movies/genre/${genre}`;
 
     const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
-        
+
         apiPath: apiUrl,
-        limitPerPage: 30,
-        page: 1
-    });;
+        limitPerPage: 30
+    });
 
     const capitalizeGenre = transformToCapitalize(genre);
 
@@ -52,9 +51,9 @@ export default async function Page({ params }) {
 
                 <LoadMoreMoviesGirdWarper
                     apiUrl={apiUrl}
-                    initialPage={1}
                     initialMovies={filterResponse}
-                    isDataEnd={dataIsEnd} />
+                    isDataEnd={dataIsEnd}
+                />
 
             </div>
         </>

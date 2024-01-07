@@ -21,7 +21,7 @@ export default function Navbar() {
                     </Link>
 
                     <Link href="/search" className="cursor-text mobile:hidden">
-                        <div className="flex items-center w-96 h-10 mobile:w-full mobile:h-9 rounded-md mobile:text-sm text-md py-1 px-2 bg-white text-black border-2 border-rose-400">
+                        <div className="flex items-center w-96 h-10 mobile:w-full mobile:h-9 rounded-[12px] mobile:text-sm text-md py-1 px-2 bg-white text-black border-2 border-rose-400">
                             Search movies web series
                         </div>
                     </Link>

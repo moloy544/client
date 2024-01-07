@@ -32,32 +32,29 @@ function SearchPage() {
         };
     };
 
-    const getMovies = async (query) => {
+    const getMovies = useCallback(async (query) => {
+
+        if (!loading && !endOfData) {
 
         try {
 
-            if (endOfData) {
-                setEndOfData(false);
-            };
-
-            if (!loading) {
-                setLoading(true)
-            }
-
-            const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
+            const { status, filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
                 apiPath: `${backendServer}/api/v1/movies/search?q=${query}`,
-                limitPerPage: 30,
-                page: page
+                limitPerPage: 25,
+                skip: moviesData.length
             });
 
-            if (page === 1) {
-                setMoviesData(filterResponse);
-            } else {
-                setMoviesData(prevData => [...prevData, ...filterResponse])
-            }
+            if (status === 200) {
 
-            if (dataIsEnd) {
-                setEndOfData(true);
+                if (page === 1) {
+                    setMoviesData(filterResponse);
+                } else {
+                    setMoviesData(prevData => [...prevData, ...filterResponse])
+                }
+
+                if (dataIsEnd) {
+                    setEndOfData(true);
+                };
             };
 
         } catch (error) {
@@ -65,8 +62,11 @@ function SearchPage() {
         } finally {
             setLoading(false);
 
-        }
+        };
+
     };
+    
+    },[loading, endOfData]);
 
     // Debounced handleSearch function with a delay of 500 milliseconds
     const debouncedHandleSearch = useCallback(
@@ -88,12 +88,20 @@ function SearchPage() {
 
             debouncedHandleSearch(userSearchText);
 
+            if (!loading) {
+                setLoading(true);
+            };
             if (moviesData.length > 0) {
                 setMoviesData([]);
-            }
+            };
             if (page !== 1) {
                 setPage(1)
-            }
+            };
+
+            if (endOfData) {
+                setEndOfData(false);
+            };
+
         }
     };
 
@@ -129,8 +137,9 @@ function SearchPage() {
     useEffect(() => {
 
         if (page !== 1) {
-            getMovies(searchQuery)
-        }
+            getMovies(searchQuery);
+            setLoading(true);
+        };
 
     }, [page])
 
@@ -140,10 +149,10 @@ function SearchPage() {
 
                 <div className="w-auto h-auto flex gap-1 items-center">
 
-                    <NavigateBack className="bi bi-arrow-left text-yellow-500 ml-4 mobile:ml-2 text-3xl mobile:text-[25px] cursor-pointer w-fit" />
+                    <NavigateBack className="bi bi-arrow-left text-gray-100 ml-4 mobile:ml-2 text-3xl mobile:text-[25px] cursor-pointer w-fit" />
 
                     <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
-                        <Link href="/" className="text-xl text-cyan-500 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
+                        <Link href="/" className="text-xl text-yellow-500 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
                         <input onChange={handleSearchInputChange} value={searchQuery} type="text" placeholder="Search movies web series and etc" className="border-2 border-yellow-600 w-[42%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
                     </div>
 
@@ -193,9 +202,9 @@ function SearchPage() {
                     </div>
                 )}
 
-                {/* Intersection Observer target */}
-                <div ref={observerRef} id="bottom_observerElement"></div>
             </div >
+            {/* Intersection Observer target */}
+            <div ref={observerRef} id="bottom_observerElement"></div>
         </>
     )
 }
