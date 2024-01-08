@@ -2,9 +2,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { fetchLoadMoreMovies } from "@/utils";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
+import axios from "axios";
 
 const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
 
@@ -36,37 +36,39 @@ function SearchPage() {
 
         if (!loading && !endOfData) {
 
-        try {
+            try {
 
-            const { status, filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
-                apiPath: `${backendServer}/api/v1/movies/search?q=${query}`,
-                limitPerPage: 25,
-                skip: moviesData.length
-            });
+                const response = await axios.post(`${backendServer}/api/v1/movies/search?q=${query}`, {
+                    limitPerPage: 25,
+                    skip: moviesData.length
+                });
 
-            if (status === 200) {
+                const { searchData, dataIsEnd } = response.data
 
-                if (page === 1) {
-                    setMoviesData(filterResponse);
-                } else {
-                    setMoviesData(prevData => [...prevData, ...filterResponse])
-                }
+                if (response.status === 200) {
 
-                if (dataIsEnd) {
-                    setEndOfData(true);
+                    if (page.length >= 1) {
+
+                        setMoviesData(searchData);
+                    } else {
+                        setMoviesData(prevData => [...prevData, ...searchData])
+                    }
+
+                    if (dataIsEnd) {
+                        setEndOfData(true);
+                    };
                 };
-            };
 
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setLoading(false);
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoading(false);
+
+            };
 
         };
 
-    };
-    
-    },[loading, endOfData]);
+    }, [loading, endOfData]);
 
     // Debounced handleSearch function with a delay of 500 milliseconds
     const debouncedHandleSearch = useCallback(
@@ -80,7 +82,7 @@ function SearchPage() {
     // Event handler for input change
     const handleSearchInputChange = (event) => {
 
-        const userSearchText = event.target.value.replace(/ +/g, ' ');
+        const userSearchText = event.target.value?.replace(/ +/g, ' ');
 
         if (userSearchText !== " ") {
 
@@ -94,7 +96,7 @@ function SearchPage() {
             if (moviesData.length > 0) {
                 setMoviesData([]);
             };
-            if (page !== 1) {
+            if (page.length < 1) {
                 setPage(1)
             };
 
@@ -136,12 +138,12 @@ function SearchPage() {
 
     useEffect(() => {
 
-        if (page !== 1) {
+        if (page.length > 1) {
             getMovies(searchQuery);
             setLoading(true);
         };
 
-    }, [page])
+    }, [page]);
 
     return (
         <>
@@ -152,8 +154,12 @@ function SearchPage() {
                     <NavigateBack className="bi bi-arrow-left text-gray-100 ml-4 mobile:ml-2 text-3xl mobile:text-[25px] cursor-pointer w-fit" />
 
                     <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
+
                         <Link href="/" className="text-xl text-yellow-500 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
-                        <input onChange={handleSearchInputChange} value={searchQuery} type="text" placeholder="Search movies web series and etc" className="border-2 border-yellow-600 w-[42%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
+
+                        <input onChange={handleSearchInputChange} value={searchQuery} type="text" placeholder="Search movies web series and etc"
+                            className="border-2 border-yellow-600 w-[45%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
+
                     </div>
 
                 </div>

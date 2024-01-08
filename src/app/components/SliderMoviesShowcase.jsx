@@ -14,19 +14,19 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
                 <Link href={linkUrl} className="text-base mobile:text-[12px] text-cyan-400">See more</Link>
             </div>
 
-            <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2 px-2 scrollbar-hidden">
+            <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2.5 mobile:gap-2 px-2 scrollbar-hidden">
 
                 {moviesData?.map((data) => (
 
                     <Link
                         key={data._id}
                         href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data._id}`}
-                        className="w-auto h-auto max-w-[160px]"
+                        className="w-auto h-auto "
                         prefetch={false}>
 
                         <div className="movie_card border border-yellow-600">
 
-                            <div className="relative w-[135px] h-[180px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
+                            <div className="relative w-[140px] h-[180px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
                                 <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
                                     actualSrc={data.thambnail}
                                     alt="Movies poster" />
