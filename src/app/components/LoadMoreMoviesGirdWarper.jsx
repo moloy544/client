@@ -17,39 +17,37 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [endOfData, setEndOfData] = useState(isDataEnd || false);
-    const moviesData = (loadMoviesPathname !== patname) ? (initialMovies || []) : loadMoviesData;
+    const conditionalData = (page === 1 && loadMoviesPathname !== patname) ? (initialMovies || []) : (page === 1 && loadMoviesData);
+    const [moviesData, setMoviesData] = useState(conditionalData);
 
     const observerRef = useRef(null);
-
 
     const handleObserver = (entries) => {
         const target = entries[0];
         if (target.isIntersecting && !loading && !endOfData) {
-            setPage((prevPage) => prevPage + 1)
+            setPage((prevPage) => prevPage + 1);
         }
     };
 
     useEffect(() => {
-
         observerRef.current = new IntersectionObserver(handleObserver, {
             root: null,
             rootMargin: "100px",
             threshold: 1.0,
         });
 
-        if (moviesData?.length > 0) {
-            console.log(" i observ")
+        if (moviesData?.length > 0 && !loading) {
             observerRef.current.observe(
                 document.getElementById("bottom_observerElement")
             );
-        };
+        }
 
         return () => {
             if (observerRef.current) {
                 observerRef.current.disconnect();
             }
         };
-    }, [moviesData]);
+    }, [moviesData, loading]);
 
     useEffect(() => {
 
@@ -74,13 +72,15 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
                     const { status, filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
                         apiPath: apiUrl,
-                        limitPerPage: initialMovies?.length,
-                        skip: moviesData?.length,
+                        limitPerPage: 40,
+                        skip: loadMoviesData?.length
                     });
 
                     if (status === 200) {
 
-                        dispatch(updateLoadMovies({ loadMoviesData: [...moviesData, ...filterResponse] }));
+                        dispatch(updateLoadMovies({ loadMoviesData: [...loadMoviesData, ...filterResponse] }));
+
+                        setMoviesData((prevData) => [...prevData, ...filterResponse]);
 
                         if (dataIsEnd) {
                             setEndOfData(true);
@@ -91,20 +91,21 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
                 } catch (error) {
                     console.log(error);
                 } finally {
-                    setLoading(false)
+
+                    setLoading(false);
                 };
             };
 
             loadMoreData();
-
         };
 
-    }, [isAllDataLoad, loadMoviesPathname, patname, page, initialMovies, isDataEnd]);
+    }, [isAllDataLoad, loadMoviesPathname, patname, page, initialMovies, isDataEnd, apiUrl]);
 
     return (
+
         <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
 
-            <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(130px,1fr))] px-2">
+            <div className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
 
                 <LoadMoreMoviesCard limit={20} isLoading={loading} moviesData={moviesData} />
 
@@ -117,5 +118,3 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 };
 
 export default LoadMoreMoviesGirdWarper;
-
-

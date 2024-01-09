@@ -29,7 +29,7 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
                             <div className="relative w-[140px] h-[180px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
                                 <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
                                     actualSrc={data.thambnail}
-                                    alt="Movies poster" />
+                                    alt={data.title} />
                             </div>
 
                             <div className="movie_name_container">

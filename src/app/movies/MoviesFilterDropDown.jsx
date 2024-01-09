@@ -1,7 +1,7 @@
 function MoviesFilterDropDown({ filterData }) {
 
     return (
-        <div className="space-y-2 fixed top-[70px] right-4 z-50">
+        <div className="space-y-2 fixed top-[70px] mobile:top-14 right-4 z-50">
             <details
                 className="overflow-hidden rounded-sm border border-gray-300 [&_summary::-webkit-details-marker]:hidden shadow-xl"
             >
@@ -51,6 +51,7 @@ function MoviesFilterDropDown({ filterData }) {
                             <li key={data.id}>
                                 <div className="py-2">
                                     <input
+                                        onClick={() => filter(data.name)}
                                         type="radio"
                                         name="filter"
                                         value={data.name}

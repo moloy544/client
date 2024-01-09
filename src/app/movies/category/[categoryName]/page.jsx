@@ -1,8 +1,6 @@
 import { fetchLoadMoreMovies, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
-import { moviesGenreArray } from "@/constant/constsnt";
-import MoviesFilterDropDown from "../../MoviesFilterDropDown";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 
 export async function generateMetadata({ params }) {
@@ -45,15 +43,14 @@ export default async function Page({ params }) {
     <>
       <NavigateBackTopNav title={categoryName} />
 
-      <MoviesFilterDropDown filterData={moviesGenreArray.genre} />
-
       <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2">
 
         {filterResponse.length > 0 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
             initialMovies={filterResponse}
-            isDataEnd={dataIsEnd} />
+            isDataEnd={dataIsEnd} 
+            />
         ) : (
           <h2 className="my-40 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
 
