@@ -74,6 +74,6 @@ export default async function Page({ params }) {
   };
 
   return (
-    <Videoplayer videoSource={movieData.watchLink} />
+    <Videoplayer movieDetails={movieData} />
   )
 }

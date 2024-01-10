@@ -59,3 +59,21 @@
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
+
+
+/* In your stylesheets or CSS file */
+@keyframes zoom {
+  0% {
+    transform: scale(1); /* Initial scale (no zoom) */
+  }
+  50% {
+    transform: scale(1.2); /* Zoom in at 50% of animation duration */
+  }
+  100% {
+    transform: scale(1); /* Return to original size at the end of animation */
+  }
+}
+
+.animate-zoom {
+  animation: zoom 18s infinite; /* Adjust the duration (16s in this example) */
+}

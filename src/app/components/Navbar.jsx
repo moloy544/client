@@ -16,7 +16,7 @@ export default function Navbar() {
             <header className="w-full h-auto bg-white">
 
                 <nav className="w-auto h-auto bg-red-800 py-4 px-5 mobile:px-3 mobile:py-2 flex items-center justify-between">
-                    <Link href="/" className="font-semibold text-yellow-300 text-xl mobile:text-base">
+                    <Link href="/" className="font-semibold text-yellow-400 text-xl mobile:text-base">
                         Movies Bazaar
                     </Link>
 
