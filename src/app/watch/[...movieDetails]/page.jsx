@@ -2,7 +2,7 @@ import axios from "axios";
 //import Videoplayer from "../../components/VideoPlayer";
 import { appConfig } from "@/config/config";
 import { notFound } from "next/navigation";
-import Videoplayer from "@/app/components/VideoPlayer";
+import Videoplayer from "@/app/watch/VideoPlayer";
 import { creatUrlLink } from "@/utils";
 
 async function getMovieDeatils(movieId) {

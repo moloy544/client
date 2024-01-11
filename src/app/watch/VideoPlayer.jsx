@@ -1,7 +1,8 @@
 'use client'
 import { useRouter } from "next/navigation";
-import { useEffect, useRef} from "react";
-import CategoryGroupSlider from "./CategoryGroupSlider";
+import { useEffect, useRef } from "react";
+import CategoryGroupSlider from "../components/CategoryGroupSlider";
+import MoviesUserActionWarper from "./MoviesUserActionWarper";
 
 export default function Videoplayer({ movieDetails }) {
 
@@ -35,7 +36,7 @@ export default function Videoplayer({ movieDetails }) {
       const playerElement = playerRef.current;
 
       if (window.location.hash === "#player") {
-       
+
         playerElement.classList.add('block');
         playerElement.classList.remove('hidden');
       } else {
@@ -54,7 +55,7 @@ export default function Videoplayer({ movieDetails }) {
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, []); 
+  }, []);
 
   return (
     <>
@@ -75,45 +76,51 @@ export default function Videoplayer({ movieDetails }) {
 
           </div>
 
-          <div className="w-auto h-auto max-w-sm min-w-[320px] mobile:min-w-[280px] px-2 py-3">
+          <div className="w-auto h-auto max-w-sm min-w-[320px] mobile:min-w-[280px] px-2 py-3 flex flex-col mobile:flex-col-reverse">
+            <div>
 
-            <div className="text-base text-gray-900 font-bold my-3.5">Title: <span className="text-sm text-gray-600 font-semibold">{title}</span></div>
-            <div className="text-base text-gray-900 font-bold my-3.5">Year: <span className="text-sm text-gray-600 font-semibold">{releaseYear}</span></div>
-            {fullReleaseDate && (
-              <div className="text-base text-gray-900 font-bold my-3.5">Released: <span className="text-sm text-gray-600 font-semibold">{fullReleaseDate}</span></div>
-            )}
+              <div className="text-base text-gray-900 font-bold my-3.5">Title: <span className="text-sm text-gray-600 font-semibold">{title}</span></div>
+              <div className="text-base text-gray-900 font-bold my-3.5">Year: <span className="text-sm text-gray-600 font-semibold">{releaseYear}</span></div>
+              {fullReleaseDate && (
+                <div className="text-base text-gray-900 font-bold my-3.5">Released: <span className="text-sm text-gray-600 font-semibold">{fullReleaseDate}</span></div>
+              )}
 
-            <div className="text-base text-gray-900 font-bold my-3.5">Language: <span className="text-sm text-gray-600 font-semibold">{language?.charAt(0).toUpperCase() + language?.slice(1)}</span></div>
+              <div className="text-base text-gray-900 font-bold my-3.5">Language: <span className="text-sm text-gray-600 font-semibold">{language?.charAt(0).toUpperCase() + language?.slice(1)}</span></div>
 
-            {castDetails?.length > 0 && (
-              <>
-                <div className="w-auto h-auto flex flex-wrap gap-1 items-center my-3.5">
-                  <div className="text-base text-gray-900 font-bold">Star cast: </div>
-                  {castDetails?.map((cast, index) => (
-                    <div key={index} className="text-gray-600 text-xs font-semibold rounded-md">
-                      {cast}
-                      {index !== castDetails.length - 1 && ','}
-                    </div>
-                  ))}
-                </div>
+              {castDetails?.length > 0 && (
+                <>
+                  <div className="w-auto h-auto flex flex-wrap gap-1 items-center my-3.5">
+                    <div className="text-base text-gray-900 font-bold">Star cast: </div>
+                    {castDetails?.map((cast, index) => (
+                      <div key={index} className="text-gray-600 text-xs font-semibold rounded-md">
+                        {cast}
+                        {index !== castDetails.length - 1 && ','}
+                      </div>
+                    ))}
+                  </div>
 
-              </>
-            )}
+                </>
+              )}
 
-            <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
-              <div className="text-base text-gray-900 font-bold">Genre: </div>
-              {genre?.map((genre) => (
-                <div key={genre} className="bg-gray-200 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-semibold rounded-md">
-                  {genre}
-                </div>
-              ))}
+              <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
+                <div className="text-base text-gray-900 font-bold">Genre: </div>
+                {genre?.map((genre) => (
+                  <div key={genre} className="bg-gray-200 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-semibold rounded-md">
+                    {genre}
+                  </div>
+                ))}
+              </div>
+
             </div>
 
+             <MoviesUserActionWarper initialDislike={false} initialLike={false} initialIsUser={true} totalLike={120} />
+
           </div>
+
         </div>
-  
-          <iframe ref={playerRef} className="fixed top-0 left-0 w-full h-full border-none z-[600] hidden" src={watchLink} allowFullScreen="allowfullscreen">
-          </iframe>
+
+        <iframe ref={playerRef} className="fixed top-0 left-0 w-full h-full border-none z-[600] hidden" src={watchLink} allowFullScreen="allowfullscreen">
+        </iframe>
 
       </div>
     </>
