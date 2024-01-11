@@ -1,5 +1,5 @@
 'use client'
-import { useRouter } from "next/navigation";
+
 import { useEffect, useRef } from "react";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import MoviesUserActionWarper from "./MoviesUserActionWarper";
@@ -7,11 +7,6 @@ import MoviesUserActionWarper from "./MoviesUserActionWarper";
 export default function Videoplayer({ movieDetails }) {
 
   const playerRef = useRef(null);
-
-  const router = useRouter();
-  if (!movieDetails) {
-    router.push('/');
-  };
 
   const {
     title,
@@ -63,7 +58,7 @@ export default function Videoplayer({ movieDetails }) {
 
       <div className="w-full h-full min-h-[90vh] bg-gray-800 py-6 flex justify-center items-center">
 
-        <div className="w-fit h-fit mx-2 px-4 py-5 flex mobile:flex-col gap-2 bg-cyan-50 rounded-sm shadow-xl">
+        <div className="w-fit h-fit mx-2 px-4 py-5 flex mobile:flex-col gap-2 bg-cyan-50 rounded-md shadow-xl">
 
           <div className="w-[260px] h-[340px] mobile:w-[240px] mobile:h-[300px] border-2 border-cyan-500 bg-white rounded-md relative overflow-hidden">
 
@@ -132,7 +127,7 @@ const ZoomImage = ({ thumbnail, title }) => {
   return (
     <div className="w-full h-full overflow-hidden relative group">
       <img
-        className="w-full h-full object-cover transition-transform duration-8000 transform-gpu animate-zoom"
+        className="w-full h-full object-fill transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
         src={thumbnail}
         alt={title}
       />
