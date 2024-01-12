@@ -1,14 +1,16 @@
-'use client'
+"use client"
 
 import { useEffect, useRef } from "react";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import MoviesUserActionWarper from "./MoviesUserActionWarper";
+import Link from "next/link";
 
 export default function Videoplayer({ movieDetails }) {
 
   const playerRef = useRef(null);
 
   const {
+    imdbRating,
     title,
     thambnail,
     releaseYear,
@@ -52,27 +54,41 @@ export default function Videoplayer({ movieDetails }) {
     };
   }, []);
 
+  const usersReactionData ={
+    initialDislike: false,
+    initialLike: false,
+    initialIsUser: true,
+    totalLike: 120,
+    totalDislike: 24
+  }
+
   return (
     <>
       <CategoryGroupSlider />
 
-      <div className="w-full h-full min-h-[90vh] bg-gray-800 py-6 flex justify-center items-center">
+      <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 px-2 flex justify-center items-center">
 
-        <div className="w-fit h-fit mx-2 px-4 py-5 flex mobile:flex-col gap-2 bg-cyan-50 rounded-md shadow-xl">
+        <div className="mobile:w-full mobile:max-w-[600px] w-fit h-fit p-3 flex mobile:flex-col gap-5 mobile:marker:gap-0 bg-white rounded-md shadow-xl">
 
-          <div className="w-[260px] h-[340px] mobile:w-[240px] mobile:h-[300px] border-2 border-cyan-500 bg-white rounded-md relative overflow-hidden">
+          <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
 
-            <ZoomImage thumbnail={thambnail} title={thambnail} />
+            <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border-2 border-cyan-500 rounded-md relative overflow-hidden">
 
-            <div role="button" onClick={showPlayer}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-500 text-gray-100 w-12 h-12 flex justify-center items-center rounded-full pl-0.5 transition-transform duration-300 hover:scale-110">
-              <i className="bi bi-play text-3xl"></i>
+              <ZoomImage thumbnail={thambnail} title={thambnail} />
+
+              <div role="button" onClick={showPlayer}
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-500 text-gray-100 w-12 h-12 flex justify-center items-center rounded-full pl-0.5 transition-transform duration-300 hover:scale-110">
+                <i className="bi bi-play text-3xl"></i>
+              </div>
+              {imdbRating && (
+                <div className=" absolute top-1 right-2 w-auto h-auto bg-gray-800 text-xs text-white px-2 py-1 rounded-md">{imdbRating}/10</div>
+              )}
             </div>
 
           </div>
 
-          <div className="w-auto h-auto max-w-sm min-w-[320px] mobile:min-w-[280px] px-2 py-3 flex flex-col mobile:flex-col-reverse">
-            <div>
+          <div className="w-auto h-auto max-w-md py-3 flex flex-col mobile:flex-col-reverse">
+            <div className="mobile:px-2.5">
 
               <div className="text-base text-gray-900 font-bold my-3.5">Title: <span className="text-sm text-gray-600 font-semibold">{title}</span></div>
               <div className="text-base text-gray-900 font-bold my-3.5">Year: <span className="text-sm text-gray-600 font-semibold">{releaseYear}</span></div>
@@ -100,15 +116,18 @@ export default function Videoplayer({ movieDetails }) {
               <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
                 <div className="text-base text-gray-900 font-bold">Genre: </div>
                 {genre?.map((genre) => (
-                  <div key={genre} className="bg-gray-200 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-semibold rounded-md">
-                    {genre}
+                  <div key={genre} className="bg-cyan-50 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-semibold rounded-md">
+                    <Link href={`/movies/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
                   </div>
                 ))}
               </div>
 
             </div>
 
-             <MoviesUserActionWarper initialDislike={false} initialLike={false} initialIsUser={true} totalLike={120} />
+            <MoviesUserActionWarper 
+            usersReactionData={usersReactionData}
+            movieData={movieDetails}
+             />
 
           </div>
 

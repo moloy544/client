@@ -10,6 +10,7 @@ function AddMoviesPage() {
 
     const [state, setState] = useState({
         imdbId: '',
+        imdbRating: 0,
         thambnail: '',
         title: '',
         releaseYear: 0,
@@ -32,7 +33,7 @@ function AddMoviesPage() {
 
             const response = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${id}`);
 
-            const { Title, Year, Released, Poster, Genre, Actors } = response.data;
+            const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = response.data;
 
             const genreAray = Genre.split(',').map(genre => genre.trim());
 
@@ -40,6 +41,7 @@ function AddMoviesPage() {
 
             setState(prevState => ({
                 ...prevState,
+                imdbRating: imdbRating,
                 thambnail: Poster,
                 title: Title,
                 releaseYear: Year,
@@ -59,8 +61,13 @@ function AddMoviesPage() {
         try {
 
 
-            const addResponse = await axios.post(`${backendServer}/api/v1/admin/add_movie`, state);
+            const addResponse = await axios.post(`${backendServer}/api/v1/admin/add_movie`, {
+
+                data: { ...state }
+            }
+            );
             const responseMessage = addResponse.data?.message;
+
             if (addResponse.status === 200) {
 
                 alert(responseMessage);
@@ -68,6 +75,7 @@ function AddMoviesPage() {
                 setState(prevState => ({
                     ...prevState,
                     imdbId: '',
+                    imdbRating: 0,
                     thambnail: '',
                     title: '',
                     releaseYear: 0,
@@ -216,6 +224,11 @@ function AddMoviesPage() {
                         </div>
 
                         <div className="flex flex-col my-3">
+                            <label className="font-bold">Imdb Rating</label>
+                            <input className="border border-black rounded-sm" type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} />
+                        </div>
+
+                        <div className="flex flex-col my-3">
                             <label className="font-bold">Title</label>
                             <input className="border border-black rounded-sm" type="text" value={state.title} onChange={(e) => handleInputChange(e, 'title')} />
                         </div>
@@ -231,7 +244,7 @@ function AddMoviesPage() {
                         </div>
 
                         <div className="flex flex-col my-3">
-                            <label className="font-bold">Category {state.category}</label>
+                            <label className="font-bold">Category {"("+state.category+")"}</label>
                             <div className="flex gap-5">
                                 <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                                     Bollywood
@@ -249,12 +262,21 @@ function AddMoviesPage() {
                         </div>
 
                         <div className="flex flex-col my-3">
-                            <label className="font-bold">Type</label>
-                            <input className="border border-black rounded-sm" type="text" value={state.type} onChange={(e) => handleInputChange(e, 'type')} />
+                            <label className="font-bold">Type {"("+state.type+")"}</label>
+                            <div className="flex gap-5">
+                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                    Movie
+                                    <input onChange={(e) => handleInputChange(e, 'type')} type="radio" value="movie" name="type" checked={state.type === 'movie'} />
+                                </label>
+                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                    Series
+                                    <input onChange={(e) => handleInputChange(e, 'type')} type="radio" value="series" name="type" checked={state.type === 'series'} />
+                                </label>
+                            </div>
                         </div>
 
                         <div className="flex flex-col my-3">
-                            <label className="font-bold">Language {state.language}</label>
+                            <label className="font-bold">Language {"("+state.language+")"}</label>
                             <div className="flex gap-5">
                                 <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                                     Hindi
@@ -263,6 +285,10 @@ function AddMoviesPage() {
                                 <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                                     Hindi Dubbed
                                     <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi dubbed" name="language" checked={state.language === 'hindi dubbed'} />
+                                </label>
+                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                    Bengali
+                                    <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="bengali" name="language" checked={state.language === 'bengali'} />
                                 </label>
                             </div>
                         </div>
@@ -311,8 +337,7 @@ function AddMoviesPage() {
                         </div>
 
                         <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add movie</div>
-                        <p>Page 22 complete Bollywood movies</p>
-                        <p>Page 62 complete home page movies</p>
+        
                     </div>
                 </div>
 
@@ -384,22 +409,22 @@ function AddActorSertion() {
                         <input className="border border-black rounded-sm" type="text" value={actorState.name} onChange={(e) => handleInputChange(e, 'name')} />
                     </div>
                     <div className="flex flex-col my-3">
-                            <label className="font-bold">Actor industry {actorState.industry}</label>
-                            <div className="flex gap-5">
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Bollywood
-                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="bollywood" name="industry" checked={actorState.industry === 'bollywood'} />
-                                </label>
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Hollywood
-                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="hollywood" name="industry" checked={actorState.industry === 'hollywood'} />
-                                </label>
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    South
-                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="south" name="industry" checked={actorState.industry === 'south'} />
-                                </label>
-                            </div>
+                        <label className="font-bold">Actor industry {actorState.industry}</label>
+                        <div className="flex gap-5">
+                            <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                Bollywood
+                                <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="bollywood" name="industry" checked={actorState.industry === 'bollywood'} />
+                            </label>
+                            <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                Hollywood
+                                <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="hollywood" name="industry" checked={actorState.industry === 'hollywood'} />
+                            </label>
+                            <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                South
+                                <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="south" name="industry" checked={actorState.industry === 'south'} />
+                            </label>
                         </div>
+                    </div>
                     <div onClick={sendActorData} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add actor</div>
 
                 </div>

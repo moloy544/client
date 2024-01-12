@@ -19,8 +19,8 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
                 {moviesData?.map((data) => (
 
                     <Link
-                        key={data._id}
-                        href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data._id}`}
+                        key={data.imdbId}
+                        href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}
                         className="w-auto h-auto "
                         prefetch={false}>
 
