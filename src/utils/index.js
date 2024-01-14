@@ -25,6 +25,7 @@ export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerP
 
   } catch (error) {
     console.log(error);
+    return { status: 500, filterResponse: [], dataIsEnd: true }
   }
 };
 

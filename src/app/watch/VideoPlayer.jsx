@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useEffect, useRef } from "react";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
@@ -54,13 +54,21 @@ export default function Videoplayer({ movieDetails }) {
     };
   }, []);
 
-  const usersReactionData ={
+  const usersReactionData = {
     initialDislike: false,
     initialLike: false,
     initialIsUser: true,
     totalLike: 120,
     totalDislike: 24
-  }
+  };
+
+  const originalDate = new Date(fullReleaseDate);
+
+  const formattedDate = originalDate.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
 
   return (
     <>
@@ -72,7 +80,7 @@ export default function Videoplayer({ movieDetails }) {
 
           <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
 
-            <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border-2 border-cyan-500 rounded-md relative overflow-hidden">
+            <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border border-gray-600 rounded-md relative overflow-hidden">
 
               <ZoomImage thumbnail={thambnail} title={thambnail} />
 
@@ -81,8 +89,9 @@ export default function Videoplayer({ movieDetails }) {
                 <i className="bi bi-play text-3xl"></i>
               </div>
               {imdbRating && (
-                <div className=" absolute top-1 right-2 w-auto h-auto bg-gray-800 text-xs text-white px-2 py-1 rounded-md">{imdbRating}/10</div>
+                <div className="absolute top-1 right-2 w-auto h-auto bg-gray-800 text-xs text-yellow-400 px-2 py-1 rounded-md">{imdbRating}/10</div>
               )}
+
             </div>
 
           </div>
@@ -93,7 +102,7 @@ export default function Videoplayer({ movieDetails }) {
               <div className="text-base text-gray-900 font-bold my-3.5">Title: <span className="text-sm text-gray-600 font-semibold">{title}</span></div>
               <div className="text-base text-gray-900 font-bold my-3.5">Year: <span className="text-sm text-gray-600 font-semibold">{releaseYear}</span></div>
               {fullReleaseDate && (
-                <div className="text-base text-gray-900 font-bold my-3.5">Released: <span className="text-sm text-gray-600 font-semibold">{fullReleaseDate}</span></div>
+                <div className="text-base text-gray-900 font-bold my-3.5">Released: <span className="text-sm text-gray-600 font-semibold">{formattedDate}</span></div>
               )}
 
               <div className="text-base text-gray-900 font-bold my-3.5">Language: <span className="text-sm text-gray-600 font-semibold">{language?.charAt(0).toUpperCase() + language?.slice(1)}</span></div>
@@ -112,28 +121,30 @@ export default function Videoplayer({ movieDetails }) {
 
                 </>
               )}
-
-              <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
-                <div className="text-base text-gray-900 font-bold">Genre: </div>
-                {genre?.map((genre) => (
-                  <div key={genre} className="bg-cyan-50 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-semibold rounded-md">
-                    <Link href={`/movies/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
-                  </div>
-                ))}
-              </div>
+                <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
+                  <div className="text-base text-gray-900 font-bold">Genre: </div>
+                  {genre?.map((genre) => (
+                    <div key={genre} className="bg-cyan-100 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-semibold rounded-md">
+                      {genre !=="N/A" ?(
+                      <Link href={`/movies/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
+                      ): genre}
+                    </div>
+                  ))}
+                </div>
 
             </div>
 
-            <MoviesUserActionWarper 
-            usersReactionData={usersReactionData}
-            movieData={movieDetails}
-             />
+
+            <MoviesUserActionWarper
+              usersReactionData={usersReactionData}
+              movieData={movieDetails}
+            />
 
           </div>
 
         </div>
 
-        <iframe ref={playerRef} className="fixed top-0 left-0 w-full h-full border-none z-[600] hidden" src={watchLink} allowFullScreen="allowfullscreen">
+        <iframe ref={playerRef} className="absolute top-0 left-0 w-full h-full border-none z-[600] hidden" src={watchLink} allowFullScreen="allowfullscreen">
         </iframe>
 
       </div>

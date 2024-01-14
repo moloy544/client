@@ -39,13 +39,18 @@ function AddMoviesPage() {
 
             const actorsArray = Actors.split(',').map(actor => actor.trim());
 
+            const originalDate = new Date(Released);
+
+            // Format the date without the time portion
+            const formattedDate = originalDate.toISOString().split('T')[0];
+
             setState(prevState => ({
                 ...prevState,
                 imdbRating: imdbRating,
                 thambnail: Poster,
                 title: Title,
                 releaseYear: Year,
-                fullReleaseDate: Released,
+                fullReleaseDate: formattedDate,
                 genre: genreAray,
                 castDetails: actorsArray,
                 searchKeywords: ''
@@ -244,7 +249,7 @@ function AddMoviesPage() {
                         </div>
 
                         <div className="flex flex-col my-3">
-                            <label className="font-bold">Category {"("+state.category+")"}</label>
+                            <label className="font-bold">Category {"(" + state.category + ")"}</label>
                             <div className="flex gap-5">
                                 <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                                     Bollywood
@@ -262,7 +267,7 @@ function AddMoviesPage() {
                         </div>
 
                         <div className="flex flex-col my-3">
-                            <label className="font-bold">Type {"("+state.type+")"}</label>
+                            <label className="font-bold">Type {"(" + state.type + ")"}</label>
                             <div className="flex gap-5">
                                 <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                                     Movie
@@ -276,7 +281,7 @@ function AddMoviesPage() {
                         </div>
 
                         <div className="flex flex-col my-3">
-                            <label className="font-bold">Language {"("+state.language+")"}</label>
+                            <label className="font-bold">Language {"(" + state.language + ")"}</label>
                             <div className="flex gap-5">
                                 <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                                     Hindi
@@ -337,7 +342,7 @@ function AddMoviesPage() {
                         </div>
 
                         <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add movie</div>
-        
+
                     </div>
                 </div>
 

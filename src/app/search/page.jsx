@@ -5,6 +5,7 @@ import Link from "next/link";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
 import axios from "axios";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
 
@@ -12,14 +13,29 @@ function SearchPage() {
 
     const backendServer = appConfig.backendUrl;
 
+    const searchParams = useSearchParams();
+    const { replace } = useRouter();
+    const pathname = usePathname();
+
+    const initialSearchQuery = searchParams.get('q') || "";
+
     // Set all state
-    const [searchQuery, setSearchQuery] = useState("")
+    const [searchQuery, setSearchQuery] = useState(initialSearchQuery)
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [moviesData, setMoviesData] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
 
     const observerRef = useRef(null);
+
+
+    useEffect(() => {
+        if (searchQuery !== " " || searchQuery !== "") {
+            getMovies(searchQuery);
+            setLoading(true);
+        };
+
+    }, []);
 
     // Debounce function
     const debounce = (func, delay) => {
@@ -34,48 +50,56 @@ function SearchPage() {
 
     const getMovies = useCallback(async (query) => {
 
-        if (!loading && !endOfData) {
+        try {
 
-            try {
+            const response = await axios.post(`${backendServer}/api/v1/movies/search?q=${query}`, {
+                limitPerPage: 25,
+                skip: moviesData.length
+            });
 
-                const response = await axios.post(`${backendServer}/api/v1/movies/search?q=${query}`, {
-                    limitPerPage: 25,
-                    skip: moviesData.length
-                });
+            const { searchData, dataIsEnd } = response.data
 
-                const { searchData, dataIsEnd } = response.data
+            if (response.status === 200) {
 
-                if (response.status === 200) {
+                if (page === 1) {
 
-                    if (page.length >= 1) {
+                    setMoviesData(searchData);
+                } else {
+                    setMoviesData(prevData => [...prevData, ...searchData])
+                }
 
-                        setMoviesData(searchData);
-                    } else {
-                        setMoviesData(prevData => [...prevData, ...searchData])
-                    }
-
-                    if (dataIsEnd) {
-                        setEndOfData(true);
-                    };
+                if (dataIsEnd) {
+                    setEndOfData(true);
                 };
-
-            } catch (error) {
-                console.log(error)
-            } finally {
-                setLoading(false);
-
             };
+
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false);
 
         };
 
-    }, [loading, endOfData]);
+    }, [searchQuery]);
 
     // Debounced handleSearch function with a delay of 500 milliseconds
     const debouncedHandleSearch = useCallback(
 
         debounce((query) => {
 
-            getMovies(query);
+            const params = new URLSearchParams(searchParams);
+
+            if (query !== "") {
+
+                params.set('q', query);
+
+                getMovies(query);
+
+            } else {
+                params.delete('q');
+            }
+
+            replace(`${pathname}?${params.toString()}`);
 
         }, 1200), []);
 
@@ -103,8 +127,7 @@ function SearchPage() {
             if (endOfData) {
                 setEndOfData(false);
             };
-
-        }
+        };
     };
 
 
@@ -172,7 +195,7 @@ function SearchPage() {
 
                     <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
-                        {moviesData.length > 0 ? (
+                        {moviesData.length > 0 && !loading ? (
                             <>
                                 <h3 className="text-gray-300 text-base mobile:text-sm py-2 font-bold px-2">
                                     Results for <span className=" text-cyan-500">{searchQuery}</span>

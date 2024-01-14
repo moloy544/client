@@ -3,7 +3,7 @@ import NavigateBack from "./NavigateBack"
 
 function NavigateBackTopNav({ title }) {
     return (
-        <header className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-gray-900 px-3 border-b border-b-cyan-700">
+        <header className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-gray-900 px-3 border-b border-b-cyan-800">
 
             <div className="w-auto h-auto flex gap-4 items-center py-4 mobile:py-2">
                 <NavigateBack className="bi bi-arrow-left text-gray-100 text-3xl mobile:text-[25px] cursor-pointer" />

@@ -1,7 +1,7 @@
 export const categoryArray = {
 
   linkUrl: "/movies/category",
-  
+
   category: [
     {
       id: 1,
@@ -22,10 +22,16 @@ export const categoryArray = {
     },
     {
       id: 5,
-      name: "Hindi"
+      name: "Series",
+      linkUrl: "/series"
+
     },
     {
       id: 6,
+      name: "Hindi"
+    },
+    {
+      id: 7,
       name: "Hindi Dubbed"
     }
   ]

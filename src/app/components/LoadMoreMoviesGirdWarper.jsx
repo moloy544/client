@@ -72,8 +72,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
                     const { status, filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
                         apiPath: apiUrl,
-                        limitPerPage: 40,
-                        skip: loadMoviesData?.length
+                        limitPerPage: initialMovies.length,
+                        skip: moviesData?.length
                     });
 
                     if (status === 200) {
