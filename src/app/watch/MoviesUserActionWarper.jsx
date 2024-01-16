@@ -115,7 +115,7 @@ function MoviesUserActionWarper({ usersReactionData, movieData }) {
         <div className="text-xs text-gray-700 font-semibold">Share</div>
       </div>
 
-      <div onClick={saveInLocalStorage} role="button" className="w-auto h-auto flex gap-1 justify-center items-center bg-gray-200 hover:bg-gray-300 py-1 px-2 rounded-xl">
+      <div onClick={saveInLocalStorage} role="button" className="w-auto h-auto flex gap-1 justify-center items-center bg-gray-200 hover:bg-gray-300 py-1 px-2.5 rounded-xl">
         {isSaved ? (
           <i className="bi bi-check2"></i>
         ) : (
@@ -124,7 +124,7 @@ function MoviesUserActionWarper({ usersReactionData, movieData }) {
           </svg>
         )}
 
-        <div className={`text-xs ${isSaved ? "text-green-600" : "text-gray-700"} font-semibold`}>{isSaved ? "Saved" : "Save"}</div>
+        <div className="text-xs text-gray-700 font-semibold">{isSaved ? "Saved" : "Save"}</div>
 
       </div>
 

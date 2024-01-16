@@ -17,7 +17,9 @@ export default function Videoplayer({ movieDetails }) {
     genre,
     watchLink,
     castDetails,
-    language
+    language,
+    category,
+    type
   } = movieDetails || {};
 
   const showPlayer = () => {
@@ -27,17 +29,24 @@ export default function Videoplayer({ movieDetails }) {
   };
 
   useEffect(() => {
+
     const handleHashChange = () => {
 
       const playerElement = playerRef.current;
+
+      const body = document.querySelector('body');
 
       if (window.location.hash === "#player") {
 
         playerElement.classList.add('block');
         playerElement.classList.remove('hidden');
+        body.setAttribute('class', 'overflow-y-hidden');
+
       } else {
+
         playerElement.classList.remove('block');
         playerElement.classList.add('hidden');
+        body.removeAttribute('class', 'overflow-y-hidden');
       }
     };
 
@@ -72,7 +81,95 @@ export default function Videoplayer({ movieDetails }) {
   return (
     <>
 
-      <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 px-2 flex justify-center items-center">
+      <div aria-label="Breadcrumb" className="bg-gray-800 px-3 py-2">
+        <div className="flex items-center text-base mobile:text-sm text-gray-300 capitalize">
+          <div>
+            <Link href="/" className="block transition hover:text-cyan-500">
+              <span className="sr-only"> Home </span>
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mobile:h-4 mobile:w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+            </Link>
+          </div>
+
+          <div className="rtl:rotate-180">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+
+          <div>
+
+            {type === "series" ? (
+              <Link href={`/${type}`} className="block transition hover:text-cyan-500">{type}</Link>
+            ) : (
+              <span className="block transition hover:text-cyan-500">{type}</span>
+            )}
+
+          </div>
+
+          <div className="rtl:rotate-180">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+
+          <div>
+            <Link href={`/movies/category/${category}`} className="block transition hover:text-cyan-500">{category}</Link>
+          </div>
+
+          <div className="rtl:rotate-180">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+
+          <div>
+            <Link href={`/movies/category/${language?.replace(' ', '-')}`} className="block transition hover:text-cyan-500">{language}</Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full h-full bg-gray-800 py-6 mobile:py-2 px-2 flex justify-center items-center">
 
         <div className="mobile:w-full mobile:max-w-[600px] w-fit h-fit p-3 flex mobile:flex-col gap-5 mobile:marker:gap-0 bg-white rounded-md shadow-xl">
 
@@ -83,11 +180,11 @@ export default function Videoplayer({ movieDetails }) {
               <ZoomImage thumbnail={thambnail} title={thambnail} />
 
               <div role="button" onClick={showPlayer}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-500 text-gray-100 w-12 h-12 flex justify-center items-center rounded-full pl-0.5 transition-transform duration-300 hover:scale-110">
-                <i className="bi bi-play text-3xl"></i>
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-500 text-gray-100 w-12 h-12 flex justify-center items-center rounded-full pl-1 text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
+                <i className="bi bi-play"></i>
               </div>
               {imdbRating && (
-                <div className="absolute top-1 right-2 w-auto h-auto bg-gray-800 text-xs text-yellow-400 px-2 py-1 rounded-md">{imdbRating}/10</div>
+                <div className="absolute top-1 right-2 w-auto h-auto bg-gray-800 text-xs font-semibold text-yellow-400 px-2 py-1 rounded-md">{imdbRating}/10</div>
               )}
 
             </div>
@@ -119,19 +216,18 @@ export default function Videoplayer({ movieDetails }) {
 
                 </>
               )}
-                <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
-                  <div className="text-base text-gray-900 font-bold">Genre: </div>
-                  {genre?.map((genre) => (
-                    <div key={genre} className="bg-cyan-100 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-semibold rounded-md">
-                      {genre !=="N/A" ?(
+              <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
+                <div className="text-base text-gray-900 font-bold">Genre: </div>
+                {genre?.map((genre) => (
+                  <div key={genre} className="bg-cyan-100 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-semibold rounded-md">
+                    {genre !== "N/A" ? (
                       <Link href={`/movies/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
-                      ): genre}
-                    </div>
-                  ))}
-                </div>
+                    ) : genre}
+                  </div>
+                ))}
+              </div>
 
             </div>
-
 
             <MoviesUserActionWarper
               usersReactionData={usersReactionData}
@@ -142,8 +238,10 @@ export default function Videoplayer({ movieDetails }) {
 
         </div>
 
-        <iframe ref={playerRef} className="absolute top-0 left-0 w-full h-full border-none z-[600] hidden" src={watchLink} allowFullScreen="allowfullscreen">
-        </iframe>
+        <iframe ref={playerRef}
+          className="fixed top-0 left-0 w-full h-full border-none z-[600] hidden"
+          src={watchLink}
+          allowFullScreen="allowfullscreen" />
 
       </div>
     </>
