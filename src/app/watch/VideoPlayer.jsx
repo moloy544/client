@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef } from "react";
-import CategoryGroupSlider from "../components/CategoryGroupSlider";
 import MoviesUserActionWarper from "./MoviesUserActionWarper";
 import Link from "next/link";
 
@@ -72,7 +71,6 @@ export default function Videoplayer({ movieDetails }) {
 
   return (
     <>
-      <CategoryGroupSlider />
 
       <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 px-2 flex justify-center items-center">
 
@@ -105,7 +103,7 @@ export default function Videoplayer({ movieDetails }) {
                 <div className="text-base text-gray-900 font-bold my-3.5">Released: <span className="text-sm text-gray-600 font-semibold">{formattedDate}</span></div>
               )}
 
-              <div className="text-base text-gray-900 font-bold my-3.5">Language: <span className="text-sm text-gray-600 font-semibold">{language?.charAt(0).toUpperCase() + language?.slice(1)}</span></div>
+              <div className="text-base text-gray-900 font-bold my-3.5">Language: <Link href={`/movies/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-600 font-semibold">{language?.charAt(0).toUpperCase() + language?.slice(1)}</Link></div>
 
               {castDetails?.length > 0 && (
                 <>

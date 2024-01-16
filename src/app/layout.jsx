@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
+import Footer from './components/Footer';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -47,6 +48,8 @@ export default function RootLayout({ children }) {
         <ReduxStatePrivider>
           {children}
         </ReduxStatePrivider>
+        
+        <Footer />
 
         <SpeedInsights />
 

@@ -39,10 +39,10 @@ function AddMoviesPage() {
 
             const actorsArray = Actors.split(',').map(actor => actor.trim());
 
-            const originalDate = new Date(Released);
+            const originalDate = Released ? new Date(Released) : null;
 
             // Format the date without the time portion
-            const formattedDate = originalDate.toISOString().split('T')[0];
+            const formattedDate = originalDate?.toISOString().split('T')[0];
 
             setState(prevState => ({
                 ...prevState,

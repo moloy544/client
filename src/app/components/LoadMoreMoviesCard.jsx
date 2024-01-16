@@ -44,7 +44,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
                             </span>
                         </div>
 
-                        <div className="absolute top-0.5 right-0.5 z-10 w-auto h-auto px-1 py-0.5 bg-gray-900 text-yellow-400 text-[10px] text-center font-sans font-semibold rounded-md">
+                        <div className="absolute top-0.5 right-0.5 z-10 w-auto h-auto px-1.5 py-0.5 bg-gray-800 text-yellow-400 text-[10px] text-center font-sans font-semibold rounded-md">
                             {data.releaseYear}
                         </div>
 

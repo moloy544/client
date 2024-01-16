@@ -11,10 +11,6 @@ export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerP
 
     const status = response.status;
 
-    if (status !== 200) {
-      throw new Error('Network response was not ok');
-    };
-
     // Use a Set to filter out duplicates from the data array
     const filterResponse = [...new Set(response.data.moviesData)];
 

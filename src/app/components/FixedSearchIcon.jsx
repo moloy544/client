@@ -49,8 +49,8 @@ function FixedSearchIcon() {
     }, [handleScroll]);
 
     return (
-        <Link href="/search" style={{boxShadow: 'rgb(212, 206, 7) 0px 0px 6px'}} className={`fixed right-14 bottom-16 mobile:bottom-10 mobile:right-8 w-12 h-12 mobile:w-11 mobile:h-11 bg-yellow-500 rounded-full z-20 flex items-center justify-center ${isVisible ? 'block' : 'hidden'}`}>
-            <i className="bi bi-search text-xl mobile:text-[18px] text-gray-900 font-bold"></i>
+        <Link href="/search" style={{boxShadow: 'rgb(212, 206, 7) 0px 0px 6px'}} className={`fixed right-14 bottom-16 mobile:bottom-10 mobile:right-8 w-12 h-12 md:w-14 md:h-14 bg-yellow-500 rounded-full z-20 flex items-center justify-center ${isVisible ? 'block' : 'hidden'}`}>
+            <i className="bi bi-search md:text-2xl text-[20px] text-gray-900 font-bold"></i>
         </Link>
     )
 }

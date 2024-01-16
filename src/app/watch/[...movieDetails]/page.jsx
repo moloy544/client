@@ -4,6 +4,7 @@ import { appConfig } from "@/config/config";
 import { notFound } from "next/navigation";
 import Videoplayer from "@/app/watch/VideoPlayer";
 import { creatUrlLink } from "@/utils";
+import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 
 async function getMovieDeatils(movieId) {
 
@@ -74,6 +75,10 @@ export default async function Page({ params }) {
   };
 
   return (
+    <>
+    <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
+
     <Videoplayer movieDetails={movieData} />
+    </>
   )
 }

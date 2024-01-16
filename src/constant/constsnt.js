@@ -33,6 +33,10 @@ export const categoryArray = {
     {
       id: 7,
       name: "Hindi Dubbed"
+    },
+    {
+      id: 8,
+      name: "Bengali"
     }
   ]
 };
