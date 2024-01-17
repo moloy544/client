@@ -1,15 +1,10 @@
 'use client'
+
 import Link from "next/link";
 import CategoryGroupSlider from "./CategoryGroupSlider";
-import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export default function Navbar() {
-
-    const pathname = usePathname();
-
-    if (pathname === "/search") {
-        return null;
-    };
 
     return (
         <>
@@ -29,23 +24,91 @@ export default function Navbar() {
                         </Link>
 
                         <Link href="/search" className="hidden mobile:block p-0.5 mx-3">
-                        <i className="bi bi-search text-gray-200 text-xl"></i>
-                    </Link>
-                
-                        <div className="w-auto h-auto relative">
+                            <i className="bi bi-search text-gray-200 text-xl"></i>
+                        </Link>
 
-                            <i className="bi bi-bell-fill text-gray-100 text-2xl mobile:text-xl cursor-pointer"></i>
+                        <NotificationDropDown />
 
-                            <div className="w-64 h-96 bg-white rounded-md shadow-2xl absolute top-10 right-0 z-50 hidden"></div>
-
-                        </div>
                     </div>
-                   
+
                 </nav>
 
             </header>
 
             <CategoryGroupSlider />
         </>
+    )
+}
+
+function NotificationDropDown() {
+
+    const [isNotifactionVisible, setIsNotificationVisible] = useState(false);
+
+    const toggleNotifaction = () => {
+        setIsNotificationVisible((prevState) => !prevState)
+    };
+
+    const notifactionData = {
+        news: [
+            {
+                id: 2822,
+                nofifactionMessage: 'Add series option in our category now watch latest series free of cost',
+                postDate: '2days ago 11:12PM'
+            },
+            {
+                id: 8288,
+                nofifactionMessage: 'New year 2024 movies and series is uploaded watch now latest movies series in 2024',
+                postDate: ' 1days ago 08:23PM'
+            }
+        ]
+    };
+
+    return (
+        <div className="w-auto h-auto relative">
+
+            <div onClick={toggleNotifaction} role="button" className="p-1">
+                <i className="bi bi-bell-fill text-gray-100 text-2xl mobile:text-xl cursor-pointer"></i>
+            </div>
+            {isNotifactionVisible && (
+                <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border border-gray-300 right-0 z-50">
+
+                    <div className="border-b border-gray-900 px-2 py-1.5 flex items-center gap-2">
+                        <i onClick={toggleNotifaction} className="bi bi-arrow-left text-xl cursor-pointer"></i>
+                        <span className="text-sm text-gray-950 font-bold font-sans">Notifaction</span>
+                    </div>
+
+                    <div className="w-auto h-auto flex gap-2 px-2.5 py-2 justify-around border-b border-gray-300">
+                        <div role="button" className="bg-gray-100 text-xs text-gray-700 border border-gray-400 rounded-xl px-3 py-1">
+                            News
+                        </div>
+                        <div role="button" className="bg-gray-100 text-xs text-gray-700 border border-gray-400 rounded-xl px-3 py-1">
+                            Message
+                        </div>
+                        <div role="button" className="bg-gray-100 text-xs text-gray-700 border border-gray-400 rounded-xl px-3 py-1">
+                            Notice
+                        </div>
+                    </div>
+
+                    <div className="w-64 h-80 overflow-y-scroll py-1">
+
+                        {notifactionData.news?.map((data)=>(
+                            <div key={data.id} className="w-auto h-auto px-2 py-1.5 border-b border-gray-300 hover:bg-gray-100">
+                            <div className="flex flex-col gap-1">
+                                <div className="text-gray-950 text-[12px] leading-[14px] line-clamp-3">
+                                    {data.nofifactionMessage}
+                                </div>
+                                <span className="text-[10px] text-gray-500">
+                                    {data.postDate}
+                                </span>
+                            </div>
+                        </div>
+                        ))}
+
+                    </div>
+
+                </div>
+            )}
+
+        </div>
     )
 }

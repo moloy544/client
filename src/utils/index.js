@@ -1,12 +1,13 @@
 import axios from "axios";
 
-export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerPage, skip = 0 }) => {
+export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerPage, skip = 0, bodyData }) => {
 
   try {
 
     const response = await axios[methood](apiPath, {
       limit: limitPerPage,
-      skip
+      skip,
+      bodyData
     });
 
     const status = response.status;

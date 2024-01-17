@@ -25,12 +25,10 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
         <>
             {moviesData?.map((data) => (
 
-                <Link
-                    key={`${data._id}-${data.imdbId}`}
-                    href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}
-                    className="w-auto h-auto"
-                    prefetch={false}>
-                    <div className="movie_card border border-yellow-600">
+
+                <div key={`${data._id}-${data.imdbId}`} className="movie_card border border-yellow-600">
+
+                    <Link className="w-auto h-auto" href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} prefetch={false}>
 
                         <div className="w-auto object-cover h-[12.50rem] max-h-[220px] mobile:max-h-[170px] bg-white rounded-[3px]">
                             <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
@@ -47,9 +45,9 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
                         <div className="absolute top-0.5 right-0.5 z-10 w-auto h-auto px-1.5 py-0.5 bg-gray-800 text-yellow-400 text-[10px] text-center font-sans font-semibold rounded-md">
                             {data.releaseYear}
                         </div>
+                    </Link>
+                </div>
 
-                    </div>
-                </Link>
             ))}
 
             {isLoading && moviesData.length > 0 && <LoaderSkleaton limit={limit} />}
