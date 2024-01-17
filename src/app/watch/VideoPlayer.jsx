@@ -62,13 +62,6 @@ export default function Videoplayer({ movieDetails }) {
     };
   }, []);
 
-  const usersReactionData = {
-    initialDislike: false,
-    initialLike: false,
-    initialIsUser: true,
-    totalLike: 120,
-    totalDislike: 24
-  };
 
   const originalDate = new Date(fullReleaseDate);
 
@@ -171,13 +164,19 @@ export default function Videoplayer({ movieDetails }) {
 
       <div className="w-full h-full bg-gray-800 py-6 mobile:py-2 px-2 flex justify-center items-center">
 
-        <div className="mobile:w-full mobile:max-w-[600px] w-fit h-fit p-3 flex mobile:flex-col gap-5 mobile:marker:gap-0 bg-white rounded-md shadow-xl">
+        <div className="mobile:w-full mobile:max-w-[600px] md:min-w-[700px] w-fit h-fit p-3 flex mobile:flex-col gap-5 mobile:marker:gap-0 bg-white rounded-md shadow-xl">
 
           <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
 
             <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border border-gray-600 rounded-md relative overflow-hidden">
 
-              <ZoomImage thumbnail={thambnail} title={thambnail} />
+              <div className="w-full h-full overflow-hidden relative group">
+                <img
+                  className="w-full h-full object-fill transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
+                  src={thambnail}
+                  alt={title}
+                />
+              </div>
 
               <div role="button" onClick={showPlayer}
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-500 text-gray-100 w-12 h-12 flex justify-center items-center rounded-full pl-1 text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
@@ -229,10 +228,7 @@ export default function Videoplayer({ movieDetails }) {
 
             </div>
 
-            <MoviesUserActionWarper
-              usersReactionData={usersReactionData}
-              movieData={movieDetails}
-            />
+            <MoviesUserActionWarper movieData={movieDetails} />
 
           </div>
 
@@ -247,17 +243,3 @@ export default function Videoplayer({ movieDetails }) {
     </>
   )
 }
-
-
-const ZoomImage = ({ thumbnail, title }) => {
-  return (
-    <div className="w-full h-full overflow-hidden relative group">
-      <img
-        className="w-full h-full object-fill transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
-        src={thumbnail}
-        alt={title}
-      />
-    </div>
-  );
-};
-
