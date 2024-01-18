@@ -70,7 +70,7 @@ export default async function Page({ params }) {
 
   const { status, name } = actorData;
 
-  if (status === 404) {
+  if (status !== 200) {
     notFound();
   };
 

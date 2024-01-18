@@ -22,9 +22,6 @@ export async function generateMetadata({ params }) {
   return metaData;
 };
 
-//Revalidate page every 30 minutes
-export const revalidate = 1800;
-
 export default async function Page({ params, searchParams }) {
 
   const category = params?.categoryName;

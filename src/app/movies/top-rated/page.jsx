@@ -3,10 +3,6 @@ import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 
-
-//Revalidate page every 30 minutes
-export const revalidate = 1800;
-
 export const metadata = {
 
     title: 'Top Rated Movies',

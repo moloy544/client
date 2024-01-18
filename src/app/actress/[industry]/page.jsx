@@ -6,11 +6,7 @@ import NavigateBack from "@/app/components/NavigateBack";
 import { transformToCapitalize } from "@/utils";
 import { notFound } from "next/navigation";
 
-//Revalidate page every 30 minutes
-export const revalidate = 1800;
-
 export default async function Page({ params }) {
-
 
     const paramIndustry = params?.industry || ' ';
 

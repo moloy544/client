@@ -198,10 +198,10 @@ function AddMoviesPage() {
 
     return (
         <>
-            <div className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2 py-3 text-base text-gray-200 bg-purple-600 shadow-md">
+            <div className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2 py-3 text-base text-gray-100 bg-purple-600 shadow-md">
                 <Link href="/admin/update">Update</Link>
             </div>
-            <div className="w-auto h-auto flex justify-center">
+            <main className="w-auto h-full min-h-screen bg-white text-gray-950 flex justify-center py-2">
 
                 <div className="mx-10 mt-5 md:flex md:gap-10">
 
@@ -346,7 +346,7 @@ function AddMoviesPage() {
                     </div>
                 </div>
 
-            </div>
+            </main>
 
             {/** Add Actor Section **/}
             <AddActorSertion />
@@ -396,9 +396,9 @@ function AddActorSertion() {
 
     return (
         <>
-            <div className="w-full h-0.5 bg-gray-200 my-2"></div>
+            <div className="w-full h-0.5 bg-gray-200"></div>
 
-            <section className="w-auto h-auto flex justify-center">
+            <section className="w-auto h-full flex justify-center bg-white py-2">
 
                 <div className="mx-10 mt-2">
 

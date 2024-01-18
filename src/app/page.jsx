@@ -30,23 +30,14 @@ export default async function Page() {
           <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
         ))}
 
-        <section className="w-full h-fit pt-2">
+        <section className="w-full h-auto pt-2.5 mobile:pt-1">
 
-          <div className="w-full h-auto flex px-2.5 mb-2 items-center">
-
-            <div className="w-full h-auto flex justify-center items-center my-2">
-              <div className="w-fit h-auto border-b-2 border-b-yellow-500 px-10 mobile:px-5 pb-0.5">
-                <h1 className="text-xl mobile:text-sm text-gray-100 text-center font-semibold">
-                  Bollywood Top Actress
-                </h1>
-              </div>
-            </div>
-
-            <Link href="/actress/bollywood" className="text-base mobile:text-[12px] text-cyan-400 flex-none">See more</Link>
-
+          <div className="w-full h-auto flex justify-between items-center px-2.5 pb-2">
+            <h2 className="text-gray-100 text-[18px] mobile:text-sm font-semibold">Bollywood top actress</h2>
+            <Link href="/actress/bollywood" className="text-base mobile:text-[12px] text-cyan-400">See more</Link>
           </div>
 
-          <div className="w-full h-fit flex flex-row overflow-x-scroll overflow-y-hidden whitespace-nowrap gap-2 md:gap-3 px-2 scrollbar-hidden">
+          <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2.5 mobile:gap-2 px-2 scrollbar-hidden">
 
             {firstSectionData?.bollywoodActressData?.map((actor) => (
 
