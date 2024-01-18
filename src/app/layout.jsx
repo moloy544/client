@@ -29,15 +29,15 @@ export const metadata = {
 }
 
 export const viewport = {
-  themeColor: 'black',
+  themeColor: 'rgb(29, 29, 29)',
   colorScheme: 'dark',
-  
+
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-800 dark:bg-gray-800 min-h-screen`}>
+      <body className={inter.className}>
 
         <NextTopLoader
           color="rgb(255, 171, 15)"
@@ -52,7 +52,9 @@ export default function RootLayout({ children }) {
         />
 
         <ReduxStatePrivider>
-          {children}
+          <div className="w-full h-full bg-gray-800 dark:bg-gray-800 min-h-screen">
+            {children}
+          </div>
         </ReduxStatePrivider>
 
         <SpeedInsights />
