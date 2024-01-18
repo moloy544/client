@@ -180,8 +180,9 @@ function SearchPage() {
 
                         <Link href="/" className="text-xl text-yellow-500 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
 
-                        <input onChange={handleSearchInputChange} value={searchQuery} type="text" placeholder="Search movies web series and etc"
-                            className="border-2 border-yellow-600 w-[45%] mobile:w-full mobile:h-10 h-11 rounded-md px-2 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
+                <input onChange={handleSearchInputChange} value={searchQuery} type="search" placeholder="Search movies web series and more..."
+                            className="w-[45%] mobile:w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 rounded-md px-4 mr-4 mobile:mr-1 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
+
 
                     </div>
 
@@ -189,7 +190,7 @@ function SearchPage() {
 
             </div>
 
-            <div className="w-full h-auto overflow-x-hidden bg-gray-800">
+            <div className="w-full h-auto overflow-x-hidden">
 
                 {searchQuery !== '' ? (
 

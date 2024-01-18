@@ -75,7 +75,7 @@ export default function Videoplayer({ movieDetails }) {
     <>
 
       <div aria-label="Breadcrumb" className="bg-gray-800 px-3 py-2">
-        <div className="flex items-center text-base mobile:text-sm text-gray-300 capitalize">
+        <div className="flex items-center text-base mobile:text-sm text-gray-300">
           <div>
             <Link href="/" className="block transition hover:text-cyan-500">
               <span className="sr-only"> Home </span>
@@ -162,7 +162,7 @@ export default function Videoplayer({ movieDetails }) {
         </div>
       </div>
 
-      <div className="w-full h-full bg-gray-800 py-6 mobile:py-2 px-2 flex justify-center items-center">
+      <div className="w-full h-full py-6 mobile:py-2 px-2 flex justify-center items-center">
 
         <div className="mobile:w-full mobile:max-w-[600px] md:min-w-[700px] w-fit h-fit p-3 flex mobile:flex-col gap-5 mobile:marker:gap-0 bg-white rounded-md shadow-xl">
 

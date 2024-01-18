@@ -23,7 +23,7 @@ export default async function Page() {
     <>
       <Navbar />
 
-      <main className="w-full overflow-x-hidden h-full bg-gray-800 py-2">
+      <main className="w-full overflow-x-hidden h-full py-2">
 
         {firstSectionData?.sliderMovies?.map((data) => (
 

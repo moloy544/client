@@ -25,11 +25,21 @@ export async function generateMetadata({ params }) {
 //Revalidate page every 30 minutes
 export const revalidate = 1800;
 
-export default async function Page({ params }) {
+export default async function Page({ params, searchParams }) {
 
   const category = params?.categoryName;
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${category}`;
+  const sortFilter = searchParams?.sort;
+
+  let apiUrl;
+
+  if (sortFilter) {
+    apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${category}?sort=${sortFilter}`;
+
+  } else {
+    apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${category}`;
+  }
+
 
   const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
 
@@ -37,20 +47,20 @@ export default async function Page({ params }) {
     limitPerPage: 30
   });
 
-  const categoryName = transformToCapitalize(params.categoryName);
+  const categoryName = transformToCapitalize(sortFilter? params.categoryName + ' ' + sortFilter : params.categoryName);
 
   return (
     <>
       <NavigateBackTopNav title={categoryName} />
 
-      <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2">
+      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
         {filterResponse.length > 0 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
             initialMovies={filterResponse}
-            isDataEnd={dataIsEnd} 
-            />
+            isDataEnd={dataIsEnd}
+          />
         ) : (
           <h2 className="my-40 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
 

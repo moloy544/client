@@ -82,7 +82,7 @@ export default async function Page({ params }) {
     <>
       <NavigateBackTopNav title={actorName} />
 
-      <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2 relative">
+      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2 relative">
 
         {filterResponse.length > 1 ? (
           <LoadMoreMoviesGirdWarper

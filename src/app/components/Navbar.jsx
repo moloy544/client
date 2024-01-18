@@ -18,8 +18,9 @@ export default function Navbar() {
                     <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3 mx-3">
 
                         <Link href="/search" className="cursor-text mobile:hidden">
-                            <div className="flex items-center w-96 h-10 mobile:w-full mobile:h-9 rounded-[10px] mobile:text-sm text-md py-1 px-2 bg-white text-black border-2 border-rose-500">
-                                Search movies web series
+                            <div className="flex items-center gap-3 w-96 h-11 mobile:w-full mobile:h-9 rounded-[10px] text-base py-1 bg-gray-800 text-gray-300 border-2 border-gray-700">
+                                <i className="bi bi-search pl-3 text-xl"></i>
+                                <span>Search movies web series and more...</span>
                             </div>
                         </Link>
 
@@ -64,51 +65,54 @@ function NotificationDropDown() {
     };
 
     return (
-        <div className="w-auto h-auto relative">
+        <>
 
-            <div onClick={toggleNotifaction} role="button" className="p-1">
-                <i className="bi bi-bell-fill text-gray-100 text-2xl mobile:text-xl cursor-pointer"></i>
-            </div>
-            {isNotifactionVisible && (
-                <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border border-gray-300 right-0 z-50">
+            < div className="w-auto h-auto relative">
 
-                    <div className="border-b border-gray-900 px-2 py-1.5 flex items-center gap-2">
-                        <i onClick={toggleNotifaction} className="bi bi-arrow-left text-xl cursor-pointer"></i>
-                        <span className="text-sm text-gray-950 font-bold font-sans">Notifaction</span>
-                    </div>
+                <div onClick={toggleNotifaction} role="button" className="p-1">
+                    <i className="bi bi-bell-fill text-gray-100 text-2xl mobile:text-xl cursor-pointer hover:text-cyan-100"></i>
+                </div>
+                {isNotifactionVisible && (
+                    <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border border-gray-300 right-0 z-50">
 
-                    <div className="w-auto h-auto flex gap-2 px-2.5 py-2 justify-around border-b border-gray-300">
-                        <div role="button" className="bg-gray-100 text-xs text-gray-700 border border-gray-400 rounded-xl px-3 py-1">
-                            News
+                        <div className="border-b border-gray-900 text-gray-950 px-2 py-1.5 flex items-center gap-2">
+                            <i onClick={toggleNotifaction} className="bi bi-arrow-left text-xl cursor-pointer"></i>
+                            <span className="text-sm font-bold font-sans">Notifaction</span>
                         </div>
-                        <div role="button" className="bg-gray-100 text-xs text-gray-700 border border-gray-400 rounded-xl px-3 py-1">
-                            Message
-                        </div>
-                        <div role="button" className="bg-gray-100 text-xs text-gray-700 border border-gray-400 rounded-xl px-3 py-1">
-                            Notice
-                        </div>
-                    </div>
 
-                    <div className="w-64 h-80 overflow-y-scroll py-1">
-
-                        {notifactionData.news?.map((data)=>(
-                            <div key={data.id} className="w-auto h-auto px-2 py-1.5 border-b border-gray-300 hover:bg-gray-100">
-                            <div className="flex flex-col gap-1">
-                                <div className="text-gray-950 text-[12px] leading-[14px] line-clamp-3">
-                                    {data.nofifactionMessage}
-                                </div>
-                                <span className="text-[10px] text-gray-500">
-                                    {data.postDate}
-                                </span>
+                        <div className="w-auto h-auto flex gap-2 px-2.5 py-2 justify-around border-b border-gray-300">
+                            <div role="button" className="bg-gray-100 text-xs text-gray-700 border border-gray-400 rounded-xl px-3 py-1">
+                                News
+                            </div>
+                            <div role="button" className="bg-gray-100 text-xs text-gray-700 border border-gray-400 rounded-xl px-3 py-1">
+                                Message
+                            </div>
+                            <div role="button" className="bg-gray-100 text-xs text-gray-700 border border-gray-400 rounded-xl px-3 py-1">
+                                Notice
                             </div>
                         </div>
-                        ))}
+
+                        <div className="w-64 h-80 overflow-y-scroll py-1 scrollbar-hidden">
+
+                            {notifactionData.news?.map((data) => (
+                                <div key={data.id} className="w-auto h-auto px-2 py-1.5 border-b border-gray-300 hover:bg-gray-100">
+                                    <div className="flex flex-col gap-1">
+                                        <div className="text-gray-950 text-[12px] leading-[14px] line-clamp-3">
+                                            {data.nofifactionMessage}
+                                        </div>
+                                        <span className="text-[10px] text-gray-500">
+                                            {data.postDate}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+
+                        </div>
 
                     </div>
+                )}
 
-                </div>
-            )}
-
-        </div>
+            </div >
+        </>
     )
 }

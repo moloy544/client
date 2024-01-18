@@ -3,7 +3,7 @@ import authorImage from '../../assets/images/author.jpg';
 
 function Footer() {
     return (
-        <footer className="bg-gray-900 py-4 lg:py-6 px-2 flex flex-wrap justify-center items-center gap-2">
+        <footer className="w-full h-auto bg-gray-900 py-4 lg:py-6 px-2 flex flex-wrap justify-center items-center gap-2">
             <div className="text-sm text-gray-200  flex gap-2 items-center">
                 <strong className="text-base">Developed by: </strong>
                 <a className="flex items-center" href="https://www.facebook.com/sanjoy.rokshit.5" target="_blank" rel="noopener noreferrer">

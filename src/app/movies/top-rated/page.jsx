@@ -28,7 +28,7 @@ export default async function Page() {
     <>
       <NavigateBackTopNav title="Top Rated" />
 
-      <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2">
+      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
         {filterResponse.length > 0 ? (
           <LoadMoreMoviesGirdWarper
