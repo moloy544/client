@@ -1,15 +1,12 @@
-import { appConfig } from "@/config/config";
-import Navbar from "./components/Navbar";
 import Link from "next/link";
+import Image from "next/image";
 import axios from "axios";
-import LazyLoadingImage from "./components/LazyLoadingImage";
+import { appConfig } from "@/config/config";
+import { creatUrlLink } from "@/utils";
+import Navbar from "./components/Navbar";
 import HomePageLayout from "./HomePageLayout";
 import SliderMoviesShowcase from "./components/SliderMoviesShowcase";
 import FixedSearchIcon from "./components/FixedSearchIcon";
-import { creatUrlLink } from "@/utils";
-
-//Revalidate page every 30 minutes
-export const revalidate = 1800;
 
 export default async function Page() {
 
@@ -47,10 +44,13 @@ export default async function Page() {
                 className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
 
                 <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-500">
-                  <LazyLoadingImage
-                    className="w-full h-full object-fill pointer-events-none select-none rounded-full"
-                    actualSrc={actor.avatar}
-                    alt={actor.name}
+                
+                  <Image
+                  className="w-full h-full object-fill pointer-events-none select-none rounded-full"
+                  src={actor.avatar}
+                  width={100}
+                  height={100}
+                  alt={actor.name}
                   />
                 </div>
 

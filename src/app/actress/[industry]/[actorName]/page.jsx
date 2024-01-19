@@ -5,15 +5,20 @@ import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 
-const getActorData = async (actorName) => {
+const getActorData = async (actorName, industry) => {
 
   try {
-    const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/info/${actorName}`);
+    const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/info`, {
+      actorDetails: {
+        industry, 
+        actorName
+      }
+    });
     const status = response.status;
     const { name, avatar } = response.data?.actor;
     return { status, name, avatar };
   } catch (error) {
-    console.log(error);
+    
     return { status: 404, name: null, avatar: null };
 
   }
@@ -22,9 +27,10 @@ const getActorData = async (actorName) => {
 export async function generateMetadata({ params }) {
 
   try {
-    const actorName = params?.actorName;
 
-    const { status, name, avatar } = await getActorData(actorName);
+    const { industry, actorName } = params;
+
+    const { status, name, avatar } = await getActorData(actorName, industry);
 
     if (status === 200) {
 
@@ -37,7 +43,7 @@ export async function generateMetadata({ params }) {
           images: avatar,
           title: `${name} movies`,
           description: `Watch ${name} movies online Movies Bazaar`,
-          url: `https://moviesbazaar.vercel.app/listing/actress/${params?.actorName}`
+          url: `https://moviesbazaar.vercel.app/listing/actress/${actorName}`
         },
       };
 
@@ -49,18 +55,15 @@ export async function generateMetadata({ params }) {
   };
 };
 
-//Revalidate page every 30 minutes
-export const revalidate = 1800;
-
 export default async function Page({ params }) {
 
-  const query = params?.actorName;
+  const { industry, actorName } = params;
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction/${query}`;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction/${actorName}`;
 
   const [actorData, moviesData] = await Promise.all([
 
-    getActorData(query),
+    getActorData(actorName, industry),
 
     fetchLoadMoreMovies({
       apiPath: apiUrl,
@@ -70,17 +73,15 @@ export default async function Page({ params }) {
 
   const { status, name } = actorData;
 
-  if (status !== 200) {
+  if (status === 404) {
     notFound();
   };
 
   const { filterResponse, dataIsEnd } = moviesData;
 
-  const actorName = name;
-
   return (
     <>
-      <NavigateBackTopNav title={actorName} />
+      <NavigateBackTopNav title={name} />
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2 relative">
 

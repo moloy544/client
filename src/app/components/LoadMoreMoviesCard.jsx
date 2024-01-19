@@ -1,6 +1,6 @@
-import { creatUrlLink } from "@/utils";
-import LazyLoadingImage from "./LazyLoadingImage";
 import Link from "next/link";
+import Image from "next/image";
+import { creatUrlLink } from "@/utils";
 
 const LoaderSkleaton = ({ limit = 15 }) => {
     return (
@@ -31,8 +31,10 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
                     <Link className="w-auto h-auto" href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} prefetch={false}>
 
                         <div className="w-auto object-cover h-[12.50rem] max-h-[220px] mobile:max-h-[170px] bg-white rounded-[3px]">
-                            <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
-                                actualSrc={data.thambnail}
+                            <Image
+                                className="pointer-events-none select-none rounded-[3px]"
+                                src={data.thambnail}
+                                fill
                                 alt={data.title} />
                         </div>
 

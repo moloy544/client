@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import React from 'react'
-import LazyLoadingImage from './LazyLoadingImage'
+import Image from 'next/image'
 import { creatUrlLink } from '@/utils'
 
 function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
@@ -23,8 +22,11 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
                         <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}>
 
                             <div className="relative w-[140px] h-[180px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
-                                <LazyLoadingImage className="w-full h-full object-fill pointer-events-none select-none rounded-[3px]"
-                                    actualSrc={data.thambnail}
+                               
+                                    <Image 
+                                    className="pointer-events-none select-none rounded-[3px]"
+                                    src={data.thambnail} 
+                                    fill
                                     alt={data.title} />
                             </div>
 

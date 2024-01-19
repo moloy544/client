@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useRef } from "react";
-import MoviesUserActionWarper from "./MoviesUserActionWarper";
 import Link from "next/link";
+import Image from "next/image";
+import MoviesUserActionWarper from "./MoviesUserActionWarper";
 
 export default function Videoplayer({ movieDetails }) {
 
@@ -171,11 +172,13 @@ export default function Videoplayer({ movieDetails }) {
             <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border border-gray-600 rounded-md relative overflow-hidden">
 
               <div className="w-full h-full overflow-hidden relative group">
-                <img
-                  className="w-full h-full object-fill transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
-                  src={thambnail}
-                  alt={title}
-                />
+
+                <Image 
+                className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
+                src={thambnail}
+                alt={title}
+                fill />
+  
               </div>
 
               <div role="button" onClick={showPlayer}

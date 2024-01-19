@@ -1,10 +1,11 @@
-import axios from "axios";
+
 import Link from "next/link";
-import LazyLoadingImage from "@/app/components/LazyLoadingImage";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import axios from "axios";
 import { appConfig } from "@/config/config";
 import NavigateBack from "@/app/components/NavigateBack";
 import { transformToCapitalize } from "@/utils";
-import { notFound } from "next/navigation";
 
 export default async function Page({ params }) {
 
@@ -117,11 +118,14 @@ export default async function Page({ params }) {
                                     className="w-auto h-auto py-1.5 cursor-pointer bg-pink-100 rounded-sm border border-yellow-500">
 
                                     <div className="w-auto h-[110px] mobile:h-20 rounded-md border-2 border-cyan-500 mx-4 mobile:mx-2">
-                                        <LazyLoadingImage
+
+                                        <Image
                                             className="w-full h-full object-fill pointer-events-none select-none rounded-sm"
-                                            actualSrc={actor.avatar}
-                                            alt={actor.name}
-                                        />
+                                            width={150}
+                                            height={150}
+                                            src={actor.avatar}
+                                            alt={actor.name} />
+
                                     </div>
 
                                     <div className="w-auto h-auto text-black py-1.5">

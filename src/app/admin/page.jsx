@@ -378,13 +378,13 @@ function AddActorSertion() {
 
         try {
 
-            const addResponse = await axios.post(`${backendServer}/api/v1/admin/add_actor`, actorState);
+            const addResponse = await axios.post(`${backendServer}/api/v1/admin/add_actor`, {
+                actorData: actorState
+            });
 
-            if (addResponse.status === 200) {
-                alert(addResponse.data.message);
-            } else {
-                alert("Can't Add Actor");
-            }
+            const { message } = addResponse.data;
+
+            alert(message);
 
             console.log(addResponse.data);
 
@@ -405,16 +405,17 @@ function AddActorSertion() {
                     <h1 className="text-amber-700 text-xl text-center font-semibold">Add Actor Section</h1>
 
                     <div className="flex flex-col my-3">
+                        <label className="font-bold">Actor name</label>
+                        <input className="border border-black rounded-sm" type="text" value={actorState.name} onChange={(e) => handleInputChange(e, 'name')} />
+                    </div>
+
+                    <div className="flex flex-col my-3">
                         <label className="font-bold">Actor image</label>
                         <input className="border border-black rounded-sm" type="text" value={actorState.avatar} onChange={(e) => handleInputChange(e, 'avatar')} />
                     </div>
 
                     <div className="flex flex-col my-3">
-                        <label className="font-bold">Actor name</label>
-                        <input className="border border-black rounded-sm" type="text" value={actorState.name} onChange={(e) => handleInputChange(e, 'name')} />
-                    </div>
-                    <div className="flex flex-col my-3">
-                        <label className="font-bold">Actor industry {actorState.industry}</label>
+                        <label className="font-bold">Actor industry {"(" + actorState.industry + ")"}</label>
                         <div className="flex gap-5">
                             <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
                                 Bollywood
