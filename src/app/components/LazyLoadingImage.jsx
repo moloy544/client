@@ -1,9 +1,10 @@
 'use client'
+
 import { useEffect, useRef, useState } from 'react';
 
-function LazyLoadingImage({ className, actualSrc, alt }) {
+function LazyLoadingImage({ className, actualSrc, placeholder, alt }) {
 
-    const placeholderSrc = "https://th.bing.com/th/id/OIP.cwVFTGI_fvDRm8qmZbt86wAAAA?pid=ImgDet&w=188&h=332&c=7&dpr=1.5";
+    const placeholderSrc = placeholder ? placeholder : "https://th.bing.com/th/id/OIP.cwVFTGI_fvDRm8qmZbt86wAAAA?pid=ImgDet&w=188&h=332&c=7&dpr=1.5";
 
     const [isIntersecting, setIsIntersecting] = useState(false);
 

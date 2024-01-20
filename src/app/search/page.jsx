@@ -5,7 +5,6 @@ import Link from "next/link";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
 import axios from "axios";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
 
@@ -13,29 +12,14 @@ function SearchPage() {
 
     const backendServer = appConfig.backendUrl;
 
-    const searchParams = useSearchParams();
-    const { replace } = useRouter();
-    const pathname = usePathname();
-
-    const initialSearchQuery = searchParams.get('q') || "";
-
     // Set all state
-    const [searchQuery, setSearchQuery] = useState(initialSearchQuery)
+    const [searchQuery, setSearchQuery] = useState("")
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [moviesData, setMoviesData] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
 
     const observerRef = useRef(null);
-
-
-    useEffect(() => {
-        if (searchQuery !== " " || searchQuery !== "") {
-            getMovies(searchQuery);
-            setLoading(true);
-        };
-
-    }, []);
 
     // Debounce function
     const debounce = (func, delay) => {
@@ -61,12 +45,7 @@ function SearchPage() {
 
             if (response.status === 200) {
 
-                if (page === 1) {
-
-                    setMoviesData(searchData);
-                } else {
-                    setMoviesData(prevData => [...prevData, ...searchData])
-                }
+                setMoviesData(prevData => [...prevData, ...searchData]);
 
                 if (dataIsEnd) {
                     setEndOfData(true);
@@ -80,28 +59,31 @@ function SearchPage() {
 
         };
 
-    }, [searchQuery]);
+    }, [moviesData.length]);
 
     // Debounced handleSearch function with a delay of 500 milliseconds
     const debouncedHandleSearch = useCallback(
 
         debounce((query) => {
 
-            const params = new URLSearchParams(searchParams);
-
-            if (query !== "") {
-
-                params.set('q', query);
+          if (query !== "") {
 
                 getMovies(query);
 
-            } else {
-                params.delete('q');
-            }
+                if (moviesData.length > 0) {
+                    setMoviesData([]);
+                };
+                if (page!== 1) {
+                    setPage(1)
+                };
 
-            replace(`${pathname}?${params.toString()}`);
+                if (endOfData) {
+                    setEndOfData(false);
+                };
 
-        }, 1200), []);
+            };
+
+        }, 1200), [page, moviesData.length, endOfData]);
 
     // Event handler for input change
     const handleSearchInputChange = (event) => {
@@ -117,19 +99,9 @@ function SearchPage() {
             if (!loading) {
                 setLoading(true);
             };
-            if (moviesData.length > 0) {
-                setMoviesData([]);
-            };
-            if (page.length < 1) {
-                setPage(1)
-            };
 
-            if (endOfData) {
-                setEndOfData(false);
-            };
         };
     };
-
 
     const handleObserver = (entries) => {
         const target = entries[0];
@@ -146,7 +118,7 @@ function SearchPage() {
             threshold: 1.0,
         });
 
-        if (moviesData?.length > 0) {
+        if (moviesData.length > 0 && !loading) {
             observerRef.current.observe(
                 document.getElementById("bottom_observerElement")
             );
@@ -157,13 +129,14 @@ function SearchPage() {
                 observerRef.current.disconnect();
             }
         };
-    }, [moviesData]);
+    }, [moviesData.length, loading]);
 
     useEffect(() => {
 
-        if (page.length > 1) {
+        if (page !== 1) {
             getMovies(searchQuery);
             setLoading(true);
+            console.log(page)
         };
 
     }, [page]);
@@ -180,7 +153,7 @@ function SearchPage() {
 
                         <Link href="/" className="text-xl text-yellow-500 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
 
-                <input onChange={handleSearchInputChange} value={searchQuery} type="search" placeholder="Search movies web series and more..."
+                        <input onChange={handleSearchInputChange} value={searchQuery} type="search" placeholder="Search movies web series and more..."
                             className="w-[45%] mobile:w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 rounded-md px-4 mr-4 mobile:mr-1 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
 
 
@@ -196,7 +169,7 @@ function SearchPage() {
 
                     <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
-                        {moviesData.length > 0 && !loading ? (
+                        {moviesData.length > 0 ? (
                             <>
                                 <h3 className="text-gray-300 text-base mobile:text-sm py-2 font-bold px-2">
                                     Results for <span className=" text-cyan-500">{searchQuery}</span>
