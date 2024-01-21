@@ -32,7 +32,8 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
                         <div className="w-auto object-cover h-[12.50rem] max-h-[220px] mobile:max-h-[170px] bg-white rounded-[3px]">
 
                              <Image 
-                             className="w-full h-full object-fill rounded-[3px]" 
+                             priority
+                             className="w-full h-full object-fill select-none pointer-events-none rounded-[3px]" 
                              width={200}
                              height={250}
                              src={data.thambnail} 

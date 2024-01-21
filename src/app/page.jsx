@@ -14,7 +14,7 @@ export default async function Page() {
 
   const response = await axios.post(apiUrl, { offset: 1 });
 
-  const { firstSectionData } = response.data;
+  const { sectionOne } = response.data;
 
   return (
     <>
@@ -22,7 +22,7 @@ export default async function Page() {
 
       <main className="w-full overflow-x-hidden h-full py-2">
 
-        {firstSectionData?.sliderMovies?.map((data) => (
+        {sectionOne?.sliderMovies?.map((data) => (
 
           <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
         ))}
@@ -36,7 +36,7 @@ export default async function Page() {
 
           <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2.5 mobile:gap-2 px-2 scrollbar-hidden">
 
-            {firstSectionData?.bollywoodActressData?.map((actor) => (
+            {sectionOne?.bollywoodActressData?.map((actor) => (
 
               <Link
                 href={`/actress/${actor.industry?.toLowerCase()}/${creatUrlLink(actor.name)}`}

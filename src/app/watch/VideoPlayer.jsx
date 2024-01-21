@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import MoviesUserActionWarper from "./MoviesUserActionWarper";
+import { transformToCapitalize } from "@/utils";
 
 export default function Videoplayer({ movieDetails }) {
 
@@ -20,7 +21,8 @@ export default function Videoplayer({ movieDetails }) {
     castDetails,
     language,
     category,
-    type
+    type,
+    status
   } = movieDetails || {};
 
   const showPlayer = () => {
@@ -173,18 +175,22 @@ export default function Videoplayer({ movieDetails }) {
 
               <div className="w-full h-full overflow-hidden relative group">
 
-                <Image 
-                className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
-                src={thambnail}
-                alt={title}
-                fill />
-  
+                <Image
+                  className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
+                  src={thambnail}
+                  alt={title}
+                  fill />
+
               </div>
 
-              <div role="button" onClick={showPlayer}
+              {status === "released" ? (<div role="button" onClick={showPlayer}
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-500 text-gray-100 w-12 h-12 flex justify-center items-center rounded-full pl-1 text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
                 <i className="bi bi-play"></i>
-              </div>
+              </div>) : (
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white text-sm">
+                  {transformToCapitalize(status)}
+                </div>
+              )}
               {imdbRating && (
                 <div className="absolute top-1 right-2 w-auto h-auto bg-gray-800 text-xs font-semibold text-yellow-400 px-2 py-1 rounded-md">{imdbRating}/10</div>
               )}
@@ -199,10 +205,17 @@ export default function Videoplayer({ movieDetails }) {
               <div className="text-base text-gray-900 font-bold my-3.5">Title: <span className="text-sm text-gray-600 font-semibold">{title}</span></div>
               <div className="text-base text-gray-900 font-bold my-3.5">Year: <span className="text-sm text-gray-600 font-semibold">{releaseYear}</span></div>
               {fullReleaseDate && (
-                <div className="text-base text-gray-900 font-bold my-3.5">Released: <span className="text-sm text-gray-600 font-semibold">{formattedDate}</span></div>
+
+                <div className="text-base text-gray-900 font-bold my-3.5">
+                  {status === "Released" ? "Released:" : "Expeted relesed:"} <span className="text-sm text-gray-600 font-semibold">{formattedDate}</span>
+                </div>
               )}
 
-              <div className="text-base text-gray-900 font-bold my-3.5">Language: <Link href={`/movies/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-600 font-semibold">{language?.charAt(0).toUpperCase() + language?.slice(1)}</Link></div>
+              <div className="text-base text-gray-900 font-bold my-3.5">Language: <Link href={`/movies/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-600 font-semibold">
+                {language?.charAt(0).toUpperCase() + language?.slice(1)}
+                {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)" }
+                </Link>
+                </div>
 
               {castDetails?.length > 0 && (
                 <>

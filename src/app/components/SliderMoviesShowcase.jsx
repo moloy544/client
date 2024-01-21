@@ -24,6 +24,7 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
                             <div className="relative w-[140px] h-[180px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
                                
                                     <Image 
+                                    priority
                                     className="pointer-events-none select-none rounded-[3px]"
                                     src={data.thambnail} 
                                     fill

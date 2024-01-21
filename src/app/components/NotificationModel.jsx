@@ -58,7 +58,7 @@ function NotificationModel() {
                 ) : (
                     <div className="w-full h-full flex flex-col justify-center items-center">
                         <div className="w-10 h-10 bg-blue-50 flex justify-center items-center rounded-full">
-                            <i class="bi bi-inbox text-xl text-blue-700"></i>
+                            <i className="bi bi-inbox text-xl text-blue-700"></i>
                         </div>
                         <div className="text-sm text-blue-900 text-center">No new {selectedNotifactionType} found</div>
                     </div>

@@ -13,9 +13,9 @@ function HomePageLayout() {
 
     const {
         isAllLoad,
-        secondSectionData,
-        thirdSectionData,
-        forthSectionData
+        sectionTwo,
+        sectionThree,
+        sectionFour
     } = homePageState;
 
     const dispatch = useDispatch();
@@ -96,19 +96,19 @@ function HomePageLayout() {
 
     return (
         <>
-            {secondSectionData && (
+            {sectionTwo && (
                 <>
-                    {secondSectionData?.sliderMovies?.map((data) => (
+                    {sectionTwo?.sliderMovies?.map((data) => (
                         <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
 
                     ))}
                 </>
             )}
 
-            {thirdSectionData && (
+            {sectionThree && (
                 <>
 
-                    {thirdSectionData?.sliderMovies?.map((data) => (
+                    {sectionThree?.sliderMovies?.map((data) => (
 
                         <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
 
@@ -116,10 +116,10 @@ function HomePageLayout() {
                 </>
             )}
 
-            {forthSectionData && (
+            {sectionFour && (
                 <>
 
-                    {forthSectionData?.sliderMovies?.map((data) => (
+                    {sectionFour?.sliderMovies?.map((data) => (
 
                         <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
 

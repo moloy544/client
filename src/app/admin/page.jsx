@@ -15,6 +15,7 @@ function AddMoviesPage() {
         title: '',
         releaseYear: 0,
         fullReleaseDate: '',
+        status: 'released',
         category: 'bollywood',
         type: 'movie',
         language: 'hindi',
@@ -27,11 +28,11 @@ function AddMoviesPage() {
     const genreRef = useRef(null);
     const castRef = useRef(null);
 
-    const getImbdResponse = async (id) => {
+    const getImbdResponse = async () => {
 
-        if (id.length >= 8) {
+        if (state.imdbId.length >= 8) {
 
-            const response = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${id}`);
+            const response = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${state.imdbId}`);
 
             const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = response.data;
 
@@ -46,7 +47,7 @@ function AddMoviesPage() {
 
             setState(prevState => ({
                 ...prevState,
-                imdbRating: imdbRating,
+                imdbRating: imdbRating !=="N/A"? imdbRating : 0,
                 thambnail: Poster,
                 title: Title,
                 releaseYear: Year,
@@ -112,7 +113,7 @@ function AddMoviesPage() {
                 ...prevState,
                 imdbId: imdbId
             }));
-            getImbdResponse(imdbId);
+            getImbdResponse();
 
         };
 
@@ -246,6 +247,20 @@ function AddMoviesPage() {
                         <div className="flex flex-col my-3">
                             <label className="font-bold">Full release date</label>
                             <input className="border border-black rounded-sm" type="text" value={state.fullReleaseDate} onChange={(e) => handleInputChange(e, 'fullReleaseDate')} />
+                        </div>
+
+                        <div className="flex flex-col my-3">
+                            <label className="font-bold">Release status {"(" + state.status + ")"}</label>
+                            <div className="flex gap-5">
+                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                    Released
+                                    <input onChange={(e) => handleInputChange(e, 'status')} type="radio" value="released" name="status" checked={state.status === 'released'} />
+                                </label>
+                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
+                                    Coming Soon
+                                    <input onChange={(e) => handleInputChange(e, 'status')} type="radio" value="coming soon" name="status" checked={state.status === 'coming soon'} />
+                                </label>
+                            </div>
                         </div>
 
                         <div className="flex flex-col my-3">
