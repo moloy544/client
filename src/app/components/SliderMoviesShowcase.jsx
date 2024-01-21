@@ -8,7 +8,7 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
         <section className="w-full h-auto pt-2.5 mobile:pt-1">
 
-            <div className="w-full h-auto flex justify-between items-center px-2.5 pb-2">
+            <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
                 <h2 className="text-gray-100 text-[18px] mobile:text-sm font-semibold">{title}</h2>
                 <Link href={linkUrl} className="text-base mobile:text-[12px] text-cyan-400">See more</Link>
             </div>
@@ -37,7 +37,7 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
                                 </span>
                             </div>
 
-                            <div className="absolute top-0.5 right-0.5 z-10 w-auto h-auto px-1 py-0.5 bg-gray-800 text-yellow-400 text-[10px] text-center font-sans font-semibold rounded-md">
+                            <div className="absolute top-0.5 right-0.5 w-auto h-auto px-1 py-0.5 bg-gray-800 text-yellow-400 text-[10px] text-center font-sans font-semibold rounded-md">
                                 {data.releaseYear}
                             </div>
                         </Link>

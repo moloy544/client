@@ -20,12 +20,11 @@ function HomePageLayout() {
 
     const dispatch = useDispatch();
 
-    const observerRef = useRef(null);
-
-    const [offset, setOffset] = useState(1);
-    const [loading, setLoading] = useState(false);
+    const observerRefElement = useRef(null);
 
     const maxOffset = 4;
+    const [offset, setOffset] = useState(1);
+    const [loading, setLoading] = useState(false);
 
     const handleObserver = (entries) => {
         const target = entries[0];
@@ -36,21 +35,23 @@ function HomePageLayout() {
 
     useEffect(() => {
 
-        observerRef.current = new IntersectionObserver(handleObserver, {
+        const observer = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "50px",
+            rootMargin: "100px",
             threshold: 1.0,
         });
 
-        if (offset !== maxOffset && !loading) {
-            observerRef.current.observe(
-                document.getElementById("bottom_observerElement")
-            );
+        if (observerRefElement.current && !loading) {
+            observer.observe(observerRefElement.current);
+        };
+
+        if (observerRefElement.current && offset === maxOffset) {
+            observer.unobserve(observerRefElement.current);
         };
 
         return () => {
-            if (observerRef.current) {
-                observerRef.current.disconnect();
+            if (observerRefElement.current) {
+                observer.unobserve(observerRefElement.current);
             }
         };
     }, [offset, loading]);
@@ -99,7 +100,11 @@ function HomePageLayout() {
             {sectionTwo && (
                 <>
                     {sectionTwo?.sliderMovies?.map((data) => (
-                        <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
+                        <SliderMoviesShowcase
+                            key={data.title}
+                            title={data.title}
+                            moviesData={data.movies}
+                            linkUrl={data.linkUrl} />
 
                     ))}
                 </>
@@ -107,22 +112,26 @@ function HomePageLayout() {
 
             {sectionThree && (
                 <>
-
                     {sectionThree?.sliderMovies?.map((data) => (
 
-                        <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
-
+                        <SliderMoviesShowcase
+                            key={data.title}
+                            title={data.title}
+                            moviesData={data.movies}
+                            linkUrl={data.linkUrl} />
                     ))}
                 </>
             )}
 
             {sectionFour && (
                 <>
-
                     {sectionFour?.sliderMovies?.map((data) => (
 
-                        <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
-
+                        <SliderMoviesShowcase
+                            key={data.title}
+                            title={data.title}
+                            moviesData={data.movies}
+                            linkUrl={data.linkUrl} />
                     ))}
                 </>
             )}
@@ -137,7 +146,7 @@ function HomePageLayout() {
                 </div>
             )}
 
-            <div id="bottom_observerElement" ref={observerRef}></div>
+            <div className="w-full h-10" ref={observerRefElement}></div>
         </>
     )
 }

@@ -14,16 +14,22 @@ export const metadata = {
     default: 'Movies Bazaar',
     template: '%s | Movies Bazaar'
   },
+
   description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazaar',
+
   keywords: 'online movies, watch movies online, movie streaming, film, cinema, entertainment, Hollywood movies, Hollywood dubbed movies, South movies, South dubbed movies, Bollywood movies',
 
   openGraph: {
-    images: 'https://th.bing.com/th/id/OIP.R7FvRN4lHSBlMMVDBYvCfwHaHa?pid=ImgDet&w=179&h=179&c=7&dpr=1.5',
+
+    images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
+
     title: {
       default: 'Movies Bazaar',
       template: '%s | Movies Bazaar',
     },
+    
     description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazaar',
+
     url: 'https://moviesbazaar.vercel.app'
   },
 }
@@ -38,7 +44,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
 
         <NextTopLoader
-          color="rgb(255, 171, 15)"
+          color="rgb(218, 8, 95)"
           initialPosition={0.08}
           crawlSpeed={200}
           height={3}
@@ -46,7 +52,7 @@ export default function RootLayout({ children }) {
           showSpinner={false}
           easing="ease"
           speed={300}
-          shadow="0 0 10px rgb(250, 250, 24),0 0 5px rgb(250, 250, 24)"
+          shadow="0 0 10px rgb(218, 8, 95),0 0 5px rgb(218, 8, 95)"
         />
 
         <ReduxStatePrivider>

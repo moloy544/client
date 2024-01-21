@@ -20,7 +20,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
     const conditionalData = (page === 1 && loadMoviesPathname !== patname) ? (initialMovies || []) : (page === 1 && loadMoviesData);
     const [moviesData, setMoviesData] = useState(conditionalData);
 
-    const observerRef = useRef(null);
+    const observerRefElement = useRef(null);
 
     const handleObserver = (entries) => {
         const target = entries[0];
@@ -30,24 +30,27 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
     };
 
     useEffect(() => {
-        observerRef.current = new IntersectionObserver(handleObserver, {
+
+        const observer = new IntersectionObserver(handleObserver, {
             root: null,
             rootMargin: "100px",
             threshold: 1.0,
         });
 
-        if (moviesData?.length > 0 && !loading) {
-            observerRef.current.observe(
-                document.getElementById("bottom_observerElement")
-            );
-        }
+        if (observerRefElement.current && moviesData?.length > 0 && !loading) {
+            observer.observe(observerRefElement.current);
+        };
+
+        if (observerRefElement.current && endOfData) {
+            observer.unobserve(observerRefElement.current);
+        };
 
         return () => {
-            if (observerRef.current) {
-                observerRef.current.disconnect();
+            if (observerRefElement.current) {
+                observer.unobserve(observerRefElement.current);
             }
         };
-    }, [moviesData, loading]);
+    }, [moviesData, loading, endOfData]);
 
     useEffect(() => {
 
@@ -101,6 +104,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
     }, [isAllDataLoad, loadMoviesPathname, patname, page, initialMovies, isDataEnd, apiUrl]);
 
+
     return (
 
         <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
@@ -111,7 +115,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
             </div>
 
-            <div id="bottom_observerElement" ref={observerRef}></div>
+            <div className="w-full h-10" ref={observerRefElement}></div>
 
         </main>
     );

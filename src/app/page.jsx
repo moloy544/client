@@ -29,7 +29,7 @@ export default async function Page() {
 
         <section className="w-full h-auto pt-2.5 mobile:pt-1">
 
-          <div className="w-full h-auto flex justify-between items-center px-2.5 pb-2">
+          <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
             <h2 className="text-gray-100 text-[18px] mobile:text-sm font-semibold">Bollywood top actress</h2>
             <Link href="/actress/bollywood" className="text-base mobile:text-[12px] text-cyan-400">See more</Link>
           </div>
@@ -43,7 +43,7 @@ export default async function Page() {
                 key={actor._id}
                 className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
 
-                <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-500">
+                <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-cyan-500">
                 
                   <Image
                   className="w-full h-full object-fill pointer-events-none select-none rounded-full"

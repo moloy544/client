@@ -3,7 +3,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const NotificationModel = dynamic(() => import('./NotificationModel'));
 
@@ -13,8 +13,9 @@ export default function Navbar() {
         <>
             <header className="w-full h-auto bg-white">
 
-                <nav className="w-auto h-auto bg-red-800 py-4 px-5 mobile:px-3 mobile:py-2 flex items-center justify-between">
-                    <Link href="/" className="font-semibold text-yellow-400 text-xl mobile:text-base">
+                <nav className="w-auto h-auto bg-gray-900 py-4 px-5 mobile:px-3 mobile:py-2 flex items-center justify-between">
+
+                    <Link href="/" className="font-semibold text-rose-500 text-xl mobile:text-base">
                         Movies Bazaar
                     </Link>
 
@@ -31,7 +32,7 @@ export default function Navbar() {
                             <i className="bi bi-search text-gray-200 text-xl"></i>
                         </Link>
 
-                        <NotificationDropDown />
+                        <Notification />
 
                     </div>
 
@@ -40,27 +41,44 @@ export default function Navbar() {
             </header>
 
             <CategoryGroupSlider />
+
         </>
     )
 }
 
-function NotificationDropDown() {
+function Notification() {
 
-    const [isNotifactionVisible, setIsNotificationVisible] = useState(false);
-    
-    const toggleNotifaction = () => {
-        setIsNotificationVisible((prevState) => !prevState)
+    const [isVisible, setVisible] = useState(false);
+
+    const toggleNotifactionModel = () => {
+        setVisible((prevState) => !prevState)
     };
+
+    const handleScroll = () => {
+
+        if (window.scrollY > 100 && isVisible) {
+            setVisible(false);
+        };
+    };
+
+    useEffect(() => {
+        
+        window.addEventListener('scroll', handleScroll);
+        
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [handleScroll]);
 
     return (
 
         <div className="w-auto h-auto relative">
 
-            <div onClick={toggleNotifaction} role="button" className={`p-1 text-2xl mobile:text-xl cursor-pointer ${isNotifactionVisible? "text-yellow-400": "text-gray-100"}`}>
+            <div onClick={toggleNotifactionModel} role="button" className={`p-1 text-2xl mobile:text-xl cursor-pointer ${isVisible ? "text-rose-500" : "text-gray-100"}`}>
                 <i className="bi bi-bell-fill"></i>
             </div>
-            {isNotifactionVisible && (
-               <NotificationModel />
+            {isVisible && (
+                <NotificationModel />
             )}
 
         </div>

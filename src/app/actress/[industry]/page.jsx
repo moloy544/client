@@ -27,7 +27,7 @@ export default async function Page({ params }) {
                 <NavigateBack className="bi bi-arrow-left text-gray-100 text-3xl mobile:text-[25px] cursor-pointer" />
                 <div className="w-full h-auto flex justify-center items-center mx-2.5 my-2">
                     <div className="w-fit h-auto px-10 mobile:px-5 pb-0.5">
-                        <h1 className="text-xl mobile:text-sm text-cyan-500 text-center font-semibold">
+                        <h1 className="text-xl mobile:text-sm text-rose-500 text-center font-semibold">
                             {title}
                         </h1>
                     </div>
