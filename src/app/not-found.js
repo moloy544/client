@@ -20,7 +20,7 @@ export default function NotFound() {
 
                 <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">Uh-oh page not found!</h1>
 
-                <p className="mt-4 text-gray-500">We can't find that page plese back to home page and explore movies or series.</p>
+                <p className="mt-4 text-gray-500">{"We can't find that page plese back to home page and explore movies or series."}</p>
 
                 <Link
                     href="/"
