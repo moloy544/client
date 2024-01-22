@@ -6,11 +6,14 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
     return (
 
-        <section className="w-full h-auto pt-2.5 mobile:pt-1">
+        <section className="w-full h-auto pt-2.5 mobile:pt-2">
 
             <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
-                <h2 className="text-gray-100 text-[18px] mobile:text-sm font-semibold">{title}</h2>
-                <Link href={linkUrl} className="text-base mobile:text-[12px] text-cyan-400">See more</Link>
+                <h1 className="text-gray-100 text-[18px] mobile:text-sm font-semibold">{title}</h1>
+                <Link href={linkUrl} className="text-[14px] mobile:text-[12px] text-cyan-400 hover:text-cyan-500 font-semibold">
+                View All
+                    <i className="bi bi-chevron-right"></i>
+                </Link>
             </div>
 
             <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2.5 mobile:gap-2 px-2 scrollbar-hidden">
@@ -22,11 +25,11 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
                         <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}>
 
                             <div className="relative w-[140px] h-[180px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
-                               
-                                    <Image 
+
+                                <Image
                                     priority
                                     className="pointer-events-none select-none rounded-[3px]"
-                                    src={data.thambnail} 
+                                    src={data.thambnail}
                                     fill
                                     alt={data.title} />
                             </div>
@@ -41,7 +44,7 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
                                 {data.releaseYear}
                             </div>
                         </Link>
-                        
+
                     </div>
 
                 ))}

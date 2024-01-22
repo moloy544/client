@@ -1,3 +1,4 @@
+import { appConfig } from "@/config/config";
 import axios from "axios";
 
 export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerPage, skip = 0, bodyData }) => {
@@ -26,6 +27,25 @@ export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerP
   }
 };
 
+//Get movie serirs details from database
+export async function getMovieDeatils(imdbId) {
+
+  try {
+    const response = await axios.post(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`);
+
+    if (response.status !== 200) {
+
+      return { movieData: [], status: response.status };
+    };
+
+    return { movieData: response.data.movieData, status: response.status };
+
+  } catch (error) {
+    return { movieData: [], status: 404 };
+  }
+
+};
+
 //Format movie title url
 export const creatUrlLink = (title) => {
 
@@ -51,4 +71,6 @@ export const transformToCapitalize = (text) => {
   // Join the words with a space and return the result
   return capitalizedWords.join(' ');
 };
+
+
 

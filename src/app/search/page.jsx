@@ -1,10 +1,11 @@
 'use client'
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
-import axios from "axios";
+import { fetchLoadMoreMovies } from "@/utils";
 
 const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
 
@@ -19,7 +20,7 @@ function SearchPage() {
     const [moviesData, setMoviesData] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
 
-    const observerRef = useRef(null);
+    const observerElement = useRef(null);
 
     // Debounce function
     const debounce = (func, delay) => {
@@ -36,20 +37,19 @@ function SearchPage() {
 
         try {
 
-            const response = await axios.post(`${backendServer}/api/v1/movies/search?q=${query}`, {
+            const { status, filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
+                apiPath: `${backendServer}/api/v1/movies/search?q=${query}`,
                 limitPerPage: 25,
-                skip: moviesData.length
+                skip: moviesData?.length || 0,
             });
 
-            const { searchData, dataIsEnd } = response.data
+            if (status === 200) {
 
-            if (response.status === 200) {
+                setMoviesData(prevData => [...prevData, ...filterResponse]);
+            };
 
-                setMoviesData(prevData => [...prevData, ...searchData]);
-
-                if (dataIsEnd) {
-                    setEndOfData(true);
-                };
+            if (dataIsEnd) {
+                setEndOfData(true);
             };
 
         } catch (error) {
@@ -66,14 +66,14 @@ function SearchPage() {
 
         debounce((query) => {
 
-          if (query !== "") {
+            if (query !== "") {
 
                 getMovies(query);
 
                 if (moviesData.length > 0) {
                     setMoviesData([]);
                 };
-                if (page!== 1) {
+                if (page !== 1) {
                     setPage(1)
                 };
 
@@ -112,31 +112,28 @@ function SearchPage() {
 
     useEffect(() => {
 
-        observerRef.current = new IntersectionObserver(handleObserver, {
+        const observer = new IntersectionObserver(handleObserver, {
             root: null,
             rootMargin: "100px",
             threshold: 1.0,
         });
 
-        if (moviesData.length > 0 && !loading) {
-            observerRef.current.observe(
-                document.getElementById("bottom_observerElement")
-            );
+        if (observerElement.current && moviesData.length > 0 && !loading && !endOfData) {
+            observer.observe(observerElement.current);
         };
 
         return () => {
-            if (observerRef.current) {
-                observerRef.current.disconnect();
+            if (observerElement.current) {
+                observer.unobserve(observerElement.current);
             }
         };
-    }, [moviesData.length, loading]);
+    }, [moviesData.length, loading, endOfData]);
 
     useEffect(() => {
 
         if (page !== 1) {
             getMovies(searchQuery);
             setLoading(true);
-            console.log(page)
         };
 
     }, [page]);
@@ -206,8 +203,9 @@ function SearchPage() {
                 )}
 
             </div >
+
             {/* Intersection Observer target */}
-            <div ref={observerRef} id="bottom_observerElement"></div>
+            <div className=" w-full h-2" ref={observerElement}></div>
         </>
     )
 }

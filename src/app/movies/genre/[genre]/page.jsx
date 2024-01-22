@@ -13,6 +13,7 @@ export async function generateMetadata({ params }) {
         keywords: `${editParamsQuery} movie, Watch ${editParamsQuery} movie online, ${editParamsQuery} movie watch free online, Where to watch ${editParamsQuery} movies online`,
 
         openGraph: {
+            images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
             title: `${editParamsQuery} movies`,
             description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
             url: `https://moviesbazaar.vercel.app/listing/genre/${params.genre}`

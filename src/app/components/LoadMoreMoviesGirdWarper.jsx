@@ -33,7 +33,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
         const observer = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "100px",
+            rootMargin: "200px",
             threshold: 1.0,
         });
 
@@ -84,11 +84,11 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
                         dispatch(updateLoadMovies({ loadMoviesData: [...loadMoviesData, ...filterResponse] }));
 
                         setMoviesData((prevData) => [...prevData, ...filterResponse]);
+                    };
 
-                        if (dataIsEnd) {
-                            setEndOfData(true);
-                            dispatch(updateLoadMovies({ isAllDataLoad: true }));
-                        };
+                    if (dataIsEnd) {
+                        setEndOfData(true);
+                        dispatch(updateLoadMovies({ isAllDataLoad: true }));
                     };
 
                 } catch (error) {
@@ -115,7 +115,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialMovies, isDataEnd }) {
 
             </div>
 
-            <div className="w-full h-10" ref={observerRefElement}></div>
+            <div className="w-full h-2" ref={observerRefElement}></div>
 
         </main>
     );

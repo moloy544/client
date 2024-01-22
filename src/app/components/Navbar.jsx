@@ -11,7 +11,7 @@ export default function Navbar() {
 
     return (
         <>
-            <header className="w-full h-auto bg-white">
+            <header className="w-full h-auto">
 
                 <nav className="w-auto h-auto bg-gray-900 py-4 px-5 mobile:px-3 mobile:py-2 flex items-center justify-between">
 

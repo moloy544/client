@@ -5,10 +5,17 @@ import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 
 export const metadata = {
 
+  title: 'Top Rated Movies',
+  description: 'Watch Imdb top rated movies online Movies Bazaar',
+  keywords: 'imbd top ratings movies, watch top ratings movies online, Top rated Hollywood movies, Top Rated South movies, Top rated Bollywood movies',
+
+  openGraph: {
+    images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
     title: 'Top Rated Movies',
     description: 'Watch Imdb top rated movies online Movies Bazaar',
-    keywords: 'imbd top ratings movies, watch top ratings movies online, Top rated Hollywood movies, Top Rated South movies, Top rated Bollywood movies',
-  }
+    url: 'https://moviesbazaar.vercel.app/browse/top-rated'
+  },
+}
 
 export default async function Page() {
 
@@ -30,8 +37,8 @@ export default async function Page() {
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
             initialMovies={filterResponse}
-            isDataEnd={dataIsEnd} 
-            />
+            isDataEnd={dataIsEnd}
+          />
         ) : (
           <h2 className="my-40 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
 

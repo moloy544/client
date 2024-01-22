@@ -207,7 +207,7 @@ export default function Videoplayer({ movieDetails }) {
               {fullReleaseDate && (
 
                 <div className="text-base text-gray-900 font-bold my-3.5">
-                  {status === "Released" ? "Released:" : "Expeted relesed:"} <span className="text-sm text-gray-600 font-semibold">{formattedDate}</span>
+                  {status === "released" ? "Released:" : "Expeted relesed:"} <span className="text-sm text-gray-600 font-semibold">{formattedDate}</span>
                 </div>
               )}
 

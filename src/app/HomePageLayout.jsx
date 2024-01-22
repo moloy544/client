@@ -146,7 +146,7 @@ function HomePageLayout() {
                 </div>
             )}
 
-            <div className="w-full h-10" ref={observerRefElement}></div>
+            <div className="w-full h-2" ref={observerRefElement}></div>
         </>
     )
 }

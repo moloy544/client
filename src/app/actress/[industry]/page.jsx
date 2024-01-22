@@ -120,6 +120,7 @@ export default async function Page({ params }) {
                                     <div className="w-auto h-[110px] mobile:h-20 rounded-md border-2 border-cyan-500 mx-4 mobile:mx-2">
 
                                         <Image
+                                            priority
                                             className="w-full h-full object-fill pointer-events-none select-none rounded-sm"
                                             width={150}
                                             height={150}

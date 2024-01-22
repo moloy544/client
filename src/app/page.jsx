@@ -30,8 +30,15 @@ export default async function Page() {
         <section className="w-full h-auto pt-2.5 mobile:pt-1">
 
           <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
-            <h2 className="text-gray-100 text-[18px] mobile:text-sm font-semibold">Bollywood top actress</h2>
-            <Link href="/actress/bollywood" className="text-base mobile:text-[12px] text-cyan-400">See more</Link>
+            <h1 className="text-gray-100 text-[18px] mobile:text-sm font-semibold">
+              Bollywood top actress
+            </h1>
+
+            <Link href="/actress/bollywood" className="text-[14px] mobile:text-[12px] text-cyan-400 hover:text-cyan-500 font-semibold">
+              View All
+              <i className="bi bi-chevron-right"></i>
+            </Link>
+            
           </div>
 
           <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2.5 mobile:gap-2 px-2 scrollbar-hidden">
@@ -44,13 +51,13 @@ export default async function Page() {
                 className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
 
                 <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-cyan-500">
-                
+
                   <Image
-                  className="w-full h-full object-fill pointer-events-none select-none rounded-full"
-                  src={actor.avatar}
-                  width={100}
-                  height={100}
-                  alt={actor.name}
+                    className="w-full h-full object-fill pointer-events-none select-none rounded-full"
+                    src={actor.avatar}
+                    width={100}
+                    height={100}
+                    alt={actor.name}
                   />
                 </div>
 

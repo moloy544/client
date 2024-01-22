@@ -8,7 +8,7 @@ function Footer() {
                 <strong className="text-base">Developed by:</strong>
                 <a className="flex items-center" href="https://www.facebook.com/sanjoy.rokshit.5" target="_blank" rel="noopener noreferrer">
                     <Image src={authorImage} alt="author" width={25} height={25} className="rounded-full inline-block mr-1" />
-                    <span className="text-cyan-400">Sanjoy Rakshit</span>
+                    <span className="text-cyan-400">Sanjoy Rakshit <i className="bi bi-box-arrow-up-right"></i></span>
                 </a>
             </div>
             <div className="text-base text-gray-200 font-semibold flex items-center">

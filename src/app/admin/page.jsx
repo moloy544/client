@@ -1,10 +1,12 @@
 'use client'
-import { appConfig } from "@/config/config";
-import axios from "axios";
-import Link from "next/link";
-import { useRef, useState } from "react";
 
-const backendServer = appConfig.backendUrl || appConfig.localhostUrl;
+import { useRef, useState } from "react";
+import Link from "next/link";
+import axios from "axios";
+import { appConfig } from "@/config/config";
+import { getMovieDeatils } from "@/utils";
+
+const backendServer = appConfig.backendUrl;
 
 function AddMoviesPage() {
 
@@ -32,9 +34,44 @@ function AddMoviesPage() {
 
         if (state.imdbId.length >= 8) {
 
-            const response = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${state.imdbId}`);
+            const mongodbApiResponse = await getMovieDeatils(state.imdbId);
 
-            const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = response.data;
+            const { movieData, status } = mongodbApiResponse;
+
+            if (movieData && status === 200) {
+
+                const originalDate = new Date(movieData.fullReleaseDate);
+
+                const formattedDate = originalDate.toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                });
+
+                alert("Movie is already exist");
+
+                setState(prevState => ({
+                    ...prevState,
+                    imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
+                    thambnail: movieData.thambnail,
+                    title: movieData.title,
+                    releaseYear: movieData.releaseYear,
+                    fullReleaseDate: formattedDate,
+                    category: movieData.category,
+                    language: movieData.language,
+                    status: movieData.status,
+                    type: movieData.type,
+                    genre: movieData.genre,
+                    castDetails: movieData.castDetails,
+                    watchLink: movieData.watchLink,
+                    searchKeywords: movieData.searchKeywords ? movieData.searchKeywords : ''
+                }));
+                return;
+            };
+
+            const omdbApiResponse = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${state.imdbId}`);
+
+            const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = omdbApiResponse.data;
 
             const genreAray = Genre.split(',').map(genre => genre.trim());
 
@@ -47,7 +84,7 @@ function AddMoviesPage() {
 
             setState(prevState => ({
                 ...prevState,
-                imdbRating: imdbRating !=="N/A"? imdbRating : 0,
+                imdbRating: imdbRating !== "N/A" ? imdbRating : 0,
                 thambnail: Poster,
                 title: Title,
                 releaseYear: Year,
@@ -58,7 +95,6 @@ function AddMoviesPage() {
             }));
 
         }
-
     };
 
 
@@ -113,7 +149,6 @@ function AddMoviesPage() {
                 ...prevState,
                 imdbId: imdbId
             }));
-            getImbdResponse();
 
         };
 
@@ -241,7 +276,7 @@ function AddMoviesPage() {
 
                         <div className="flex flex-col my-3">
                             <label className="font-bold">Release Year</label>
-                            <input className="border border-black rounded-sm" type="text" value={state.releaseYear} onChange={(e) => handleInputChange(e, 'releaseYear')} />
+                            <input className="border border-black rounded-sm" type="number" value={state.releaseYear} onChange={(e) => handleInputChange(e, 'releaseYear')} />
                         </div>
 
                         <div className="flex flex-col my-3">
