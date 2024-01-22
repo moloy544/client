@@ -2,7 +2,6 @@ import './globals.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Inter } from 'next/font/google'
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from '@vercel/analytics';
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import Footer from './components/Footer';
@@ -57,8 +56,6 @@ export default function RootLayout({ children }) {
         </ReduxStatePrivider>
 
         <SpeedInsights />
-        
-        <Analytics />
 
         <Footer />
 
