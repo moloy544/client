@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import MoviesUserActionWarper from "./MoviesUserActionWarper";
 import { transformToCapitalize } from "@/utils";
+import Breadcrumb from "../components/Breadcrumb";
 
 export default function Videoplayer({ movieDetails }) {
 
@@ -74,96 +75,25 @@ export default function Videoplayer({ movieDetails }) {
     year: 'numeric',
   });
 
+  const breadcrumbData = [
+    {
+      name: type,
+      pathLink: type === 'series' ? `/${type}` : undefined,
+    },
+    {
+      name: category,
+      pathLink: `/movies/category/${category}`,
+    },
+    {
+      name: language,
+      pathLink: `/movies/category/${language?.replace(' ', '-')}`,
+    }
+  ];
+
   return (
     <>
 
-      <div aria-label="Breadcrumb" className="bg-gray-800 px-3 py-2">
-        <div className="flex items-center text-base mobile:text-sm text-gray-300">
-          <div>
-            <Link href="/" className="block transition hover:text-cyan-500">
-              <span className="sr-only"> Home </span>
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mobile:h-4 mobile:w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                />
-              </svg>
-            </Link>
-          </div>
-
-          <div className="rtl:rotate-180">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-
-          <div>
-
-            {type === "series" ? (
-              <Link href={`/${type}`} className="block transition hover:text-cyan-500">{type}</Link>
-            ) : (
-              <span className="block transition hover:text-cyan-500">{type}</span>
-            )}
-
-          </div>
-
-          <div className="rtl:rotate-180">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-
-          <div>
-            <Link href={`/movies/category/${category}`} className="block transition hover:text-cyan-500">{category}</Link>
-          </div>
-
-          <div className="rtl:rotate-180">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-
-          <div>
-            <Link href={`/movies/category/${language?.replace(' ', '-')}`} className="block transition hover:text-cyan-500">{language}</Link>
-          </div>
-        </div>
-      </div>
+      <Breadcrumb data={breadcrumbData} />
 
       <div className="w-full h-full py-6 mobile:py-2 px-2 flex justify-center items-center">
 
@@ -213,9 +143,9 @@ export default function Videoplayer({ movieDetails }) {
 
               <div className="text-base text-gray-900 font-bold my-3.5">Language: <Link href={`/movies/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-600 font-semibold">
                 {language?.charAt(0).toUpperCase() + language?.slice(1)}
-                {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)" }
-                </Link>
-                </div>
+                {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)"}
+              </Link>
+              </div>
 
               {castDetails?.length > 0 && (
                 <>

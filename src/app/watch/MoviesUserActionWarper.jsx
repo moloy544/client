@@ -1,6 +1,8 @@
-import { appConfig } from "@/config/config";
-import axios from "axios";
+'use client'
+
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { appConfig } from "@/config/config";
 
 function MoviesUserActionWarper({ movieData }) {
 
@@ -323,4 +325,5 @@ function ReportModel({ movieData }) {
       )}
     </>
   );
+
 }

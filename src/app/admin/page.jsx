@@ -24,11 +24,17 @@ function AddMoviesPage() {
         genre: [], // Change genre to an array
         watchLink: '',
         castDetails: [],
+        tags: [],
         searchKeywords: '',
     });
 
     const genreRef = useRef(null);
     const castRef = useRef(null);
+    const tagsRef = useRef(null);
+
+    const availableLanguages = ['hindi', 'hindi dubbed', 'bengali'];
+    const availableCategory = ['bollywood', 'hollywood', 'south'];
+    const availableTags = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio'];
 
     const getImbdResponse = async () => {
 
@@ -64,6 +70,7 @@ function AddMoviesPage() {
                     genre: movieData.genre,
                     castDetails: movieData.castDetails,
                     watchLink: movieData.watchLink,
+                    tags: movieData.tags,
                     searchKeywords: movieData.searchKeywords ? movieData.searchKeywords : ''
                 }));
                 return;
@@ -93,15 +100,13 @@ function AddMoviesPage() {
                 castDetails: actorsArray,
                 searchKeywords: ''
             }));
-
-        }
+        };
     };
 
 
     const sendMoviesToBackend = async () => {
 
         try {
-
 
             const addResponse = await axios.post(`${backendServer}/api/v1/admin/add_movie`, {
 
@@ -125,6 +130,7 @@ function AddMoviesPage() {
                     genre: [],
                     castDetails: [],
                     watchLink: '',
+                    tags: [],
                     searchKeywords: ''
                 }));
             } else {
@@ -165,8 +171,7 @@ function AddMoviesPage() {
                     ...prevState,
                     language: 'hindi dubbed'
                 }));
-            }
-
+            };
         };
 
         setState(prevState => ({
@@ -189,8 +194,7 @@ function AddMoviesPage() {
             }));
 
             genreRef.current.value = '';
-
-        }
+        };
     };
 
     //Remove genre from state 
@@ -202,7 +206,7 @@ function AddMoviesPage() {
             ...prevState,
             genre: updateGenre
         }));
-    }
+    };
 
     //Add Cast details Array in State
     const addCastToArray = () => {
@@ -217,8 +221,7 @@ function AddMoviesPage() {
             }));
 
             castRef.current.value = '';
-
-        }
+        };
     };
 
     //Remove cast
@@ -229,6 +232,34 @@ function AddMoviesPage() {
         setState(prevState => ({
             ...prevState,
             castDetails: updateCast
+        }));
+    };
+
+
+    //Add Genre Array In State
+    const addTagsToArray = (e) => {
+
+        const inputText = tagsRef.current.value;
+
+        if (inputText.length >= 2) {
+
+            setState(prevState => ({
+                ...prevState,
+                tags: [...state.tags, inputText]
+            }));
+
+            tagsRef.current.value = '';
+        };
+    };
+
+    //Remove genre from state 
+    const removeTagsFromArray = (tagName) => {
+
+        const updateTags = state.tags?.filter(tags => tags !== tagName)
+
+        setState(prevState => ({
+            ...prevState,
+            tags: updateTags
         }));
     };
 
@@ -301,18 +332,12 @@ function AddMoviesPage() {
                         <div className="flex flex-col my-3">
                             <label className="font-bold">Category {"(" + state.category + ")"}</label>
                             <div className="flex gap-5">
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Bollywood
-                                    <input onChange={(e) => handleInputChange(e, 'category')} type="radio" value="bollywood" name="category" checked={state.category === 'bollywood'} />
-                                </label>
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Hollywood
-                                    <input onChange={(e) => handleInputChange(e, 'category')} type="radio" value="hollywood" name="category" checked={state.category === 'hollywood'} />
-                                </label>
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    South
-                                    <input onChange={(e) => handleInputChange(e, 'category')} type="radio" value="south" name="category" checked={state.category === 'south'} />
-                                </label>
+                                {availableCategory.map((category) => (
+                                    <label key={category} className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
+                                        {category}
+                                        <input onChange={(e) => handleInputChange(e, 'category')} type="radio" value={category} name="category" checked={state.category === category} />
+                                    </label>
+                                ))}
                             </div>
                         </div>
 
@@ -331,59 +356,83 @@ function AddMoviesPage() {
                         </div>
 
                         <div className="flex flex-col my-3">
-                            <label className="font-bold">Language {"(" + state.language + ")"}</label>
-                            <div className="flex gap-5">
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Hindi
-                                    <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi" name="language" checked={state.language === 'hindi'} />
-                                </label>
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Hindi Dubbed
-                                    <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="hindi dubbed" name="language" checked={state.language === 'hindi dubbed'} />
-                                </label>
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Bengali
-                                    <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value="bengali" name="language" checked={state.language === 'bengali'} />
-                                </label>
-                            </div>
-                        </div>
 
-                        <div className="flex gap-2">
-                            {state.genre?.map((genre) => (
-                                <div key={genre} className="w-auto h-auto relative py-3">
-                                    <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
-                                        <span className="text-gray-800 text-sm ">{genre}</span>
-                                    </div>
-                                    <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeGenreFromArray(genre)}></i>
-                                </div>
-                            ))}
+                            <label className="font-bold">Language {"(" + state.language + ")"}</label>
+
+                            <div className="flex gap-5">
+                                {availableLanguages.map((language) => (
+                                    <label key={language} className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
+                                        {language}
+                                        <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value={language} name="language" checked={state.language === language} />
+                                    </label>
+                                ))}
+                            </div>
                         </div>
 
                     </div>
 
                     <div className="w-auto h-auto">
 
+                        {state.genre?.length > 0 && (
+                            <div className="flex gap-2">
+                                {state.genre?.map((genre) => (
+                                    <div key={genre} className="w-auto h-auto relative py-2">
+                                        <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
+                                            <span className="text-gray-800 text-sm ">{genre}</span>
+                                        </div>
+                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeGenreFromArray(genre)}></i>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
                         <div className="flex flex-col my-3">
                             <label className="font-bold">Genre Details</label>
                             <input ref={genreRef} className="border border-black rounded-sm" type="text" />
-                            <button type="button" onClick={addGenreToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-1.5 my-1">Add</button>
+                            <button type="button" onClick={addGenreToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                         </div>
 
-                        <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
-                            {state.castDetails?.map((cast) => (
-                                <div key={cast} className="w-auto h-auto relative py-3">
-                                    <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
-                                        <span className="text-gray-800 text-sm ">{cast}</span>
+                        {state.castDetails?.length > 0 && (
+                            <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
+                                {state.castDetails?.map((cast) => (
+                                    <div key={cast} className="w-auto h-auto relative py-2">
+                                        <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
+                                            <span className="text-gray-800 text-sm ">{cast}</span>
+                                        </div>
+                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeCastFromArray(cast)}></i>
                                     </div>
-                                    <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeCastFromArray(cast)}></i>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        )}
 
                         <div className="flex flex-col my-3">
                             <label className="font-bold">Cast Details</label>
                             <input ref={castRef} className="border border-black rounded-sm" type="text" />
-                            <button type="button" onClick={addCastToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-1.5 my-1">Add</button>
+                            <button type="button" onClick={addCastToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
+                        </div>
+
+                        {state.tags?.length > 0 && (
+                            <div className="flex gap-2">
+                                {state.tags?.map((tag) => (
+                                    <div key={tag} className="w-auto h-auto relative py-2">
+                                        <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
+                                            <span className="text-gray-800 text-sm ">{tag}</span>
+                                        </div>
+                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeTagsFromArray(tag)}></i>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        <div className="flex flex-col my-3">
+                            <label className="font-bold">Adition tags</label>
+                            <input ref={tagsRef} className="border border-black rounded-sm" type="text" list="tagOptions" />
+                            <datalist id="tagOptions">
+                               {availableTags.map((tag)=>(
+                                <option key={tag} value={tag} />
+                               ))}
+                            </datalist>
+                            <button type="button" onClick={addTagsToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                         </div>
 
                         <div className="flex flex-col my-3">
@@ -391,7 +440,7 @@ function AddMoviesPage() {
                             <input className="border border-black rounded-sm" type="text" value={state.searchKeywords} onChange={(e) => handleInputChange(e, 'searchKeywords')} />
                         </div>
 
-                        <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add movie</div>
+                        <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Send server</div>
 
                     </div>
                 </div>
@@ -414,6 +463,8 @@ function AddActorSertion() {
         name: '',
         industry: '',
     });
+
+    const availableIndusters = ['bollywood', 'hollywood', 'south']
 
     const handleInputChange = (e, field) => {
 
@@ -467,21 +518,15 @@ function AddActorSertion() {
                     <div className="flex flex-col my-3">
                         <label className="font-bold">Actor industry {"(" + actorState.industry + ")"}</label>
                         <div className="flex gap-5">
-                            <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                Bollywood
-                                <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="bollywood" name="industry" checked={actorState.industry === 'bollywood'} />
-                            </label>
-                            <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                Hollywood
-                                <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="hollywood" name="industry" checked={actorState.industry === 'hollywood'} />
-                            </label>
-                            <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                South
-                                <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="south" name="industry" checked={actorState.industry === 'south'} />
-                            </label>
+                            {availableIndusters.map((industry) => (
+                                <label key={industry} className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
+                                    {industry}
+                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="bollywood" name="industry" checked={actorState.industry === 'bollywood'} />
+                                </label>
+                            ))}
                         </div>
                     </div>
-                    <div onClick={sendActorData} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Add actor</div>
+                    <div onClick={sendActorData} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Send server</div>
 
                 </div>
 

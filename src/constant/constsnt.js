@@ -1,8 +1,4 @@
-export const categoryArray = {
-
-  linkUrl: "/movies/category",
-
-  category: [
+export const categoryArray =[
     {
       id: 1,
       name: "New release"
@@ -38,14 +34,9 @@ export const categoryArray = {
       id: 8,
       name: "Bengali"
     }
-  ]
-};
+  ];
 
-export const moviesGenreArray = {
-
-  linkUrl: "/movies/genre",
-
-  genre: [
+export const moviesGenreArray = [
     {
       id: 28,
       name: "Action"
@@ -115,4 +106,3 @@ export const moviesGenreArray = {
       name: "Documentary"
     }
   ]
-};

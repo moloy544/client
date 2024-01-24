@@ -30,11 +30,11 @@ export default async function Page() {
         <section className="w-full h-auto pt-2.5 mobile:pt-1">
 
           <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
-            <h1 className="text-gray-100 text-[18px] mobile:text-sm font-semibold">
+            <h1 className="text-gray-100 text-[18px] mobile:text-sm font-medium">
               Bollywood top actress
             </h1>
 
-            <Link href="/actress/bollywood" className="text-[14px] mobile:text-[12px] text-cyan-400 hover:text-cyan-500 font-semibold">
+            <Link href="/actress/bollywood" className="text-[14px] mobile:text-[12px] text-cyan-400 hover:text-cyan-500 font-medium">
               View All
               <i className="bi bi-chevron-right"></i>
             </Link>

@@ -1,47 +1,41 @@
-import { fetchLoadMoreMovies } from "@/utils";
+import axios from "axios";
 import { appConfig } from "@/config/config";
-import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
-
-//Revalidate page every 30 minutes
-export const revalidate = 1800;
+import SliderMoviesShowcase from "../components/SliderMoviesShowcase";
 
 export const metadata = {
 
     title: 'Series',
     description: 'Explore a diverse collection of web series from Hollywood, Bollywood, and South Indian cinema. Enjoy top-rated series in each category with compelling stories and brilliant performances.',
-    keywords: 'web series, Hollywood series, Bollywood series, South Indian series',
-  }
+    keywords: 'web series, hollywood series, bollywood series, south indian series, south series, netflix series free, watch netflix series free, latest hindi series',
+
+    openGraph: {
+        images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
+        title: `Series`,
+        description: `Watch bollywood hollywood south netflix series online Movies Bazaar`,
+        url: `https://moviesbazaar.vercel.app/series`
+    },
+}
 
 export default async function Page() {
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/series`;
+    const response = await axios.post(`${appConfig.backendUrl}/api/v1/series`);
 
-  const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
+    const { sliderSeries } = response.data.series || {};
 
-    apiPath: apiUrl,
-    limitPerPage: 30
-  });
+    return (
+        <>
+            <NavigateBackTopNav title="Series" />
 
-  return (
-    <>
-      <NavigateBackTopNav title="Series" />
+            <main className="w-full overflow-x-hidden h-full py-2">
 
-      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
+                {sliderSeries?.map((data) => (
 
-        {filterResponse.length > 0 ? (
-          <LoadMoreMoviesGirdWarper
-            apiUrl={apiUrl}
-            initialMovies={filterResponse}
-            isDataEnd={dataIsEnd} 
-            />
-        ) : (
-          <h2 className="my-40 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
+                    <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.seriesData} linkUrl={data.linkUrl} />
+                ))}
 
-        )}
+            </main>
 
-      </div>
-
-    </>
-  )
+        </>
+    )
 };

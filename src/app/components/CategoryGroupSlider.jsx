@@ -3,7 +3,6 @@ import Link from "next/link"
 
 const LinkButton = ({ linkData, linkUrl }) => {
 
-
   return (
     <>
       {linkData?.map((data) =>
@@ -26,9 +25,9 @@ export default function CategoryGroupSlider() {
 
       <div className="w-auto h-auto-fit flex items-center flex-row overflow-y-scroll gap-3 mobile:gap-2 px-2 pt-3.5 border-b border-b-cyan-800 scroll-smooth scrollbar-hidden">
 
-        <LinkButton linkData={categoryArray.category} linkUrl={categoryArray.linkUrl} />
+        <LinkButton linkData={categoryArray} linkUrl="/movies/category" />
 
-        <LinkButton linkData={moviesGenreArray.genre} linkUrl={moviesGenreArray.linkUrl} />
+        <LinkButton linkData={moviesGenreArray} linkUrl="/movies/genre" />
 
       </div>
     </div>

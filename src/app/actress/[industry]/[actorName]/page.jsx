@@ -1,9 +1,9 @@
 import axios from "axios";
-import { notFound } from "next/navigation";
 import { fetchLoadMoreMovies } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
+import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
 
 const getActorData = async (actorName, industry) => {
 
@@ -14,12 +14,14 @@ const getActorData = async (actorName, industry) => {
         actorName
       }
     });
-    const status = response.status;
+   
     const { name, avatar } = response.data?.actor;
-    return { status, name, avatar };
+
+    return { status: response.status, name, avatar };
+
   } catch (error) {
     
-    return { status: 404, name: null, avatar: null };
+    return { status: 404 };
 
   }
 };
@@ -72,9 +74,12 @@ export default async function Page({ params }) {
   ]);
 
   const { status, name } = actorData;
+  
+  if (status !== 200) {
 
-  if (status === 404) {
-    notFound();
+    return (
+      <SomthingWrongError />
+    )
   };
 
   const { filterResponse, dataIsEnd } = moviesData;

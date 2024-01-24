@@ -6,6 +6,7 @@ import Link from "next/link";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
 import { fetchLoadMoreMovies } from "@/utils";
+import CategoryGroupSlider from "../components/CategoryGroupSlider";
 
 const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
 
@@ -140,7 +141,7 @@ function SearchPage() {
 
     return (
         <>
-            <div className="sticky top-0 left-0 z-50 w-full h-auto bg-gray-900 border-b border-b-cyan-700">
+            <header className="sticky top-0 left-0 z-50 w-full h-auto bg-gray-900 border-b border-b-cyan-700">
 
                 <div className="w-auto h-auto flex gap-1 items-center">
 
@@ -148,23 +149,28 @@ function SearchPage() {
 
                     <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
 
-                        <Link href="/" className="text-xl text-yellow-500 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
+                        <Link href="/" className="text-xl text-rose-500 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
 
                         <input onChange={handleSearchInputChange} value={searchQuery} type="search" placeholder="Search movies web series and more..."
                             className="w-[45%] mobile:w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 rounded-md px-4 mr-4 mobile:mr-1 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
-
 
                     </div>
 
                 </div>
 
-            </div>
+                {moviesData.length === 0 && (
+                <CategoryGroupSlider />
+            )}
+
+            </header>
+
+            
 
             <div className="w-full h-auto overflow-x-hidden">
 
                 {searchQuery !== '' ? (
 
-                    <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
+                    <div className="w-full h-full py-3 mobile:py-2">
 
                         {moviesData.length > 0 ? (
                             <>
@@ -181,7 +187,7 @@ function SearchPage() {
                         ) : (
                             <>
                                 {loading && moviesData.length < 1 && (
-                                    <div className="w-full min-h-[80vh] py-5 flex justify-center items-center">
+                                    <div className="w-full py-5 flex justify-center items-center">
                                         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-white motion-reduce:animate-[spin_1.5s_linear_infinite]"
                                             role="status">
                                             <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
@@ -197,8 +203,8 @@ function SearchPage() {
 
                     </div>
                 ) : (
-                    <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
-                        <h2 className="my-28 text-gray-300 text-xl mobile:text-base text-center font-semibold">Search movies and series</h2>
+                    <div className="w-full h-full my-40">
+                        <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">Search movies and series</h2>
                     </div>
                 )}
 
