@@ -224,7 +224,7 @@ function ReportModel({ movieData }) {
                 <h2 className="text-base font-bold leading-4">Are you sure you want to report?</h2>
 
                 <p className="mt-2 text-xs text-gray-600">
-                  Please select the issue and describe the problem. We will fix it as soon as possible.
+                  Please select the issue or describe the problem. We are solve your problem within 6 hours.
                 </p>
 
                 <div className="flex flex-wrap gap-3 my-2">
@@ -295,7 +295,7 @@ function ReportModel({ movieData }) {
                   placeholder="Write your problem here..."
                 />
                 {message === "Invalid" && (
-                  <p className="text-red-pure text-xs my-1">Please select or write your problem maximum 10 words</p>
+                  <p className="text-red-pure text-xs my-1">Please select or describe your problem maximum 10 words</p>
                 )}
                 <div className="mt-4 flex gap-5">
                   <button
@@ -317,7 +317,7 @@ function ReportModel({ movieData }) {
               </>
 
             ) : (
-              <div className="w-60 h-auto text-green-600 text-center text-sm font-medium">Thanks for reporting we fix your issue soon as possible</div>
+              <div className="w-60 h-auto text-green-600 text-center text-sm font-medium">Thanks for reporting us we are solve your issue soon as possible</div>
             )}
 
           </div>
