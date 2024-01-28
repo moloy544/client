@@ -28,7 +28,7 @@ export default function Navbar() {
                             </div>
                         </Link>
 
-                        <Link href="/search" className="hidden mobile:block p-0.5 mx-3">
+                        <Link aria-label="Notification" href="/search" className="hidden mobile:block p-0.5 mx-3">
                             <i className="bi bi-search text-gray-200 text-xl"></i>
                         </Link>
 

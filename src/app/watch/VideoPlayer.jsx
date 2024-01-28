@@ -101,7 +101,7 @@ export default function Videoplayer({ movieDetails }) {
 
           <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
 
-            <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border border-gray-600 rounded-md relative overflow-hidden">
+            <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border border-yellow-600 rounded-md relative overflow-hidden">
 
               <div className="w-full h-full overflow-hidden relative group">
 
@@ -113,10 +113,13 @@ export default function Videoplayer({ movieDetails }) {
 
               </div>
 
-              {status === "released" ? (<div role="button" onClick={showPlayer}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cyan-500 text-gray-100 w-12 h-12 flex justify-center items-center rounded-full pl-1 text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
-                <i className="bi bi-play"></i>
-              </div>) : (
+              {status === "released" ? (
+                <button type="button"
+                  onClick={showPlayer}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rose-500 text-gray-100 w-12 h-12 flex justify-center items-center rounded-full text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
+                  <i className="bi bi-play"></i>
+                </button>
+              ) : (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white text-sm">
                   {transformToCapitalize(status)}
                 </div>
@@ -132,16 +135,16 @@ export default function Videoplayer({ movieDetails }) {
           <div className="w-auto h-auto max-w-md py-3 flex flex-col mobile:flex-col-reverse">
             <div className="mobile:px-2.5">
 
-              <div className="text-base text-gray-900 font-bold my-3.5">Title: <span className="text-sm text-gray-600 font-semibold">{title}</span></div>
-              <div className="text-base text-gray-900 font-bold my-3.5">Year: <span className="text-sm text-gray-600 font-semibold">{releaseYear}</span></div>
+              <div className="text-base text-gray-900 font-bold my-3.5">Title: <span className="text-sm text-gray-600 font-medium">{title}</span></div>
+              <div className="text-base text-gray-900 font-bold my-3.5">Year: <span className="text-sm text-gray-600 font-medium">{releaseYear}</span></div>
               {fullReleaseDate && (
 
                 <div className="text-base text-gray-900 font-bold my-3.5">
-                  {status === "released" ? "Released:" : "Expeted relesed:"} <span className="text-sm text-gray-600 font-semibold">{formattedDate}</span>
+                  {status === "released" ? "Released:" : "Expeted relesed:"} <span className="text-sm text-gray-600 font-medium">{formattedDate}</span>
                 </div>
               )}
 
-              <div className="text-base text-gray-900 font-bold my-3.5">Language: <Link href={`/movies/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-600 font-semibold">
+              <div className="text-base text-gray-900 font-bold my-3.5">Language: <Link href={`/movies/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-600 font-medium">
                 {language?.charAt(0).toUpperCase() + language?.slice(1)}
                 {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)"}
               </Link>
@@ -152,7 +155,7 @@ export default function Videoplayer({ movieDetails }) {
                   <div className="w-auto h-auto flex flex-wrap gap-1 items-center my-3.5">
                     <div className="text-base text-gray-900 font-bold">Star cast: </div>
                     {castDetails?.map((cast, index) => (
-                      <div key={index} className="text-gray-600 text-xs font-semibold rounded-md">
+                      <div key={index} className="text-gray-600 text-xs font-medium rounded-md">
                         {cast}
                         {index !== castDetails.length - 1 && ','}
                       </div>
@@ -164,7 +167,7 @@ export default function Videoplayer({ movieDetails }) {
               <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
                 <div className="text-base text-gray-900 font-bold">Genre: </div>
                 {genre?.map((genre) => (
-                  <div key={genre} className="bg-cyan-100 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-semibold rounded-md">
+                  <div key={genre} className="bg-cyan-100 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-medium rounded-md">
                     {genre !== "N/A" ? (
                       <Link href={`/movies/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
                     ) : genre}
