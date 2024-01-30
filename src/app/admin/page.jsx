@@ -78,29 +78,30 @@ function AddMoviesPage() {
 
             const omdbApiResponse = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${state.imdbId}`);
 
-            const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = omdbApiResponse.data;
+            if (omdbApiResponse.data.Title) {
 
-            const genreAray = Genre.split(',').map(genre => genre.trim());
+                const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = omdbApiResponse.data;
 
-            const actorsArray = Actors.split(',').map(actor => actor.trim());
+                const genreAray = Genre.split(',').map(genre => genre.trim());
 
-            const originalDate = Released ? new Date(Released) : null;
+                const actorsArray = Actors.split(',').map(actor => actor.trim());
 
-            // Format the date without the time portion
-            const formattedDate = originalDate?.toISOString().split('T')[0];
+                setState(prevState => ({
+                    ...prevState,
+                    imdbRating: imdbRating !== "N/A" ? imdbRating : 0,
+                    thambnail: Poster,
+                    title: Title,
+                    releaseYear: Year,
+                    fullReleaseDate: Released,
+                    genre: genreAray,
+                    castDetails: actorsArray,
+                    searchKeywords: ''
+                }));
+            }else{
+                alert(omdbApiResponse.data.Error)
+            };;
+        }
 
-            setState(prevState => ({
-                ...prevState,
-                imdbRating: imdbRating !== "N/A" ? imdbRating : 0,
-                thambnail: Poster,
-                title: Title,
-                releaseYear: Year,
-                fullReleaseDate: formattedDate,
-                genre: genreAray,
-                castDetails: actorsArray,
-                searchKeywords: ''
-            }));
-        };
     };
 
 
@@ -374,7 +375,7 @@ function AddMoviesPage() {
                     <div className="w-auto h-auto">
 
                         {state.genre?.length > 0 && (
-                            <div className="flex gap-2">
+                            <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
                                 {state.genre?.map((genre) => (
                                     <div key={genre} className="w-auto h-auto relative py-2">
                                         <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
@@ -428,9 +429,9 @@ function AddMoviesPage() {
                             <label className="font-bold">Adition tags</label>
                             <input ref={tagsRef} className="border border-black rounded-sm" type="text" list="tagOptions" />
                             <datalist id="tagOptions">
-                               {availableTags.map((tag)=>(
-                                <option key={tag} value={tag} />
-                               ))}
+                                {availableTags.map((tag) => (
+                                    <option key={tag} value={tag} />
+                                ))}
                             </datalist>
                             <button type="button" onClick={addTagsToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                         </div>

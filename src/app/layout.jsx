@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
         />
 
         <ReduxStatePrivider>
-          <div className="w-full h-full bg-gray-800 dark:bg-gray-800 min-h-screen">
+          <div className="w-full h-full bg-gray-800 min-h-screen">
             {children}
           </div>
         </ReduxStatePrivider>

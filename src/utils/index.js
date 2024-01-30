@@ -1,7 +1,7 @@
 import { appConfig } from "@/config/config";
 import axios from "axios";
 
-export const fetchLoadMoreMovies = async ({ methood = 'post', apiPath, limitPerPage, skip = 0, bodyData }) => {
+export const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage, skip = 0, bodyData }) => {
 
   try {
 

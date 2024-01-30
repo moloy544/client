@@ -34,7 +34,7 @@ export default async function Page() {
               Bollywood top actress
             </h1>
 
-            <Link href="/actress/bollywood" className="text-[14px] mobile:text-[12px] text-cyan-400 hover:text-cyan-500 font-medium">
+            <Link href="/actress/bollywood" className="text-[14px] mobile:text-[12px] text-cyan-500 hover:text-cyan-400 font-medium">
               View All
               <i className="bi bi-chevron-right"></i>
             </Link>

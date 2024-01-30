@@ -1,4 +1,4 @@
-import { fetchLoadMoreMovies } from "@/utils";
+import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
@@ -21,7 +21,7 @@ export default async function Page() {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/top-rated`;
 
-  const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
+  const { filterResponse, dataIsEnd } = await loadMoreFetch({
 
     apiPath: apiUrl,
     limitPerPage: 30

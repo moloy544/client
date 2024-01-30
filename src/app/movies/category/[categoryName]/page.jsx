@@ -1,4 +1,4 @@
-import { fetchLoadMoreMovies, transformToCapitalize } from "@/utils";
+import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
@@ -23,29 +23,22 @@ export async function generateMetadata({ params }) {
   return metaData;
 };
 
-export default async function Page({ params, searchParams }) {
+export default async function Page({ params }) {
 
   const category = params?.categoryName;
 
-  const sortFilter = searchParams?.sort;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${category}`;
 
-  let apiUrl;
+  const bodyData = { datesort: -1 };
 
-  if (sortFilter) {
-    apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${category}?sort=${sortFilter}`;
-
-  } else {
-    apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${category}`;
-  }
-
-
-  const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
+  const { filterResponse, dataIsEnd } = await loadMoreFetch({
 
     apiPath: apiUrl,
+    bodyData,
     limitPerPage: 30
   });
 
-  const categoryName = transformToCapitalize(sortFilter? params.categoryName + ' ' + sortFilter : params.categoryName);
+  const categoryName = transformToCapitalize(params.categoryName);
 
   return (
     <>
@@ -56,6 +49,7 @@ export default async function Page({ params, searchParams }) {
         {filterResponse.length > 0 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
+         
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd}
           />

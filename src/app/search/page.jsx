@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
-import { fetchLoadMoreMovies } from "@/utils";
+import { loadMoreFetch } from "@/utils";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
 
 const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
@@ -38,7 +38,7 @@ function SearchPage() {
 
         try {
 
-            const { status, filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
+            const { status, filterResponse, dataIsEnd } = await loadMoreFetch({
                 apiPath: `${backendServer}/api/v1/movies/search?q=${query}`,
                 limitPerPage: 25,
                 skip: moviesData?.length || 0,
@@ -101,6 +101,10 @@ function SearchPage() {
                 setLoading(true);
             };
 
+        };
+
+        if (userSearchText ==="") {
+            setMoviesData([])
         };
     };
 

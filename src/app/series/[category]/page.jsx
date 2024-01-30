@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { fetchLoadMoreMovies, transformToCapitalize } from "@/utils";
+import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import { moviesGenreArray } from "@/constant/constsnt";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
@@ -30,11 +30,14 @@ export default async function Page({ params }) {
 
   const category = params.category;
   
-   const  apiUrl = `${appConfig.backendUrl}/api/v1/series/${category}`
+   const  apiUrl = `${appConfig.backendUrl}/api/v1/series/${category}`;
 
-  const { filterResponse, dataIsEnd } = await fetchLoadMoreMovies({
+   const bodyData = { datesort: -1 }
+
+  const { filterResponse, dataIsEnd } = await loadMoreFetch({
 
     apiPath: apiUrl,
+    bodyData,
     limitPerPage: 30
   });
 

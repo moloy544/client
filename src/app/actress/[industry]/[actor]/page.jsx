@@ -1,5 +1,5 @@
 import axios from "axios";
-import { fetchLoadMoreMovies } from "@/utils";
+import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
@@ -30,22 +30,22 @@ export async function generateMetadata({ params }) {
 
   try {
 
-    const { industry, actorName } = params;
+    const { industry, actor } = params;
 
-    const { status, name, avatar } = await getActorData(actorName, industry);
+    const { status, name, avatar } = await getActorData(actor, industry);
 
     if (status === 200) {
 
       const metaData = {
-        title: `${name} movies`,
-        description: `Watch ${name} movies online Movies Bazaar`,
+        title: name,
+        description: `Watch ${name} movies online Movies Bazaar we have `,
         keywords: `${name} movie, Watch ${name} movie online, ${name} movie watch free online, Where to watch ${name} movies online`,
 
         openGraph: {
           images: avatar,
-          title: `${name} movies`,
+          title: name,
           description: `Watch ${name} movies online Movies Bazaar`,
-          url: `https://moviesbazaar.vercel.app/listing/actress/${actorName}`
+          url: `https://moviesbazaar.vercel.app/listing/actress/${actor}`
         },
       };
 
@@ -59,15 +59,15 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
 
-  const { industry, actorName } = params;
+  const { industry, actor } = params;
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction/${actorName}`;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction/${actor}`;
 
   const [actorData, moviesData] = await Promise.all([
 
-    getActorData(actorName, industry),
+    getActorData(actor, industry),
 
-    fetchLoadMoreMovies({
+    loadMoreFetch({
       apiPath: apiUrl,
       limitPerPage: 30,
     })
