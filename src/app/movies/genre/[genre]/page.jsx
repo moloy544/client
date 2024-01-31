@@ -8,14 +8,14 @@ export async function generateMetadata({ params }) {
     const editParamsQuery = transformToCapitalize(params.genre);
 
     const metaData = {
-        title: `${editParamsQuery} movies`,
-        description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
+        title: `${editParamsQuery} movies collaction`,
+        description: `Watch ${editParamsQuery} movies, series free of cost online Movies Bazaar have lot of ${editParamsQuery} movies and series collaction`,
         keywords: `${editParamsQuery} movie, Watch ${editParamsQuery} movie online, ${editParamsQuery} movie watch free online, Where to watch ${editParamsQuery} movies online`,
 
         openGraph: {
             images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
-            title: `${editParamsQuery} movies`,
-            description: `Watch ${editParamsQuery} movies online Movies Bazaar`,
+            title: `${editParamsQuery} movies collaction`,
+            description: `Watch ${editParamsQuery} movies, series online free of cost Movies Bazaar have lot of ${editParamsQuery} movies and series collaction`,
             url: `https://moviesbazaar.vercel.app/listing/genre/${params.genre}`
         },
     };
@@ -42,13 +42,14 @@ export default async function Page({ params }) {
 
     return (
         <>
-            <NavigateBackTopNav title={capitalizeGenre} />
+            <NavigateBackTopNav title={capitalizeGenre+ " movies"} />
 
             <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
                 {filterResponse.length > 0 ? (
                     <LoadMoreMoviesGirdWarper
                         apiUrl={apiUrl}
+                        limitPerPage={30}
                         initialFilter={filterData}
                         initialMovies={filterResponse}
                         isDataEnd={dataIsEnd}

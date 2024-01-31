@@ -1,5 +1,5 @@
 import axios from "axios";
-import { loadMoreFetch } from "@/utils";
+import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
@@ -38,13 +38,13 @@ export async function generateMetadata({ params }) {
 
       const metaData = {
         title: name,
-        description: `Watch ${name} movies online Movies Bazaar we have `,
+        description: `Watch ${name} movies online free of cost Movies Bazaar`,
         keywords: `${name} movie, Watch ${name} movie online, ${name} movie watch free online, Where to watch ${name} movies online`,
 
         openGraph: {
           images: avatar,
           title: name,
-          description: `Watch ${name} movies online Movies Bazaar`,
+          description: `Watch ${name} movies online free of cost Movies Bazaar`,
           url: `https://moviesbazaar.vercel.app/listing/actress/${actor}`
         },
       };
@@ -61,7 +61,9 @@ export default async function Page({ params }) {
 
   const { industry, actor } = params;
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction/${actor}`;
+  const actorName = transformToCapitalize(actor);
+
+  const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction`;
 
   const filterData = { dateSort: -1 };
 
@@ -71,7 +73,7 @@ export default async function Page({ params }) {
 
     loadMoreFetch({
       apiPath: apiUrl,
-      bodyData: {filterData},
+      bodyData:{filterData, actor: actorName},
       limitPerPage: 30,
     })
   ]);
@@ -96,6 +98,8 @@ export default async function Page({ params }) {
         {filterResponse.length > 1 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
+            apiBodyData={{actor: actorName}}
+            limitPerPage={30}
             initialFilter={filterData}
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd} />

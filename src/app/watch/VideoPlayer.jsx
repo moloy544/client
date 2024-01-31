@@ -116,7 +116,7 @@ export default function Videoplayer({ movieDetails }) {
               {status === "released" ? (
                 <button type="button"
                   onClick={showPlayer}
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rose-500 text-gray-100 w-12 h-12 flex justify-center items-center rounded-full text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rose-500 text-gray-100 w-12 h-12 pl-1 pb-0.5 flex justify-center items-center rounded-full text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
                   <i className="bi bi-play"></i>
                 </button>
               ) : (
@@ -164,10 +164,11 @@ export default function Videoplayer({ movieDetails }) {
 
                 </>
               )}
+
               <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
                 <div className="text-base text-gray-900 font-bold">Genre: </div>
                 {genre?.map((genre) => (
-                  <div key={genre} className="bg-cyan-100 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-medium rounded-md">
+                  <div key={genre} className="bg-gray-100 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-medium rounded-md">
                     {genre !== "N/A" ? (
                       <Link href={`/movies/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
                     ) : genre}

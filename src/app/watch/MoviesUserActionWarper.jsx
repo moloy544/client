@@ -13,12 +13,11 @@ function MoviesUserActionWarper({ movieData }) {
     if (navigator.share) {
       navigator.share({
         title: document.title,
-        text: `Watch ${movieData.title + " " + movieData.type} online moviesbazaar`,
+        text: `Watch ${movieData.title + " " + '(' + movieData.releaseYear + ')' + " " + movieData.type} online free only on moviesbazaar`,
         url: window.location.href,
       })
         .catch((error) => console.error('Error sharing movie:', error));
     } else {
-      // Fallback for browsers that don't support the Web Share API
 
       console.log('Movie URL copied to clipboard');
     }
@@ -31,24 +30,30 @@ function MoviesUserActionWarper({ movieData }) {
 
     const parseData = localStorageData ? JSON.parse(localStorageData) : [];
 
-    const checkIsAvailable = parseData?.some((data) => data === movieData._id);
+    const checkIsAvailable = parseData?.some((data) => data.imdbId === movieData.imdbId);
 
-    let updateData;
+    let data;
 
     if (checkIsAvailable) {
 
-      updateData = parseData.filter((data) => data !== movieData._id);
+      data = parseData.filter((data) => data.imdbId !== movieData.imdbId);
+
       setIsSaved(false);
-      if (updateData.length === 0) {
+
+      if (data.length === 0) {
         localStorage.removeItem('saved-movies-data');
         return;
       }
     } else {
+
       setIsSaved(true);
-      updateData = [...parseData, movieData._id];
+
+      const dateNow = new Date();
+
+      data = [...parseData, { imdbId: movieData.imdbId, addAt: dateNow }];
     }
 
-    localStorage.setItem('saved-movies-data', JSON.stringify(updateData));
+    localStorage.setItem('saved-movies-data', JSON.stringify(data));
   };
 
   useEffect(() => {
@@ -57,17 +62,9 @@ function MoviesUserActionWarper({ movieData }) {
 
     const parseData = localStorageData ? JSON.parse(localStorageData) : [];
 
-    const checkIsAvailable = parseData?.some((data) => data === movieData._id);
+    const isAvailable = parseData?.some((data) => data.imdbId === movieData.imdbId);
 
-    if (checkIsAvailable) {
-
-      setIsSaved(true);
-
-    } else {
-
-      setIsSaved(false);
-
-    }
+    setIsSaved(isAvailable);
 
   }, [])
 
@@ -78,14 +75,14 @@ function MoviesUserActionWarper({ movieData }) {
 
         <div onClick={saveInLocalStorage} role="button" className="w-auto h-auto flex gap-1 justify-center items-center bg-gray-200 hover:bg-gray-300 py-1 px-2.5 rounded-xl">
           {isSaved ? (
-            <i className="bi bi-check2"></i>
+            <i className="bi bi-check-square-fill text-rose-500"></i>
           ) : (
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false">
               <path d="M22 13h-4v4h-2v-4h-4v-2h4V7h2v4h4v2zm-8-6H2v1h12V7zM2 12h8v-1H2v1zm0 4h8v-1H2v1z"></path>
             </svg>
           )}
 
-          <div className="text-xs text-gray-700 font-semibold">{isSaved ? "Saved" : "Save"}</div>
+          <div className={`text-xs ${isSaved ? "text-gray-900" : "text-gray-700"} font-semibold`}>{isSaved ? "Saved" : "Save"}</div>
 
         </div>
 
@@ -140,7 +137,9 @@ function ReportModel({ movieData }) {
   }
 
   const handleSelectedReport = (e) => {
+
     const reportValue = e.target.value;
+
     const isChecked = e.target.checked;
 
     if (message === "Invalid") {
@@ -152,7 +151,7 @@ function ReportModel({ movieData }) {
         return [...prevData, reportValue];
       } else {
         return prevData.filter((report) => report !== reportValue);
-      }
+      };
     });
   };
 
@@ -181,16 +180,15 @@ function ReportModel({ movieData }) {
             setMessage("Pending");
             closeModel();
           }, 3000);
-        }
+        };
 
-        console.log(reportResponse.data);
       } else {
         setMessage("Invalid");
-      }
+      };
 
     } catch (error) {
       console.log(error)
-    }
+    };
   };
 
   return (

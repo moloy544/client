@@ -7,7 +7,7 @@ import { loadMoreFetch } from "@/utils";
 import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 
-function LoadMoreMoviesGirdWarper({ apiUrl, initialFilter, initialMovies, isDataEnd }) {
+function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, initialMovies, isDataEnd }) {
 
     const patname = usePathname();
 
@@ -38,16 +38,18 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialFilter, initialMovies, isData
 
     };
 
+    const handleObservers = (entries) => {
+
+        const target = entries[0];
+
+        if (target.isIntersecting && !loading && !isAllDataLoad) {
+            setPage((prevPage) => prevPage + 1);
+        }
+    };
+
     useEffect(() => {
 
-        const observer = new IntersectionObserver((entries) => {
-
-            const target = entries[0];
-
-            if (target.isIntersecting && !loading && !isAllDataLoad) {
-                setPage((prevPage) => prevPage + 1);
-            }
-        }, {
+        const observer = new IntersectionObserver(handleObservers, {
             root: null,
             rootMargin: "200px",
             threshold: 1.0,
@@ -62,7 +64,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialFilter, initialMovies, isData
                 observer.unobserve(observerRefElement.current);
             }
         };
-    }, [moviesData, loading, isAllDataLoad]);
+    }, [moviesData, loading, isAllDataLoad, handleObservers]);
 
     useEffect(() => {
 
@@ -88,8 +90,11 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialFilter, initialMovies, isData
 
                     const { status, filterResponse, dataIsEnd } = await loadMoreFetch({
                         apiPath: apiUrl,
-                        bodyData: {filterData},
-                        limitPerPage: initialMovies.length,
+                        bodyData: { 
+                            filterData,
+                            ...apiBodyData
+                         },
+                        limitPerPage,
                         skip: moviesData.length,
                     });
 
@@ -126,7 +131,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, initialFilter, initialMovies, isData
 
                 <div className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
 
-                    <LoadMoreMoviesCard limit={initialMovies.length} isLoading={loading} moviesData={moviesData} />
+                    <LoadMoreMoviesCard limit={limitPerPage} isLoading={loading} moviesData={moviesData} />
 
                 </div>
 
@@ -160,30 +165,34 @@ function FilterDropDown({ data }) {
 
     const sortFilerOptions = [
         {
-            title: 'date-new-to-old',
+            filterLabel: 'Date new to old',
             filterName: 'dateSort',
-            filterValue: -1,
-            filterLabel: 'Date new to old'
+            filterValue: -1
         },
         {
-            title: 'date-old-to-new',
+            filterLabel: 'Date old to new',
             filterName: 'dateSort',
-            filterValue: 1,
-            filterLabel: 'Date old to new'
+            filterValue: 1
         },
         {
-            title: 'rating-high-to-low',
+            filterLabel: 'Rating high to low',
             filterName: 'ratingSort',
-            filterValue: -1,
-            filterLabel: 'Rating high to low'
+            filterValue: -1
         },
     ];
 
     return (
 
-        <div className={`w-auto h-auto py-1 px-2 border fixed top-20 mobile:top-16 right-5 z-20 shadow-2xl ${visible ? "bg-white text-gray-900 border-gray-500 rounded-md" : "bg-rose-600 text-gray-100 border-rose-500 rounded-full"}`}>
+        <div className={`w-auto h-auto border fixed top-20 mobile:top-16 right-5 z-20 shadow-2xl ${visible ? "py-1 px-2 bg-white text-gray-900 border-gray-500 rounded-md" : "px-2 bg-rose-600 text-gray-100 border-rose-500 rounded-2xl"}`}>
 
-            {visible ? (
+            {!(visible) ? (
+
+                <div onClick={show} className="flex items-center gap-1 cursor-pointer">
+                    <i className="bi bi-filter text-gray-200 text-2xl"></i>
+                    <span className="text-xs text-gray-200">Filter</span>
+                </div>
+
+            ) : (
                 <>
                     <div className="w-full h-auto flex justify-between items-center">
 
@@ -195,8 +204,8 @@ function FilterDropDown({ data }) {
                     <div className="py-2">
                         {sortFilerOptions.map((data, index) => (
                             <div key={index} className="py-1.5 flex items-center gap-1">
-                                <input onChange={() => addFilter(data.filterName, data.filterValue)} id={data.title} type="radio" name="filter" className="h-0 w-0 opacity-0 absolute" checked={filterData[data.filterName] === data.filterValue} />
-                                <label htmlFor={data.title} className={`text-xs ${filterData[data.filterName] === data.filterValue ? "text-gray-900 font-semibold": "text-gray-700 font-medium"} hover:cursor-pointer relative flex items-center cursor-pointer`}>
+                                <input onChange={() => addFilter(data.filterName, data.filterValue)} id={data.filterLabel?.toLocaleLowerCase().replace(/\s+/g, '-')} type="radio" name="filter" className="h-0 w-0 opacity-0 absolute" checked={filterData[data.filterName] === data.filterValue} />
+                                <label htmlFor={data.filterLabel?.toLocaleLowerCase().replace(/\s+/g, '-')} className={`text-xs ${filterData[data.filterName] === data.filterValue ? "text-gray-900 font-semibold" : "text-gray-700 font-medium"} hover:cursor-pointer relative flex items-center cursor-pointer`}>
                                     <div className={`h-4 w-4 border border-rose-300 rounded-full flex items-center justify-center mr-2 ${filterData[data.filterName] === data.filterValue && "bg-rose-500 border-rose-500"}`}>
                                         {filterData[data.filterName] === data.filterValue && <div className="h-2 w-2 rounded-full bg-white"></div>}
                                     </div>
@@ -206,8 +215,6 @@ function FilterDropDown({ data }) {
                         ))}
                     </div>
                 </>
-            ) : (
-                <i onClick={show} className="bi bi-filter text-xl cursor-pointer"></i>
             )}
 
         </div>

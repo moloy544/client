@@ -29,15 +29,15 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
 
   const category = params.category;
-  
-   const  apiUrl = `${appConfig.backendUrl}/api/v1/series/${category}`;
 
-   const filterData = {dateSort: -1};
+  const apiUrl = `${appConfig.backendUrl}/api/v1/series/${category}`;
+
+  const filterData = { dateSort: -1 };
 
   const { filterResponse, dataIsEnd } = await loadMoreFetch({
 
     apiPath: apiUrl,
-    bodyData: {filterData},
+    bodyData: { filterData },
     limitPerPage: 30
   });
 
@@ -52,6 +52,7 @@ export default async function Page({ params }) {
         {filterResponse.length > 0 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
+            limitPerPage={30}
             initialFilter={filterData}
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd}

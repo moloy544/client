@@ -44,6 +44,7 @@ export default async function Page({ params }) {
         {filterResponse.length > 0 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
+            limitPerPage={30}
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd}
           />
