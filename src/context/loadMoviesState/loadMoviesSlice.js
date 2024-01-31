@@ -5,6 +5,7 @@ const initialState = {
     loadMoviesPathname: '/',
     isAllDataLoad: false,
     loadMoviesData: [],
+    filterData:{}
 };
 
 export const loadMoviesSlice = createSlice({

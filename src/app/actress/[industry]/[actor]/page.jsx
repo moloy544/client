@@ -63,12 +63,15 @@ export default async function Page({ params }) {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction/${actor}`;
 
+  const filterData = { dateSort: -1 };
+
   const [actorData, moviesData] = await Promise.all([
 
     getActorData(actor, industry),
 
     loadMoreFetch({
       apiPath: apiUrl,
+      bodyData: {filterData},
       limitPerPage: 30,
     })
   ]);
@@ -93,6 +96,7 @@ export default async function Page({ params }) {
         {filterResponse.length > 1 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
+            initialFilter={filterData}
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd} />
         ) : (

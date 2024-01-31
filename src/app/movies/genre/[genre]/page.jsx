@@ -29,12 +29,12 @@ export default async function Page({ params }) {
 
     const apiUrl = `${appConfig.backendUrl}/api/v1/movies/genre/${genre}`;
 
-    const bodyData = { datesort: -1 }
+    const filterData = { dateSort: -1 };
 
     const { filterResponse, dataIsEnd } = await loadMoreFetch({
 
         apiPath: apiUrl,
-        bodyData,
+        bodyData: {filterData},
         limitPerPage: 30
     });
 
@@ -49,6 +49,7 @@ export default async function Page({ params }) {
                 {filterResponse.length > 0 ? (
                     <LoadMoreMoviesGirdWarper
                         apiUrl={apiUrl}
+                        initialFilter={filterData}
                         initialMovies={filterResponse}
                         isDataEnd={dataIsEnd}
                     />
