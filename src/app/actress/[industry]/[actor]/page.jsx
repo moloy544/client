@@ -65,7 +65,10 @@ export default async function Page({ params }) {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction`;
 
-  const filterData = { dateSort: -1 };
+  const filterData = {
+    sortFilter: { dateSort: -1 },
+    categoryFilter: { genre: "all" }
+  };
 
   const [actorData, moviesData] = await Promise.all([
 
@@ -95,7 +98,6 @@ export default async function Page({ params }) {
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2 relative">
 
-        {filterResponse.length > 1 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
             apiBodyData={{actor: actorName}}
@@ -103,13 +105,6 @@ export default async function Page({ params }) {
             initialFilter={filterData}
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd} />
-        ) : (
-          <div className=" w-full h-auto min-h-[90vh] flex justify-center items-center">
-            <div className="w-fit h-auto px-4 py-1.5 text-white bg-yellow-500 text-base mobile:text-sm text-center font-semibold">
-              No movies found
-            </div>
-          </div>
-        )}
 
       </div>
     </>

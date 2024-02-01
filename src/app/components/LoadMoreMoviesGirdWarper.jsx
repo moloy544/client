@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
 import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
+import { categoryArray, moviesGenreArray } from "@/constant/constsnt";
 
 function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, initialMovies, isDataEnd }) {
 
@@ -22,7 +23,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
     const observerRefElement = useRef(null);
 
-    const addFilter = (filterType, value) => {
+    const addFilter = (filterGroup, filterName, filterItem) => {
 
         setMoviesData([]);
 
@@ -32,7 +33,10 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
         dispatch(updateLoadMovies({
             loadMoviesData: [],
-            filterData: { [filterType]: value },
+            filterData: {
+                ...filterData,
+                [filterGroup]: { [filterName]: filterItem }
+            },
             isAllDataLoad: false
         }));
 
@@ -68,7 +72,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
     useEffect(() => {
 
-        //First component mount set states
+        //First component mount set states in redux store
         if (loadMoviesPathname !== patname) {
 
             dispatch(updateLoadMovies({
@@ -90,10 +94,10 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
                     const { status, filterResponse, dataIsEnd } = await loadMoreFetch({
                         apiPath: apiUrl,
-                        bodyData: { 
+                        bodyData: {
                             filterData,
                             ...apiBodyData
-                         },
+                        },
                         limitPerPage,
                         skip: moviesData.length,
                     });
@@ -133,14 +137,23 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
                     <LoadMoreMoviesCard limit={limitPerPage} isLoading={loading} moviesData={moviesData} />
 
+                    {!loading && moviesData.length === 0 && (
+                        <div className="my-40 text-gray-400 text-xl mobile:text-base text-center font-semibold">
+                            We are not found anything
+                        </div>
+                    )}
                 </div>
 
                 <div className="w-full h-2" ref={observerRefElement}></div>
 
             </main>
 
-            {initialFilter && (
-                <FilterDropDown data={{ addFilter, filterData }} />
+            {initialMovies.length>0 && initialFilter && (
+                <FilterDropDown
+                    filterData={filterData}
+                    filterFunctions={{
+                        addFilter
+                    }} />
             )}
 
         </>
@@ -149,70 +162,119 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
 export default LoadMoreMoviesGirdWarper;
 
-function FilterDropDown({ data }) {
+function FilterDropDown({ filterData, filterFunctions }) {
 
     const [visible, setVisible] = useState(false);
 
-    const show = () => {
+    const showModel = () => {
         setVisible(true);
     };
 
-    const hide = () => {
+    const hideModel = () => {
         setVisible(false)
     };
 
-    const { addFilter, filterData } = data;
+    const { addFilter } = filterFunctions;
+
+    const { sortFilter, categoryFilter } = filterData;
 
     const sortFilerOptions = [
         {
             filterLabel: 'Date new to old',
             filterName: 'dateSort',
-            filterValue: -1
+            filterData: -1
         },
         {
             filterLabel: 'Date old to new',
             filterName: 'dateSort',
-            filterValue: 1
+            filterData: 1
         },
         {
             filterLabel: 'Rating high to low',
             filterName: 'ratingSort',
-            filterValue: -1
+            filterData: -1
         },
+    ];
+
+    const categeoryFilterOptions = [
+        {
+            filterTitle: ' Filter by category',
+            filterName: 'category',
+            filterData: categoryArray
+        },
+        {
+            filterTitle: 'Filter by genre',
+            filterName: 'genre',
+            filterData: moviesGenreArray
+        }
     ];
 
     return (
 
-        <div className={`w-auto h-auto border fixed top-20 mobile:top-16 right-5 z-20 shadow-2xl ${visible ? "py-1 px-2 bg-white text-gray-900 border-gray-500 rounded-md" : "px-2 bg-rose-600 text-gray-100 border-rose-500 rounded-2xl"}`}>
+        <div className={`w-auto h-auto bg-white fixed top-20 mobile:top-16 right-5 z-20 border border-gray-300 shadow-2xl ${visible ? "py-1 rounded-md" : "px-2 rounded-2xl"}`}>
 
             {!(visible) ? (
 
-                <div onClick={show} className="flex items-center gap-1 cursor-pointer">
-                    <i className="bi bi-filter text-gray-200 text-2xl"></i>
-                    <span className="text-xs text-gray-200">Filter</span>
+                <div onClick={showModel} className="text-gray-900 font-semibold flex items-center gap-1 cursor-pointer">
+                    <i className="bi bi-filter text-2xl"></i>
+                    <span className="text-xs">Filter</span>
                 </div>
 
             ) : (
                 <>
-                    <div className="w-full h-auto flex justify-between items-center">
+                    <div className="w-full h-auto flex justify-between items-center px-2">
 
-                        <div className="text-sm text-black font-bold">Filter options</div>
+                        <div className="text-sm text-black font-bold">Sort options</div>
 
-                        <i onClick={hide} className="bi bi-x text-xl cursor-pointer"></i>
+                        <i onClick={hideModel} className="bi bi-x text-xl cursor-pointer"></i>
                     </div>
 
-                    <div className="py-2">
+                    <div className="w-52 h-auto">
+
                         {sortFilerOptions.map((data, index) => (
-                            <div key={index} className="py-1.5 flex items-center gap-1">
-                                <input onChange={() => addFilter(data.filterName, data.filterValue)} id={data.filterLabel?.toLocaleLowerCase().replace(/\s+/g, '-')} type="radio" name="filter" className="h-0 w-0 opacity-0 absolute" checked={filterData[data.filterName] === data.filterValue} />
-                                <label htmlFor={data.filterLabel?.toLocaleLowerCase().replace(/\s+/g, '-')} className={`text-xs ${filterData[data.filterName] === data.filterValue ? "text-gray-900 font-semibold" : "text-gray-700 font-medium"} hover:cursor-pointer relative flex items-center cursor-pointer`}>
-                                    <div className={`h-4 w-4 border border-rose-300 rounded-full flex items-center justify-center mr-2 ${filterData[data.filterName] === data.filterValue && "bg-rose-500 border-rose-500"}`}>
-                                        {filterData[data.filterName] === data.filterValue && <div className="h-2 w-2 rounded-full bg-white"></div>}
-                                    </div>
+
+                            <div key={index} onClick={() => addFilter('sortFilter', data.filterName, data.filterData)} className="py-2 px-2 flex gap-2 items-center cursor-pointer">
+
+                                <i className={`text-sm ${sortFilter[data.filterName] === data.filterData ? "bi bi-check-circle-fill text-red-500" : "bi bi-circle text-gray-400"}`}></i>
+
+                                <div className={`text-xs ${sortFilter[data.filterName] === data.filterData ? "text-gray-900 font-semibold" : "text-gray-800 font-medium"}`}>
                                     {data.filterLabel}
-                                </label>
+                                </div>
+
                             </div>
                         ))}
+
+                        {categeoryFilterOptions.map((filter, index) => (
+
+                            <div key={index} className="w-auto h-auto my-1">
+
+                                {categoryFilter[filter.filterName] && (
+
+                                    <>
+                                        <div className=" px-2 text-gray-800 text-sm font-bold py-1">
+                                            {filter.filterTitle}
+                                        </div>
+
+                                        <div className="w-auto h-auto max-h-60 overflow-y-scroll scrollbar-hidden">
+
+                                            <div onClick={() => addFilter('categoryFilter', filter.filterName, "all")} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === "all" ? "bg-blue-100 text-blue-500" : "text-gray-600 hover:bg-gray-100"} my-1 py-1 px-2.5 cursor-pointer`}>
+                                                <div>All</div>
+                                                <i className={`text-sm ${categoryFilter[filter.filterName] === "all" ? "bi bi-check-circle-fill" : "bi bi-circle text-blue-300"}`}></i>
+                                            </div>
+
+                                            {filter.filterData?.map((data) => (
+                                                <div onClick={() => addFilter('categoryFilter', filter.filterName, data.name)} key={data.id} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === data.name ? "bg-blue-100 text-blue-500" : "text-gray-600 hover:bg-gray-100"} my-1 py-1 px-2.5 cursor-pointer`}>
+                                                    <div>{data.name}</div>
+                                                    <i className={`text-sm ${categoryFilter[filter.filterName] === data.name ? "bi bi-check-circle-fill" : "bi bi-circle text-blue-300"}`}></i>
+                                                </div>
+                                            ))}
+
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        ))}
+
                     </div>
                 </>
             )}

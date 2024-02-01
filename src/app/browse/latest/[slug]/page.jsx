@@ -26,10 +26,16 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/latest/${params.slug}`;
+
+  const filterData = {
+    sortFilter: { dateSort: -1 },
+    categoryFilter: { genre: "all" }
+  };
  
   const { filterResponse, dataIsEnd } = await loadMoreFetch({
 
     apiPath: apiUrl,
+    bodyData: { filterData },
     limitPerPage: 30
   });
 
@@ -37,21 +43,18 @@ export default async function Page({ params }) {
 
   return (
     <>
+
       <NavigateBackTopNav title={`${title} latest`} />
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
-        {filterResponse.length > 0 ? (
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
+            initialFilter={filterData}
             limitPerPage={30}
             initialMovies={filterResponse}
             isDataEnd={dataIsEnd}
           />
-        ) : (
-          <h2 className="my-40 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
-
-        )}
 
       </div>
 
