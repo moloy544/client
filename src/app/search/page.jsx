@@ -21,7 +21,7 @@ function SearchPage() {
     const [moviesData, setMoviesData] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
 
-    const observerElement = useRef(null);
+    const bottomObserverElement = useRef(null);
 
     // Debounce function
     const debounce = (func, delay) => {
@@ -103,7 +103,7 @@ function SearchPage() {
 
         };
 
-        if (userSearchText ==="") {
+        if (userSearchText === "") {
             setMoviesData([])
         };
     };
@@ -123,13 +123,13 @@ function SearchPage() {
             threshold: 1.0,
         });
 
-        if (observerElement.current && moviesData.length > 0 && !loading && !endOfData) {
-            observer.observe(observerElement.current);
+        if (bottomObserverElement.current && moviesData.length > 0 && !loading && !endOfData) {
+            observer.observe(bottomObserverElement.current);
         };
 
         return () => {
-            if (observerElement.current) {
-                observer.unobserve(observerElement.current);
+            if (bottomObserverElement.current) {
+                observer.unobserve(bottomObserverElement.current);
             }
         };
     }, [moviesData.length, loading, endOfData]);
@@ -153,7 +153,7 @@ function SearchPage() {
 
                     <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
 
-                        <Link href="/" className="text-xl text-rose-500 text-ellipsis font-bold block mobile:hidden">Movies Bazaar</Link>
+                        <Link href="/" className="text-xl text-rose-500 text-ellipsis font-semibold block mobile:hidden">Movies Bazaar</Link>
 
                         <input onChange={handleSearchInputChange} value={searchQuery} type="search" placeholder="Search movies web series and more..."
                             className="w-[45%] mobile:w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 rounded-md px-4 mr-4 mobile:mr-1 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
@@ -163,12 +163,12 @@ function SearchPage() {
                 </div>
 
                 {moviesData.length === 0 && (
-                <CategoryGroupSlider />
-            )}
+                    <CategoryGroupSlider />
+                )}
 
             </header>
 
-            
+
 
             <div className="w-full h-auto overflow-x-hidden">
 
@@ -199,9 +199,9 @@ function SearchPage() {
                                         </div>
                                     </div>
                                 )}
-                                {!loading && moviesData.length < 1 && searchQuery !== " " ? (
-                                    <h2 className="my-40 text-yellow-500 text-xl mobile:text-base text-center font-semibold">No Movies Found</h2>
-                                ) : null}
+                                {!loading && moviesData.length < 1 && searchQuery !== " " && (
+                                    <h2 className="my-40 text-gray-300 text-xl mobile:text-base text-center font-semibold">We are not found anything</h2>
+                                )}
                             </>
                         )}
 
@@ -214,8 +214,7 @@ function SearchPage() {
 
             </div >
 
-            {/* Intersection Observer target */}
-            <div className=" w-full h-2" ref={observerElement}></div>
+            <div className=" w-full h-2" ref={bottomObserverElement}></div>
         </>
     )
 }

@@ -21,7 +21,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
     const conditionalData = (page === 0 && loadMoviesPathname !== patname) ? (initialMovies || []) : (page === 0 && loadMoviesData);
     const [moviesData, setMoviesData] = useState(conditionalData);
 
-    const observerRefElement = useRef(null);
+    const bottomObserverElement = useRef(null);
 
     const addFilter = (filterGroup, filterName, filterItem) => {
 
@@ -59,13 +59,13 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
             threshold: 1.0,
         });
 
-        if (observerRefElement.current && moviesData?.length > 0 && !loading) {
-            observer.observe(observerRefElement.current);
+        if (bottomObserverElement.current && moviesData?.length > 0 && !loading) {
+            observer.observe(bottomObserverElement.current);
         };
 
         return () => {
-            if (observerRefElement.current) {
-                observer.unobserve(observerRefElement.current);
+            if (bottomObserverElement.current) {
+                observer.unobserve(bottomObserverElement.current);
             }
         };
     }, [moviesData, loading, isAllDataLoad, handleObservers]);
@@ -144,7 +144,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                     )}
                 </div>
 
-                <div className="w-full h-2" ref={observerRefElement}></div>
+                <div className="w-full h-2" ref={bottomObserverElement}></div>
 
             </main>
 
@@ -211,7 +211,7 @@ function FilterDropDown({ filterData, filterFunctions }) {
 
     return (
 
-        <div className={`w-auto h-auto bg-white fixed top-20 mobile:top-16 right-5 z-20 border border-gray-300 shadow-2xl ${visible ? "py-1 rounded-md" : "px-2 rounded-2xl"}`}>
+        <div className={`w-auto h-auto bg-white fixed top-20 mobile:top-16 right-5 z-20 border border-gray-300 shadow-2xl ${visible ? "py-1 rounded-md" : "px-2 rounded-2xl"} select-none`}>
 
             {!(visible) ? (
 
@@ -229,15 +229,15 @@ function FilterDropDown({ filterData, filterFunctions }) {
                         <i onClick={hideModel} className="bi bi-x text-xl cursor-pointer"></i>
                     </div>
 
-                    <div className="w-52 h-auto">
+                    <div className="w-56 h-auto">
 
                         {sortFilerOptions.map((data, index) => (
 
-                            <div key={index} onClick={() => addFilter('sortFilter', data.filterName, data.filterData)} className="py-2 px-2 flex gap-2 items-center cursor-pointer">
+                            <div key={index} onClick={() => addFilter('sortFilter', data.filterName, data.filterData)} className="py-1 px-3 flex items-center gap-2 cursor-pointer">
 
-                                <i className={`text-sm ${sortFilter[data.filterName] === data.filterData ? "bi bi-check-circle-fill text-red-500" : "bi bi-circle text-gray-400"}`}></i>
+                                <i className={`text-base ${sortFilter[data.filterName] === data.filterData ? "bi bi-check-circle-fill text-red-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
 
-                                <div className={`text-xs ${sortFilter[data.filterName] === data.filterData ? "text-gray-900 font-semibold" : "text-gray-800 font-medium"}`}>
+                                <div className={`text-xs ${sortFilter[data.filterName] === data.filterData ? "text-gray-700 font-semibold" : "text-gray-600 font-medium"} transition-all duration-500 ease-in-out`}>
                                     {data.filterLabel}
                                 </div>
 
@@ -257,15 +257,15 @@ function FilterDropDown({ filterData, filterFunctions }) {
 
                                         <div className="w-auto h-auto max-h-60 overflow-y-scroll scrollbar-hidden">
 
-                                            <div onClick={() => addFilter('categoryFilter', filter.filterName, "all")} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === "all" ? "bg-blue-100 text-blue-500" : "text-gray-600 hover:bg-gray-100"} my-1 py-1 px-2.5 cursor-pointer`}>
+                                            <div onClick={() => addFilter('categoryFilter', filter.filterName, "all")} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === "all" ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
                                                 <div>All</div>
-                                                <i className={`text-sm ${categoryFilter[filter.filterName] === "all" ? "bi bi-check-circle-fill" : "bi bi-circle text-blue-300"}`}></i>
+                                                <i className={`text-base ${categoryFilter[filter.filterName] === "all" ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
                                             </div>
 
                                             {filter.filterData?.map((data) => (
-                                                <div onClick={() => addFilter('categoryFilter', filter.filterName, data.name)} key={data.id} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === data.name ? "bg-blue-100 text-blue-500" : "text-gray-600 hover:bg-gray-100"} my-1 py-1 px-2.5 cursor-pointer`}>
+                                                <div onClick={() => addFilter('categoryFilter', filter.filterName, data.name)} key={data.id} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === data.name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
                                                     <div>{data.name}</div>
-                                                    <i className={`text-sm ${categoryFilter[filter.filterName] === data.name ? "bi bi-check-circle-fill" : "bi bi-circle text-blue-300"}`}></i>
+                                                    <i className={`text-base ${categoryFilter[filter.filterName] === data.name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
                                                 </div>
                                             ))}
 
