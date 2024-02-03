@@ -522,7 +522,7 @@ function AddActorSertion() {
                             {availableIndusters.map((industry) => (
                                 <label key={industry} className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
                                     {industry}
-                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value="bollywood" name="industry" checked={actorState.industry === 'bollywood'} />
+                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value={industry} name="industry" checked={actorState.industry === industry} />
                                 </label>
                             ))}
                         </div>

@@ -31,7 +31,7 @@ export default async function Page() {
 
           <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
             <h1 className="text-gray-100 text-[18px] mobile:text-sm font-medium">
-              Bollywood top actress
+              Bollywood hindi actress 
             </h1>
 
             <Link href="/actress/bollywood" className="text-[14px] mobile:text-[12px] text-cyan-500 hover:text-cyan-400 font-medium">
