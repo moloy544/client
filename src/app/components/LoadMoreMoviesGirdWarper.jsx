@@ -198,6 +198,15 @@ function FilterDropDown({ filterData, filterCounter, filterFunctions }) {
         },
     ];
 
+    const findCategory = categoryArray.find(c => c.name === "Movie");
+
+    if (!findCategory) {
+        categoryArray.splice(4, 0, {
+            id: 15,
+            name: "Movie"
+        });
+    };
+
     const categeoryFilterOptions = [
         {
             filterTitle: ' Filter by category',
@@ -284,8 +293,7 @@ function FilterDropDown({ filterData, filterCounter, filterFunctions }) {
                                                             ))
                                                     ) : (
                                                         <div onClick={() => addFilter('categoryFilter', filter.filterName, data.name)} key={data.id} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === data.name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-
-                                                            <span>{data.name}</span>
+                                                            <span>{ data.name ==="New release" ? "Latest" : data.name}</span>
                                                             <i className={`text-base ${categoryFilter[filter.filterName] === data.name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
                                                         </div>
                                                     )}
