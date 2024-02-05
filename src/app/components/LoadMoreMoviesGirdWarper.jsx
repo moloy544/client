@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { loadMoreFetch } from "@/utils";
+import { formatNumberCounter, loadMoreFetch } from "@/utils";
 import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import { categoryArray, moviesGenreArray } from "@/constant/constsnt";
@@ -165,7 +165,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 export default LoadMoreMoviesGirdWarper;
 
 function FilterDropDown({ filterData, filterCounter, filterFunctions }) {
-   
+
     const [visible, setVisible] = useState(false);
 
     const showModel = () => {
@@ -213,7 +213,7 @@ function FilterDropDown({ filterData, filterCounter, filterFunctions }) {
 
     return (
 
-        <div className={`w-auto h-auto bg-white fixed top-20 mobile:top-16 right-5 z-20 border border-gray-300 shadow-2xl ${visible ? "py-1 rounded-md" : "px-2 rounded-2xl"} select-none`}>
+        <div className={`w-auto h-auto bg-white fixed top-20 mobile:top-16 right-5 z-20 border border-gray-300 shadow-2xl ${visible ? "py-1 rounded-md" : "px-2 flex items-center rounded-2xl"} select-none`}>
 
             {!(visible) ? (
 
@@ -260,7 +260,12 @@ function FilterDropDown({ filterData, filterCounter, filterFunctions }) {
                                         <div className="w-auto h-auto max-h-60 overflow-y-scroll scrollbar-hidden">
 
                                             <div onClick={() => addFilter('categoryFilter', filter.filterName, "all")} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === "all" ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                                <div>All</div>
+                                                {filterCounter && filterCounter.totalCount ? (
+                                                    <span>All {` (${formatNumberCounter(filterCounter.totalCount)})`}</span>
+
+                                                ) : (
+                                                    <span>All</span>
+                                                )}
                                                 <i className={`text-base ${categoryFilter[filter.filterName] === "all" ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
                                             </div>
 

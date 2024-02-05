@@ -70,5 +70,15 @@ export const transformToCapitalize = (text) => {
   return capitalizedWords?.join(' ');
 };
 
+export function formatNumberCounter(number) {
 
-
+  if (number < 1000) {
+      return number.toString(); // No formatting needed
+  } else if (number < 10000) {
+      // For numbers between 1000 and 9999, show one decimal place
+      return (number / 1000).toFixed(1) + 'k';
+  } else {
+      // For numbers 10000 and above, show without decimal places
+      return Math.floor(number / 1000) + 'k';
+  }
+}

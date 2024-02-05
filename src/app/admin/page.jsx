@@ -109,7 +109,7 @@ function AddMoviesPage() {
 
         try {
 
-            const addResponse = await axios.post(`${backendServer}/api/v1/admin/add_movie`, {
+            const addResponse = await axios.post(`${backendServer}/api/v1/admin/movie/add`, {
 
                 data: { ...state }
             }
@@ -480,7 +480,7 @@ function AddActorSertion() {
 
         try {
 
-            const addResponse = await axios.post(`${backendServer}/api/v1/admin/add_actor`, {
+            const addResponse = await axios.post(`${backendServer}/api/v1/admin/actor/add`, {
                 actorData: actorState
             });
 

@@ -8,17 +8,17 @@ import { transformToCapitalize } from "@/utils";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
 
-async function getData(industry){
+async function getData(industry) {
     try {
 
-        const response = await axios.get(`${appConfig.backendUrl}/api/v1/actress/industry/${industry}`);
+        const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/industry`, { industry });
 
         if (response.status !== 200) {
             return { status: response.status }
         };
 
         return { status: response.status, data: response.data }
-        
+
     } catch (error) {
         return { status: 404 }
     };
@@ -28,13 +28,13 @@ export default async function Page({ params }) {
 
     const paramIndustry = params?.industry || ' ';
 
-    const {status, data } = await getData(paramIndustry );
+    const { status, data } = await getData(paramIndustry);
 
     if (status !== 200) {
 
-       return (
-        <SomthingWrongError />
-       );
+        return (
+            <SomthingWrongError />
+        );
     };
 
     const { actors, industry } = data;
