@@ -1,29 +1,27 @@
 import { appConfig } from "@/config/config";
 import axios from "axios";
 
-export const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 20, skip = 0, bodyData }) => {
+export const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 20, page = 1, skip = 0, bodyData }) => {
 
   try {
 
     const response = await axios[methood](apiPath, {
       limit: limitPerPage,
+      page,
       skip,
       bodyData
     });
 
     const status = response.status;
 
-    // Use a Set to filter out duplicates from the data array
-    const filterResponse = [...new Set(response.data.moviesData)];
-
     //get end of data 
     const dataIsEnd = response.data.endOfData;
 
-    return { status, filterResponse, dataIsEnd };
+    return { status, data: response.data, dataIsEnd };
 
   } catch (error) {
     console.log(error);
-    return { status: 500, filterResponse: [], dataIsEnd: true }
+    return { status: 500, data: null, dataIsEnd: true }
   }
 };
 

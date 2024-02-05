@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
@@ -8,7 +8,7 @@ import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import { categoryArray, moviesGenreArray } from "@/constant/constsnt";
 
-function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, initialMovies, isDataEnd }) {
+function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, filterCounter, initialMovies, isDataEnd }) {
 
     const patname = usePathname();
 
@@ -17,8 +17,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
     const { loadMoviesPathname, isAllDataLoad, filterData, loadMoviesData } = useSelector((state) => state.loadMovies);
 
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(0);
-    const conditionalData = (page === 0 && loadMoviesPathname !== patname) ? (initialMovies || []) : (page === 0 && loadMoviesData);
+    const [page, setPage] = useState(1);
+    const conditionalData = (page === 1 && loadMoviesPathname !== patname) ? (initialMovies || []) : (page === 0 && loadMoviesData);
     const [moviesData, setMoviesData] = useState(conditionalData);
 
     const bottomObserverElement = useRef(null);
@@ -29,7 +29,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
         window.scrollTo(0, 0);
 
-        setPage(1);
+        setPage(2);
 
         dispatch(updateLoadMovies({
             loadMoviesData: [],
@@ -84,7 +84,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
         };
 
         //Load more movies 
-        if (!isAllDataLoad && loadMoviesPathname === patname && page !== 0) {
+        if (!isAllDataLoad && loadMoviesPathname === patname && page !== 1) {
 
             const loadMoreData = async () => {
 
@@ -92,12 +92,13 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
                     setLoading(true);
 
-                    const { status, filterResponse, dataIsEnd } = await loadMoreFetch({
+                    const { status, data, dataIsEnd } = await loadMoreFetch({
                         apiPath: apiUrl,
                         bodyData: {
                             filterData,
                             ...apiBodyData
                         },
+                        page,
                         limitPerPage,
                         skip: moviesData.length,
                     });
@@ -105,10 +106,10 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                     if (status === 200) {
 
                         dispatch(updateLoadMovies({
-                            loadMoviesData: [...loadMoviesData, ...filterResponse]
+                            loadMoviesData: [...loadMoviesData, ...data.moviesData]
                         }));
 
-                        setMoviesData((prevData) => [...prevData, ...filterResponse]);
+                        setMoviesData((prevData) => [...prevData, ...data.moviesData]);
                     };
 
                     if (dataIsEnd) {
@@ -148,9 +149,10 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
             </main>
 
-            {initialMovies.length>0 && initialFilter && (
+            {initialMovies.length > 20 && initialFilter && (
                 <FilterDropDown
                     filterData={filterData}
+                    filterCounter={filterCounter}
                     filterFunctions={{
                         addFilter
                     }} />
@@ -162,8 +164,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
 export default LoadMoreMoviesGirdWarper;
 
-function FilterDropDown({ filterData, filterFunctions }) {
-
+function FilterDropDown({ filterData, filterCounter, filterFunctions }) {
+   
     const [visible, setVisible] = useState(false);
 
     const showModel = () => {
@@ -263,10 +265,28 @@ function FilterDropDown({ filterData, filterFunctions }) {
                                             </div>
 
                                             {filter.filterData?.map((data) => (
-                                                <div onClick={() => addFilter('categoryFilter', filter.filterName, data.name)} key={data.id} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === data.name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                                    <div>{data.name}</div>
-                                                    <i className={`text-base ${categoryFilter[filter.filterName] === data.name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                                </div>
+
+                                                <React.Fragment key={data.name}>
+                                                    {filterCounter ? (
+                                                        filterCounter[filter.filterName]
+                                                            .filter(({ filterName }) => filterName === data.name)
+                                                            .map(({ count }) => (
+
+                                                                <div key={data.name} onClick={() => count !== 0 && addFilter('categoryFilter', filter.filterName, data.name)} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === data.name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
+                                                                    <span>{data.name + ` (${count})`}</span>
+                                                                    <i className={`text-base ${categoryFilter[filter.filterName] === data.name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                                                </div>
+                                                            ))
+                                                    ) : (
+                                                        <div onClick={() => addFilter('categoryFilter', filter.filterName, data.name)} key={data.id} className={`flex justify-between items-center text-xs font-medium ${categoryFilter[filter.filterName] === data.name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
+
+                                                            <span>{data.name}</span>
+                                                            <i className={`text-base ${categoryFilter[filter.filterName] === data.name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                                        </div>
+                                                    )}
+
+                                                </React.Fragment>
+
                                             ))}
 
                                         </div>

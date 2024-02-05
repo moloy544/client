@@ -38,7 +38,7 @@ function SearchPage() {
 
         try {
 
-            const { status, filterResponse, dataIsEnd } = await loadMoreFetch({
+            const { status, data, dataIsEnd } = await loadMoreFetch({
                 apiPath: `${backendServer}/api/v1/movies/search?q=${query}`,
                 limitPerPage: 25,
                 skip: moviesData?.length || 0,
@@ -46,7 +46,7 @@ function SearchPage() {
 
             if (status === 200) {
 
-                setMoviesData(prevData => [...prevData, ...filterResponse]);
+                setMoviesData(prevData => [...prevData, ...data.moviesData]);
             };
 
             if (dataIsEnd) {

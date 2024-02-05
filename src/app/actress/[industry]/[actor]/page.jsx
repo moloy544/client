@@ -90,7 +90,7 @@ export default async function Page({ params }) {
     )
   };
 
-  const { filterResponse, dataIsEnd } = moviesData;
+  const { data, dataIsEnd } = moviesData;
 
   return (
     <>
@@ -102,8 +102,9 @@ export default async function Page({ params }) {
             apiUrl={apiUrl}
             apiBodyData={{actor: actorName}}
             limitPerPage={30}
+            filterCounter={data.filterCount}
             initialFilter={filterData}
-            initialMovies={filterResponse}
+            initialMovies={data.moviesData || []}
             isDataEnd={dataIsEnd} />
 
       </div>

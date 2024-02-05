@@ -34,7 +34,7 @@ export default async function Page({ params }) {
         categoryFilter: { category: "all" }
      };
 
-    const { filterResponse, dataIsEnd } = await loadMoreFetch({
+    const { data, dataIsEnd } = await loadMoreFetch({
 
         apiPath: apiUrl,
         bodyData: {filterData},
@@ -53,7 +53,7 @@ export default async function Page({ params }) {
                         apiUrl={apiUrl}
                         limitPerPage={30}
                         initialFilter={filterData}
-                        initialMovies={filterResponse}
+                        initialMovies={data.moviesData || []}
                         isDataEnd={dataIsEnd}
                     />
 
