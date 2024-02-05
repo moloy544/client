@@ -18,7 +18,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
-    const conditionalData = (page === 1 && loadMoviesPathname !== patname) ? (initialMovies || []) : (page === 0 && loadMoviesData);
+    const conditionalData = (page === 1 && loadMoviesPathname !== patname) ? (initialMovies || []) : (page === 1 && loadMoviesData);
     const [moviesData, setMoviesData] = useState(conditionalData);
 
     const bottomObserverElement = useRef(null);
