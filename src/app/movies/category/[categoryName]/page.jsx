@@ -30,8 +30,8 @@ export default async function Page({ params }) {
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${category}`;
 
   const filterData = {
-    sortFilter: { dateSort: -1 },
-    categoryFilter: { genre: "all" }
+    dateSort: -1,
+    genreSort: "all",
   };
 
   const { data, dataIsEnd } = await loadMoreFetch({
@@ -49,14 +49,14 @@ export default async function Page({ params }) {
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
-          <LoadMoreMoviesGirdWarper
-            apiUrl={apiUrl}
-            limitPerPage={30}
-            initialFilter={filterData}
-            filterCounter={data.filterCount}
-            initialMovies={data.moviesData || []}
-            isDataEnd={dataIsEnd}
-          />
+        <LoadMoreMoviesGirdWarper
+          apiUrl={apiUrl}
+          limitPerPage={30}
+          initialFilter={filterData}
+          filterCounter={data.filterCount}
+          initialMovies={data.moviesData || []}
+          isDataEnd={dataIsEnd}
+        />
 
       </div>
 

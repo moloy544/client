@@ -22,8 +22,9 @@ export default async function Page() {
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/top-rated`;
 
   const filterData = {
-    sortFilter: {ratingSort: -1},
-    categoryFilter: { genre: "all" }
+    dateSort: -1,
+    ratingSort: -1,
+    genreSort: "all",
   };
 
   const { data, dataIsEnd } = await loadMoreFetch({

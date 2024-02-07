@@ -28,8 +28,8 @@ export default async function Page({ params }) {
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/latest/${params.slug}`;
 
   const filterData = {
-    sortFilter: { dateSort: -1 },
-    categoryFilter: { genre: "all" }
+    dateSort: -1,
+    genreSort: "all",
   };
  
   const { data, dataIsEnd } = await loadMoreFetch({
