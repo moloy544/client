@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { formatNumberCounter, transformToCapitalize } from '@/utils';
 
 function FilterModel({ initialFilterData, filterData, filterCounter, functions }) {
@@ -183,14 +183,14 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
 
                                             {filterCounter.genre?.map(({ filterName, count }) => (
 
-                                                <React.Fragment key={filterName}>
+                                                <Fragment key={filterName}>
 
                                                     <div onClick={() => addFilter({ genreSort: filterName })} className={`flex justify-between items-center text-xs font-medium ${filterData.genreSort === filterName ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
                                                         <span>{filterName + ` (${count})`}</span>
                                                         <i className={`text-base ${filterData.genreSort === filterName ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
                                                     </div>
 
-                                                </React.Fragment>
+                                                </Fragment>
                                             ))}
 
                                         </div>
@@ -233,14 +233,14 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
 
                                             {categoryFilterOptions.map(({ id, filter, name }) => (
 
-                                                <React.Fragment key={id}>
+                                                <Fragment key={id}>
 
                                                     <div onClick={() => addFilter({ [filter]: name })} className={`flex justify-between items-center text-xs font-medium ${filterData[filter] === name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
                                                         <span>{transformToCapitalize(name)}</span>
                                                         <i className={`text-base ${filterData[filter] === name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
                                                     </div>
 
-                                                </React.Fragment>
+                                                </Fragment>
 
                                             ))}
 
