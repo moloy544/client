@@ -24,7 +24,7 @@ export default async function Page() {
   const filterData = {
     dateSort: -1,
     ratingSort: -1,
-    genreSort: "all",
+    genreSort: "all"
   };
 
   const { data, dataIsEnd } = await loadMoreFetch({

@@ -23,7 +23,14 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
     const bottomObserverElement = useRef(null);
 
-    const resetData = () => {
+
+    const setFilter = (data) => {
+
+        dispatch(updateLoadMovies({
+            loadMoviesData: [],
+            filterData: data,
+            isAllDataLoad: false
+        }));
 
         setMoviesData([]);
         window.scrollTo(0, 0);
@@ -56,7 +63,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                 observer.unobserve(bottomObserverElement.current);
             }
         };
-    }, [moviesData, loading, isAllDataLoad, handleObservers]);
+    }, [moviesData, loading, handleObservers]);
 
     useEffect(() => {
 
@@ -80,10 +87,19 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
                     setLoading(true);
 
+                    //If filter data is empty bofore call api set initial filter and return for exit
+                    const isFilterDataEmpty = (Object.keys(filterData).length === 0);
+
+                    if (isFilterDataEmpty) {
+
+                        setFilter(initialFilter);
+                        return;
+                    };
+
                     const { status, data, dataIsEnd } = await loadMoreFetch({
                         apiPath: apiUrl,
                         bodyData: {
-                            filterData,
+                            filterData: isFilterDataEmpty ? initialFilter : filterData,
                             ...apiBodyData
                         },
                         page,
@@ -143,7 +159,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                     filterData={filterData}
                     filterCounter={filterCounter}
                     functions={{
-                        resetData
+                        setFilter
                     }} />
             )}
 
