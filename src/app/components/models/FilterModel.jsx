@@ -108,7 +108,7 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
     return (
         <>
 
-            <div className={`w-auto h-auto bg-white fixed top-20 mobile:top-16 right-2 z-20 border border-gray-300 shadow-2xl ${visible ? "py-1 rounded-md" : "px-2 flex items-center rounded-2xl"} select-none`}>
+            <div className={`w-auto h-auto bg-white fixed top-20 mobile:top-16 right-2 z-10 border border-gray-300 shadow-2xl ${visible ? "py-1 rounded-md" : "px-2 flex items-center rounded-2xl"} select-none`}>
 
                 {!(visible) ? (
 
