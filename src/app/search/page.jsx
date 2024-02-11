@@ -57,7 +57,6 @@ function SearchPage() {
             console.log(error)
         } finally {
             setLoading(false);
-
         };
 
     }, [moviesData.length]);
@@ -81,7 +80,6 @@ function SearchPage() {
                 if (endOfData) {
                     setEndOfData(false);
                 };
-
             };
 
         }, 1200), [page, moviesData.length, endOfData]);
@@ -100,7 +98,6 @@ function SearchPage() {
             if (!loading) {
                 setLoading(true);
             };
-
         };
 
         if (userSearchText === "") {
@@ -119,7 +116,7 @@ function SearchPage() {
 
         const observer = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "100px",
+            rootMargin: "200px",
             threshold: 1.0,
         });
 
@@ -145,7 +142,7 @@ function SearchPage() {
 
     return (
         <>
-            <header className="sticky top-0 left-0 z-50 w-full h-auto bg-gray-900 border-b border-b-cyan-700">
+            <header className="sticky top-0 left-0 z-50 w-full h-auto bg-gray-900">
 
                 <div className="w-auto h-auto flex gap-1 items-center">
 
@@ -155,7 +152,11 @@ function SearchPage() {
 
                         <Link href="/" className="text-xl text-rose-500 text-ellipsis font-semibold block mobile:hidden">Movies Bazaar</Link>
 
-                        <input onChange={handleSearchInputChange} value={searchQuery} type="search" placeholder="Search movies web series and more..."
+                        <input
+                            onChange={handleSearchInputChange}
+                            value={searchQuery} 
+                            type="search"
+                            placeholder="Search movies web series and more..."
                             className="w-[45%] mobile:w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 rounded-md px-4 mr-4 mobile:mr-1 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
 
                     </div>
@@ -168,11 +169,9 @@ function SearchPage() {
 
             </header>
 
-
-
             <div className="w-full h-auto overflow-x-hidden">
 
-                {searchQuery !== '' ? (
+                {searchQuery !== "" ? (
 
                     <div className="w-full h-full py-3 mobile:py-2">
 
@@ -186,7 +185,6 @@ function SearchPage() {
                                     <LoadMoreMoviesCard limit={25} isLoading={loading} moviesData={moviesData} />
 
                                 </div>
-
                             </>
                         ) : (
                             <>

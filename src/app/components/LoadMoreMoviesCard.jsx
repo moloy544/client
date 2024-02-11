@@ -18,15 +18,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
 
     if (isLoading && moviesData.length < 1) {
 
-        return(
-            <div className="w-full h-full fixed left-0 top-0 z-20 flex justify-center items-center bg-black bg-opacity-60">
-                <div className="text-cyan-400 inline-block mobile:h-10 mobile:w-10 w-12 h-12 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                    role="status">
-                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-                    >Loading...</span>
-                </div>
-            </div>
-        );
+        return (<LoaderSkleaton limit={limit} />);
     };
 
     return (
@@ -39,14 +31,14 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
 
                         <div className="w-auto object-cover h-[12.50rem] max-h-[220px] mobile:max-h-[170px] bg-white rounded-[3px]">
 
-                             <Image 
-                             priority
-                             className="w-full h-full object-fill select-none pointer-events-none rounded-[3px]" 
-                             width={200}
-                             height={250}
-                             src={data.thambnail} 
-                             alt={data.title} />
-    
+                            <Image
+                                priority
+                                className="w-full h-full object-fill select-none pointer-events-none rounded-[3px]"
+                                width={200}
+                                height={250}
+                                src={data.thambnail}
+                                alt={data.title} />
+
                         </div>
 
                         <div className="movie_name_container">
@@ -63,7 +55,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
 
             ))}
 
-            {isLoading && moviesData.length > 0 && <LoaderSkleaton limit={limit} />}
+            {isLoading && moviesData.length > 0 && (<LoaderSkleaton limit={limit} />)}
 
         </>
     )

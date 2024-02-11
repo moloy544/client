@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function FixedSearchIcon() {
 
@@ -13,9 +13,8 @@ function FixedSearchIcon() {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth',
-
             });
-        }
+        };
     };
 
     const handleScroll = () => {

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
@@ -23,8 +23,9 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
     const bottomObserverElement = useRef(null);
 
-
     const setFilter = (data) => {
+
+        if (!loading) {
 
         dispatch(updateLoadMovies({
             loadMoviesData: [],
@@ -35,6 +36,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
         setMoviesData([]);
         window.scrollTo(0, 0);
         setPage(2);
+
+    };
     };
 
     const handleObservers = (entries) => {

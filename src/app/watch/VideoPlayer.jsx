@@ -83,10 +83,6 @@ export default function Videoplayer({ movieDetails }) {
     {
       name: category,
       pathLink: `/movies/category/${category}`,
-    },
-    {
-      name: language,
-      pathLink: `/movies/category/${language?.replace(' ', '-')}`,
     }
   ];
 
