@@ -215,7 +215,7 @@ function ReportModel({ movieData }) {
         <>
           <div onClick={closeModel} className="fixed top-0 left-0 w-full h-full z-10 bg-black bg-opacity-30"></div>
 
-          <div className="mobile:w-3/4 max-w-sm mobile:m-auto w-auto h-auto fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg bg-white p-4 shadow-2xl border border-gray-300">
+          <div className="mobile:w-[90%] mx-4 max-w-sm mobile:m-auto w-auto h-auto fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg bg-white p-4 shadow-2xl border border-gray-300">
 
             {(message === "Pending") || (message === "Invalid") ? (
               <>
