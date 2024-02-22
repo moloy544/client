@@ -105,6 +105,8 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
         };
     };
 
+    const areFilterIsChange = JSON.stringify(initialFilterData) !== JSON.stringify(filterData);
+
     return (
         <>
 
@@ -121,7 +123,7 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
                     <>
                         <div className="w-full h-auto flex justify-between items-center px-2">
 
-                            <div className="text-sm text-black font-bold">Sort Options</div>
+                            <div className="text-sm text-black font-bold">Sort options {areFilterIsChange && <span onClick={()=>addFilter("clear")} className="text-cyan-600 text-[10px] font-medium cursor-pointer">Reset</span>}</div>
 
                             <i onClick={hideModel} className="bi bi-x text-xl cursor-pointer p-1"></i>
                         </div>

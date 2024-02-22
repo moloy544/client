@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
+import { useBottomObserver } from "@/lib/custome_lib";
 import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import FilterModel from "./models/FilterModel";
@@ -23,6 +24,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
     const bottomObserverElement = useRef(null);
 
+    const isBottomVisible = useBottomObserver({ target: bottomObserverElement.current, root: null, rootMargin: '200px', threshold: 1.0 });
+
     const setFilter = (data) => {
 
         if (!loading) {
@@ -36,37 +39,23 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
         setMoviesData([]);
         window.scrollTo(0, 0);
         setPage(2);
-
     };
     };
 
-    const handleObservers = (entries) => {
+    const handleFetchMore = useCallback(() => {
 
-        const target = entries[0];
-
-        if (target.isIntersecting && !loading && !isAllDataLoad) {
+        if (isBottomVisible && !loading && !isAllDataLoad) {
             setPage((prevPage) => prevPage + 1);
-        }
-    };
+        };
+    }, [isAllDataLoad, loading, isBottomVisible]);
 
     useEffect(() => {
 
-        const observer = new IntersectionObserver(handleObservers, {
-            root: null,
-            rootMargin: "200px",
-            threshold: 1.0,
-        });
-
         if (bottomObserverElement.current && moviesData?.length > 0 && !loading) {
-            observer.observe(bottomObserverElement.current);
+            handleFetchMore();
         };
 
-        return () => {
-            if (bottomObserverElement.current) {
-                observer.unobserve(bottomObserverElement.current);
-            }
-        };
-    }, [moviesData, loading, handleObservers]);
+    }, [moviesData, loading, handleFetchMore]);
 
     useEffect(() => {
 
@@ -135,7 +124,6 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
         };
 
     }, [isAllDataLoad, loadMoviesPathname, patname, page, filterData, initialMovies, initialFilter, isDataEnd, apiUrl]);
-
 
     return (
         <>
