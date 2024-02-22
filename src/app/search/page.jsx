@@ -6,7 +6,6 @@ import Link from "next/link";
 import { appConfig } from "@/config/config";
 import NavigateBack from "../components/NavigateBack";
 import { loadMoreFetch } from "@/utils";
-import { useBottomObserver } from "@/lib/custome_lib";
 import CategoryGroupSlider from "../components/CategoryGroupSlider";
 
 const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
@@ -23,8 +22,6 @@ function SearchPage() {
     const [endOfData, setEndOfData] = useState(false);
 
     const bottomObserverElement = useRef(null);
-
-    const isBottomVisible = useBottomObserver({ target: bottomObserverElement.current, root: null, rootMargin: '200px', threshold: 1.0 });
 
     // Debounce function
     const debounce = (func, delay) => {
@@ -108,20 +105,31 @@ function SearchPage() {
         };
     };
 
-    const handleFetchMore = useCallback(() => {
-
-        if (isBottomVisible && !loading && !endOfData) {
+    const handleObserver = (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting && !loading && !endOfData) {
             setPage((prevPage) => prevPage + 1);
-        };
-    }, [endOfData, loading, isBottomVisible]);
+        }
+    };
 
     useEffect(() => {
 
-        if (bottomObserverElement.current && moviesData?.length > 0 && !loading) {
-            handleFetchMore();
+        const observer = new IntersectionObserver(handleObserver, {
+            root: null,
+            rootMargin: "200px",
+            threshold: 1.0,
+        });
+
+        if (bottomObserverElement.current && moviesData.length > 0 && !loading && !endOfData) {
+            observer.observe(bottomObserverElement.current);
         };
 
-    }, [moviesData.length, loading, handleFetchMore]);
+        return () => {
+            if (bottomObserverElement.current) {
+                observer.unobserve(bottomObserverElement.current);
+            }
+        };
+    }, [moviesData.length, loading, endOfData]);
 
     useEffect(() => {
 
@@ -181,7 +189,7 @@ function SearchPage() {
                         ) : (
                             <>
                                 {loading && moviesData.length < 1 && (
-                                    <div className="w-full py-5 my-32 flex justify-center items-center">
+                                    <div className="w-full py-5 flex justify-center items-center">
                                         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-white motion-reduce:animate-[spin_1.5s_linear_infinite]"
                                             role="status">
                                             <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
