@@ -47,7 +47,7 @@ export default async function Page({ params }) {
         },
         {
             name: industry,
-            pathLink: `/movies/category/${industry}`
+            pathLink: `/browse/category/${industry}`
         }
     ];
 

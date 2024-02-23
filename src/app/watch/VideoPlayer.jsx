@@ -82,7 +82,7 @@ export default function Videoplayer({ movieDetails }) {
     },
     {
       name: category,
-      pathLink: `/movies/category/${category}`,
+      pathLink: `/browse/category/${category}`,
     }
   ];
 
@@ -166,7 +166,7 @@ export default function Videoplayer({ movieDetails }) {
                 {genre?.map((genre) => (
                   <div key={genre} className="bg-gray-100 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-medium rounded-md">
                     {genre !== "N/A" ? (
-                      <Link href={`/movies/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
+                      <Link href={`/browse/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
                     ) : genre}
                   </div>
                 ))}

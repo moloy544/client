@@ -6,7 +6,7 @@ const LinkButton = ({ linkData, linkUrl }) => {
   return (
     <>
       {linkData?.map((data) =>
-      (<div key={data.id} className="bg-rose-600 w-auto h-auto py-2 px-3 rounded-[5px] flex-none text-xs text-gray-200">
+      (<div key={data.id} className="bg-rose-600 w-auto h-auto py-2 px-3 rounded-[5px] flex-none text-xs text-gray-300">
         <Link
           href={data.linkUrl ? data.linkUrl.toLowerCase().replace(/[' ']/g, '-') :
             linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')}>
@@ -25,9 +25,9 @@ export default function CategoryGroupSlider() {
 
       <div className="w-auto h-auto-fit flex items-center flex-row overflow-y-scroll gap-3 mobile:gap-2 px-2 pt-3.5 border-b border-b-cyan-800 scroll-smooth scrollbar-hidden">
 
-        <LinkButton linkData={categoryArray} linkUrl="/movies/category" />
+        <LinkButton linkData={categoryArray} linkUrl="/browse/category" />
 
-        <LinkButton linkData={moviesGenreArray} linkUrl="/movies/genre" />
+        <LinkButton linkData={moviesGenreArray} linkUrl="/browse/genre" />
 
       </div>
     </div>
