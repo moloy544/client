@@ -140,7 +140,7 @@ export default function Videoplayer({ movieDetails }) {
                 </div>
               )}
 
-              <div className="text-base text-gray-900 font-bold my-3.5">Language: <Link href={`/movies/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-600 font-medium">
+              <div className="text-base text-gray-900 font-bold my-3.5">Language: <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-600 font-medium">
                 {language?.charAt(0).toUpperCase() + language?.slice(1)}
                 {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)"}
               </Link>

@@ -14,12 +14,13 @@ function FixedSearchIcon() {
         if (searchIconVisibility) {
             window.scrollTo({
                 top: 0,
-                behavior: 'smooth',
+                behavior: 'instant',
             });
         }
     };
 
     const handleScroll = () => {
+        
         const scrollY = window.scrollY;
 
         // For Search icon visibility
