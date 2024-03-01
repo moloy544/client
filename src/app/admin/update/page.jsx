@@ -16,7 +16,7 @@ function UpdateMoviesPage() {
 
             if (id.length >=15) {
 
-                const deleteResponse = await axios.delete(`${backendServer}/api/v1/admin/delete/${id}`);
+                const deleteResponse = await axios.delete(`${backendServer}/api/v1/admin/movie/delete/${id}`);
 
                 alert(deleteResponse.data.message);
 
