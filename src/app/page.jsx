@@ -8,6 +8,8 @@ import HomePageLayout from "./HomePageLayout";
 import SliderMoviesShowcase from "./components/SliderMoviesShowcase";
 import FixedSearchIcon from "./components/FixedSearchIcon";
 
+export const revalidate = 3600 // revalidate at most every hour
+
 export default async function Page() {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/landing_page`;
