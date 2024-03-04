@@ -8,7 +8,7 @@ import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import FilterModel from "./models/FilterModel";
 
-function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, filterCounter, initialMovies, isDataEnd }) {
+function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, filterCounter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
 
     const patname = usePathname();
 
@@ -27,17 +27,17 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
         if (!loading) {
 
-        dispatch(updateLoadMovies({
-            loadMoviesData: [],
-            filterData: data,
-            isAllDataLoad: false
-        }));
+            dispatch(updateLoadMovies({
+                loadMoviesData: [],
+                filterData: data,
+                isAllDataLoad: false
+            }));
 
-        setMoviesData([]);
-        window.scrollTo(0, 0);
-        setPage(2);
+            setMoviesData([]);
+            window.scrollTo(0, 0);
+            setPage(2);
 
-    };
+        };
     };
 
     const handleObservers = (entries) => {
@@ -161,6 +161,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                     initialFilterData={initialFilter}
                     filterData={filterData}
                     filterCounter={filterCounter}
+                    extraFilter={serverResponseExtraFilter}
                     functions={{
                         setFilter
                     }} />

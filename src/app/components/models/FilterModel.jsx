@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { formatNumberCounter, transformToCapitalize } from '@/utils';
 
-function FilterModel({ initialFilterData, filterData, filterCounter, functions }) {
+function FilterModel({ initialFilterData, filterData, filterCounter, functions, extraFilter }) {
 
     const [visible, setVisible] = useState(false);
 
@@ -28,55 +28,6 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
             filterLabel: 'Rating high to low',
             sort: { ratingSort: -1 },
         },
-    ];
-
-    const categoryFilterOptions = [
-        {
-            id: 1,
-            filter: 'categoryFilter',
-            name: "new release"
-        },
-        {
-            id: 2,
-            filter: 'categoryFilter',
-            name: "hollywood"
-        },
-
-        {
-            id: 3,
-            filter: 'categoryFilter',
-            name: "bollywood"
-        },
-        {
-            id: 4,
-            filter: 'categoryFilter',
-            name: "south"
-        },
-        {
-            id: 5,
-            filter: 'typeFilter',
-            name: "series"
-        },
-        {
-            id: 6,
-            filter: 'typeFilter',
-            name: "movie"
-        },
-        {
-            id: 7,
-            filter: 'languageFilter',
-            name: "hindi"
-        },
-        {
-            id: 8,
-            filter: 'languageFilter',
-            name: "hindi dubbed"
-        },
-        {
-            id: 9,
-            filter: 'languageFilter',
-            name: "bengali"
-        }
     ];
 
     const addFilter = (newFilterData) => {
@@ -123,7 +74,7 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
                     <>
                         <div className="w-full h-auto flex justify-between items-center px-2">
 
-                            <div className="text-sm text-black font-bold">Sort options {areFilterIsChange && <span onClick={()=>addFilter("clear")} className="text-cyan-600 text-[10px] font-medium cursor-pointer">Reset</span>}</div>
+                            <div className="text-sm text-black font-bold">Sort options {areFilterIsChange && <span onClick={() => addFilter("clear")} className="text-cyan-600 text-[10px] font-medium cursor-pointer">Reset</span>}</div>
 
                             <i onClick={hideModel} className="bi bi-x text-xl cursor-pointer p-1"></i>
                         </div>
@@ -154,7 +105,7 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
                                         <summary
                                             className="sticky top-0 bg-white flex cursor-pointer items-center gap-1 rounded-lg px-2.5 py-2 text-gray-800 hover:bg-gray-100 hover:text-gray-900"
                                         >
-                                            <span className="text-sm font-semibold">Sort by genre</span>
+                                            <span className="text-xs font-semibold">Sort by genre</span>
 
                                             <span className="shrink-0 transition duration-300 group-open:-rotate-180">
                                                 <svg
@@ -199,14 +150,12 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
                                     </details>
                                 )}
 
-                                {/**** Filter by category, type, language and more *********/}
-
-                                {initialFilterData.categoryFilter && (
-                                    <details className="group [&_summary::-webkit-details-marker]:hidden">
+                                {extraFilter?.map(({ title, data }, index) => (
+                                    <details key={index} className="group [&_summary::-webkit-details-marker]:hidden">
                                         <summary
                                             className="sticky top-0  bg-white flex cursor-pointer items-center gap-1 rounded-lg px-2.5 py-2 text-gray-800 hover:bg-gray-100 hover:text-gray-900"
                                         >
-                                            <span className="text-sm font-semibold">Filter options</span>
+                                            <span className="text-xs font-semibold">{title}</span>
 
                                             <span className="shrink-0 transition duration-300 group-open:-rotate-180">
                                                 <svg
@@ -226,14 +175,7 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
 
                                         <div className="w-auto h-auto my-1">
 
-                                            <div onClick={() => addFilter({ categoryFilter: "all" })} className={`flex justify-between items-center text-xs font-medium ${filterData.categoryFilter === "all" ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-
-                                                <span>All</span>
-
-                                                <i className={`text-base ${filterData.categoryFilter === "all" ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                            </div>
-
-                                            {categoryFilterOptions.map(({ id, filter, name }) => (
+                                            {data?.map(({ id, filter, name }) => (
 
                                                 <Fragment key={id}>
 
@@ -243,12 +185,11 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions }
                                                     </div>
 
                                                 </Fragment>
-
                                             ))}
 
                                         </div>
                                     </details>
-                                )}
+                                ))}
 
                             </div>
                         </div>

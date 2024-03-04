@@ -32,30 +32,68 @@ export default async function Page({ params }) {
     const filterData = {
         dateSort: -1,
         categoryFilter: "all",
-      };
+    };
 
     const { data, dataIsEnd } = await loadMoreFetch({
 
         apiPath: apiUrl,
-        bodyData: {filterData},
+        bodyData: { filterData },
         limitPerPage: 30
     });
 
     const capitalizeGenre = transformToCapitalize(genre);
 
+
+    const extraFilter = [{
+        title: "Filter by industry",
+        data: [
+            {
+                id: 1,
+                filter: 'industry',
+                name: "hollywood"
+            },
+
+            {
+                id: 2,
+                filter: 'industry',
+                name: "bollywood"
+            },
+            {
+                id: 3,
+                filter: 'industry',
+                name: "south"
+            }]
+    }, {
+
+        title: "Filter by type",
+        data: [
+            {
+                id: 1,
+                filter: 'type',
+                name: "movie"
+            },
+
+            {
+                id: 2,
+                filter: 'type',
+                name: "series"
+            }]
+    }];
+
     return (
         <>
-            <NavigateBackTopNav title={capitalizeGenre+ " movies"} />
+            <NavigateBackTopNav title={capitalizeGenre + " movies"} />
 
             <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
-                    <LoadMoreMoviesGirdWarper
-                        apiUrl={apiUrl}
-                        limitPerPage={30}
-                        initialFilter={filterData}
-                        initialMovies={data.moviesData || []}
-                        isDataEnd={dataIsEnd}
-                    />
+                <LoadMoreMoviesGirdWarper
+                    apiUrl={apiUrl}
+                    limitPerPage={30}
+                    initialFilter={filterData}
+                    serverResponseExtraFilter={extraFilter}
+                    initialMovies={data.moviesData || []}
+                    isDataEnd={dataIsEnd}
+                />
 
             </div>
         </>
