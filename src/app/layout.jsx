@@ -25,7 +25,7 @@ export const metadata = {
       template: '%s | Movies Bazaar',
     },
     description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazaar',
-    url: 'https://moviesbazaar.vercel.app'
+    url: 'https://moviesbazar.online'
   },
 }
 

@@ -45,7 +45,7 @@ export async function generateMetadata({ params }) {
           images: avatar,
           title: name,
           description: `Watch ${name} movies online free of cost Movies Bazaar`,
-          url: `https://moviesbazaar.vercel.app/listing/actress/${actor}`
+          url: `https://moviesbazar.online/listing/actress/${actor}`
         },
       };
 

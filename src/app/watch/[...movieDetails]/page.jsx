@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
 
   const fromatedTitle = creatUrlLink(title);
 
-  const ogUrl = `https://moviesbazaar.vercel.app/watch/${type}/${fromatedTitle}/${movieId}`;
+  const ogUrl = `https://moviesbazar.online/watch/${type}/${fromatedTitle}/${movieId}`;
 
   return {
 
@@ -43,7 +43,9 @@ export default async function Page({ params }) {
   const { status, movieData } = await getMovieDeatils('tt' + movieId);
 
   if (status !== 200) {
-    return (<SomthingWrongError />)
+    return (
+    <SomthingWrongError />
+    )
   };
 
   return (

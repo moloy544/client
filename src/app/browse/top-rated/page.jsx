@@ -13,7 +13,7 @@ export const metadata = {
     images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
     title: 'Top IMDB rated movies',
     description: 'Watch top IMDB rated movies movies online Movies Bazaar',
-    url: 'https://moviesbazaar.vercel.app/browse/top-rated'
+    url: 'https://moviesbazar.online/browse/top-rated'
   },
 }
 

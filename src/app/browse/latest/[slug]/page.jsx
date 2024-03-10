@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
       images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
       title: `Latest release ${editParamsQuery} movies`,
       description: `Watch resently release ${editParamsQuery} movies online Movies Bazaar`,
-      url: `https://moviesbazaar.vercel.app/browse/latest/${params.slug}`
+      url: `https://moviesbazar.online/browse/latest/${params.slug}`
     },
   };
 

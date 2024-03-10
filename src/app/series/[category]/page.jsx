@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
       images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
       title: `${editParamsQuery} series`,
       description: `Watch ${editParamsQuery} series online Movies Bazaar`,
-      url: `https://moviesbazaar.vercel.app/series/${params.category}`
+      url: `https://moviesbazar.online/series/${params.category}`
     },
   };
 

@@ -13,7 +13,7 @@ export const metadata = {
         images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
         title: `Series`,
         description: `Watch bollywood hollywood south netflix series online Movies Bazaar`,
-        url: `https://moviesbazaar.vercel.app/series`
+        url: `https://moviesbazar.online/series`
     },
 }
 
