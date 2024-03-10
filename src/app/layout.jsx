@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import Footer from './components/Footer';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,7 +37,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-
         <NextTopLoader
           color="rgb(218, 8, 95)"
           initialPosition={0.08}
@@ -60,6 +60,9 @@ export default function RootLayout({ children }) {
         <Footer />
 
       </body>
+      
+      <Script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9005712491684588" />
+
     </html>
   )
 }
