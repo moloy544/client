@@ -32,7 +32,7 @@ export default async function Page() {
         <section className="w-full h-auto pt-2.5 mobile:pt-1">
 
           <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
-            <h1 className="text-gray-100 text-[18px] mobile:text-sm font-medium">
+            <h1 className="text-gray-50 text-[18px] mobile:text-sm font-medium line-clamp-1">
               Bollywood hindi actress 
             </h1>
 
