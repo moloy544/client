@@ -1,26 +1,15 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import MoviesUserActionWarper from "./MoviesUserActionWarper";
 import { transformToCapitalize } from "@/utils";
 import Breadcrumb from "../components/Breadcrumb";
-const DynamicTrailerPlayerIframe = dynamic(() => import('./PlayerIframes').then(module => module.TrailerPlayerIframe));
-const DynamicVideoPlayerIframe = dynamic(() => import('./PlayerIframes').then(module => module.VideoPlayerIframe));
 
 export default function Videoplayer({ movieDetails }) {
 
-  const [videoPlayer, setVideoPlayer] = useState({
-    isLoded: false,
-    visibility: false,
-  });
-
-  const [trailerPlayer, setTrailerPlayer] = useState({
-    isLoded: false,
-    visibility: false,
-  });
+  const iframeRef = useRef(null);
 
   const {
     imdbRating,
@@ -43,45 +32,24 @@ export default function Videoplayer({ movieDetails }) {
 
   };
 
-  const showTrailerPlayer = () => {
-
-    window.location.hash = "trailer"
-
-  };
-
   useEffect(() => {
 
     const handleHashChange = () => {
 
       const body = document.querySelector('body');
+      const playerIframe = iframeRef.current;
 
-      if (window.location.hash === "#trailer") {
-        setTrailerPlayer({
-          isLoaded: true,
-          visibility: true,
-        });
-      } else if (trailerPlayer.visibility) {
-        setTrailerPlayer(prev => ({
-          ...prev,
-          visibility: false,
-        }));
-      }
-  
       if (window.location.hash === "#player") {
-        setVideoPlayer({
-          isLoaded: true,
-          visibility: true,
-        });
+
+        playerIframe.style.display = "block";
+
         body.setAttribute('class', 'overflow-y-hidden');
-      } else if (videoPlayer.visibility) {
-        setVideoPlayer(prev => ({
-          ...prev,
-          visibility: false,
-        }));
+      } else {
+        playerIframe.style.display = "none";
         body.removeAttribute('class', 'overflow-y-hidden');
       }
     };
-  
+
 
     // Initial check on mount
     handleHashChange();
@@ -94,8 +62,6 @@ export default function Videoplayer({ movieDetails }) {
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, []);
-
-  console.log(videoPlayer)
 
   const originalDate = new Date(fullReleaseDate);
 
@@ -123,12 +89,7 @@ export default function Videoplayer({ movieDetails }) {
 
       <div className="w-full h-full py-6 mobile:py-2 px-2 flex justify-center items-center">
 
-        <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:max-w-[700px] p-3 flex mobile:flex-col gap-5 mobile:marker:gap-0 bg-white rounded-md shadow-xl relative">
-
-
-          {trailerPlayer.isLoded && (
-            <DynamicTrailerPlayerIframe visibility={trailerPlayer.visibility} src="https://www.youtube.com/embed/1VhA9aITCGg?si=BpRCTTS3bqdeSMAi" />
-          )}
+        <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:max-w-[700px] p-3 flex mobile:flex-col gap-5 mobile:marker:gap-0 bg-white rounded-md shadow-xl">
 
           <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
 
@@ -156,11 +117,6 @@ export default function Videoplayer({ movieDetails }) {
                   <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white text-sm">
                     {transformToCapitalize(status)}
                   </div>
-                  <button type="button"
-                    onClick={showTrailerPlayer}
-                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rose-500 text-gray-100 w-auto h-auto px-4 py-1.5 rounded-sm text-sm transition-transform duration-300 hover:scale-110">
-                    <i className="bi bi-youtube"></i> Trailer
-                  </button>
                 </>
               )}
               {imdbRating && (
@@ -223,9 +179,11 @@ export default function Videoplayer({ movieDetails }) {
 
         </div>
 
-        {videoPlayer.isLoded && (
-          <DynamicVideoPlayerIframe visibility={videoPlayer.visibility} src={watchLink} />
-        )}
+        <iframe
+          ref={iframeRef}
+          className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
+          src={watchLink}
+          allowFullScreen="allowfullscreen" />
 
       </div>
     </>
