@@ -18,25 +18,25 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
-    const conditionalData = (page === 1 && loadMoviesPathname !== patname) ? (initialMovies || []) : (page === 1 && loadMoviesData);
+    const conditionalData = (loadMoviesPathname !== patname) ? (initialMovies || []) : loadMoviesData || [];
     const [moviesData, setMoviesData] = useState(conditionalData);
-
     const bottomObserverElement = useRef(null);
 
     const setFilter = (data) => {
 
         if (!loading) {
-
+            setMoviesData([]);
+            setPage(2);
             dispatch(updateLoadMovies({
                 loadMoviesData: [],
                 filterData: data,
                 isAllDataLoad: false
             }));
 
-            setMoviesData([]);
-            window.scrollTo(0, 0);
-            setPage(2);
-
+            window.scrollTo({
+                top:0,
+                 behavior: 'instant',
+             });
         };
     };
 
@@ -82,7 +82,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
         };
 
         //Load more movies 
-        if (!isAllDataLoad && loadMoviesPathname === patname && page !== 1) {
+        if (!isAllDataLoad && loadMoviesPathname === patname && page !== 1&& !loading) {
 
             const loadMoreData = async () => {
 
