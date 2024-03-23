@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
 import { useEffect, useState } from "react";
 
-const NotificationModel = dynamic(() => import('./NotificationModel'));
+const NotificationModel = dynamic(() => import('./models/NotificationModel'));
 
 export default function Navbar() {
 

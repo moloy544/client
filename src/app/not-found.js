@@ -1,7 +1,16 @@
+
+'use client'
+
 import Image from 'next/image'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 
 export default function NotFound() {
+
+    const router = useRouter();
+
+    const back = () => {
+        router.back();
+      };
 
     return (
         <div className="grid h-screen place-content-center bg-white px-4">
@@ -22,12 +31,13 @@ export default function NotFound() {
 
                 <p className="mt-4 text-gray-500">{"We can't find that page plese back to home page and explore movies or series."}</p>
 
-                <Link
-                    href="/"
-                    className="mt-6 inline-block rounded bg-cyan-600 px-5 py-3 text-sm font-medium text-white hover:bg-cyan-700 focus:outline-none focus:ring"
+                <button 
+                onClick={back}
+                    type="button"
+                    className="mt-6 inline-block rounded bg-rose-500 px-4 py-3 text-sm font-medium text-white hover:bg-rose-600 focus:outline-none focus:ring"
                 >
-                    Go Back Home page
-                </Link>
+                   Back and explore
+                </button>
             </div>
         </div>
     )

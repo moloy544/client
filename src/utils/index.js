@@ -31,15 +31,10 @@ export async function getMovieDeatils(imdbId) {
   try {
     const response = await axios.post(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`);
 
-    if (response.status !== 200) {
-
-      return { status: response.status };
-    };
-
     return { movieData: response.data.movieData, status: response.status };
 
   } catch (error) {
-    return { status: 600 };
+    return { status: 500 };
   }
 
 };
@@ -70,15 +65,8 @@ export const transformToCapitalize = (text) => {
   return capitalizedWords?.join(' ');
 };
 
-export function formatNumberCounter(number) {
 
-  if (number < 1000) {
-      return number.toString(); // No formatting needed
-  } else if (number < 10000) {
-      // For numbers between 1000 and 9999, show one decimal place
-      return (number / 1000).toFixed(1) + 'k';
-  } else {
-      // For numbers 10000 and above, show without decimal places
-      return Math.floor(number / 1000) + 'k';
-  }
-}
+export const formatNumberCounter = (value) => Intl.NumberFormat('en-US', {
+  maximumSignificantDigits: 2,
+  notation: 'compact',
+}).format(value);

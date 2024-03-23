@@ -1,38 +1,32 @@
 import axios from "axios";
-import { loadMoreFetch, transformToCapitalize } from "@/utils";
+import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
+import { notFound } from "next/navigation";
 
-const getActorData = async (actorName, industry) => {
+const getActorData = async (imdbId) => {
 
   try {
-    const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/info`, {
-      actorDetails: {
-        industry, 
-        actorName
-      }
-    });
-   
-    const { name, avatar } = response.data?.actor;
-
-    return { status: response.status, name, avatar };
-
+    const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/info/${imdbId}`);
+  
+    const { name, avatar, industry } = response.data?.actor || {};
+  
+    return { status: response.status, name, avatar, industry };
   } catch (error) {
-    
-    return { status: 404 };
-
+    return { status: 500}
   }
+
 };
 
 export async function generateMetadata({ params }) {
 
   try {
 
-    const { industry, actor } = params;
+    const { imdbId } = params;
 
-    const { status, name, avatar } = await getActorData(actor, industry);
+    const { status, name, avatar, industry } = await getActorData('nm'+imdbId);
 
     if (status === 200) {
 
@@ -45,23 +39,23 @@ export async function generateMetadata({ params }) {
           images: avatar,
           title: name,
           description: `Watch ${name} movies online free of cost Movies Bazaar`,
-          url: `https://moviesbazar.online/listing/actress/${actor}`
+          url: `https://moviesbazar.online/actress/${industry}/${imdbId}`
         },
       };
 
       return metaData;
 
+    } else {
+      return;
     }
   } catch (error) {
-    console.log("No Actor Found")
+    console.log(error)
   };
 };
 
 export default async function Page({ params }) {
 
-  const { industry, actor } = params;
-
-  const actorName = transformToCapitalize(actor);
+  const { imdbId } = params;
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction`;
 
@@ -72,19 +66,23 @@ export default async function Page({ params }) {
 
   const [actorData, moviesData] = await Promise.all([
 
-    getActorData(actor, industry),
+    getActorData('nm'+imdbId),
 
     loadMoreFetch({
       apiPath: apiUrl,
-      bodyData:{filterData, actor: actorName},
+      bodyData: { filterData, actor: 'nm'+imdbId },
       limitPerPage: 30,
     })
   ]);
 
   const { status, name } = actorData;
-  
-  if (status !== 200) {
 
+  if (status === 201) {
+
+    notFound();
+
+  } else if (status === 500) {
+    console.log(status)
     return (
       <SomthingWrongError />
     )
@@ -98,14 +96,14 @@ export default async function Page({ params }) {
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2 relative">
 
-          <LoadMoreMoviesGirdWarper
-            apiUrl={apiUrl}
-            apiBodyData={{actor: actorName}}
-            limitPerPage={30}
-            filterCounter={data.filterCount}
-            initialFilter={filterData}
-            initialMovies={data.moviesData || []}
-            isDataEnd={dataIsEnd} />
+        <LoadMoreMoviesGirdWarper
+          apiUrl={apiUrl}
+          apiBodyData={{ actor: imdbId }}
+          limitPerPage={30}
+          filterCounter={data.filterCount}
+          initialFilter={filterData}
+          initialMovies={data.moviesData || []}
+          isDataEnd={dataIsEnd} />
 
       </div>
     </>

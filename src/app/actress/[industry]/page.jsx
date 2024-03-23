@@ -4,7 +4,7 @@ import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
 import NavigateBack from "@/app/components/NavigateBack";
-import { transformToCapitalize } from "@/utils";
+import { creatUrlLink, transformToCapitalize } from "@/utils";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
 
@@ -78,9 +78,9 @@ export default async function Page({ params }) {
                         <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-2">
 
                             {actors?.map((actor) => (
-                                <div key={actor._id} className="w-auto h-auto py-1.5 cursor-pointer bg-pink-100 rounded-sm border border-yellow-500">
+                                <div key={actor.imdbId} className="w-auto h-auto py-1.5 cursor-pointer bg-pink-100 rounded-sm border border-yellow-500">
 
-                                    <Link href={`/actress/${actor.industry?.toLowerCase()}/${actor.name.toLowerCase().replace(/[' ']/g, '-')}`}>
+                                    <Link href={`/actress/${creatUrlLink(actor.name)}/${actor.imdbId.replace('nm', '')}`}>
 
                                         <div className="w-auto h-[110px] mobile:h-20 rounded-md border-2 border-cyan-500 mx-4 mobile:mx-2">
 

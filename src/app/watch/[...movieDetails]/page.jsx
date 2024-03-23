@@ -2,6 +2,7 @@ import Videoplayer from "@/app/watch/VideoPlayer";
 import { creatUrlLink, getMovieDeatils } from "@/utils";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
 
@@ -42,7 +43,9 @@ export default async function Page({ params }) {
 
   const { status, movieData } = await getMovieDeatils('tt' + movieId);
 
-  if (status !== 200) {
+  if (status === 201) {
+    notFound();
+  } else if (status === 500) {
     return (
     <SomthingWrongError />
     )

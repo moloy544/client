@@ -26,7 +26,7 @@ function NotificationModel() {
             id: 8288,
             nofifaction: 'New year 2024 movies and series is uploaded watch now latest movies series in 2024',
             type: 'news',
-            postDate: ' 5days ago 08:23PM'
+            postDate: '55days ago 08:23PM'
         },
     ]);
 

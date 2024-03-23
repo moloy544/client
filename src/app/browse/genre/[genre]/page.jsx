@@ -43,7 +43,6 @@ export default async function Page({ params }) {
 
     const capitalizeGenre = transformToCapitalize(genre);
 
-
     const extraFilter = [{
         title: "Filter by industry",
         data: [
@@ -72,11 +71,38 @@ export default async function Page({ params }) {
                 filter: 'type',
                 name: "movie"
             },
-
             {
                 id: 2,
                 filter: 'type',
                 name: "series"
+            }]
+    }, {
+
+        title: "Filter by provider",
+        data: [
+            {
+                id: 1,
+                filter: 'provider',
+                name: "Netflix"
+            },
+            {
+                id: 2,
+                filter: 'provider',
+                name: "Amazon Prime"
+            },
+            {
+                id: 3,
+                filter: 'provider',
+                name: "Amazon Mini Tv"
+            }, {
+                id: 4,
+                filter: 'provider',
+                name: "HotStar"
+            },
+            {
+                id: 5,
+                filter: 'provider',
+                name: "Zee5"
             }]
     }];
 
