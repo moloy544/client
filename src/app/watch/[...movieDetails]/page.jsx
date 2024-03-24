@@ -42,10 +42,10 @@ export default async function Page({ params }) {
   const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
 
   const { status, movieData } = await getMovieDeatils('tt' + movieId);
-
-  if (status === 201) {
+console.log(status)
+  if (status === 404) {
     notFound();
-  } else if (status === 500) {
+  } else if (status === 400 || status === 500) {
     return (
     <SomthingWrongError />
     )

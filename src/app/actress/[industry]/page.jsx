@@ -7,22 +7,25 @@ import NavigateBack from "@/app/components/NavigateBack";
 import { creatUrlLink, transformToCapitalize } from "@/utils";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
+import { notFound } from "next/navigation";
 
-async function getData(industry) {
+const getData = async (industry) => {
+    let status = 500;
+    let data = {};
+  
     try {
-
-        const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/industry`, { industry });
-
-        if (response.status !== 200) {
-            return { status: response.status }
-        };
-
-        return { status: response.status, data: response.data }
-
+      const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/industry`, { industry });
+      status = response.status;
+      data = response.data;
     } catch (error) {
-        return { status: 404 }
-    };
-};
+      if (error.response) {
+        status = error.response.status;
+      }
+    }
+  
+    return { status, data };
+  };
+  
 
 export default async function Page({ params }) {
 
@@ -30,7 +33,9 @@ export default async function Page({ params }) {
 
     const { status, data } = await getData(paramIndustry);
 
-    if (status !== 200) {
+    if (status === 404) {
+        notFound();
+    }else if (status == 500) {
 
         return (
             <SomthingWrongError />
@@ -67,12 +72,11 @@ export default async function Page({ params }) {
                 </Link>
             </header>
 
-
             <Breadcrumb data={breadcrumbData} />
 
             <div className="w-full overflow-x-hidden h-full pb-2">
 
-                {actors.length > 0 ? (
+                {actors?.length > 0 ? (
                     <main className="w-full min-h-[100vh] pt-2">
 
                         <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-2">

@@ -17,7 +17,7 @@ function SomthingWrongError() {
 
                 <Image
                     priority
-                    className="w-96 h-72 mobile:w-80 mobile:h-64"
+                    className="w-96 h-72 mobile:w-80 mobile:h-64 block ml-auto mr-auto"
                     src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1705937258/moviesbazaar/somthing_was_wrong.jpg"
                     width={280}
                     height={250}
@@ -25,7 +25,7 @@ function SomthingWrongError() {
                 />
 
                 <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                    Somthing was worng!
+                Something went wrong!
                 </h1>
 
                 <p className="mt-4 text-gray-500">Please reload the page and try again or go back to previews page page.</p>

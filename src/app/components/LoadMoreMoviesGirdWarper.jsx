@@ -7,6 +7,7 @@ import { loadMoreFetch } from "@/utils";
 import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import FilterModel from "./models/FilterModel";
+import BacktoTopButton from "./BacktoTopButton";
 
 function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, filterCounter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
 
@@ -166,6 +167,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                         setFilter
                     }} />
             )}
+
+            <BacktoTopButton postion="top-24" />
 
         </>
     );

@@ -7,18 +7,29 @@ import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
 import { notFound } from "next/navigation";
 
 const getActorData = async (imdbId) => {
+  let status = 500; // Default status in case of an error
+  let name = null;
+  let avatar = null;
+  let industry = null;
 
   try {
     const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/info/${imdbId}`);
-  
-    const { name, avatar, industry } = response.data?.actor || {};
-  
-    return { status: response.status, name, avatar, industry };
+    const { actor } = response.data || {};
+    if (actor) {
+      name = actor.name;
+      avatar = actor.avatar;
+      industry = actor.industry;
+    }
+    status = response.status;
   } catch (error) {
-    return { status: 500}
+    if (error.response) {
+      status = error.response.status;
+    }
   }
 
+  return { status, name, avatar, industry };
 };
+
 
 export async function generateMetadata({ params }) {
 
@@ -76,13 +87,10 @@ export default async function Page({ params }) {
   ]);
 
   const { status, name } = actorData;
-
-  if (status === 201) {
-
+console.log(status)
+  if (status === 404) {
     notFound();
-
   } else if (status === 500) {
-    console.log(status)
     return (
       <SomthingWrongError />
     )

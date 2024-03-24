@@ -2,6 +2,7 @@ import axios from "axios";
 import { appConfig } from "@/config/config";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 import SliderMoviesShowcase from "../components/SliderMoviesShowcase";
+import SomthingWrongError from "../components/errors/SomthingWrongError";
 
 export const metadata = {
 
@@ -17,11 +18,38 @@ export const metadata = {
     },
 }
 
+const getSeriesLayoutData = async () => {
+
+    let status = 500;
+
+    let pageData = {};
+
+    try {
+
+        const response = await axios.post(`${appConfig.backendUrl}/api/v1/series`);
+
+        status = response.status;
+        pageData = response.data;
+
+    } catch (error) {
+        if (error.response) {
+            status = error.response.status;
+        }
+    }
+    return { pageData, status }
+}
+
 export default async function Page() {
 
-    const response = await axios.post(`${appConfig.backendUrl}/api/v1/series`);
+    const { pageData, status } = await getSeriesLayoutData();
 
-    const { sliderSeries } = response.data.series || {};
+    if (status === 500) {
+        return (
+            <SomthingWrongError />
+        )
+    };
+
+    const { sliderSeries } = pageData.seriesPageLayout;
 
     return (
         <>

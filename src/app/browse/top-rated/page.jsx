@@ -2,6 +2,7 @@ import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
+import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
 
 export const metadata = {
 
@@ -48,12 +49,18 @@ export default async function Page() {
         }]
 }];
 
-  const { data, dataIsEnd } = await loadMoreFetch({
+  const { status, data, dataIsEnd } = await loadMoreFetch({
 
     apiPath: apiUrl,
     bodyData: { filterData },
     limitPerPage: 30
   });
+
+  if (status === 500) {
+    return(
+      <SomthingWrongError />
+    )
+  };
 
   return (
     <>

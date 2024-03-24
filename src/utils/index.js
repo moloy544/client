@@ -3,6 +3,11 @@ import axios from "axios";
 
 export const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 20, page = 1, skip = 0, bodyData }) => {
 
+  let status = 500;
+  let data = [];
+  let dataIsEnd = true;
+
+
   try {
 
     const response = await axios[methood](apiPath, {
@@ -12,32 +17,40 @@ export const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 
       bodyData
     });
 
-    const status = response.status;
-
-    //get end of data 
-    const dataIsEnd = response.data.endOfData;
-
-    return { status, data: response.data, dataIsEnd };
+    status = response.status;
+    data = response.data
+    dataIsEnd = response.data.endOfData;
 
   } catch (error) {
     console.log(error);
-    return { status: 500, data: null, dataIsEnd: true }
+    if (error.response) {
+      status = error.response.status
+    }
   }
+
+  return { status, data, dataIsEnd };
 };
 
 //Get movie serirs details from database
 export async function getMovieDeatils(imdbId) {
 
+  let status = 500; // Default status in case of an error
+  let movieData = null;
+
   try {
     const response = await axios.post(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`);
-
-    return { movieData: response.data.movieData, status: response.status };
-
+    status = response.status;
+    movieData = response.data.movieData;
   } catch (error) {
-    return { status: 500 };
+    if (error.response) {
+      status = error.response.status;
+    }
+  } finally {
+    return { status, movieData };
   }
+}
 
-};
+
 
 //Format movie title url
 export const creatUrlLink = (title) => {
