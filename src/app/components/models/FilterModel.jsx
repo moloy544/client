@@ -1,16 +1,27 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { formatNumberCounter, transformToCapitalize } from '@/utils';
 
 function FilterModel({ initialFilterData, filterData, filterCounter, functions, extraFilter }) {
 
     const [visible, setVisible] = useState(false);
 
-    const [selectedFilter, setSelctedFilter] = useState(filterData);
+    const [selectedFilter, setSelctedFilter] = useState(initialFilterData);
 
-    const isInitialFilterChange = JSON.stringify(initialFilterData) !== JSON.stringify(selectedFilter);
+    const isInitialFilterChange = JSON.stringify(initialFilterData) !== JSON.stringify(selectedFilter) || JSON.stringify(initialFilterData) !== JSON.stringify(filterData);
     const isClearFilter = JSON.stringify(initialFilterData) !== JSON.stringify(filterData);
     const isApplyFilter = JSON.stringify(filterData) !== JSON.stringify(selectedFilter);
 
+    useEffect(()=>{
+
+            if (!isInitialFilterChange) {
+            setSelctedFilter(initialFilterData);
+        }else{
+            setSelctedFilter(filterData);
+        };
+
+    }, [initialFilterData, filterData]);
+
+   
     const showModel = () => {
         setVisible(true);
     };
@@ -110,7 +121,7 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
                     );
                 })}
 
-                <div className="w-auto h-auto md:max-h-[300px] max-h-[250px] overflow-y-scroll scrollbar-hidden">
+                <div className="w-auto h-auto max-h-[300px] overflow-y-scroll scrollbar-hidden">
 
                     {/*** Sort By Genre *****/}
 
