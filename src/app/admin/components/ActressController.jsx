@@ -56,11 +56,8 @@ function ActressController() {
 
     return (
         <>
-            <div className="w-full h-0.5 bg-gray-200"></div>
-
-            <section className="w-auto h-full flex justify-center bg-white py-2">
-
-                <div className="mx-10 mt-2">
+        
+                <section className="mx-10 my-3 bg-white border border-blue-100 px-8 shadow-xl rounded-lg py-3">
 
                     <h1 className="text-amber-700 text-xl text-center font-semibold">Add Actor Section</h1>
                     <div className="flex flex-col my-3">
@@ -101,9 +98,7 @@ function ActressController() {
                     </div>
                     <div onClick={sendActorData} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Send server</div>
 
-                </div>
-
-            </section >
+                </section>
         </>
 
     )

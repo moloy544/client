@@ -77,7 +77,7 @@ export default async function Page({ params }) {
             <div className="w-full overflow-x-hidden h-full pb-2">
 
                 {actors?.length > 0 ? (
-                    <main className="w-full min-h-[100vh] pt-2">
+                    <main className="w-full h-full pt-2">
 
                         <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-2">
 

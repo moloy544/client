@@ -5,7 +5,7 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
 
     const [visible, setVisible] = useState(false);
 
-    const [selectedFilter, setSelctedFilter] = useState(initialFilterData);
+    const [selectedFilter, setSelctedFilter] = useState(filterData);
 
     const isInitialFilterChange = JSON.stringify(initialFilterData) !== JSON.stringify(selectedFilter);
     const isClearFilter = JSON.stringify(initialFilterData) !== JSON.stringify(filterData);
@@ -91,8 +91,7 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
             <div className="w-full h-auto flex justify-between items-center px-2">
 
                 <div className="text-sm text-black font-bold">Sort options</div>
-
-                <i onClick={hideModel} className="bi bi-x text-xl cursor-pointer p-1"></i>
+                     <i onClick={hideModel} className="bi bi-x text-xl p-1 cursor-pointer"></i>
             </div>
 
             <div className="w-56 h-auto pb-2">

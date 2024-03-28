@@ -1,13 +1,16 @@
 'use client'
 
 import { useRef, useState } from "react";
-import Link from "next/link";
 import axios from "axios";
 import { appConfig } from "@/config/config";
 import { getMovieDeatils } from "@/utils";
 import ActressController from "./components/ActressController";
+import AdminLoginPage from "./components/AdminLoginPage";
+import UpdateMoviesPage from "./components/UpdateMoviesPage";
 
 function AddMoviesPage() {
+
+    const [isLoginSuccess, setLoginSuccess] = useState(false);
 
     const [state, setState] = useState({
         imdbId: '',
@@ -260,10 +263,17 @@ function AddMoviesPage() {
         }));
     };
 
+
+    if (!isLoginSuccess) {
+        return (
+            <AdminLoginPage functions={{ setLoginSuccess }} />
+        )
+    };
+
     return (
         <>
             <header className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2 py-3 text-base text-gray-100 bg-purple-600 shadow-md">
-                <Link href="/admin/update">Update</Link>
+                <div>Moviesbazar admin</div>
             </header>
 
             {state.watchLink !== "" && (
@@ -275,7 +285,7 @@ function AddMoviesPage() {
 
             <main className="w-auto h-full min-h-screen bg-white text-gray-950 flex justify-center py-2">
 
-                <div className="mx-10 mt-5 md:flex md:gap-10">
+                <div className="mx-10 mt-5 md:flex md:gap-10 border-blue-100 px-10 shadow-xl rounded-lg py-2">
 
                     <div className="w-auto h-auto">
 
@@ -453,7 +463,14 @@ function AddMoviesPage() {
             </main>
 
             {/** Add Actor Section **/}
-            <ActressController />
+            <div className="w-full bg-white h-auto flex justify-center">
+                <div className="md:flex">
+                <ActressController />
+                <UpdateMoviesPage />
+                </div>
+            </div>
+
+
         </>
     );
 }
