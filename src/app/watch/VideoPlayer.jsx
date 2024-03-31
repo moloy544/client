@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import MoviesUserActionWarper from "./MoviesUserActionWarper";
@@ -10,6 +10,8 @@ import Breadcrumb from "../components/Breadcrumb";
 export default function Videoplayer({ movieDetails }) {
 
   const iframeRef = useRef(null);
+
+  const [playerVisibility, setPlayerVisibility] = useState(false);
 
   const {
     imdbRating,
@@ -34,34 +36,33 @@ export default function Videoplayer({ movieDetails }) {
 
   useEffect(() => {
 
-    const handleHashChange = () => {
+    setPlayerVisibility(true);
 
+    const handleHashChange = () => {
       const body = document.querySelector('body');
       const playerIframe = iframeRef.current;
 
-      if (window.location.hash === "#player") {
+      if (window.location.hash === "#player" && !playerVisibility){
+        setPlayerVisibility(true);
+      };
 
+      if (window.location.hash === "#player" && playerIframe) {
         playerIframe.style.display = "block";
-
         body.setAttribute('class', 'overflow-y-hidden');
-      } else {
+      } else if (playerIframe) {
         playerIframe.style.display = "none";
         body.removeAttribute('class', 'overflow-y-hidden');
       }
     };
 
-
-    // Initial check on mount
     handleHashChange();
 
-    // Add event listener to listen for hash changes
     window.addEventListener('hashchange', handleHashChange);
 
-    // Cleanup by removing the event listener when the component unmounts
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, []);
+  }, [playerVisibility]);
 
   const originalDate = new Date(fullReleaseDate);
 
@@ -179,11 +180,13 @@ export default function Videoplayer({ movieDetails }) {
 
         </div>
 
-        <iframe
-          ref={iframeRef}
-          className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
-          src={watchLink}
-          allowFullScreen="allowfullscreen" />
+        {playerVisibility && (
+          <iframe
+            ref={iframeRef}
+            className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
+            src={watchLink}
+            allowFullScreen="allowfullscreen" />
+        )}
 
       </div>
     </>
