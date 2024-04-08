@@ -180,11 +180,11 @@ function SearchPage() {
                                 <h3 className="text-gray-300 text-base mobile:text-sm py-2 font-bold px-2">
                                     Results for <span className=" text-cyan-500">{searchQuery}</span>
                                 </h3>
-                                <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(130px,1fr))] px-2">
+                                <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
 
                                     <LoadMoreMoviesCard limit={25} isLoading={loading} moviesData={moviesData} />
 
-                                </div>
+                                </main>
                             </>
                         ) : (
                             <>

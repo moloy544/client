@@ -168,7 +168,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                     }} />
             )}
 
-            <BacktoTopButton postion="top-24" />
+            <BacktoTopButton postion="mobile:top-20 top-24" />
 
         </>
     );

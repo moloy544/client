@@ -11,17 +11,17 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
     const isClearFilter = JSON.stringify(initialFilterData) !== JSON.stringify(filterData);
     const isApplyFilter = JSON.stringify(filterData) !== JSON.stringify(selectedFilter);
 
-    useEffect(()=>{
+    useEffect(() => {
 
-            if (!isInitialFilterChange) {
+        if (!isInitialFilterChange) {
             setSelctedFilter(initialFilterData);
-        }else{
+        } else {
             setSelctedFilter(filterData);
         };
 
     }, [initialFilterData, filterData]);
 
-   
+
     const showModel = () => {
         setVisible(true);
     };
@@ -82,159 +82,159 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
         };
     };
 
-
-    if (!visible) {
-        return (
-            <div className="w-auto h-auto bg-white fixed top-20 mobile:top-16 right-2 z-10 border border-gray-300 shadow-2xl px-2 flex items-center rounded-2xl select-none">
-
-                <div onClick={showModel} className="text-gray-900 font-semibold flex items-center gap-1 cursor-pointer">
-                    <i className="bi bi-filter text-2xl"></i>
-                    <span className="text-xs">Filter</span>
-                </div>
-            </div>
-        )
-    }
-
     return (
+        <>
+            {!visible && (
+                <div className="w-auto h-auto bg-white fixed bottom-5 right-2 z-10 border border-gray-300 shadow-2xl px-2 flex items-center rounded-2xl select-none">
 
-        <div className="w-auto h-auto bg-white fixed top-20 mobile:top-16 right-2 z-10 border border-gray-300 shadow-2xl py-1 rounded-md select-none">
-
-            <div className="w-full h-auto flex justify-between items-center px-2">
-
-                <div className="text-sm text-black font-bold">Sort options</div>
-                     <i onClick={hideModel} className="bi bi-x text-xl p-1 cursor-pointer"></i>
-            </div>
-
-            <div className="w-56 h-auto pb-2">
-
-                {sortFilerOptions.map((data, index) => {
-                    const isFilterSelected = Object.entries(data.sort).every(([key, value]) => {
-                        return selectedFilter[key] === value;
-                    });
-                    return (
-                        <div key={index} onClick={() => addFilter(data.sort)} className="py-1 px-3 flex items-center gap-2 cursor-pointer">
-                            <i className={`text-base ${isFilterSelected ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                            <div className={`text-xs ${isFilterSelected ? "text-gray-700 font-semibold" : "text-gray-600 font-medium"} transition-all duration-500 ease-in-out`}>
-                                {data.filterLabel}
-                            </div>
-                        </div>
-                    );
-                })}
-
-                <div className="w-auto h-auto max-h-[300px] overflow-y-scroll scrollbar-hidden">
-
-                    {/*** Sort By Genre *****/}
-
-                    {initialFilterData.genreSort && (
-
-                        <details className="group [&_summary::-webkit-details-marker]:hidden">
-                            <summary
-                                className="sticky top-0 bg-white flex cursor-pointer items-center gap-1 rounded-lg px-2.5 py-2 text-gray-800 hover:text-gray-900"
-                            >
-                                <span className="text-xs font-semibold">Sort by genre</span>
-
-                                <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </summary>
-                            <div className="w-auto h-auto my-1">
-
-                                <div onClick={() => addFilter({ genreSort: "all" })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genreSort === "all" ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                    {filterCounter.genre && filterCounter.totalCount ? (
-                                        <span>All {` (${formatNumberCounter(filterCounter.totalCount)})`}</span>
-
-                                    ) : (
-                                        <span>All</span>
-                                    )}
-                                    <i className={`text-base ${selectedFilter.genreSort === "all" ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                </div>
-
-                                {filterCounter.genre?.map(({ filterName, count }) => (
-
-                                    <Fragment key={filterName}>
-
-                                        <div onClick={() => addFilter({ genreSort: filterName })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genreSort === filterName ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                            <span>{filterName + ` (${count})`}</span>
-                                            <i className={`text-base ${selectedFilter.genreSort === filterName ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                        </div>
-
-                                    </Fragment>
-                                ))}
-
-                            </div>
-                        </details>
-                    )}
-
-                    {extraFilter?.map(({ title, data }, index) => (
-                        <details key={index} className="group [&_summary::-webkit-details-marker]:hidden">
-                            <summary
-                                className="sticky top-0  bg-white flex cursor-pointer items-center gap-1 rounded-lg px-2.5 py-2 text-gray-800 hover:text-gray-900"
-                            >
-                                <span className="text-xs font-semibold">{title}</span>
-
-                                <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                    >
-                                        <path
-                                            fillRule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clipRule="evenodd"
-                                        />
-                                    </svg>
-                                </span>
-                            </summary>
-
-                            <div className="w-auto h-auto my-1">
-
-                                {data?.map(({ id, filter, name }) => (
-
-                                    <Fragment key={id}>
-
-                                        <div onClick={() => addFilter({ [filter]: name })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter[filter] === name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                            <span>{transformToCapitalize(name)}</span>
-                                            <i className={`text-base ${selectedFilter[filter] === name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                        </div>
-
-                                    </Fragment>
-                                ))}
-
-                            </div>
-                        </details>
-                    ))}
-                </div>
-            </div>
-
-            {isInitialFilterChange && (
-                <div className="w-full h-auto px-4 py-2 flex justify-between items-center">
-                    <button
-                        onClick={applyFilter}
-                        type="button"
-                        className={`w-auto h-auto px-5 py-1.5  ${isApplyFilter ? "bg-cyan-600 text-white" : "bg-gray-200 text-gray-400"} text-xs font-medium  rounded-sm`}>Apply</button>
-
-                    <button
-                        onClick={clearFilter}
-                        type="button"
-                        className={`w-auto h-auto px-5 py-1.5 ${isClearFilter ? "bg-rose-600 text-white" : "bg-gray-200 text-gray-400"}  text-xs font-medium rounded-sm`}>Clear</button>
-
+                    <div onClick={showModel} className="text-gray-900 font-semibold flex items-center gap-1 cursor-pointer">
+                        <i className="bi bi-filter text-2xl"></i>
+                        <span className="text-xs">Filter</span>
+                    </div>
                 </div>
             )}
+            <div className={`w-auto bg-white fixed bottom-0 right-0 transition-all duration-500 ease-in-out z-20 ${visible ? 'translate-y-0 h-auto' : '-translate-y-[-100%] h-0'} border border-gray-300 shadow-2xl py-1 rounded-md select-none`}>
 
-        </div>
+                <div className="w-full h-auto flex justify-between items-center px-2">
+                    <div className="text-sm text-black font-bold">Sort options</div>
+                    <button 
+                    onClick={hideModel}
+                    className="w-7 h-7 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full flex justify-center items-center">
+                        <i className="bi bi-x text-xl p-1 cursor-pointer"></i>
+                    </button>
+                </div>
+
+                <div className="w-56 h-auto pb-2">
+
+                    {sortFilerOptions.map((data, index) => {
+                        const isFilterSelected = Object.entries(data.sort).every(([key, value]) => {
+                            return selectedFilter[key] === value;
+                        });
+                        return (
+                            <div key={index} onClick={() => addFilter(data.sort)} className="py-1 px-3 flex items-center gap-2 cursor-pointer">
+                                <i className={`text-base ${isFilterSelected ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                <div className={`text-xs ${isFilterSelected ? "text-gray-700 font-semibold" : "text-gray-600 font-medium"} transition-all duration-500 ease-in-out`}>
+                                    {data.filterLabel}
+                                </div>
+                            </div>
+                        );
+                    })}
+
+                    <div className="w-auto h-auto max-h-[300px] overflow-y-scroll scrollbar-hidden">
+
+                        {/*** Sort By Genre *****/}
+
+                        {initialFilterData.genreSort && (
+
+                            <details className="group [&_summary::-webkit-details-marker]:hidden">
+                                <summary
+                                    className="sticky top-0 bg-white flex cursor-pointer items-center gap-1 rounded-lg px-2.5 py-2 text-gray-800 hover:text-gray-900"
+                                >
+                                    <span className="text-xs font-semibold">Sort by genre</span>
+
+                                    <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-5 w-5"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    </span>
+                                </summary>
+                                <div className="w-auto h-auto my-1">
+
+                                    <div onClick={() => addFilter({ genreSort: "all" })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genreSort === "all" ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
+                                        {filterCounter.genre && filterCounter.totalCount ? (
+                                            <span>All {` (${formatNumberCounter(filterCounter.totalCount)})`}</span>
+
+                                        ) : (
+                                            <span>All</span>
+                                        )}
+                                        <i className={`text-base ${selectedFilter.genreSort === "all" ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                    </div>
+
+                                    {filterCounter.genre?.map(({ filterName, count }) => (
+
+                                        <Fragment key={filterName}>
+
+                                            <div onClick={() => addFilter({ genreSort: filterName })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genreSort === filterName ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
+                                                <span>{filterName + ` (${count})`}</span>
+                                                <i className={`text-base ${selectedFilter.genreSort === filterName ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                            </div>
+
+                                        </Fragment>
+                                    ))}
+
+                                </div>
+                            </details>
+                        )}
+
+                        {extraFilter?.map(({ title, data }, index) => (
+                            <details key={index} className="group [&_summary::-webkit-details-marker]:hidden">
+                                <summary
+                                    className="sticky top-0  bg-white flex cursor-pointer items-center gap-1 rounded-lg px-2.5 py-2 text-gray-800 hover:text-gray-900"
+                                >
+                                    <span className="text-xs font-semibold">{title}</span>
+
+                                    <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-5 w-5"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                    </span>
+                                </summary>
+
+                                <div className="w-auto h-auto my-1">
+
+                                    {data?.map(({ id, filter, name }) => (
+
+                                        <Fragment key={id}>
+
+                                            <div onClick={() => addFilter({ [filter]: name })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter[filter] === name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
+                                                <span>{transformToCapitalize(name)}</span>
+                                                <i className={`text-base ${selectedFilter[filter] === name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                            </div>
+
+                                        </Fragment>
+                                    ))}
+
+                                </div>
+                            </details>
+                        ))}
+                    </div>
+                </div>
+
+                {isInitialFilterChange && (
+                    <div className="w-full h-auto px-4 py-2 flex justify-between items-center">
+                        <button
+                            onClick={applyFilter}
+                            type="button"
+                            className={`w-auto h-auto px-5 py-1.5  ${isApplyFilter ? "bg-cyan-600 text-white" : "bg-gray-200 text-gray-400"} text-xs font-medium  rounded-sm`}>Apply</button>
+
+                        <button
+                            onClick={clearFilter}
+                            type="button"
+                            className={`w-auto h-auto px-5 py-1.5 ${isClearFilter ? "bg-rose-600 text-white" : "bg-gray-200 text-gray-400"}  text-xs font-medium rounded-sm`}>Clear</button>
+
+                    </div>
+                )}
+
+            </div>
+        </>
     )
 }
 

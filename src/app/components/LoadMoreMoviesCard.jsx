@@ -29,7 +29,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
 
                     <Link className="w-auto h-auto" href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} prefetch={false}>
 
-                        <div className="w-auto object-cover h-[12.50rem] max-h-[220px] mobile:max-h-[170px] bg-white rounded-[3px]">
+                        <div className="w-auto object-cover h-[12.50rem] max-h-[220px] mobile:max-h-[160px] bg-white rounded-[3px]">
 
                             <Image
                                 priority
@@ -37,7 +37,10 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
                                 width={200}
                                 height={250}
                                 src={data.thambnail}
-                                alt={data.title} />
+                                alt={data.title || 'movie thumbnail'}
+                                placeholder="blur"
+                                blurDataURL={data.thambnail}
+                                 />
 
                         </div>
 
