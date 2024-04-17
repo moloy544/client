@@ -22,12 +22,8 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
     }, [initialFilterData, filterData]);
 
 
-    const showModel = () => {
-        setVisible(true);
-    };
-
-    const hideModel = () => {
-        setVisible(false)
+    const toggleModel = () => {
+        setVisible((prev)=> !prev);
     };
 
     const { setFilter } = functions;
@@ -49,7 +45,6 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
 
     const applyFilter = () => {
         if (isApplyFilter) {
-
             setFilter(selectedFilter);
         };
     };
@@ -87,18 +82,18 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
             {!visible && (
                 <div className="w-auto h-auto bg-white fixed bottom-5 right-2 z-10 border border-gray-300 shadow-2xl px-2 flex items-center rounded-2xl select-none">
 
-                    <div onClick={showModel} className="text-gray-900 font-semibold flex items-center gap-1 cursor-pointer">
+                    <div onClick={toggleModel} className="text-gray-900 font-semibold flex items-center gap-1 cursor-pointer">
                         <i className="bi bi-filter text-2xl"></i>
                         <span className="text-xs">Filter</span>
                     </div>
                 </div>
             )}
-            <div className={`w-auto bg-white fixed bottom-0 right-0 transition-all duration-500 ease-in-out z-20 ${visible ? 'translate-y-0 h-auto' : '-translate-y-[-100%] h-0'} border border-gray-300 shadow-2xl py-1 rounded-md select-none`}>
+            <div className={`w-auto h-auto bg-white fixed bottom-1.5 right-0 transition-all duration-500 ease-in-out z-20 ${visible ? 'translate-y-0' : '-translate-y-[-110%]'} border border-gray-300 shadow-2xl py-1 rounded-md select-none`}>
 
                 <div className="w-full h-auto flex justify-between items-center px-2">
                     <div className="text-sm text-black font-bold">Sort options</div>
                     <button 
-                    onClick={hideModel}
+                    onClick={toggleModel}
                     className="w-7 h-7 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full flex justify-center items-center">
                         <i className="bi bi-x text-xl p-1 cursor-pointer"></i>
                     </button>

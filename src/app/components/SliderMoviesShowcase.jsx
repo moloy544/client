@@ -6,17 +6,17 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
     return (
 
-        <section className="w-full h-auto pt-2.5 mobile:pt-2">
+        <section className="w-full h-auto py-2 mobile:py-1.5">
 
             <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
 
-                <h1 className="text-gray-50 text-[18px] mobile:text-sm font-medium line-clamp-1">{title}</h1>
+                <h1 className="text-gray-200 text-[18px] mobile:text-sm font-medium line-clamp-1">{title}</h1>
 
-                {linkUrl &&(
-                <Link href={linkUrl} className="text-[14px] mobile:text-[12px] text-cyan-500 hover:text-cyan-400 font-medium">
-                    View All
-                    <i className="bi bi-chevron-right"></i>
-                </Link>
+                {linkUrl && (
+                    <Link href={linkUrl} className="text-[14px] mobile:text-[12px] text-cyan-500 hover:text-cyan-400 font-medium">
+                        View All
+                        <i className="bi bi-chevron-right"></i>
+                    </Link>
                 )}
             </div>
 
@@ -24,7 +24,7 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
                 {moviesData?.map((data) => (
 
-                    <div key={`${data._id}-${data.imdbId}`} className="movie_card border border-yellow-700">
+                    <div key={data.imdbId} className="movie_card border border-yellow-700">
 
                         <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}>
 

@@ -115,7 +115,7 @@ export default async function Page({ params }) {
 
     return (
         <>
-            <NavigateBackTopNav title={capitalizeGenre + " movies"} />
+            <NavigateBackTopNav title={capitalizeGenre} />
 
             <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
