@@ -4,23 +4,9 @@ import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper"
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
 
-export const metadata = {
-
-  title: 'Top IMDB rated movies',
-  description: 'Watch top IMDB rated movies movies online Movies Bazaar',
-  keywords: 'imbd top ratings movies, watch top ratings movies online, Top rated Hollywood movies, Top Rated South movies, Top rated Bollywood movies',
-
-  openGraph: {
-    images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
-    title: 'Top IMDB rated movies',
-    description: 'Watch top IMDB rated movies movies online Movies Bazaar',
-    url: 'https://moviesbazar.online/browse/top-rated'
-  },
-}
-
 export default async function Page() {
 
-  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/top-rated`;
+  const apiUrl = `${appConfig.backendUrl}/api/v1/movies/recently-added`;
 
   const filterData = {
     dateSort: -1,
@@ -64,7 +50,7 @@ export default async function Page() {
 
   return (
     <>
-      <NavigateBackTopNav title="Top imdb rated" />
+      <NavigateBackTopNav title="Recently Added" />
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 

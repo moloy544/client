@@ -105,8 +105,8 @@ function AddMoviesPage() {
         };
     };
 
-    const sendMoviesToBackend = async () => {
-
+    const sendMoviesToBackend = async (e) => {
+        e.preventDefault();
         try {
 
             const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/admin/movie/add`, {
@@ -285,7 +285,7 @@ function AddMoviesPage() {
 
             <main className="w-auto h-full min-h-screen bg-white text-gray-950 flex justify-center py-2">
 
-                <div className="mx-10 mt-5 md:flex md:gap-10 border-blue-100 px-10 shadow-xl rounded-lg py-2">
+                <form onSubmit={sendMoviesToBackend} className="mx-10 mt-5 md:flex md:gap-10 border-blue-100 px-10 shadow-xl rounded-lg py-2">
 
                     <div className="w-auto h-auto">
 
@@ -450,23 +450,22 @@ function AddMoviesPage() {
                             <button type="button" onClick={addTagsToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                         </div>
 
-                        <div className="flex flex-col my-3">
-                            <label className="font-bold">SearchKeywords</label>
-                            <input className="border border-black rounded-sm" type="text" value={state.searchKeywords} onChange={(e) => handleInputChange(e, 'searchKeywords')} />
-                        </div>
-
-                        <div onClick={sendMoviesToBackend} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Send server</div>
+                        <button
+                            type="submit"
+                            className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">
+                            Send server
+                        </button>
 
                     </div>
-                </div>
+                </form>
 
             </main>
 
             {/** Add Actor Section **/}
             <div className="w-full bg-white h-auto flex justify-center">
                 <div className="md:flex">
-                <ActressController />
-                <UpdateMoviesPage />
+                    <ActressController />
+                    <UpdateMoviesPage />
                 </div>
             </div>
 

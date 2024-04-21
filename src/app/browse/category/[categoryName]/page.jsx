@@ -40,7 +40,7 @@ export default async function Page({ params }) {
 
     apiPath: apiUrl,
     bodyData: { filterData },
-    limitPerPage: 30
+    limitPerPage: 40
   });
   if (status === 404) {
     notFound();

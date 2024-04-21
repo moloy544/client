@@ -82,12 +82,12 @@ export default async function Page({ params }) {
     loadMoreFetch({
       apiPath: apiUrl,
       bodyData: { filterData, actor: 'nm'+imdbId },
-      limitPerPage: 30,
+      limitPerPage: 40,
     })
   ]);
 
   const { status, name } = actorData;
-console.log(status)
+
   if (status === 404) {
     notFound();
   } else if (status === 500) {
@@ -107,7 +107,7 @@ console.log(status)
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
           apiBodyData={{ actor: imdbId }}
-          limitPerPage={30}
+          limitPerPage={40}
           filterCounter={data.filterCount}
           initialFilter={filterData}
           initialMovies={data.moviesData || []}

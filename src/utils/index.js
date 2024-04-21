@@ -7,7 +7,6 @@ export const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 
   let data = [];
   let dataIsEnd = true;
 
-
   try {
 
     const response = await axios[methood](apiPath, {
@@ -48,9 +47,7 @@ export async function getMovieDeatils(imdbId) {
   } finally {
     return { status, movieData };
   }
-}
-
-
+};
 
 //Format movie title url
 export const creatUrlLink = (title) => {

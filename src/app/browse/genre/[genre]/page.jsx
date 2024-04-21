@@ -39,7 +39,7 @@ export default async function Page({ params }) {
 
         apiPath: apiUrl,
         bodyData: { filterData },
-        limitPerPage: 30
+        limitPerPage: 40
     });
 
     if (status === 500) {
@@ -121,7 +121,7 @@ export default async function Page({ params }) {
 
                 <LoadMoreMoviesGirdWarper
                     apiUrl={apiUrl}
-                    limitPerPage={30}
+                    limitPerPage={40}
                     initialFilter={filterData}
                     serverResponseExtraFilter={extraFilter}
                     initialMovies={data.moviesData || []}

@@ -36,7 +36,7 @@ export default async function Page({ params }) {
 
     apiPath: apiUrl,
     bodyData: { filterData },
-    limitPerPage: 30
+    limitPerPage: 40
   });
 
   const title = transformToCapitalize(params.slug);
@@ -51,7 +51,7 @@ export default async function Page({ params }) {
           <LoadMoreMoviesGirdWarper
             apiUrl={apiUrl}
             initialFilter={filterData}
-            limitPerPage={30}
+            limitPerPage={40}
             filterCounter={data.filterCount}
             initialMovies={data.moviesData || []}
             isDataEnd={dataIsEnd}
