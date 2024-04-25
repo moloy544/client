@@ -106,7 +106,7 @@ export default async function Page({ params }) {
 
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
-          apiBodyData={{ actor: imdbId }}
+          apiBodyData={{ actor: 'nm'+imdbId }}
           limitPerPage={40}
           filterCounter={data.filterCount}
           initialFilter={filterData}

@@ -9,11 +9,18 @@ export const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 
 
   try {
 
-    const response = await axios[methood](apiPath, {
+    const { signal } = new AbortController();
+
+    const api = axios.create({
+      baseURL: apiPath,
+      signal
+    });
+
+    const response = await api[methood]('', {
       limit: limitPerPage,
       page,
       skip,
-      bodyData
+      bodyData,
     });
 
     status = response.status;
@@ -35,17 +42,24 @@ export async function getMovieDeatils(imdbId) {
 
   let status = 500; // Default status in case of an error
   let movieData = null;
+  let suggetions = null
 
   try {
-    const response = await axios.post(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`);
-    status = response.status;
-    movieData = response.data.movieData;
+    const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`);
+    if (response.status === 200) {
+      status = response.status;
+      movieData = response.data.movieData;
+      suggetions = response.data.suggetions;
+    }else{
+      status = response.status
+    }
+   
   } catch (error) {
     if (error.response) {
       status = error.response.status;
     }
   } finally {
-    return { status, movieData };
+    return { status, movieData, suggetions };
   }
 };
 
@@ -75,8 +89,22 @@ export const transformToCapitalize = (text) => {
   return capitalizedWords?.join(' ');
 };
 
-
+//format numbers to compact like 1K 50k
 export const formatNumberCounter = (value) => Intl.NumberFormat('en-US', {
   maximumSignificantDigits: 2,
   notation: 'compact',
 }).format(value);
+
+// Function to convert image to base64
+export const imageToBase64Url = (file) => {
+  return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+          resolve(reader.result);
+      };
+      reader.onerror = (error) => {
+          reject(error);
+      };
+  });
+};

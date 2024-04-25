@@ -60,7 +60,7 @@ export default async function Page({ params }) {
 
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
-          limitPerPage={30}
+          limitPerPage={40}
           initialFilter={filterData}
           filterCounter={data.filterCount}
           initialMovies={data.moviesData || []}

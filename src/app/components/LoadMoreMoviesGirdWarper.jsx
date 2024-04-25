@@ -54,7 +54,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
         const observer = new IntersectionObserver(handleObservers, {
             root: null,
-            rootMargin: "200px",
+            rootMargin: "300px",
             threshold: 1.0,
         });
 
@@ -157,7 +157,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
             </main>
 
-            {initialMovies.length > 20 && initialFilter && (
+            {initialMovies.length >= 30 && initialFilter && (
                 <FilterModel
                     initialFilterData={initialFilter}
                     filterData={filterData}

@@ -293,7 +293,7 @@ function ReportModel({ movieData }) {
                   placeholder="Write your problem here..."
                 />
                 {message === "Invalid" && (
-                  <p className="text-red-pure text-xs my-1">Please select or describe your problem maximum 10 words</p>
+                  <p className="text-red-pure text-xs my-1">Please select or describe your problem  minimum 8 words</p>
                 )}
                 <div className="mt-4 flex gap-5">
                   <button

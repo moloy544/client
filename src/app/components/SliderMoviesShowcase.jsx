@@ -4,6 +4,10 @@ import { creatUrlLink } from '@/utils'
 
 function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
+    if (!moviesData || moviesData.length === 0) {
+       return null; 
+    }
+
     return (
 
         <section className="w-full h-auto py-2 mobile:py-1.5">

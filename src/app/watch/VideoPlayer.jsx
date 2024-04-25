@@ -6,8 +6,9 @@ import Image from "next/image";
 import MoviesUserActionWarper from "./MoviesUserActionWarper";
 import { transformToCapitalize } from "@/utils";
 import Breadcrumb from "../components/Breadcrumb";
+import SliderMoviesShowcase from "../components/SliderMoviesShowcase";
 
-export default function Videoplayer({ movieDetails }) {
+export default function Videoplayer({ movieDetails, suggestions }) {
 
   const iframeRef = useRef(null);
 
@@ -29,9 +30,7 @@ export default function Videoplayer({ movieDetails }) {
   } = movieDetails || {};
 
   const showPlayer = () => {
-
-    window.location.hash = "player"
-
+    window.location.hash = "play"
   };
 
   useEffect(() => {
@@ -42,11 +41,11 @@ export default function Videoplayer({ movieDetails }) {
       const body = document.querySelector('body');
       const playerIframe = iframeRef.current;
 
-      if (window.location.hash === "#player" && !playerVisibility){
+      if (window.location.hash === "#play" && !playerVisibility) {
         setPlayerVisibility(true);
       };
 
-      if (window.location.hash === "#player" && playerIframe) {
+      if (window.location.hash === "#play" && playerIframe) {
         playerIframe.style.display = "block";
         body.setAttribute('class', 'overflow-y-hidden');
       } else if (playerIframe) {
@@ -148,7 +147,7 @@ export default function Videoplayer({ movieDetails }) {
 
               {castDetails?.length > 0 && (
                 <>
-                  <div className="w-auto h-auto flex flex-wrap gap-1 items-center my-3.5">
+                  <div className="w-auto h-auto flex flex-wrap gap-1 items-center my-3.5 md:mr-3">
                     <div className="text-base text-gray-900 font-bold">Star cast: </div>
                     {castDetails?.map((cast, index) => (
                       <div key={index} className="text-gray-600 text-xs font-medium rounded-md">
@@ -189,6 +188,10 @@ export default function Videoplayer({ movieDetails }) {
         )}
 
       </div>
+      {/**** Show Suggest Data Based on Gnere ******/}
+      <SliderMoviesShowcase moviesData={suggestions?.genreList} title="You might also like" />
+      {/**** Show Suggest Data Based on Cast ******/}
+      <SliderMoviesShowcase moviesData={suggestions?.castList} title="From same actors" />
     </>
   )
 }

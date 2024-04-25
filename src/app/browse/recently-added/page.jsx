@@ -9,8 +9,6 @@ export default async function Page() {
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/recently-added`;
 
   const filterData = {
-    dateSort: -1,
-    ratingSort: -1,
     genreSort: "all"
   };
 

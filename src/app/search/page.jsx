@@ -116,7 +116,7 @@ function SearchPage() {
 
         const observer = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "200px",
+            rootMargin: "300px",
             threshold: 1.0,
         });
 

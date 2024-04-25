@@ -41,8 +41,8 @@ export default async function Page({ params }) {
 
   const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
 
-  const { status, movieData } = await getMovieDeatils('tt' + movieId);
-console.log(status)
+  const { status, movieData, suggetions } = await getMovieDeatils('tt' + movieId);
+
   if (status === 404) {
     notFound();
   } else if (status === 400 || status === 500) {
@@ -55,7 +55,7 @@ console.log(status)
     <>
       <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
 
-      <Videoplayer movieDetails={movieData} />
+      <Videoplayer movieDetails={movieData} suggestions={suggetions} />
     </>
   )
 }

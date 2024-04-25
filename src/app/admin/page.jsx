@@ -23,11 +23,10 @@ function AddMoviesPage() {
         category: 'bollywood',
         type: 'movie',
         language: 'hindi',
-        genre: [], // Change genre to an array
+        genre: [],
         watchLink: '',
         castDetails: [],
         tags: [],
-        searchKeywords: '',
     });
 
     const genreRef = useRef(null);
@@ -40,69 +39,72 @@ function AddMoviesPage() {
 
     const getImbdResponse = async () => {
 
-        if (state.imdbId.length >= 8) {
+        try {
 
-            const mongodbApiResponse = await getMovieDeatils(state.imdbId);
-
-            const { movieData, status } = mongodbApiResponse;
-
-            if (movieData && status === 200) {
-
-                const originalDate = new Date(movieData.fullReleaseDate);
-
-                const formattedDate = originalDate.toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                });
-
-                alert("Movie is already exist");
-
-                setState(prevState => ({
-                    ...prevState,
-                    imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
-                    thambnail: movieData.thambnail,
-                    title: movieData.title,
-                    releaseYear: movieData.releaseYear,
-                    fullReleaseDate: formattedDate,
-                    category: movieData.category,
-                    language: movieData.language,
-                    status: movieData.status,
-                    type: movieData.type,
-                    genre: movieData.genre,
-                    castDetails: movieData.castDetails,
-                    watchLink: movieData.watchLink,
-                    tags: movieData.tags,
-                    searchKeywords: movieData.searchKeywords ? movieData.searchKeywords : ''
-                }));
-                return;
+            if (state.imdbId.length >= 8) {
+    
+                const mongodbApiResponse = await axios.get(`${appConfig.backendUrl}/api/v1/admin/movie/get/${state.imdbId}`);
+        
+                const { movieData } = mongodbApiResponse.data;
+    console.log(mongodbApiResponse)
+                if (movieData && mongodbApiResponse.status === 200) {
+    
+                    const originalDate = new Date(movieData.fullReleaseDate);
+    
+                    const formattedDate = originalDate.toLocaleDateString('en-GB', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                    });
+    
+                    alert("Movie is already exist");
+    
+                    setState(prevState => ({
+                        ...prevState,
+                        imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
+                        thambnail: movieData.thambnail,
+                        title: movieData.title,
+                        releaseYear: movieData.releaseYear,
+                        fullReleaseDate: formattedDate,
+                        category: movieData.category,
+                        language: movieData.language,
+                        status: movieData.status,
+                        type: movieData.type,
+                        genre: movieData.genre,
+                        castDetails: movieData.castDetails,
+                        watchLink: movieData.watchLink,
+                        tags: movieData.tags
+                    }));
+                    return;
+                };
+    
+                const omdbApiResponse = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${state.imdbId}`);
+    
+                if (omdbApiResponse.data.Title) {
+    
+                    const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = omdbApiResponse.data;
+    
+                    const genreAray = Genre.split(',').map(genre => genre.trim());
+    
+                    const actorsArray = Actors.split(',').map(actor => actor.trim());
+    
+                    setState(prevState => ({
+                        ...prevState,
+                        imdbRating: imdbRating !== "N/A" ? imdbRating : 0,
+                        thambnail: Poster,
+                        title: Title,
+                        releaseYear: Year,
+                        fullReleaseDate: Released,
+                        genre: genreAray,
+                        castDetails: actorsArray
+                    }));
+                } else {
+                    alert(omdbApiResponse.data.Error)
+                };;
             };
-
-            const omdbApiResponse = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${state.imdbId}`);
-
-            if (omdbApiResponse.data.Title) {
-
-                const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = omdbApiResponse.data;
-
-                const genreAray = Genre.split(',').map(genre => genre.trim());
-
-                const actorsArray = Actors.split(',').map(actor => actor.trim());
-
-                setState(prevState => ({
-                    ...prevState,
-                    imdbRating: imdbRating !== "N/A" ? imdbRating : 0,
-                    thambnail: Poster,
-                    title: Title,
-                    releaseYear: Year,
-                    fullReleaseDate: Released,
-                    genre: genreAray,
-                    castDetails: actorsArray,
-                    searchKeywords: ''
-                }));
-            } else {
-                alert(omdbApiResponse.data.Error)
-            };;
-        };
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     const sendMoviesToBackend = async (e) => {
@@ -131,8 +133,7 @@ function AddMoviesPage() {
                     genre: [],
                     castDetails: [],
                     watchLink: '',
-                    tags: [],
-                    searchKeywords: ''
+                    tags: []
                 }));
             } else {
                 alert(responseMessage);
