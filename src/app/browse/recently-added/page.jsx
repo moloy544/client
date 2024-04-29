@@ -4,6 +4,8 @@ import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper"
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
 
+export const revalidate = 3600 // revalidate at most every hour
+
 export default async function Page() {
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/recently-added`;
