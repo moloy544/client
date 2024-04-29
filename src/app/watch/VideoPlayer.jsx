@@ -89,7 +89,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
       <div className="w-full h-full py-6 mobile:py-2 px-2 flex justify-center items-center">
 
-        <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:max-w-[700px] p-3 flex mobile:flex-col gap-5 mobile:marker:gap-0 bg-white rounded-md shadow-xl">
+        <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:min-w-[700px] md:max-w-[800px] p-3 flex mobile:flex-col gap-5 mobile:marker:gap-0 bg-white rounded-md shadow-xl">
 
           <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
 

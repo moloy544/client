@@ -1,11 +1,13 @@
+import { notFound } from "next/navigation";
+import dynamic from "next/dynamic";
 import axios from "axios";
 import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
-import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
-import { notFound } from "next/navigation";
 
+const SomthingWrongError = dynamic(() => import('@/app/components/errors/SomthingWrongError'), { ssr: false })
+ 
 const getActorData = async (imdbId) => {
   let status = 500; // Default status in case of an error
   let name = null;

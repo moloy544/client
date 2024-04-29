@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
 import { useEffect, useState } from "react";
 
-const NotificationModel = dynamic(() => import('./models/NotificationModel'));
+const NotificationModel = dynamic(() => import('./models/NotificationModel'), { ssr: false });
 
 export default function Navbar() {
 
@@ -62,9 +62,9 @@ function Notification() {
     };
 
     useEffect(() => {
-        
+
         window.addEventListener('scroll', handleScroll);
-        
+
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };

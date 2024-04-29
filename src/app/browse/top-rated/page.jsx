@@ -1,8 +1,10 @@
+import dynamic from "next/dynamic";
 import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
-import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
+
+const SomthingWrongError = dynamic(() => import('@/app/components/errors/SomthingWrongError'), { ssr: false })
 
 export const metadata = {
 

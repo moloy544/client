@@ -1,10 +1,12 @@
+import dynamic from "next/dynamic";
+import { notFound } from "next/navigation";
 import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
-import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
-import { notFound } from "next/navigation";
 
+const SomthingWrongError = dynamic(() => import('@/app/components/errors/SomthingWrongError'), { ssr: false })
+ 
 export async function generateMetadata({ params }) {
 
   const editParamsQuery = transformToCapitalize(params.categoryName);
@@ -36,6 +38,27 @@ export default async function Page({ params }) {
     genreSort: "all",
   };
 
+  const extraFilter = [{
+    title: "Filter by industry",
+    data: [
+      {
+        id: 1,
+        filter: 'industry',
+        name: "hollywood"
+      },
+
+      {
+        id: 2,
+        filter: 'industry',
+        name: "bollywood"
+      },
+      {
+        id: 3,
+        filter: 'industry',
+        name: "south"
+      }]
+  }];
+
   const { status, data, dataIsEnd } = await loadMoreFetch({
 
     apiPath: apiUrl,
@@ -61,6 +84,7 @@ export default async function Page({ params }) {
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
           limitPerPage={40}
+          serverResponseExtraFilter={category == 'new-release' ? extraFilter : null}
           initialFilter={filterData}
           filterCounter={data.filterCount}
           initialMovies={data.moviesData || []}

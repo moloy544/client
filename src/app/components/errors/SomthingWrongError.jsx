@@ -2,13 +2,20 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import NavigateBack from "../NavigateBack";
 
-function SomthingWrongError() {
+function SomthingWrongError({ onclickEvent }) {
 
     const router = useRouter();
 
-    const reload = () => router.refresh();
-    const back = () => router.back();
+    const onclickAction = () => {
+        if (!onclickEvent) {
+            router.refresh();
+        } else {
+            onclickEvent();
+        }
+    };
+    const isNavigateHistory = (window.history.length > 1);
 
     return (
 
@@ -25,23 +32,27 @@ function SomthingWrongError() {
                 />
 
                 <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Something went wrong!
+                    Something went wrong!
                 </h1>
 
-                <p className="mt-4 text-gray-500">Please reload the page and try again or go back to previews page page.</p>
+                <p className="mt-4 text-gray-500">
+                    {`Please reload the page and try again or go back to ${isNavigateHistory ? "previews page page." : "home page."}`}
+                </p>
                 <div className="w-full h-auto flex justify-center gap-3">
                     <button
                         type="button"
-                        onClick={reload}
+                        onClick={onclickAction}
                         className="mt-6 inline-block rounded bg-rose-500 px-8 py-2 text-sm font-medium text-white hover:bg-rose-600 focus:outline-none focus:ring">
                         <i className="bi bi-arrow-clockwise"></i> Reload
                     </button>
-                    <button
-                        type="button"
-                        onClick={back}
-                        className="mt-6 inline-block rounded bg-cyan-500 px-8 py-2 text-sm font-medium text-white hover:bg-cyan-600 focus:outline-none focus:ring">
-                        Go Back
-                    </button>
+
+                    <NavigateBack>
+                        <button
+                            type="button"
+                            className="mt-6 inline-block rounded bg-cyan-500 px-8 py-2 text-sm font-medium text-white hover:bg-cyan-600 focus:outline-none focus:ring">
+                           {`${isNavigateHistory? " Go Back": "Go home"}`}
+                        </button>
+                    </NavigateBack>
                 </div>
 
             </div>
