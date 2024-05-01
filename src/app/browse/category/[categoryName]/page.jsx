@@ -35,7 +35,7 @@ export default async function Page({ params }) {
 
   const filterData = {
     dateSort: -1,
-    genreSort: "all",
+    genre: "all",
   };
 
   const extraFilter = [{
@@ -57,7 +57,22 @@ export default async function Page({ params }) {
         filter: 'industry',
         name: "south"
       }]
-  }];
+  },
+  {
+
+    title: "Filter by type",
+    data: [
+        {
+            id: 1,
+            filter: 'type',
+            name: "movie"
+        },
+        {
+            id: 2,
+            filter: 'type',
+            name: "series"
+        }]
+}];
 
   const { status, data, dataIsEnd } = await loadMoreFetch({
 
@@ -84,7 +99,7 @@ export default async function Page({ params }) {
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
           limitPerPage={40}
-          serverResponseExtraFilter={category == 'new-release' ? extraFilter : null}
+          serverResponseExtraFilter={category == 'new-release' ? extraFilter : [extraFilter[1]]}
           initialFilter={filterData}
           filterCounter={data.filterCount}
           initialMovies={data.moviesData || []}

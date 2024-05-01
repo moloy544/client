@@ -34,7 +34,6 @@ export default async function Page({ params }) {
 
     const filterData = {
         dateSort: -1,
-        categoryFilter: "all",
     };
 
     const { status, data, dataIsEnd } = await loadMoreFetch({
@@ -45,10 +44,10 @@ export default async function Page({ params }) {
     });
 
     if (status === 500) {
-        return(
-          <SomthingWrongError />
+        return (
+            <SomthingWrongError />
         )
-      };
+    };
 
     const capitalizeGenre = transformToCapitalize(genre);
 
@@ -117,7 +116,7 @@ export default async function Page({ params }) {
 
     return (
         <>
-            <NavigateBackTopNav title={capitalizeGenre} />
+            <NavigateBackTopNav title={capitalizeGenre+" collection"} />
 
             <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 

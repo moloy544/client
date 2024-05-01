@@ -13,7 +13,7 @@ export default async function Page() {
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/recently-added`;
 
   const filterData = {
-    genreSort: "all"
+    genre: "all"
   };
 
   const extraFilter = [{
@@ -35,6 +35,21 @@ export default async function Page() {
             filter: 'industry',
             name: "south"
         }]
+},
+{
+
+  title: "Filter by type",
+  data: [
+      {
+          id: 1,
+          filter: 'type',
+          name: "movie"
+      },
+      {
+          id: 2,
+          filter: 'type',
+          name: "series"
+      }]
 }];
 
   const { status, data, dataIsEnd } = await loadMoreFetch({

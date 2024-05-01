@@ -27,7 +27,7 @@ export default async function Page() {
   const filterData = {
     dateSort: -1,
     ratingSort: -1,
-    genreSort: "all"
+    genre: "all"
   };
 
   const extraFilter = [{

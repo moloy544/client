@@ -31,7 +31,7 @@ function Breadcrumb({ data }) {
                 </div>
 
                 {data?.map((data, index) => (
-                    <div key={index} className=" flex items-center">
+                    <div key={index} className="flex items-center">
 
                         <div className="rtl:rotate-180">
 
@@ -50,11 +50,11 @@ function Breadcrumb({ data }) {
                         </div>
 
                         {data.pathLink ? (
-                            <Link href={data.pathLink} className="block transition hover:text-cyan-500">
+                            <Link href={data.pathLink} className="line-clamp-1 hover:text-cyan-500">
                                 {data.name}
                             </Link>
                         ) : (
-                            <div className="block transition">
+                            <div className="line-clamp-1">
                                 {data.name}
                             </div>
                         )}

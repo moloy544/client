@@ -206,7 +206,7 @@ function SearchPage() {
                     </div>
                 ) : (
                     <div className="w-full h-full my-40">
-                        <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">Search movies and series</h2>
+                        <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">Search and watch movies and series</h2>
                     </div>
                 )}
 

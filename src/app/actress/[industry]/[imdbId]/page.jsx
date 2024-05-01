@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
-import { loadMoreFetch } from "@/utils";
+import { creatUrlLink, loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }) {
 
     const { imdbId } = params;
 
-    const { status, name, avatar, industry } = await getActorData('nm'+imdbId);
+    const { status, name, avatar } = await getActorData('nm'+imdbId);
 
     if (status === 200) {
 
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }) {
           images: avatar,
           title: name,
           description: `Watch ${name} movies online free of cost Movies Bazaar`,
-          url: `https://moviesbazar.online/actress/${industry}/${imdbId}`
+          url: `https://moviesbazar.online/actress/${creatUrlLink(name)}/${imdbId}`
         },
       };
 
@@ -73,8 +73,8 @@ export default async function Page({ params }) {
   const apiUrl = `${appConfig.backendUrl}/api/v1/actress/collaction`;
 
   const filterData = {
-    sortFilter: { dateSort: -1 },
-    categoryFilter: { genre: "all" }
+    dateSort: -1,
+    genre: "all",
   };
 
   const [actorData, moviesData] = await Promise.all([
