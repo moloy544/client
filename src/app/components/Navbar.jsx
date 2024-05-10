@@ -3,7 +3,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const NotificationModel = dynamic(() => import('./models/NotificationModel'), { ssr: false });
 
@@ -54,22 +54,10 @@ function Notification() {
         setVisible((prevState) => !prevState)
     };
 
-    const handleScroll = () => {
-
-        if (window.scrollY > 100 && isVisible) {
-            setVisible(false);
-        };
-    };
-
-    useEffect(() => {
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [handleScroll]);
-
+    const hideModel = () => {
+        setVisible(false);
+    }
+    
     return (
 
         <div className="w-auto h-auto relative">
@@ -78,7 +66,7 @@ function Notification() {
                 <i className="bi bi-bell-fill"></i>
             </div>
             {isVisible && (
-                <NotificationModel />
+                <NotificationModel visibility={isVisible} functions={{ hideModel }} />
             )}
 
         </div>

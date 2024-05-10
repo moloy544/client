@@ -6,7 +6,7 @@ import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper"
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 
 const SomthingWrongError = dynamic(() => import('@/app/components/errors/SomthingWrongError'), { ssr: false })
- 
+
 export async function generateMetadata({ params }) {
 
   const editParamsQuery = transformToCapitalize(params.categoryName);
@@ -38,6 +38,22 @@ export default async function Page({ params }) {
     genre: "all",
   };
 
+  const { status, data, dataIsEnd } = await loadMoreFetch({
+
+    apiPath: apiUrl,
+    bodyData: { filterData },
+    limitPerPage: 40
+  });
+  if (status === 404) {
+    notFound();
+  } else if (status === 500) {
+    return (
+      <SomthingWrongError />
+    )
+  };
+
+  const categoryName = transformToCapitalize(params.categoryName);
+
   const extraFilter = [{
     title: "Filter by industry",
     data: [
@@ -62,33 +78,22 @@ export default async function Page({ params }) {
 
     title: "Filter by type",
     data: [
-        {
-            id: 1,
-            filter: 'type',
-            name: "movie"
-        },
-        {
-            id: 2,
-            filter: 'type',
-            name: "series"
-        }]
-}];
+      {
+        id: 1,
+        filter: 'type',
+        name: "movie"
+      },
+      {
+        id: 2,
+        filter: 'type',
+        name: "series"
+      }]
+  }];
 
-  const { status, data, dataIsEnd } = await loadMoreFetch({
-
-    apiPath: apiUrl,
-    bodyData: { filterData },
-    limitPerPage: 40
-  });
-  if (status === 404) {
-    notFound();
-  } else if (status === 500) {
-    return (
-      <SomthingWrongError />
-    )
+  if (data.genreFilter) {
+    extraFilter.unshift({ title: "Filter by genre", data: data.genreFilter })
   };
 
-  const categoryName = transformToCapitalize(params.categoryName);
 
   return (
     <>
@@ -101,7 +106,6 @@ export default async function Page({ params }) {
           limitPerPage={40}
           serverResponseExtraFilter={category == 'new-release' ? extraFilter : [extraFilter[1]]}
           initialFilter={filterData}
-          filterCounter={data.filterCount}
           initialMovies={data.moviesData || []}
           isDataEnd={dataIsEnd}
         />

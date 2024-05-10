@@ -41,6 +41,13 @@ export default async function Page({ params }) {
 
   const title = transformToCapitalize(params.slug);
 
+  const filterOptions = [];
+
+  if (data.genreFilter) {
+    filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter })
+  };
+
+
   return (
     <>
 
@@ -52,7 +59,7 @@ export default async function Page({ params }) {
             apiUrl={apiUrl}
             initialFilter={filterData}
             limitPerPage={40}
-            filterCounter={data.filterCount}
+            serverResponseExtraFilter={filterOptions}
             initialMovies={data.moviesData || []}
             isDataEnd={dataIsEnd}
           />

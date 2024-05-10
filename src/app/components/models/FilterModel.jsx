@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { formatNumberCounter, transformToCapitalize } from '@/utils';
 
-function FilterModel({ initialFilterData, filterData, filterCounter, functions, extraFilter }) {
+function FilterModel({ initialFilterData, filterData, functions, filterOptions }) {
 
     const [visible, setVisible] = useState(false);
 
@@ -23,18 +23,18 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
 
 
     const toggleModel = () => {
-        setVisible((prev)=> !prev);
+        setVisible((prev) => !prev);
     };
 
     const { setFilter } = functions;
 
     const sortFilerOptions = [
         {
-            filterLabel: 'Date new to old',
+            filterLabel: 'New to old',
             sort: { dateSort: -1 },
         },
         {
-            filterLabel: 'Date old to new',
+            filterLabel: 'Old to new',
             sort: { dateSort: 1 },
         },
         {
@@ -92,9 +92,9 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
 
                 <div className="w-full h-auto flex justify-between items-center px-2">
                     <div className="text-sm text-black font-bold">Sort options</div>
-                    <button 
-                    onClick={toggleModel}
-                    className="w-7 h-7 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full flex justify-center items-center">
+                    <button
+                        onClick={toggleModel}
+                        className="w-7 h-7 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full flex justify-center items-center">
                         <i className="bi bi-x text-xl p-1 cursor-pointer"></i>
                     </button>
                 </div>
@@ -117,60 +117,7 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
 
                     <div className="w-auto h-auto max-h-[300px] overflow-y-scroll scrollbar-hidden">
 
-                        {/*** Sort By Genre *****/}
-
-                        {initialFilterData.genre && (
-
-                            <details className="group [&_summary::-webkit-details-marker]:hidden">
-                                <summary
-                                    className="sticky top-0 bg-white flex cursor-pointer items-center gap-1 rounded-lg px-2.5 py-2 text-gray-800 hover:text-gray-900"
-                                >
-                                    <span className="text-xs font-semibold">Sort by genre</span>
-
-                                    <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="h-5 w-5"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                    </span>
-                                </summary>
-                                <div className="w-auto h-auto my-1">
-
-                                    <div onClick={() => addFilter({ genre: "all" })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genre === "all" ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                        {filterCounter.genre && filterCounter.totalCount ? (
-                                            <span>All {` (${formatNumberCounter(filterCounter.totalCount)})`}</span>
-
-                                        ) : (
-                                            <span>All</span>
-                                        )}
-                                        <i className={`text-base ${selectedFilter.genre === "all" ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                    </div>
-
-                                    {filterCounter.genre?.map(({ filterName, count }) => (
-
-                                        <Fragment key={filterName}>
-
-                                            <div onClick={() => addFilter({ genre: filterName })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genre === filterName ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                                <span>{filterName + ` (${count})`}</span>
-                                                <i className={`text-base ${selectedFilter.genre === filterName ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                            </div>
-
-                                        </Fragment>
-                                    ))}
-
-                                </div>
-                            </details>
-                        )}
-
-                        {extraFilter?.map(({ title, data }, index) => (
+                        {filterOptions?.map(({ title, data }, index) => (
                             <details key={index} className="group [&_summary::-webkit-details-marker]:hidden">
                                 <summary
                                     className="sticky top-0  bg-white flex cursor-pointer items-center gap-1 rounded-lg px-2.5 py-2 text-gray-800 hover:text-gray-900"
@@ -195,17 +142,45 @@ function FilterModel({ initialFilterData, filterData, filterCounter, functions, 
 
                                 <div className="w-auto h-auto my-1">
 
-                                    {data?.map(({ id, filter, name }) => (
+                                    {data.genre ? (
+                                        <>
+                                            <div onClick={() => addFilter({ genre: "all" })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genre === "all" ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
+                                                {data.totalCount ? (
+                                                    <span>All {` (${formatNumberCounter(data.totalCount)})`}</span>
 
-                                        <Fragment key={id}>
-
-                                            <div onClick={() => addFilter({ [filter]: name })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter[filter] === name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                                <span>{transformToCapitalize(name)}</span>
-                                                <i className={`text-base ${selectedFilter[filter] === name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                                ) : (
+                                                    <span>All</span>
+                                                )}
+                                                <i className={`text-base ${selectedFilter.genre === "all" ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
                                             </div>
 
-                                        </Fragment>
-                                    ))}
+                                            {data.genre?.map(({ filterName, count }) => (
+
+                                                <Fragment key={filterName}>
+
+                                                    <div onClick={() => addFilter({ genre: filterName })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genre === filterName ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
+                                                        <span>{filterName + ` (${count})`}</span>
+                                                        <i className={`text-base ${selectedFilter.genre === filterName ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                                    </div>
+
+                                                </Fragment>
+                                            ))}
+                                        </>
+                                    ) : (
+                                        <>
+                                            {data?.map(({ id, filter, name }) => (
+
+                                                <Fragment key={id}>
+
+                                                    <div onClick={() => addFilter({ [filter]: name })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter[filter] === name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
+                                                        <span>{transformToCapitalize(name)}</span>
+                                                        <i className={`text-base ${selectedFilter[filter] === name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                                    </div>
+
+                                                </Fragment>
+                                            ))}
+                                        </>
+                                    )}
 
                                 </div>
                             </details>

@@ -1,41 +1,22 @@
-'use client'
 
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
+import { ModelsController } from "@/lib/EventsHandler";
 
-function NotificationModel() {
+function NotificationModel({ visibility, functions }) {
+
+    const { hideModel } = functions;
 
     const notifactionTypesArray = ['news', 'updates', 'notice'];
 
     const [selectedNotifactionType, setSelectedNotifactionType] = useState('news');
-    const [nofifactions, setNofifactions] = useState([
-        {
-            id: 4698,
-            nofifaction: 'Add top IMBD rated movies now watch top rated movis for free',
-            linkUrl: 'browse/top-rated',
-            type: 'updates',
-            postDate: '1days ago 08:23PM'
-        },
-        {
-            id: 2822,
-            nofifaction: 'Add series option in our category now watch latest series free of cost',
-            type: 'news',
-            postDate: '4days ago 11:12PM'
-        },
-        {
-            id: 8288,
-            nofifaction: 'New year 2024 movies and series is uploaded watch now latest movies series in 2024',
-            type: 'news',
-            postDate: '55days ago 08:23PM'
-        },
-    ]);
-
+    const [nofifactions, setNofifactions] = useState([]);
 
     const filteredNotifactions = nofifactions?.filter((data) => data.type === selectedNotifactionType);
 
     return (
-        <>
-            <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border border-gray-400 right-0 z-40">
+        <ModelsController visibility={visibility} closeEvent={hideModel}>
+            <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border border-gray-400 right-0 z-40 select-none">
 
                 <div className="w-auto h-auto flex items-center gap-2 px-2 py-3 justify-around border-b border-gray-300">
                     {notifactionTypesArray.map((type, index) => (
@@ -59,7 +40,7 @@ function NotificationModel() {
                                             {data.linkUrl ? (
                                                 <Link className="hover:text-blue-800" href={data.linkUrl}>{data.nofifaction}</Link>
                                             ) : data.nofifaction}
-                                            
+
                                         </div>
                                         <span className="text-[10px] text-gray-500">
                                             {data.postDate}
@@ -80,7 +61,7 @@ function NotificationModel() {
                 </div>
 
             </div>
-        </>
+        </ModelsController>
     )
 }
 

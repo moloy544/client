@@ -100,6 +100,12 @@ export default async function Page({ params }) {
 
   const { data, dataIsEnd } = moviesData;
 
+  const filterOptions = [];
+
+  if (data.genreFilter) {
+    filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter })
+  };
+
   return (
     <>
       <NavigateBackTopNav title={name} />
@@ -110,7 +116,7 @@ export default async function Page({ params }) {
           apiUrl={apiUrl}
           apiBodyData={{ actor: 'nm'+imdbId }}
           limitPerPage={40}
-          filterCounter={data.filterCount}
+          serverResponseExtraFilter={filterOptions}
           initialFilter={filterData}
           initialMovies={data.moviesData || []}
           isDataEnd={dataIsEnd} />

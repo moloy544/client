@@ -65,6 +65,10 @@ export default async function Page() {
     )
   };
 
+  if (data.genreFilter) {
+    extraFilter.unshift({ title: "Filter by genre", data: data.genreFilter })
+  };
+
   return (
     <>
       <NavigateBackTopNav title="Recently Added" />
@@ -76,7 +80,6 @@ export default async function Page() {
           initialFilter={filterData}
           serverResponseExtraFilter={extraFilter}
           limitPerPage={40}
-          filterCounter={data.filterCount}
           initialMovies={data.moviesData || []}
           isDataEnd={dataIsEnd}
         />

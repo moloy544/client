@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
-import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
+import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import FilterModel from "./models/FilterModel";
 import BacktoTopButton from "./BacktoTopButton";
 
-function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, filterCounter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
+function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
 
     const patname = usePathname();
 
@@ -161,8 +161,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                 <FilterModel
                     initialFilterData={initialFilter}
                     filterData={filterData}
-                    filterCounter={filterCounter}
-                    extraFilter={serverResponseExtraFilter}
+                    filterOptions={serverResponseExtraFilter}
                     functions={{
                         setFilter
                     }} />
