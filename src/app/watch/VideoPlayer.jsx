@@ -111,6 +111,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
                   onClick={showPlayer}
                   className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rose-500 text-gray-100 w-12 h-12 pl-1 pb-0.5 flex justify-center items-center rounded-full text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
                   <i className="bi bi-play"></i>
+                <span className="sr-only">Play video</span>
                 </button>
               ) : (
                 <>

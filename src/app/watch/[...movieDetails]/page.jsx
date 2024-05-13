@@ -4,7 +4,7 @@ import { creatUrlLink, getMovieDeatils } from "@/utils";
 import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
 import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
 import Videoplayer from "@/app/watch/VideoPlayer";
-
+import { InspectPreventer } from "@/lib/inspectPreventer";
 
 export async function generateMetadata({ params }) {
 
@@ -47,15 +47,16 @@ export default async function Page({ params }) {
     notFound();
   } else if (status === 400 || status === 500) {
     return (
-    <SomthingWrongError />
+      <SomthingWrongError />
     )
   };
 
   return (
     <>
       <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
-
-      <Videoplayer movieDetails={movieData} suggestions={suggetions} />
+      <InspectPreventer>
+        <Videoplayer movieDetails={movieData} suggestions={suggetions} />
+      </InspectPreventer>
     </>
   )
 }

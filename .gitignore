@@ -25,6 +25,7 @@ node_modules/
 # Logs and testing directories
 logs/
 coverage/
+test/
 
 # Build-specific output directories
 *.log

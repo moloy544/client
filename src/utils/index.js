@@ -1,7 +1,8 @@
 import { appConfig } from "@/config/config";
 import axios from "axios";
 
-export const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 20, page = 1, skip = 0, bodyData }) => {
+/************** Load more movies data function for handle infinity loading ************/
+const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 20, page = 1, skip = 0, bodyData }) => {
 
   let status = 500;
   let data = [];
@@ -37,8 +38,8 @@ export const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 
   return { status, data, dataIsEnd };
 };
 
-//Get movie serirs details from database
-export async function getMovieDeatils(imdbId) {
+/**************** Get movie serirs details from database ***************/
+async function getMovieDeatils(imdbId) {
 
   let status = 500; // Default status in case of an error
   let movieData = null;
@@ -63,8 +64,8 @@ export async function getMovieDeatils(imdbId) {
   }
 };
 
-//Format movie title url
-export const creatUrlLink = (title) => {
+/*************** Format movie title url ***************/
+const creatUrlLink = (title) => {
 
   // Remove non-alphanumeric characters and replace spaces with hyphens
   const formattedTitle = title?.replace(/[^a-zA-Z0-9\s]/g, '') // Remove non-alphanumeric characters
@@ -74,8 +75,8 @@ export const creatUrlLink = (title) => {
   return formattedTitle;
 };
 
-//Transfrom capitalize
-export const transformToCapitalize = (text) => {
+/*************** Transfrom capitalize **************/
+const transformToCapitalize = (text) => {
 
   // Split the text into an array of words
   const words = text?.split('-');
@@ -89,14 +90,14 @@ export const transformToCapitalize = (text) => {
   return capitalizedWords?.join(' ');
 };
 
-//format numbers to compact like 1K 50k
-export const formatNumberCounter = (value) => Intl.NumberFormat('en-US', {
+/**************** format numbers to compact like 1K 50k ****************/
+const formatNumberCounter = (value) => Intl.NumberFormat('en-US', {
   maximumSignificantDigits: 2,
   notation: 'compact',
 }).format(value);
 
-// Function to convert image to base64
-export const imageToBase64Url = (file) => {
+/******************* Function to convert image to base64 *****************/
+const imageToBase64Url = (file) => {
   return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -108,3 +109,13 @@ export const imageToBase64Url = (file) => {
       };
   });
 };
+
+/**** Export all utilities *****/
+export {
+  loadMoreFetch,
+  getMovieDeatils,
+  creatUrlLink,
+  transformToCapitalize,
+  formatNumberCounter,
+  imageToBase64Url,
+}

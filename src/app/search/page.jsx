@@ -156,7 +156,7 @@ function SearchPage() {
                             onChange={handleSearchInputChange}
                             value={searchQuery} 
                             type="search"
-                            placeholder="Search movies web series and more..."
+                            placeholder="Search by title, cast, genre and more..."
                             className="w-[45%] mobile:w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 rounded-md px-4 mr-4 mobile:mr-1 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
 
                     </div>

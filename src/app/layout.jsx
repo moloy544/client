@@ -6,7 +6,6 @@ import { Analytics } from "@vercel/analytics/react"
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import Footer from './components/Footer';
-import { InspectPreventer } from '@/utils/inspectPreventer';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -51,11 +50,9 @@ export default function RootLayout({ children }) {
         />
 
         <ReduxStatePrivider>
-          <InspectPreventer>
           <div className="w-full h-full bg-gray-800 min-h-screen">
             {children}
           </div>
-          </InspectPreventer>
         </ReduxStatePrivider>
 
         <SpeedInsights />

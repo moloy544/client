@@ -54,26 +54,7 @@ export default async function Page({ params }) {
 
   const categoryName = transformToCapitalize(params.categoryName);
 
-  const extraFilter = [{
-    title: "Filter by industry",
-    data: [
-      {
-        id: 1,
-        filter: 'industry',
-        name: "hollywood"
-      },
-
-      {
-        id: 2,
-        filter: 'industry',
-        name: "bollywood"
-      },
-      {
-        id: 3,
-        filter: 'industry',
-        name: "south"
-      }]
-  },
+  const filterOptions = [
   {
 
     title: "Filter by type",
@@ -91,7 +72,31 @@ export default async function Page({ params }) {
   }];
 
   if (data.genreFilter) {
-    extraFilter.unshift({ title: "Filter by genre", data: data.genreFilter })
+    filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter });
+  };
+
+  if (category === "new-release") {
+
+    filterOptions.unshift({
+      title: "Filter by industry",
+      data: [
+        {
+          id: 1,
+          filter: 'industry',
+          name: "hollywood"
+        },
+  
+        {
+          id: 2,
+          filter: 'industry',
+          name: "bollywood"
+        },
+        {
+          id: 3,
+          filter: 'industry',
+          name: "south"
+        }]
+    },)
   };
 
 
@@ -104,7 +109,7 @@ export default async function Page({ params }) {
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
           limitPerPage={40}
-          serverResponseExtraFilter={category == 'new-release' ? extraFilter : [extraFilter[1]]}
+          serverResponseExtraFilter={filterOptions}
           initialFilter={filterData}
           initialMovies={data.moviesData || []}
           isDataEnd={dataIsEnd}

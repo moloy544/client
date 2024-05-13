@@ -10,34 +10,25 @@ const ModelsController = ({ children, visibility, closeEvent }) => {
         opacity: 0 // Start as fully transparent
     });
 
-    //hide model while window scroll
-    const handleScroll = () => {
+    
 
-        if (window.scrollY > 100 && visibility) {
-            closeEvent();
-        };
-    };
+    //All events listeners for close model
+    useEffect(() => {
 
-    //hide model on outside click
+        //hide model on outside click
     const outsideClickHandler = ({ target }) => {
         if (!elementRef.current) return;
         if (!visibility || elementRef.current.contains(target)) return;
         closeEvent();
     };
 
-    //All events listeners for close model
-    useEffect(() => {
-
         document.addEventListener('click', outsideClickHandler);
-
-        window.addEventListener('scroll', handleScroll);
 
         return () => {
             document.removeEventListener('click', outsideClickHandler);
-            window.removeEventListener('scroll', handleScroll);
         };
 
-    }, [visibility, closeEvent, handleScroll]);
+    }, [visibility, closeEvent]);
 
     // Apply opacity based on visibility
     useEffect(() => {
@@ -47,13 +38,6 @@ const ModelsController = ({ children, visibility, closeEvent }) => {
             setStyle(prevStyle => ({ ...prevStyle, opacity: 0 })); // Become fully transparent
         }
     }, [visibility]);
-
-
-    //hide model while window scroll event listeners
-    useEffect(() => {
-
-
-    }, [handleScroll]);
 
 
     // Merge existing child styles with new styles and apply ref

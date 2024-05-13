@@ -24,7 +24,7 @@ export default function Navbar() {
                         <Link href="/search" className="cursor-text mobile:hidden">
                             <div className="flex items-center gap-3 w-96 h-11 mobile:w-full mobile:h-9 rounded-[10px] text-sm py-1 bg-gray-800 text-gray-300 border-2 border-gray-700">
                                 <i className="bi bi-search pl-3 text-base"></i>
-                                <span>Search movies web series and more...</span>
+                                <span>Search by title, cast, genre and more...</span>
                             </div>
                         </Link>
 
@@ -62,9 +62,10 @@ function Notification() {
 
         <div className="w-auto h-auto relative">
 
-            <div onClick={toggleNotifactionModel} role="button" className={`p-1 text-2xl mobile:text-xl cursor-pointer ${isVisible ? "text-rose-500" : "text-gray-100"}`}>
-                <i className="bi bi-bell-fill"></i>
-            </div>
+            <button onClick={toggleNotifactionModel} type="button" className={`p-1 text-2xl mobile:text-xl cursor-pointer ${isVisible ? "text-yellow-500" : "text-gray-100"}`}>
+                <i className="bi bi-clock"></i>
+                <span className="sr-only">Watch later</span>
+            </button>
             {isVisible && (
                 <NotificationModel visibility={isVisible} functions={{ hideModel }} />
             )}
