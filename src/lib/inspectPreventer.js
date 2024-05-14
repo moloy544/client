@@ -6,8 +6,10 @@ export function InspectPreventer({ children }) {
 
     useEffect(() => {
         const handleContextmenu = (event) => {
-
+            if (process.env.NODE_ENV === 'production') {
                 event.preventDefault(); // Prevent default right-click behavior  
+            }
+
         };
 
         // Add event listener to the document body to prevent right-click

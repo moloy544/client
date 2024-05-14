@@ -33,6 +33,10 @@ export default function Videoplayer({ movieDetails, suggestions }) {
     window.location.hash = "play"
   };
 
+  const hidePlayer = () => {
+    window.history.back();
+    setPlayerVisibility(false);
+  };
   useEffect(() => {
 
     setPlayerVisibility(true);
@@ -111,7 +115,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
                   onClick={showPlayer}
                   className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rose-500 text-gray-100 w-12 h-12 pl-1 pb-0.5 flex justify-center items-center rounded-full text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
                   <i className="bi bi-play"></i>
-                <span className="sr-only">Play video</span>
+                  <span className="sr-only">Play video</span>
                 </button>
               ) : (
                 <>
@@ -179,13 +183,25 @@ export default function Videoplayer({ movieDetails, suggestions }) {
           </div>
 
         </div>
-
-        {playerVisibility && (
-          <iframe
+        {/**<iframe
             ref={iframeRef}
             className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
             src={watchLink}
-            allowFullScreen="allowfullscreen" />
+        allowFullScreen="allowfullscreen" />**/}
+        {playerVisibility && (
+
+          <div ref={iframeRef} className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden bg-black px-3 py-5">
+            <div className="w-full h-full flex flex-col space-y-2 items-center justify-center relative">
+              <button type="button"
+              onClick={hidePlayer} 
+              className="absolute top-2 right-3 bg-white hover:bg-rose-500 rounded-full w-8 h-8 flex justify-center items-center">
+                <i className="bi bi-x-lg text-gray-800 hover:text-gray-100"></i>
+                <span className="sr-only">Close</span>
+              </button>
+              <div className="mobile:text-base text-xl font-semibold text-center text-blue-400">Please come back after <span className="text-yellow-300">15 May 2024</span> Site is under maintenance</div>
+              <small className="text-gray-200 text-center font-medium max-w-md">We are provide best service to our user. but for some reasons currently our service is off please come after 15-05-2024 thanks for using our site. </small>
+            </div>
+          </div>
         )}
 
       </div>
