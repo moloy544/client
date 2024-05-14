@@ -41,7 +41,21 @@ export default async function Page({ params }) {
 
   const title = transformToCapitalize(params.slug);
 
-  const filterOptions = [];
+  const filterOptions = [{
+
+    title: "Filter by type",
+    data: [
+        {
+            id: 1,
+            filter: 'type',
+            name: "movie"
+        },
+        {
+            id: 2,
+            filter: 'type',
+            name: "series"
+        }]
+}];
 
   if (data.genreFilter) {
     filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter })

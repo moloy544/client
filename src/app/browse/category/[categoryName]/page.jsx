@@ -75,30 +75,10 @@ export default async function Page({ params }) {
     filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter });
   };
 
-  if (category === "new-release") {
-
-    filterOptions.unshift({
-      title: "Filter by industry",
-      data: [
-        {
-          id: 1,
-          filter: 'industry',
-          name: "hollywood"
-        },
-  
-        {
-          id: 2,
-          filter: 'industry',
-          name: "bollywood"
-        },
-        {
-          id: 3,
-          filter: 'industry',
-          name: "south"
-        }]
-    },)
-  };
-
+  if (data.industryFilter) {
+    filterOptions.unshift({ title: "Filter by industry", data: data.industryFilter });
+    
+};
 
   return (
     <>

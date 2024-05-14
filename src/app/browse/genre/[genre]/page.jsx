@@ -51,26 +51,7 @@ export default async function Page({ params }) {
 
     const capitalizeGenre = transformToCapitalize(genre);
 
-    const extraFilter = [{
-        title: "Filter by industry",
-        data: [
-            {
-                id: 1,
-                filter: 'industry',
-                name: "hollywood"
-            },
-
-            {
-                id: 2,
-                filter: 'industry',
-                name: "bollywood"
-            },
-            {
-                id: 3,
-                filter: 'industry',
-                name: "south"
-            }]
-    }, {
+    const filterOptions = [{
 
         title: "Filter by type",
         data: [
@@ -114,9 +95,14 @@ export default async function Page({ params }) {
             }]
     }];
 
+    if (data.industryFilter) {
+        filterOptions.unshift({ title: "Filter by industry", data: data.industryFilter });
+        
+    };
+
     return (
         <>
-            <NavigateBackTopNav title={capitalizeGenre+" collection"} />
+            <NavigateBackTopNav title={capitalizeGenre + " collection"} />
 
             <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
@@ -124,7 +110,7 @@ export default async function Page({ params }) {
                     apiUrl={apiUrl}
                     limitPerPage={40}
                     initialFilter={filterData}
-                    serverResponseExtraFilter={extraFilter}
+                    serverResponseExtraFilter={filterOptions}
                     initialMovies={data.moviesData || []}
                     isDataEnd={dataIsEnd}
                 />
