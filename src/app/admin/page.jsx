@@ -42,23 +42,23 @@ function AddMoviesPage() {
         try {
 
             if (state.imdbId.length >= 8) {
-    
+
                 const mongodbApiResponse = await axios.get(`${appConfig.backendUrl}/api/v1/admin/movie/get/${state.imdbId}`);
-        
+
                 const { movieData } = mongodbApiResponse.data;
-    console.log(mongodbApiResponse)
+                console.log(mongodbApiResponse)
                 if (movieData && mongodbApiResponse.status === 200) {
-    
+
                     const originalDate = new Date(movieData.fullReleaseDate);
-    
+
                     const formattedDate = originalDate.toLocaleDateString('en-GB', {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric',
                     });
-    
+
                     alert("Movie is already exist");
-    
+
                     setState(prevState => ({
                         ...prevState,
                         imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
@@ -77,17 +77,17 @@ function AddMoviesPage() {
                     }));
                     return;
                 };
-    
+
                 const omdbApiResponse = await axios.get(`https://www.omdbapi.com/?&apikey=5422c8e9&plot=full&i=${state.imdbId}`);
-    
+
                 if (omdbApiResponse.data.Title) {
-    
+
                     const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = omdbApiResponse.data;
-    
+
                     const genreAray = Genre.split(',').map(genre => genre.trim());
-    
+
                     const actorsArray = Actors.split(',').map(actor => actor.trim());
-    
+
                     setState(prevState => ({
                         ...prevState,
                         imdbRating: imdbRating !== "N/A" ? imdbRating : 0,
@@ -150,7 +150,7 @@ function AddMoviesPage() {
 
         if (field == 'imdbId') {
 
-            const creatWatchLink = `https://elklesort-feudgebrokier-i-281.site/play/${e.target.value}`;
+            const creatWatchLink = process.env.VIDEO_SERVER_URL + e.target.value;
 
             setState(prevState => ({
                 ...prevState,

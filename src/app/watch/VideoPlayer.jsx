@@ -8,20 +8,20 @@ import { transformToCapitalize } from "@/utils";
 import Breadcrumb from "../components/Breadcrumb";
 import SliderMoviesShowcase from "../components/SliderMoviesShowcase";
 
-export default function Videoplayer({ videoSource, movieDetails, suggestions }) {
+export default function Videoplayer({ movieDetails, suggestions }) {
 
   const iframeRef = useRef(null);
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
 
   const {
+    imdbId,
     imdbRating,
     title,
     thambnail,
     releaseYear,
     fullReleaseDate,
     genre,
-    watchLink,
     castDetails,
     language,
     category,
@@ -202,7 +202,7 @@ export default function Videoplayer({ videoSource, movieDetails, suggestions }) 
           <iframe
             ref={iframeRef}
             className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
-            src={videoSource}
+            src={process.env.VIDEO_SERVER_URL + imdbId}
             allowFullScreen="allowfullscreen" />
 
         )}

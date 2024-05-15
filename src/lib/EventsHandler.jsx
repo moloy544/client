@@ -4,30 +4,30 @@ const ModelsController = ({ children, visibility, closeEvent }) => {
 
     const elementRef = useRef(null);
 
+    if (!visibility && !children) {
+        return null
+    }
+
     // State to manage the style dynamically based on visibility
     const [style, setStyle] = useState({
         transition: 'opacity 0.3s ease',
         opacity: 0 // Start as fully transparent
     });
 
-    
-
     //All events listeners for close model
     useEffect(() => {
-
-        //hide model on outside click
-    const outsideClickHandler = ({ target }) => {
-        if (!elementRef.current) return;
-        if (!visibility || elementRef.current.contains(target)) return;
-        closeEvent();
-    };
+        // Hide model on outside click
+        const outsideClickHandler = ({ target }) => {
+            if (!elementRef.current) return;
+            if (!visibility || elementRef.current.contains(target)) return;
+            closeEvent();
+        };
 
         document.addEventListener('click', outsideClickHandler);
 
         return () => {
             document.removeEventListener('click', outsideClickHandler);
         };
-
     }, [visibility, closeEvent]);
 
     // Apply opacity based on visibility
@@ -38,7 +38,6 @@ const ModelsController = ({ children, visibility, closeEvent }) => {
             setStyle(prevStyle => ({ ...prevStyle, opacity: 0 })); // Become fully transparent
         }
     }, [visibility]);
-
 
     // Merge existing child styles with new styles and apply ref
     const childWithProps = cloneElement(children, {

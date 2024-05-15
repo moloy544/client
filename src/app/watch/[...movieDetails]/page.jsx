@@ -55,7 +55,7 @@ export default async function Page({ params }) {
     <>
       <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
       <InspectPreventer>
-      <Videoplayer movieDetails={movieData} videoSource={`https://plasti298tomoda.com/play/${'tt' + movieId}`} suggestions={suggetions} />
+      <Videoplayer movieDetails={movieData} suggestions={suggetions} />
       </InspectPreventer>
     </>
   )
