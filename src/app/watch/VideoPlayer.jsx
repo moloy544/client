@@ -8,7 +8,7 @@ import { transformToCapitalize } from "@/utils";
 import Breadcrumb from "../components/Breadcrumb";
 import SliderMoviesShowcase from "../components/SliderMoviesShowcase";
 
-export default function Videoplayer({ movieDetails, suggestions }) {
+export default function Videoplayer({ videoSource, movieDetails, suggestions }) {
 
   const iframeRef = useRef(null);
 
@@ -183,14 +183,8 @@ export default function Videoplayer({ movieDetails, suggestions }) {
           </div>
 
         </div>
-        {/**<iframe
-            ref={iframeRef}
-            className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
-            src={watchLink}
-        allowFullScreen="allowfullscreen" />**/}
-        {playerVisibility && (
 
-          <div ref={iframeRef} className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden bg-black px-3 py-5">
+        {/**<div ref={iframeRef} className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden bg-black px-3 py-5">
             <div className="w-full h-full flex flex-col space-y-2 items-center justify-center relative">
               <button type="button"
               onClick={hidePlayer} 
@@ -201,7 +195,16 @@ export default function Videoplayer({ movieDetails, suggestions }) {
               <div className="mobile:text-base text-xl font-semibold text-center text-blue-400">Please come back after <span className="text-yellow-300">15 May 2024</span> Site is under maintenance</div>
               <small className="text-gray-200 text-center font-medium max-w-md">We are provide best service to our user. but for some reasons currently our service is off please come after 15-05-2024 thanks for using our site. </small>
             </div>
-          </div>
+        </div>**/}
+
+        {playerVisibility && (
+
+          <iframe
+            ref={iframeRef}
+            className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
+            src={videoSource}
+            allowFullScreen="allowfullscreen" />
+
         )}
 
       </div>
