@@ -26,7 +26,8 @@ export default function Videoplayer({ movieDetails, suggestions }) {
     language,
     category,
     type,
-    status
+    status,
+    server
   } = movieDetails || {};
 
   const showPlayer = () => {
@@ -184,26 +185,31 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
         </div>
 
-        {/**<div ref={iframeRef} className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden bg-black px-3 py-5">
-            <div className="w-full h-full flex flex-col space-y-2 items-center justify-center relative">
-              <button type="button"
-              onClick={hidePlayer} 
-              className="absolute top-2 right-3 bg-white hover:bg-rose-500 rounded-full w-8 h-8 flex justify-center items-center">
-                <i className="bi bi-x-lg text-gray-800 hover:text-gray-100"></i>
-                <span className="sr-only">Close</span>
-              </button>
-              <div className="mobile:text-base text-xl font-semibold text-center text-blue-400">Please come back after <span className="text-yellow-300">15 May 2024</span> Site is under maintenance</div>
-              <small className="text-gray-200 text-center font-medium max-w-md">We are provide best service to our user. but for some reasons currently our service is off please come after 15-05-2024 thanks for using our site. </small>
-            </div>
-        </div>**/}
+
 
         {playerVisibility && (
-
-          <iframe
-            ref={iframeRef}
-            className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
-            src={process.env.VIDEO_SERVER_URL + imdbId}
-            allowFullScreen="allowfullscreen" />
+          <>
+            {server && server === "work" ? (
+              <iframe
+                ref={iframeRef}
+                className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
+                src={process.env.VIDEO_SERVER_URL + imdbId}
+                allowFullScreen="allowfullscreen" />
+            ) : (
+              <div ref={iframeRef} className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden bg-black px-3 py-5">
+                <div className="w-full h-full flex flex-col space-y-2 items-center justify-center relative">
+                  <button type="button"
+                    onClick={hidePlayer}
+                    className="absolute top-2 right-3 bg-white hover:bg-rose-500 rounded-full w-8 h-8 flex justify-center items-center">
+                    <i className="bi bi-x-lg text-gray-800 hover:text-gray-100"></i>
+                    <span className="sr-only">Close</span>
+                  </button>
+                  <div className="mobile:text-base text-xl font-semibold text-center text-blue-400">Please come back after some hours site is under maintenance</div>
+                  <small className="text-gray-200 text-center font-medium max-w-md">We are provide best service to our user. but for some reasons currently our service is off please come after some hours thanks for using our site. </small>
+                </div>
+              </div>
+            )}
+          </>
 
         )}
 

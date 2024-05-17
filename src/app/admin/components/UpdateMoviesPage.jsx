@@ -10,6 +10,8 @@ function UpdateMoviesPage() {
 
     const [id, setId] = useState("");
 
+    const [serverStatus, setServerStatus] = useState("work");
+
     const deleteMovieFromMongoDb = async () => {
 
         try {
@@ -30,6 +32,22 @@ function UpdateMoviesPage() {
         };
     };
 
+    const updateServerStatus = async () => {
+
+        try {
+            const response = await axios.put(`${backendServer}/api/v1/admin/server/status`, {
+                serverStatus,
+                watchLink: process.env.VIDEO_SERVER_URL
+            });
+
+            alert(response.data.message);
+
+        } catch (error) {
+            console.error('Error update server status:', error);
+            alert("An error occurred while update server status: ");
+        };
+    };
+
     return (
         <>
             <section className="mx-10 my-3 h-fit bg-white border border-blue-100 px-4 shadow-xl rounded-lg py-3">
@@ -44,6 +62,28 @@ function UpdateMoviesPage() {
                         </div>
 
                         <div onClick={deleteMovieFromMongoDb} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-red-pure rounded-md cursor-pointer">Delete</div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="mx-10 my-3 h-fit bg-white border border-blue-100 px-4 shadow-xl rounded-lg py-3">
+                <div className="max-w-sm">
+                    <div className="mx-10">
+
+                        <h3 className=" text-center text-lg text-gray-900 font-bold">Update server status</h3>
+
+                            <div className="flex gap-5">
+                            <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
+                                Work
+                                <input onChange={() => setServerStatus("work")} type="radio" value="work" name="status" checked={serverStatus === "work"} />
+                            </label>
+                            <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
+                               Down
+                                <input onChange={() => setServerStatus("down")} type="radio" value="down" name="status" checked={serverStatus === "down"} />
+                            </label>
+                        </div>
+
+                        <div onClick={updateServerStatus} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Update status</div>
                     </div>
                 </div>
             </section>
