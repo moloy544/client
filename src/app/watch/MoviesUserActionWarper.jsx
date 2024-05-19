@@ -25,36 +25,28 @@ function MoviesUserActionWarper({ movieData }) {
 
 
   const saveInLocalStorage = () => {
-
     const localStorageData = localStorage.getItem('saved-movies-data');
-
     const parseData = localStorageData ? JSON.parse(localStorageData) : [];
+    const index = parseData?.findIndex((data) => data.imdbId === movieData.imdbId);
 
-    const checkIsAvailable = parseData?.some((data) => data.imdbId === movieData.imdbId);
-
-    let data;
-
-    if (checkIsAvailable) {
-
-      data = parseData.filter((data) => data.imdbId !== movieData.imdbId);
-
-      setIsSaved(false);
-
-      if (data.length === 0) {
-        localStorage.removeItem('saved-movies-data');
-        return;
-      }
+    if (index === -1) {
+        // Movie not found, add it
+        setIsSaved(true);
+        const dateNow = new Date();
+        parseData.unshift({ imdbId: movieData.imdbId, addAt: dateNow });
     } else {
-
-      setIsSaved(true);
-
-      const dateNow = new Date();
-
-      data = [...parseData, { imdbId: movieData.imdbId, addAt: dateNow }];
+        // Movie found, remove it
+        parseData.splice(index, 1);
+        setIsSaved(false);
     }
 
-    localStorage.setItem('saved-movies-data', JSON.stringify(data));
-  };
+    if (parseData.length === 0) {
+        localStorage.removeItem('saved-movies-data');
+    } else {
+        localStorage.setItem('saved-movies-data', JSON.stringify(parseData));
+    }
+};
+
 
   useEffect(() => {
 

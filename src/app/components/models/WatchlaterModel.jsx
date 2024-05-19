@@ -62,7 +62,7 @@ function WatchlaterModel({ visibility, functions }) {
                 if (parseData.length > 0 && !isAllDataLoad) {
 
                     setLoading(true);
-                    const limit = 6;
+                    const limit = 15;
                     const startIndex = (page - 1) * limit;
                     const endIndex = page * limit;
                     const limitSliceData = parseData.slice(startIndex, endIndex);
