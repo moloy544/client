@@ -1,7 +1,7 @@
-import { appConfig } from "@/config/config";
-import axios from "axios";
-import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
+import axios from "axios";
+import { appConfig } from "@/config/config";
 
 function ActressController() {
 
@@ -72,7 +72,11 @@ function ActressController() {
 
                     {actorState.avatar !== '' && (
                         <div className="w-auto h-auto my-2">
-                            <img className="w-36 h-40 rounded-sm" src={actorState.avatar} alt="actor image" />
+                            <Image
+                            priority
+                            width={145}
+                            height={145}
+                             className="w-36 h-40 rounded-sm" src={actorState.avatar} alt="actor image" />
                         </div>
                     )}
 

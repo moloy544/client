@@ -18,7 +18,7 @@ function formatDate(dateString) {
     return date.toLocaleString('en-US', options).replace(',', '');
 }
 
-function NotificationModel({ visibility, functions }) {
+function WatchlaterModel({ visibility, functions }) {
     const { hideModel } = functions;
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -51,6 +51,8 @@ function NotificationModel({ visibility, functions }) {
         };
     }, [handleObservers]);
 
+    const isFirstRender = useRef(true);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -60,9 +62,11 @@ function NotificationModel({ visibility, functions }) {
                 if (parseData.length > 0 && !isAllDataLoad) {
 
                     setLoading(true);
-                    const limit = 20;
-                    const limitSliceData = parseData.slice((page - 1) * limit, page * limit);
-
+                    const limit = 6;
+                    const startIndex = (page - 1) * limit;
+                    const endIndex = page * limit;
+                    const limitSliceData = parseData.slice(startIndex, endIndex);
+                
                     if (limitSliceData.length === 0) {
                         setIsAllDataLoad(true);
                         return;
@@ -73,12 +77,8 @@ function NotificationModel({ visibility, functions }) {
                         limit
                     });
 
-                    if (response.status === 200) {
-                        const { endOfData } = response.data;
-                        setWatchLaterData((prev) => [...prev, ...response.data.watchLaterData]);
-                        if (endOfData) {
-                            setIsAllDataLoad(true);
-                        }
+                    if (response.status === 200 && response.data.length > 0) {
+                        setWatchLaterData((prev) => [...prev, ...response.data]);
                     }
                 }
             } catch (error) {
@@ -88,9 +88,17 @@ function NotificationModel({ visibility, functions }) {
             }
         };
 
-        fetchData();
+        //Prevent multiple fetch call on first mount
+        if (visibility && isFirstRender.current && page === 1) {
+            isFirstRender.current = false;
+            fetchData();
 
-    }, [page, isAllDataLoad]);
+            // call back if page change
+        } else if (visibility && !isFirstRender.current && page !== 1) {
+            fetchData();
+        }
+
+    }, [page, isAllDataLoad, visibility]);
 
     return (
         <ModelsController visibility={visibility} closeEvent={hideModel}>
@@ -166,4 +174,4 @@ function NotificationModel({ visibility, functions }) {
     );
 }
 
-export default NotificationModel;
+export default WatchlaterModel;

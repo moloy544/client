@@ -5,9 +5,20 @@ import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
 import { useState } from "react";
 
-const NotificationModel = dynamic(() => import('./models/NotificationModel'), { ssr: false });
+const WatchlaterModel = dynamic(() => import('./models/WatchlaterModel'), { ssr: false });
 
 export default function Navbar() {
+
+    const [isVisible, setVisible] = useState(false);
+
+    const toggleNotifactionModel = () => {
+        setVisible((prevState) => !prevState)
+    };
+
+    const hideModel = () => {
+        setVisible(false);
+    }
+
 
     return (
         <>
@@ -32,7 +43,15 @@ export default function Navbar() {
                             <i className="bi bi-search text-gray-200 text-xl"></i>
                         </Link>
 
-                        <Notification />
+                        <div className="w-auto h-auto relative">
+                            <button onClick={toggleNotifactionModel} type="button" className={`p-1 text-2xl mobile:text-xl cursor-pointer ${isVisible ? "text-yellow-500" : "text-gray-100"}`}>
+                                <i className="bi bi-clock"></i>
+                                <span className="sr-only">Watch later</span>
+                            </button>
+                            {isVisible && (
+                                <WatchlaterModel visibility={isVisible} functions={{ hideModel }} />
+                            )}
+                        </div>
 
                     </div>
 
@@ -44,32 +63,4 @@ export default function Navbar() {
 
         </>
     )
-}
-
-function Notification() {
-
-    const [isVisible, setVisible] = useState(false);
-
-    const toggleNotifactionModel = () => {
-        setVisible((prevState) => !prevState)
-    };
-
-    const hideModel = () => {
-        setVisible(false);
-    }
-    
-    return (
-
-        <div className="w-auto h-auto relative">
-
-            <button onClick={toggleNotifactionModel} type="button" className={`p-1 text-2xl mobile:text-xl cursor-pointer ${isVisible ? "text-yellow-500" : "text-gray-100"}`}>
-                <i className="bi bi-clock"></i>
-                <span className="sr-only">Watch later</span>
-            </button>
-            {isVisible && (
-                <NotificationModel visibility={isVisible} functions={{ hideModel }} />
-            )}
-
-        </div>
-    )
-}
+};

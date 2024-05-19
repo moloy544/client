@@ -1,22 +1,16 @@
+'use client'
+
 import { cloneElement, useEffect, useRef, useState } from "react";
 
 const ModelsController = ({ children, visibility, closeEvent }) => {
-
     const elementRef = useRef(null);
 
-    if (!visibility && !children) {
-        return null
-    }
-
-    // State to manage the style dynamically based on visibility
     const [style, setStyle] = useState({
         transition: 'opacity 0.3s ease',
         opacity: 0 // Start as fully transparent
     });
 
-    //All events listeners for close model
     useEffect(() => {
-        // Hide model on outside click
         const outsideClickHandler = ({ target }) => {
             if (!elementRef.current) return;
             if (!visibility || elementRef.current.contains(target)) return;
@@ -30,7 +24,6 @@ const ModelsController = ({ children, visibility, closeEvent }) => {
         };
     }, [visibility, closeEvent]);
 
-    // Apply opacity based on visibility
     useEffect(() => {
         if (visibility) {
             setStyle(prevStyle => ({ ...prevStyle, opacity: 1 })); // Become fully opaque
@@ -39,11 +32,10 @@ const ModelsController = ({ children, visibility, closeEvent }) => {
         }
     }, [visibility]);
 
-    // Merge existing child styles with new styles and apply ref
-    const childWithProps = cloneElement(children, {
+    const childWithProps = visibility && children ? cloneElement(children, {
         ref: elementRef,
-        style: { ...children.props.style, ...style } // Safely merge with existing styles
-    });
+        style: { ...children.props.style, ...style }
+    }) : null;
 
     return childWithProps;
 };

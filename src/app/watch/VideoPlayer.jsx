@@ -27,7 +27,8 @@ export default function Videoplayer({ movieDetails, suggestions }) {
     category,
     type,
     status,
-    server
+    server,
+    watchLink
   } = movieDetails || {};
 
   const showPlayer = () => {
@@ -185,15 +186,13 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
         </div>
 
-
-
         {playerVisibility && (
           <>
             {server && server === "work" ? (
               <iframe
                 ref={iframeRef}
                 className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
-                src={process.env.VIDEO_SERVER_URL + imdbId}
+                src={watchLink}
                 allowFullScreen="allowfullscreen" />
             ) : (
               <div ref={iframeRef} className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden bg-black px-3 py-5">

@@ -1,9 +1,9 @@
 'use client'
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import { getMovieDeatils } from "@/utils";
 import ActressController from "./components/ActressController";
 import AdminLoginPage from "./components/AdminLoginPage";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
@@ -305,7 +305,13 @@ function AddMoviesPage() {
 
                         <div className="flex flex-col my-3">
                             {state.thambnail !== '' && (
-                                <img className="w-36 h-36 text-xs" src={state.thambnail} alt="thambnail" />
+                                <Image
+                                priority
+                                width={145}
+                                height={145}
+                                className="w-36 h-36 text-xs"
+                                src={state.thambnail} alt="thambnail" />
+                        
                             )}
                             <label className="font-bold">Thambnail</label>
                             <input className="border border-black rounded-sm" type="text" value={state.thambnail} onChange={(e) => handleInputChange(e, 'thambnail')} />
