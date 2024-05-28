@@ -458,7 +458,7 @@ export default function AdminPage() {
 
             {/** Add Actor Section **/}
             <div className="w-full bg-white h-auto flex justify-center">
-                <div className="md:flex">
+                <div className="md:flex flex-wrap">
                     <ActressController />
                     <UpdateMoviesPage />
                 </div>
