@@ -5,7 +5,7 @@ import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SliderMoviesShowcase from "./components/SliderMoviesShowcase";
+import SliderMoviesShowcase from "@/components/SliderMoviesShowcase";
 
 function HomePageLayout() {
 

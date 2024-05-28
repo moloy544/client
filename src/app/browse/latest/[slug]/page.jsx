@@ -1,7 +1,7 @@
 import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
-import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
-import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
+import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
+import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 
 export async function generateMetadata({ params }) {
 
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
       images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
       title: `Latest release ${editParamsQuery} movies`,
       description: `Watch resently release ${editParamsQuery} movies online Movies Bazaar`,
-      url: `https://moviesbazar.online/browse/latest/${params.slug}`
+      url: `${appConfig.appDomain}/browse/latest/${params.slug}`
     },
   };
 

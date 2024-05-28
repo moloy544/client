@@ -38,9 +38,14 @@ function FilterModel({ initialFilterData, filterData, functions, filterOptions }
             sort: { dateSort: 1 },
         },
         {
+
+            filterLabel: 'Recent added',
+            sort: { dateSort: 'recent added' },
+        },
+        {
             filterLabel: 'Rating high to low',
             sort: { ratingSort: -1 },
-        },
+        }
     ];
 
     const applyFilter = () => {

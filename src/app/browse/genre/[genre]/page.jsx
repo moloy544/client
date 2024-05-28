@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
 import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
-import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
-import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
+import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
+import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 
-const SomthingWrongError = dynamic(() => import('@/app/components/errors/SomthingWrongError'), { ssr: false })
+const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export async function generateMetadata({ params }) {
 
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
             images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
             title: `${editParamsQuery} movies collaction`,
             description: `Watch ${editParamsQuery} movies, series online free of cost Movies Bazaar have lot of ${editParamsQuery} movies and series collaction`,
-            url: `https://moviesbazar.online/browse/genre/${params.genre}`
+            url: `${appConfig.appDomain}/browse/genre/${params.genre}`
         },
     };
 

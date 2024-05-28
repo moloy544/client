@@ -5,11 +5,11 @@ import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import NavigateBack from "@/app/components/NavigateBack";
+import NavigateBack from "@/components/NavigateBack";
 import { creatUrlLink, transformToCapitalize } from "@/utils";
-import Breadcrumb from "@/app/components/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 
-const SomthingWrongError = dynamic(() => import('@/app/components/errors/SomthingWrongError'), { ssr: false })
+const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
  
 const getData = async (industry) => {
     let status = 500;

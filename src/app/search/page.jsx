@@ -4,11 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { appConfig } from "@/config/config";
-import NavigateBack from "../components/NavigateBack";
+import NavigateBack from "@/components/NavigateBack";
 import { loadMoreFetch } from "@/utils";
-import CategoryGroupSlider from "../components/CategoryGroupSlider";
+import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 
-const LoadMoreMoviesCard = dynamic(() => import('../components/LoadMoreMoviesCard'));
+const LoadMoreMoviesCard = dynamic(() => import('@/components/LoadMoreMoviesCard'));
 
 function SearchPage() {
 

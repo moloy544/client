@@ -5,8 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import MoviesUserActionWarper from "./MoviesUserActionWarper";
 import { transformToCapitalize } from "@/utils";
-import Breadcrumb from "../components/Breadcrumb";
-import SliderMoviesShowcase from "../components/SliderMoviesShowcase";
+import Breadcrumb from "@/components/Breadcrumb";
+import SliderMoviesShowcase from "@/components/SliderMoviesShowcase";
 
 export default function Videoplayer({ movieDetails, suggestions }) {
 

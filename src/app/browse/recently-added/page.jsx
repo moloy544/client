@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
 import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
-import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
-import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
+import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
+import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 
-const SomthingWrongError = dynamic(() => import('@/app/components/errors/SomthingWrongError'), { ssr: false })
+const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export const revalidate = 3600 // revalidate at most every hour
 

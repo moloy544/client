@@ -3,10 +3,10 @@ import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
 import { creatUrlLink } from "@/utils";
-import Navbar from "./components/Navbar";
+import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
-import SliderMoviesShowcase from "./components/SliderMoviesShowcase";
-import FixedSearchIcon from "./components/FixedSearchIcon";
+import SliderMoviesShowcase from "@/components/SliderMoviesShowcase";
+import FixedSearchIcon from "@/components/FixedSearchIcon";
 
 export const revalidate = 3600 // revalidate at most every hour
 
@@ -84,4 +84,4 @@ export default async function Page() {
 
     </>
   )
-}
+};

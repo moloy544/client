@@ -3,10 +3,10 @@ import dynamic from "next/dynamic";
 import axios from "axios";
 import { creatUrlLink, loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
-import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
-import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
+import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
+import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 
-const SomthingWrongError = dynamic(() => import('@/app/components/errors/SomthingWrongError'), { ssr: false })
+const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
  
 const getActorData = async (imdbId) => {
   let status = 500; // Default status in case of an error
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }) {
           images: avatar,
           title: name,
           description: `Watch ${name} movies online free of cost Movies Bazaar`,
-          url: `https://moviesbazar.online/actress/${creatUrlLink(name)}/${imdbId}`
+          url: `${appConfig.appDomain}/actress/${creatUrlLink(name)}/${imdbId}`
         },
       };
 

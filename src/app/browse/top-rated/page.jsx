@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
 import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
-import LoadMoreMoviesGirdWarper from "@/app/components/LoadMoreMoviesGirdWarper";
-import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
+import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
+import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 
-const SomthingWrongError = dynamic(() => import('@/app/components/errors/SomthingWrongError'), { ssr: false })
+const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export const metadata = {
 
@@ -16,7 +16,7 @@ export const metadata = {
     images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
     title: 'Top IMDB rated movies',
     description: 'Watch top IMDB rated movies movies online Movies Bazaar',
-    url: 'https://moviesbazar.online/browse/top-rated'
+    url: appConfig.appDomain+'/browse/top-rated'
   },
 }
 

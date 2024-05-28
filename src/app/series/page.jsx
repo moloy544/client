@@ -1,8 +1,9 @@
+import dynamic from "next/dynamic";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
-import SliderMoviesShowcase from "../components/SliderMoviesShowcase";
-import SomthingWrongError from "../components/errors/SomthingWrongError";
+import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import SliderMoviesShowcase from "@/components/SliderMoviesShowcase";
+const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export const metadata = {
 
@@ -14,7 +15,7 @@ export const metadata = {
         images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
         title: `Series`,
         description: `Watch bollywood hollywood south netflix series online Movies Bazaar`,
-        url: `https://moviesbazar.online/series`
+        url: appConfig.appDomain+'/series'
     },
 }
 

@@ -5,12 +5,9 @@ import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
 import ActressController from "./components/ActressController";
-import AdminLoginPage from "./components/AdminLoginPage";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
 
-function AddMoviesPage() {
-
-    const [isLoginSuccess, setLoginSuccess] = useState(false);
+export default function AdminPage() {
 
     const [state, setState] = useState({
         imdbId: '',
@@ -46,7 +43,7 @@ function AddMoviesPage() {
                 const mongodbApiResponse = await axios.get(`${appConfig.backendUrl}/api/v1/admin/movie/get/${state.imdbId}`);
 
                 const { movieData } = mongodbApiResponse.data;
-                console.log(mongodbApiResponse)
+
                 if (movieData && mongodbApiResponse.status === 200) {
 
                     const originalDate = new Date(movieData.fullReleaseDate);
@@ -112,10 +109,8 @@ function AddMoviesPage() {
         try {
 
             const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/admin/movie/add`, {
-
                 data: { ...state }
-            }
-            );
+            });
             const responseMessage = addResponse.data?.message;
 
             if (addResponse.status === 200) {
@@ -264,13 +259,6 @@ function AddMoviesPage() {
         }));
     };
 
-
-    if (!isLoginSuccess) {
-        return (
-            <AdminLoginPage functions={{ setLoginSuccess }} />
-        )
-    };
-
     return (
         <>
             <header className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2 py-3 text-base text-gray-100 bg-purple-600 shadow-md">
@@ -306,12 +294,12 @@ function AddMoviesPage() {
                         <div className="flex flex-col my-3">
                             {state.thambnail !== '' && (
                                 <Image
-                                priority
-                                width={145}
-                                height={145}
-                                className="w-36 h-36 text-xs"
-                                src={state.thambnail} alt="thambnail" />
-                        
+                                    priority
+                                    width={145}
+                                    height={145}
+                                    className="w-36 h-36 text-xs"
+                                    src={state.thambnail} alt="thambnail" />
+
                             )}
                             <label className="font-bold">Thambnail</label>
                             <input className="border border-black rounded-sm" type="text" value={state.thambnail} onChange={(e) => handleInputChange(e, 'thambnail')} />
@@ -479,6 +467,4 @@ function AddMoviesPage() {
 
         </>
     );
-}
-
-export default AddMoviesPage;
+};

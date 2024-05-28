@@ -1,10 +1,11 @@
 
 import { notFound } from "next/navigation";
 import { creatUrlLink, getMovieDeatils } from "@/utils";
-import NavigateBackTopNav from "@/app/components/NavigateBackTopNav";
-import SomthingWrongError from "@/app/components/errors/SomthingWrongError";
-import Videoplayer from "@/app/watch/VideoPlayer";
-import { InspectPreventer } from "@/lib/inspectPreventer";
+import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import SomthingWrongError from "@/components/errors/SomthingWrongError";
+import Videoplayer from "../VideoPlayer";
+import { appConfig } from "@/config/config";
+import { InspectPreventer } from "@/lib/lib";
 
 export async function generateMetadata({ params }) {
 
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }) {
 
   const genres = genre?.join(' ');
 
-  const ogUrl = `https://moviesbazar.online/watch/${type}/${creatUrlLink(title)}/${movieId}`;
+  const ogUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${movieId}`;
 
   return {
 

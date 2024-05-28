@@ -5,7 +5,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
-import Footer from './components/Footer';
+import Footer from '@/components/Footer';
+import { appConfig } from '@/config/config';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,7 +26,7 @@ export const metadata = {
       template: '%s | Movies Bazaar',
     },
     description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazaar',
-    url: 'https://moviesbazar.online'
+    url: appConfig.appDomain
   },
 }
 
