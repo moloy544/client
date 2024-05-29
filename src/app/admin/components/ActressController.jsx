@@ -57,7 +57,7 @@ function ActressController() {
     return (
         <>
         
-                <section className="mx-10 my-3 bg-white border border-blue-100 px-8 shadow-xl rounded-lg py-3">
+                <section className="w-auto h-fit flex-none mx-10 my-3 bg-white border border-blue-100 px-8 shadow-xl rounded-lg py-3">
 
                     <h1 className="text-amber-700 text-xl text-center font-semibold">Add Actor Section</h1>
                     <div className="flex flex-col my-3">

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
@@ -25,10 +25,6 @@ export default function AdminPage() {
         castDetails: [],
         tags: [],
     });
-
-    const genreRef = useRef(null);
-    const castRef = useRef(null);
-    const tagsRef = useRef(null);
 
     const availableLanguages = ['hindi', 'hindi dubbed', 'bengali'];
     const availableCategory = ['bollywood', 'hollywood', 'south'];
@@ -106,6 +102,7 @@ export default function AdminPage() {
 
     const sendMoviesToBackend = async (e) => {
         e.preventDefault();
+
         try {
 
             const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/admin/movie/add`, {
@@ -141,6 +138,7 @@ export default function AdminPage() {
         }
     };
 
+    // all input fields handler
     const handleInputChange = (e, field) => {
 
         if (field == 'imdbId') {
@@ -176,93 +174,55 @@ export default function AdminPage() {
         }));
     };
 
+    // input value to array data handler
+    const creatInputValueToArrayHandler = (elementId) => {
 
-    //Add Genre Array In State
-    const addGenreToArray = (e) => {
+        const element = document.getElementById(elementId);
 
-        const inputText = genreRef.current.value;
+        if (element) {
 
-        if (inputText.length >= 2) {
+            // get input value from provided id present element
+            const inputText = element.value || "";
 
-            setState(prevState => ({
-                ...prevState,
-                genre: [...state.genre, inputText]
-            }));
+            // get filed name from provided id present element data attribute
+            const arrayFiled = element.getAttribute('data-field');
 
-            genreRef.current.value = '';
-        };
-    };
+            const isExist = state[arrayFiled]?.some(data => inputText == data)
 
-    //Remove genre from state 
-    const removeGenreFromArray = (genreName) => {
+            if (isExist) {
+                alert(`${inputText} in ${arrayFiled} filed is already exists`);
+                return
+            };
 
-        const updateGenre = state.genre?.filter(genre => genre !== genreName)
-
-        setState(prevState => ({
-            ...prevState,
-            genre: updateGenre
-        }));
-    };
-
-    //Add Cast details Array in State
-    const addCastToArray = () => {
-
-        const inputText = castRef.current.value;
-
-        if (inputText.length >= 2) {
+            if (inputText.length < 2) {
+                alert("Value is very short");
+                return
+            }
 
             setState(prevState => ({
                 ...prevState,
-                castDetails: [...state.castDetails, inputText]
+                [arrayFiled]: [...state[arrayFiled], inputText]
             }));
 
-            castRef.current.value = '';
-        };
+            element.value = '';
+        }
     };
 
     //Remove cast
-    const removeCastFromArray = (castName) => {
+    const removeFromCreatadArrayData = (field, value) => {
 
-        const updateCast = state.castDetails?.filter(cast => cast !== castName)
-
-        setState(prevState => ({
-            ...prevState,
-            castDetails: updateCast
-        }));
-    };
-
-
-    //Add Genre Array In State
-    const addTagsToArray = (e) => {
-
-        const inputText = tagsRef.current.value;
-
-        if (inputText.length >= 2) {
-
-            setState(prevState => ({
-                ...prevState,
-                tags: [...state.tags, inputText]
-            }));
-
-            tagsRef.current.value = '';
-        };
-    };
-
-    //Remove genre from state 
-    const removeTagsFromArray = (tagName) => {
-
-        const updateTags = state.tags?.filter(tags => tags !== tagName)
+        const updateData = state[field]?.filter(data => data !== value)
 
         setState(prevState => ({
             ...prevState,
-            tags: updateTags
+            [field]: updateData
         }));
     };
 
     return (
         <>
-            <header className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2 py-3 text-base text-gray-100 bg-purple-600 shadow-md">
-                <div>Moviesbazar admin</div>
+            <header className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2.5 py-3.5 text-base text-gray-100 bg-purple-600 shadow-md">
+                <h2 className="text-base text-white font-semibold">Moviesbazar admin</h2>
             </header>
 
             {state.watchLink !== "" && (
@@ -272,7 +232,7 @@ export default function AdminPage() {
                     allowFullScreen="allowfullscreen" />
             )}
 
-            <main className="w-auto h-full min-h-screen bg-white text-gray-950 flex justify-center py-2">
+            <main className="w-auto h-full min-h-screen bg-white text-gray-950 flex justify-center flex-wrap overflow-x-hidden py-2">
 
                 <form onSubmit={sendMoviesToBackend} className="mx-10 mt-5 md:flex md:gap-10 border-blue-100 px-10 shadow-xl rounded-lg py-2">
 
@@ -390,7 +350,7 @@ export default function AdminPage() {
                                         <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
                                             <span className="text-gray-800 text-sm ">{genre}</span>
                                         </div>
-                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeGenreFromArray(genre)}></i>
+                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('genre', genre)}></i>
                                     </div>
                                 ))}
                             </div>
@@ -398,8 +358,8 @@ export default function AdminPage() {
 
                         <div className="flex flex-col my-3">
                             <label className="font-bold">Genre Details</label>
-                            <input ref={genreRef} className="border border-black rounded-sm" type="text" />
-                            <button type="button" onClick={addGenreToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
+                            <input type="text" data-field="genre" id="genre-input" className="border border-black rounded-sm" />
+                            <button type="button" onClick={() => creatInputValueToArrayHandler('genre-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                         </div>
 
                         {state.castDetails?.length > 0 && (
@@ -409,7 +369,7 @@ export default function AdminPage() {
                                         <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
                                             <span className="text-gray-800 text-sm ">{cast}</span>
                                         </div>
-                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeCastFromArray(cast)}></i>
+                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('castDetails', cast)}></i>
                                     </div>
                                 ))}
                             </div>
@@ -417,8 +377,8 @@ export default function AdminPage() {
 
                         <div className="flex flex-col my-3">
                             <label className="font-bold">Cast Details</label>
-                            <input ref={castRef} className="border border-black rounded-sm" type="text" />
-                            <button type="button" onClick={addCastToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
+                            <input type="text" data-field="castDetails" id="cast-details-input" className="border border-black rounded-sm" />
+                            <button type="button" onClick={() => creatInputValueToArrayHandler('cast-details-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                         </div>
 
                         {state.tags?.length > 0 && (
@@ -428,7 +388,7 @@ export default function AdminPage() {
                                         <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
                                             <span className="text-gray-800 text-sm ">{tag}</span>
                                         </div>
-                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeTagsFromArray(tag)}></i>
+                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('tags', tag)}></i>
                                     </div>
                                 ))}
                             </div>
@@ -436,13 +396,13 @@ export default function AdminPage() {
 
                         <div className="flex flex-col my-3">
                             <label className="font-bold">Adition tags</label>
-                            <input ref={tagsRef} className="border border-black rounded-sm" type="text" list="tagOptions" />
+                            <input type="text" list="tagOptions" id="tags-input" data-field="tags" className="border border-black rounded-sm" />
                             <datalist id="tagOptions">
                                 {availableTags.map((tag) => (
                                     <option key={tag} value={tag} />
                                 ))}
                             </datalist>
-                            <button type="button" onClick={addTagsToArray} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
+                            <button type="button" onClick={() => creatInputValueToArrayHandler('tags-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                         </div>
 
                         <button
@@ -454,17 +414,10 @@ export default function AdminPage() {
                     </div>
                 </form>
 
+                {/** Other Update or Add Data Section **/}
+                <ActressController />
+                <UpdateMoviesPage />
             </main>
-
-            {/** Add Actor Section **/}
-            <div className="w-full bg-white h-auto flex justify-center">
-                <div className="md:flex flex-wrap">
-                    <ActressController />
-                    <UpdateMoviesPage />
-                </div>
-            </div>
-
-
         </>
     );
 };

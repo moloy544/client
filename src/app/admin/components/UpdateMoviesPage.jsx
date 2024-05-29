@@ -50,7 +50,7 @@ function UpdateMoviesPage() {
 
     return (
         <>
-            <section className="mx-10 my-3 h-fit bg-white border border-blue-100 px-4 shadow-xl rounded-lg py-3">
+            <section className="flex-none mx-10 my-3 h-fit bg-white border border-blue-100 px-2 shadow-xl rounded-lg py-3">
                 <div className="max-w-sm">
                     <div className="mx-10">
 
@@ -66,13 +66,13 @@ function UpdateMoviesPage() {
                 </div>
             </section>
 
-            <section className="mx-10 my-3 h-fit bg-white border border-blue-100 px-4 shadow-xl rounded-lg py-3">
+            <section className="flex-none mx-2 my-3 h-fit bg-white border border-blue-100 px-4 shadow-xl rounded-lg py-3">
                 <div className="max-w-sm">
                     <div className="mx-10">
 
                         <h3 className=" text-center text-lg text-gray-900 font-bold">Update server status</h3>
 
-                        <div className="flex gap-5">
+                        <div className="flex justify-around mt-3">
                             <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
                                 Work
                                 <input onChange={() => setServerStatus("work")} type="radio" value="work" name="status" checked={serverStatus === "work"} />
@@ -125,7 +125,7 @@ function UpdateVideoSource() {
     };
 
     return (
-        <section className="mx-10 my-3 h-fit bg-white border border-blue-100 px-4 shadow-xl rounded-lg py-3">
+        <section className="flex-none mx-10 my-3 h-fit bg-white border border-blue-100 px-2 shadow-xl rounded-lg py-3">
             <div className="max-w-sm">
                 <div className="mx-10">
 
