@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
@@ -8,6 +8,7 @@ import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import FilterModel from "./models/FilterModel";
 import BacktoTopButton from "./BacktoTopButton";
+import { useInfiniteScroll } from "@/lib/lib";
 
 function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
 
@@ -21,7 +22,16 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
     const [page, setPage] = useState(1);
     const conditionalData = (loadMoviesPathname !== patname) ? (initialMovies || []) : loadMoviesData || [];
     const [moviesData, setMoviesData] = useState(conditionalData);
-    const bottomObserverElement = useRef(null);
+    
+    const loadMore = () => setPage((prevPage) => prevPage + 1);
+    
+  // infinite scroll load data custom hook
+    const bottomObserverElement = useInfiniteScroll({
+        callback: loadMore,
+        loading,
+        isAllDataLoad,
+        rootMargin: '200px'
+    });
 
     const setFilter = (data) => {
 
@@ -40,34 +50,6 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
              });
         };
     };
-
-    const handleObservers = (entries) => {
-
-        const target = entries[0];
-
-        if (target.isIntersecting && !loading && !isAllDataLoad) {
-            setPage((prevPage) => prevPage + 1);
-        }
-    };
-
-    useEffect(() => {
-
-        const observer = new IntersectionObserver(handleObservers, {
-            root: null,
-            rootMargin: "300px",
-            threshold: 1.0,
-        });
-
-        if (bottomObserverElement.current && moviesData?.length > 0 && !loading) {
-            observer.observe(bottomObserverElement.current);
-        };
-
-        return () => {
-            if (bottomObserverElement.current) {
-                observer.unobserve(bottomObserverElement.current);
-            }
-        };
-    }, [moviesData, loading, handleObservers]);
 
     useEffect(() => {
 

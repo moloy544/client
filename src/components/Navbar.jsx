@@ -9,16 +9,24 @@ const WatchlaterModel = dynamic(() => import('./models/WatchlaterModel'), { ssr:
 
 export default function Navbar() {
 
+    // watch later model visibility handle state
     const [isVisible, setVisible] = useState(false);
+    const [isModelLoaded, setModelLoaded] = useState(false);
 
-    const toggleNotifactionModel = () => {
-        setVisible((prevState) => !prevState)
+    // show hide toggle watch later model
+    const toggleWatchLaterModel = () => {
+
+        setVisible((prevState) => !prevState);
+
+        if (!isModelLoaded) {
+            setModelLoaded(true)
+        }
     };
 
+    // hide watch later model
     const hideModel = () => {
         setVisible(false);
     }
-
 
     return (
         <>
@@ -44,15 +52,16 @@ export default function Navbar() {
                         </Link>
 
                         <div className="w-auto h-auto relative">
-                            <button onClick={toggleNotifactionModel} type="button" className={`p-1 text-2xl mobile:text-xl cursor-pointer ${isVisible ? "text-yellow-500" : "text-gray-100"}`}>
+                            <button onClick={toggleWatchLaterModel} type="button" className={`p-1 text-2xl mobile:text-xl cursor-pointer ${isVisible ? "text-yellow-500" : "text-gray-100"}`}>
                                 <i className="bi bi-clock"></i>
                                 <span className="sr-only">Watch later</span>
                             </button>
-                            {isVisible && (
+
+                            {(isVisible || isModelLoaded) && (
                                 <WatchlaterModel visibility={isVisible} functions={{ hideModel }} />
                             )}
-                        </div>
 
+                        </div>
                     </div>
 
                 </nav>
