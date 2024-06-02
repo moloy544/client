@@ -3,11 +3,11 @@
 import { useCallback, useEffect, useRef } from "react";
 
 // Prevent browser inspector custom component all children under this component is not use browser inspector
-export function InspectPreventer({ children }) {
+export function InspectPreventer({ children, forceToPrevent = false }) {
 
     useEffect(() => {
         const handleContextmenu = (event) => {
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'production' || forceToPrevent) {
                 event.preventDefault(); // Prevent default right-click behavior  
             }
         };

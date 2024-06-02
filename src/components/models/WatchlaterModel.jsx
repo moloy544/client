@@ -5,7 +5,7 @@ import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { creatUrlLink } from "@/utils";
-import { useInfiniteScroll } from "@/lib/lib";
+import { InspectPreventer, useInfiniteScroll } from "@/lib/lib";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -117,7 +117,7 @@ export default function WatchlaterModel({ visibility, functions }) {
             }
         };
     };
-    
+
     return (
         <ModelsController visibility={visibility} closeEvent={hideModel}>
             <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border border-gray-400 right-0 z-40 select-none">
@@ -172,45 +172,53 @@ export default function WatchlaterModel({ visibility, functions }) {
 function Card({ data, remove }) {
 
     const { imdbId, type, title, thambnail, releaseYear, addAt } = data || {};
+    const isMobileDevice = () => {
+        const isMobile = navigator.userAgentData.mobile
+        if (isMobile) {
+            return true
+        }
 
+        return false
+    }
     return (
-
-        <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
-            <Link className="w-full h-fit flex gap-3 items-center" href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
-                <div className="w-16 h-20 border border-slate-200 rounded-sm">
-                    <Image
-                        priority
-                        className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
-                        width={80}
-                        height={80}
-                        src={thambnail}
-                        alt={title || 'movie poster image'}
-                        placeholder="blur"
-                        blurDataURL={thambnail}
-                    />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <div className="text-gray-800 font-medium text-[12px] leading-[14px] line-clamp-2">
-                        {data.title}
+        <InspectPreventer forceToPrevent={isMobileDevice()}>
+            <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
+                <Link className="w-full h-fit flex gap-3 items-center" href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
+                    <div className="w-16 h-20 border border-slate-200 rounded-sm flex-none">
+                        <Image
+                            priority
+                            className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
+                            width={80}
+                            height={80}
+                            src={thambnail}
+                            alt={title || 'movie poster image'}
+                            placeholder="blur"
+                            blurDataURL={thambnail}
+                        />
                     </div>
-                    <span className="text-[10px] text-gray-500">
-                        {releaseYear}
-                    </span>
-                    <div className="text-xs text-gray-900 flex gap-0.5">
-                        Add at:
+                    <div className="flex flex-col gap-1">
+                        <div className="text-gray-800 font-medium text-[12px] leading-[14px] line-clamp-2">
+                            {data.title}
+                        </div>
                         <span className="text-[10px] text-gray-500">
-                            {formatDate(addAt)}
+                            {releaseYear}
                         </span>
+                        <div className="text-xs text-gray-600 font-semibold flex gap-0.5">
+                            Add at:
+                            <span className="text-[10px] text-gray-500 font-normal">
+                                {formatDate(addAt)}
+                            </span>
+                        </div>
                     </div>
-                </div>
-            </Link>
-            <button
-                onClick={(event) => remove(event, imdbId)}
-                type="button"
-                className="w-8 h-8 text-sm hidden group-hover:block text-gray-500 hover:text-red-600 float-right">
-                <span className="sr-only">Delete</span>
-                <i className="bi bi-trash"></i>
-            </button>
-        </div>
+                </Link>
+                <button
+                    onClick={(event) => remove(event, imdbId)}
+                    type="button"
+                    className="w-8 h-8 text-sm hidden group-hover:block text-gray-500 hover:text-red-600 float-right">
+                    <span className="sr-only">Delete</span>
+                    <i className="bi bi-trash"></i>
+                </button>
+            </div>
+        </InspectPreventer>
     )
 }
