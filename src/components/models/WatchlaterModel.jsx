@@ -172,14 +172,19 @@ export default function WatchlaterModel({ visibility, functions }) {
 function Card({ data, remove }) {
 
     const { imdbId, type, title, thambnail, releaseYear, addAt } = data || {};
+     
+    // check current device is mobile or not
     const isMobileDevice = () => {
-        const isMobile = navigator.userAgentData.mobile
+        
+        const isMobile = navigator.userAgentData.mobile;
+
         if (isMobile) {
             return true
         }
 
         return false
-    }
+    };
+
     return (
         <InspectPreventer forceToPrevent={isMobileDevice()}>
             <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
