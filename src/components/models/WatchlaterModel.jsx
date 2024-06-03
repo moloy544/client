@@ -102,19 +102,22 @@ export default function WatchlaterModel({ visibility, functions }) {
                 // creat item hidden effect
                 parentElement.classList.add(...transitionEffect.split(' '));
                 setTimeout(() => {
+
+                    // after slider remove effect hide it for replace another list item
                     parentElement.classList.add('hidden');
+
+                    /* check after remove is watchlater localStorage length is zero so
+                  remove localStorage key from browser and also empty watchlater state for show empty message */
+                    if (parseData.length === 0) {
+                        localStorage.removeItem('saved-movies-data');
+                        setWatchLaterData([]);
+                    } else {
+                        // update localStorage with new data
+                        localStorage.setItem('saved-movies-data', JSON.stringify(parseData));
+                    }
                 }, 500);
             }
 
-            /* check after remove is watchlater localStorage length is zero so
-             remove localStorage key from browser and also empty watchlater state for show empty message */
-            if (parseData.length === 0) {
-                localStorage.removeItem('saved-movies-data');
-                setWatchLaterData([]);
-            } else {
-                // update localStorage with new data
-                localStorage.setItem('saved-movies-data', JSON.stringify(parseData));
-            }
         };
     };
 
@@ -172,10 +175,10 @@ export default function WatchlaterModel({ visibility, functions }) {
 function Card({ data, remove }) {
 
     const { imdbId, type, title, thambnail, releaseYear, addAt } = data || {};
-     
+
     // check current device is mobile or not
     const isMobileDevice = () => {
-        
+
         const isMobile = navigator.userAgentData.mobile;
 
         if (isMobile) {

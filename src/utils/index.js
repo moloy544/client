@@ -75,6 +75,18 @@ const creatUrlLink = (title) => {
   return formattedTitle;
 };
 
+
+// **** Debounce function for delay ****//
+const debounceDelay = (func, delay) => {
+  let timeoutId;
+  return function (...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+          func.apply(this, args);
+      }, delay);
+  };
+};
+
 /*************** Transfrom capitalize **************/
 const transformToCapitalize = (text) => {
 
@@ -115,6 +127,7 @@ export {
   loadMoreFetch,
   getMovieDeatils,
   creatUrlLink,
+  debounceDelay,
   transformToCapitalize,
   formatNumberCounter,
   imageToBase64Url,

@@ -1,18 +1,20 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { appConfig } from "@/config/config";
 import NavigateBack from "@/components/NavigateBack";
-import { loadMoreFetch } from "@/utils";
+import { debounceDelay, loadMoreFetch } from "@/utils";
 import CategoryGroupSlider from "@/components/CategoryGroupSlider";
-
+import { useInfiniteScroll } from "@/lib/lib";
 const LoadMoreMoviesCard = dynamic(() => import('@/components/LoadMoreMoviesCard'));
 
 function SearchPage() {
 
     const backendServer = appConfig.backendUrl;
+
+    const params = new URLSearchParams(window.location.search);
 
     // Set all state
     const [searchQuery, setSearchQuery] = useState("")
@@ -21,31 +23,32 @@ function SearchPage() {
     const [moviesData, setMoviesData] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
 
-    const bottomObserverElement = useRef(null);
+    const loadMore = () => {
+        if (moviesData.length > 0) {
 
-    // Debounce function
-    const debounce = (func, delay) => {
-        let timeoutId;
-        return function (...args) {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                func.apply(this, args);
-            }, delay);
-        };
-    };
+            setPage((prevPage) => prevPage + 1);
+        }
+    }
+    // infinite scroll load data custom hook
+    const bottomObserverElement = useInfiniteScroll({
+        callback: loadMore,
+        loading,
+        isAllDataLoad: endOfData,
+        rootMargin: '100px'
+    });
 
-    const getMovies = useCallback(async (query) => {
-
+    const getMovies = async (q) => {
         try {
 
+            setLoading(true);
+
             const { status, data, dataIsEnd } = await loadMoreFetch({
-                apiPath: `${backendServer}/api/v1/movies/search?q=${query}`,
+                apiPath: `${backendServer}/api/v1/movies/search?q=${q}`,
                 limitPerPage: 25,
                 skip: moviesData?.length || 0,
             });
 
             if (status === 200) {
-
                 setMoviesData(prevData => [...prevData, ...data.moviesData]);
             };
 
@@ -58,86 +61,27 @@ function SearchPage() {
         } finally {
             setLoading(false);
         };
-
-    }, [moviesData.length]);
-
-    // Debounced handleSearch function with a delay of 500 milliseconds
-    const debouncedHandleSearch = useCallback(
-
-        debounce((query) => {
-
-            if (query !== "") {
-
-                getMovies(query);
-
-                if (moviesData.length > 0) {
-                    setMoviesData([]);
-                };
-                if (page !== 1) {
-                    setPage(1)
-                };
-
-                if (endOfData) {
-                    setEndOfData(false);
-                };
-            };
-
-        }, 1200), [page, moviesData.length, endOfData]);
-
-    // Event handler for input change
-    const handleSearchInputChange = (event) => {
-
-        const userSearchText = event.target.value?.replace(/ +/g, ' ');
-
-        if (userSearchText !== " ") {
-
-            setSearchQuery(userSearchText);
-
-            debouncedHandleSearch(userSearchText);
-
-            if (!loading) {
-                setLoading(true);
-            };
-        };
-
-        if (userSearchText === "") {
-            setMoviesData([])
-        };
     };
 
-    const handleObserver = (entries) => {
-        const target = entries[0];
-        if (target.isIntersecting && !loading && !endOfData) {
-            setPage((prevPage) => prevPage + 1);
+    const debouncedSearch = useCallback(debounceDelay((userSearchText) => {
+        setSearchQuery(userSearchText);
+        setMoviesData([]);
+        setPage(1);
+        getMovies(userSearchText);
+    }, 1200), []);
+
+    const handleSearch = (event) => {
+        const userSearchText = event.target.value?.replace(/ +/g, ' ').trimStart();
+        if (userSearchText !== ' ') {
+            debouncedSearch(userSearchText);
         }
     };
 
+    // load more effect 
     useEffect(() => {
-
-        const observer = new IntersectionObserver(handleObserver, {
-            root: null,
-            rootMargin: "300px",
-            threshold: 1.0,
-        });
-
-        if (bottomObserverElement.current && moviesData.length > 0 && !loading && !endOfData) {
-            observer.observe(bottomObserverElement.current);
-        };
-
-        return () => {
-            if (bottomObserverElement.current) {
-                observer.unobserve(bottomObserverElement.current);
-            }
-        };
-    }, [moviesData.length, loading, endOfData]);
-
-    useEffect(() => {
-
         if (page !== 1) {
             getMovies(searchQuery);
-            setLoading(true);
-        };
-
+        }
     }, [page]);
 
     return (
@@ -153,8 +97,7 @@ function SearchPage() {
                         <Link href="/" className="text-xl text-rose-500 text-ellipsis font-semibold block mobile:hidden">Movies Bazaar</Link>
 
                         <input
-                            onChange={handleSearchInputChange}
-                            value={searchQuery} 
+                            onChange={handleSearch}
                             type="search"
                             placeholder="Search by title, cast, genre and more..."
                             className="w-[45%] mobile:w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 rounded-md px-4 mr-4 mobile:mr-1 text-base caret-black mobile:text-sm placeholder:text-gray-800 shadow-2xl" autoFocus />
@@ -183,7 +126,7 @@ function SearchPage() {
                                 <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
 
                                     <LoadMoreMoviesCard limit={25} isLoading={loading} moviesData={moviesData} />
-
+                                    <div ref={bottomObserverElement}></div>
                                 </main>
                             </>
                         ) : (
@@ -210,9 +153,7 @@ function SearchPage() {
                     </div>
                 )}
 
-            </div >
-
-            <div className=" w-full h-2" ref={bottomObserverElement}></div>
+            </div>
         </>
     )
 }

@@ -28,7 +28,7 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
                 {moviesData?.map((data) => (
 
-                    <div key={data.imdbId} className="movie_card border border-yellow-700">
+                    <div key={data.imdbId} className="movie_card">
 
                         <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}>
 

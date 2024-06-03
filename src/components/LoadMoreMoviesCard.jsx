@@ -25,7 +25,7 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
         <>
             {moviesData?.map((data) => (
 
-                <div key={data.imdbId} className="movie_card border border-yellow-700">
+                <div key={data.imdbId} className="movie_card border">
 
                     <Link className="w-auto h-auto" href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} prefetch={false}>
 

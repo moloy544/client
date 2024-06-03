@@ -43,7 +43,8 @@
     border-radius: 4px; 
     cursor: pointer;
     position: relative;
-    color: rgb(3, 220, 220);
+    color: rgb(12, 15, 15);
+    border: 1px solid rgb(132, 114, 1);
 }
 
 .movie_card .movie_name_container{
