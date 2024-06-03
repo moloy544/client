@@ -14,8 +14,6 @@ function SearchPage() {
 
     const backendServer = appConfig.backendUrl;
 
-    const params = new URLSearchParams(window.location.search);
-
     // Set all state
     const [searchQuery, setSearchQuery] = useState("")
     const [loading, setLoading] = useState(false);
