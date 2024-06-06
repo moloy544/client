@@ -14,22 +14,22 @@ export default function NotFound() {
 
     return (
         <div className="grid h-screen place-content-center bg-white px-4">
-            <div className="text-center">
+            <div className="text-center max-w-2xl">
 
                 <div className="w-full h-auto flex justify-center">
                     <Image
                         priority
-                        className="w-96 h-80 mobile:w-80 mobile:h-72"
-                        src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1705938283/page-found-with-people-connecting-plug-concept-illustration.jpg"
+                        className="w-80 h-80 mobile:w-52 mobile:h-52"
+                        src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1717698024/404-notfound.jpg"
                         width={280}
                         height={250}
-                        alt="somthing was wrong message"
+                        alt="404 not found message image"
                     />
                 </div>
 
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">Uh-oh page not found!</h1>
+                <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-3xl">Uh-oh page not found!</h1>
 
-                <p className="mt-4 text-gray-500">{"We can't find that page plese back to home page and explore movies or series."}</p>
+                <p className="mt-4 text-gray-500 text-base mobile:text-sm">{"We can't find that page maybe its removed from our site plese back to home page and explore your favorite or latest movies or series."}</p>
 
                 <button 
                 onClick={back}

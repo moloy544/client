@@ -1,11 +1,12 @@
 
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { creatUrlLink, getMovieDeatils } from "@/utils";
-import NavigateBackTopNav from "@/components/NavigateBackTopNav";
-import SomthingWrongError from "@/components/errors/SomthingWrongError";
-import Videoplayer from "../VideoPlayer";
 import { appConfig } from "@/config/config";
 import { InspectPreventer } from "@/lib/lib";
+import Videoplayer from "../VideoPlayer";
+import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export async function generateMetadata({ params }) {
 
@@ -17,25 +18,52 @@ export async function generateMetadata({ params }) {
     return;
   };
 
-  const { title, thambnail, releaseYear, type, genre, language } = movieData || {}
+  // movie all dara fields
+  const { title, thambnail, releaseYear, type, genre, language, castDetails } = movieData || {}
 
+  // extract the movie genres
   const genres = genre?.join(' ');
 
-  const ogUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${movieId}`;
+  // extract the movie cast names
+  const movieCast = castDetails ? castDetails.join(', ') : null;
 
-  return {
+  // metadata related fields
+  const metaTitle = `${title + " ("+ releaseYear + ") " + type}`
+  const metaDesc = `Watch ${title + " " + releaseYear + " " + type} featuring lead actress ${movieCast} online for free only on Movies Bazaar. Enjoy it in ${language} and this is ${genre?.join(' ')} genre based ${type}.`;
+  const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${movieId}`;
+  const metaKeywords = [
+    `${title} ${type}`,
+    `Watch ${title} ${releaseYear} ${type}`,
+    `${title} ${releaseYear} ${type}`,
+    `Watch ${title} online`,
+    `Stream ${title} online`,
+    `Watch ${title} ${type} online`,
+    `${title} online streaming`,
+    `${title} ${type} watch free online`,
+    `${title} ${type} streaming`,
+    `Watch ${title} HD online`,
+    `${title} online watch free`,
+    `${title} ${type} stream HD`,
+    `Where to watch ${title} online`,
+    `Watch ${genres} ${type} online`,
+    `Watch ${language} ${type} online`,
+    ...castDetails.map(cast => `Watch ${cast} ${type}`)
+].join(', ');
 
-    title: title + ' ' + '(' + releaseYear + ')' + ' ' + ' ' + type,
-    description: `Watch ${title} ${releaseYear}  ${type} online only on Movies Bazaar for free with ${language}`,
-    keywords: `${title + ' ' + type}, Watch ${title + ' ' + releaseYear + ' ' + type}, ${title + ' ' + releaseYear + ' ' + type}, Watch ${title} online, Stream ${title} online, Watch ${title + ' ' + type} online, ${title} online streaming, ${title + ' ' + type} watch free online, ${title + ' ' + type} streaming, Watch ${title} HD online, ${title} online watch free, ${title + ' ' + type} stream HD, Where to watch ${title} online, Watch ${genres + ' ' + type} online, Watch ${language + ' ' + type} online`,
-
+  // meta data for this movie or series page
+  const metaDataObject = {
+    title: metaTitle,
+    description: metaDesc,
+    keywords: metaKeywords,
     openGraph: {
       images: thambnail,
-      title: title + ' ' + '(' + releaseYear + ')' + ' ' + type,
-      description: `Watch ${title} ${releaseYear}  ${type} online only on Movies Bazaar for free with ${language}`,
-      url: ogUrl
+      title: metaTitle,
+      description: metaDesc,
+      url: metaOgUrl
     },
   }
+
+  return metaDataObject
 };
 
 export default async function Page({ params }) {
@@ -53,11 +81,9 @@ export default async function Page({ params }) {
   };
 
   return (
-    <>
+    <InspectPreventer>
       <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
-      <InspectPreventer>
       <Videoplayer movieDetails={movieData} suggestions={suggetions} />
-      </InspectPreventer>
-    </>
+    </InspectPreventer>
   )
 }

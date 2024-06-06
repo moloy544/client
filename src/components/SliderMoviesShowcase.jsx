@@ -28,11 +28,11 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
 
                 {moviesData?.map((data) => (
 
-                    <div key={data.imdbId} className="movie_card">
+                    <div key={data.imdbId} className="movie_card text-xs mobile:text-[10px]">
 
                         <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}>
 
-                            <div className="relative w-[140px] h-[180px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
+                            <div className="relative w-[160px] h-[200px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
 
                                 <Image
                                     priority
@@ -43,12 +43,12 @@ function SliderMoviesShowcase({ title, moviesData, linkUrl }) {
                             </div>
 
                             <div className="movie_name_container">
-                                <span className="w-auto text-white text-[10px] font-sans line-clamp-3 leading-[13px]">
+                                <span className="w-auto text-white font-sans line-clamp-3 leading-[13px]">
                                     {data.title}
                                 </span>
                             </div>
 
-                            <div className="absolute top-0.5 right-0.5 w-auto h-auto px-1 py-0.5 bg-gray-800 text-yellow-400 text-[10px] text-center font-sans font-semibold rounded-md">
+                            <div className="absolute top-0.5 right-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-950 bg-opacity-75 text-yellow-300 text-center font-sans font-semibold rounded-md">
                                 {data.releaseYear}
                             </div>
                         </Link>

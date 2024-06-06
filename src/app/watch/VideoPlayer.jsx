@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import MoviesUserActionWarper from "./MoviesUserActionWarper";
 import { transformToCapitalize } from "@/utils";
+import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
 import SliderMoviesShowcase from "@/components/SliderMoviesShowcase";
 
@@ -15,7 +15,6 @@ export default function Videoplayer({ movieDetails, suggestions }) {
   const [playerVisibility, setPlayerVisibility] = useState(false);
 
   const {
-    imdbId,
     imdbRating,
     title,
     thambnail,
@@ -69,6 +68,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
     };
   }, [playerVisibility]);
 
+  
   const originalDate = new Date(fullReleaseDate);
 
   const formattedDate = originalDate.toLocaleDateString('en-GB', {
@@ -180,7 +180,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
             </div>
 
-            <MoviesUserActionWarper movieData={movieDetails} />
+            <MoviesUserActionOptions movieData={movieDetails} />
 
           </div>
 

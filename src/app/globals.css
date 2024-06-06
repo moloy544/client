@@ -38,13 +38,13 @@
 
   .movie_card{
     width: auto; 
-    max-width: 200px;
+    max-width: 300px;
     height: auto; 
     border-radius: 4px; 
     cursor: pointer;
     position: relative;
     color: rgb(12, 15, 15);
-    border: 1px solid rgb(132, 114, 1);
+    border: 1px solid rgb(137, 119, 1);
 }
 
 .movie_card .movie_name_container{
@@ -52,7 +52,7 @@
   height: auto;
   font-weight: 500;
   background-color: rgba(0, 0, 0, 0.50);
-  padding-block: 5px;
+  padding-block: 6px;
   padding-inline: 4px;
   position: absolute;
   bottom: 0;

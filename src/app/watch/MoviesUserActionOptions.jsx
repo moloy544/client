@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { appConfig } from "@/config/config";
 
-function MoviesUserActionWarper({ movieData }) {
+export default function MoviesUserActionOptions({ movieData }) {
 
   const [isSaved, setIsSaved] = useState(false);
 
@@ -92,9 +92,7 @@ function MoviesUserActionWarper({ movieData }) {
 
     </>
   )
-}
-
-export default MoviesUserActionWarper;
+};
 
 
 function ReportModel({ movieData }) {
