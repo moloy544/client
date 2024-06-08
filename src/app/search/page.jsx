@@ -38,6 +38,10 @@ function SearchPage() {
     const getMovies = async (q) => {
         try {
 
+            if (q == "" || q === " ") {
+                return
+            };
+
             setLoading(true);
 
             const { status, data, dataIsEnd } = await loadMoreFetch({
@@ -70,7 +74,7 @@ function SearchPage() {
 
     const handleSearch = (event) => {
         const userSearchText = event.target.value?.replace(/ +/g, ' ').trimStart();
-        if (userSearchText !== ' ') {
+        if (userSearchText !== ' ' || userSearchText !== '') {
             debouncedSearch(userSearchText);
         }
     };
