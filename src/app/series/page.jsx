@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import axios from "axios";
 import { appConfig } from "@/config/config";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
-import SliderMoviesShowcase from "@/components/SliderMoviesShowcase";
+import SliderShowcase from "@/components/SliderShowcase";
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export const metadata = {
@@ -60,7 +60,7 @@ export default async function Page() {
 
                 {sliderSeries?.map((data) => (
 
-                    <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.seriesData} linkUrl={data.linkUrl} />
+                    <SliderShowcase key={data.title} title={data.title} moviesData={data.seriesData} linkUrl={data.linkUrl} />
                 ))}
 
             </main>
