@@ -5,7 +5,7 @@ import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SliderMoviesShowcase from "@/components/SliderMoviesShowcase";
+import SliderShowcase from "@/components/SliderShowcase";
 
 function HomePageLayout() {
 
@@ -100,7 +100,7 @@ function HomePageLayout() {
             {sectionTwo && (
                 <>
                     {sectionTwo?.sliderMovies?.map((data) => (
-                        <SliderMoviesShowcase
+                        <SliderShowcase
                             key={data.title}
                             title={data.title}
                             moviesData={data.movies}
@@ -114,7 +114,7 @@ function HomePageLayout() {
                 <>
                     {sectionThree?.sliderMovies?.map((data) => (
 
-                        <SliderMoviesShowcase
+                        <SliderShowcase
                             key={data.title}
                             title={data.title}
                             moviesData={data.movies}
@@ -127,7 +127,7 @@ function HomePageLayout() {
                 <>
                     {sectionFour?.sliderMovies?.map((data) => (
 
-                        <SliderMoviesShowcase
+                        <SliderShowcase
                             key={data.title}
                             title={data.title}
                             moviesData={data.movies}

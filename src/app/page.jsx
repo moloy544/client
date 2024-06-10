@@ -5,8 +5,8 @@ import { appConfig } from "@/config/config";
 import { creatUrlLink } from "@/utils";
 import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
-import SliderMoviesShowcase from "@/components/SliderMoviesShowcase";
 import FixedSearchIcon from "@/components/FixedSearchIcon";
+import SliderShowcase from "@/components/SliderShowcase";
 
 export const revalidate = 3600 // revalidate at most every hour
 
@@ -26,55 +26,38 @@ export default async function Page() {
 
         {sectionOne?.sliderMovies?.map((data) => (
 
-          <SliderMoviesShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
+          <SliderShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
         ))}
 
-        <section className="w-full h-auto pt-2.5 mobile:pt-1">
+        <SliderShowcase title="Bollywood hindi actress" linkUrl="/actress/bollywood">
+    
+          {sectionOne?.bollywoodActressData?.map((actor) => (
 
-          <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
-            <h1 className="text-gray-50 text-[18px] mobile:text-sm font-medium line-clamp-1">
-              Bollywood hindi actress 
-            </h1>
-
-            <Link href="/actress/bollywood" className="text-[14px] mobile:text-[12px] text-cyan-500 hover:text-cyan-400 font-medium">
-              View All
-              <i className="bi bi-chevron-right"></i>
-            </Link>
-            
-          </div>
-
-          <div className="w-full h-auto flex flex-row overflow-x-scroll gap-2.5 mobile:gap-2 px-2 scrollbar-hidden">
-
-            {sectionOne?.bollywoodActressData?.map((actor) => (
-
-              <Link
+            <Link
               href={`/actress/${creatUrlLink(actor.name)}/${actor.imdbId?.replace('nm', '')}`}
-                key={actor.imdbId}
-                className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
+              key={actor.imdbId}
+              className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
 
-                <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-cyan-500">
+              <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-cyan-500">
 
-                  <Image
-                    className="w-full h-full object-fill pointer-events-none select-none rounded-full"
-                    src={actor.avatar}
-                    width={100}
-                    height={100}
-                    alt={actor.name}
-                  />
-                </div>
+                <Image
+                  className="w-full h-full object-fill pointer-events-none select-none rounded-full"
+                  src={actor.avatar}
+                  width={100}
+                  height={100}
+                  alt={actor.name}
+                />
+              </div>
 
-                <div className="w-24 h-auto mobile:w-20 text-gray-900 overflow-hidden py-1.5">
-                  <p className="whitespace-normal text-xs font-semibold font-sans text-center leading-[14px]">
-                    {actor.name}
-                  </p>
-                </div>
+              <div className="w-24 h-auto mobile:w-20 text-gray-900 overflow-hidden py-1.5">
+                <p className="whitespace-normal text-xs font-semibold font-sans text-center leading-[14px]">
+                  {actor.name}
+                </p>
+              </div>
 
-              </Link>
-            ))}
-
-          </div>
-
-        </section>
+            </Link>
+          ))}
+        </SliderShowcase>
 
         <HomePageLayout />
 

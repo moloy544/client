@@ -6,7 +6,7 @@ import Image from "next/image";
 import { transformToCapitalize } from "@/utils";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
-import SliderMoviesShowcase from "@/components/SliderMoviesShowcase";
+import SliderShowcase from "@/components/SliderShowcase";
 
 export default function Videoplayer({ movieDetails, suggestions }) {
 
@@ -214,9 +214,9 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
       </div>
       {/**** Show Suggest Data Based on Gnere ******/}
-      <SliderMoviesShowcase moviesData={suggestions?.genreList} title="You might also like" />
+      <SliderShowcase moviesData={suggestions?.genreList} title="You might also like" />
       {/**** Show Suggest Data Based on Cast ******/}
-      <SliderMoviesShowcase moviesData={suggestions?.castList} title="From same actors" />
+      <SliderShowcase moviesData={suggestions?.castList} title="From same actors" />
     </>
   )
 }

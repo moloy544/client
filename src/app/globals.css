@@ -38,7 +38,7 @@
 
   .movie_card{
     width: auto; 
-    max-width: 300px;
+    max-width: 220px;
     height: auto; 
     border-radius: 4px; 
     cursor: pointer;
