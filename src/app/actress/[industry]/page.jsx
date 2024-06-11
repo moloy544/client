@@ -84,15 +84,15 @@ export default async function Page({ params }) {
                         <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-2">
 
                             {actors?.map((actor) => (
-                                <div key={actor.imdbId} className="w-auto h-auto py-1.5 cursor-pointer bg-pink-100 rounded-sm border border-yellow-500">
+                                <div key={actor.imdbId} className="w-auto h-auto py-2.5 cursor-pointer bg-pink-100 rounded-md border border-yellow-500">
 
                                     <Link href={`/actress/${creatUrlLink(actor.name)}/${actor.imdbId.replace('nm', '')}`}>
 
-                                        <div className="w-auto h-[110px] mobile:h-20 rounded-md border-2 border-cyan-500 mx-4 mobile:mx-2">
+                                        <div className="w-auto h-[110px] mobile:h-20 rounded-md mx-4 mobile:mx-2 border border-yellow-600">
 
                                             <Image
                                                 priority
-                                                className="w-full h-full object-fill pointer-events-none select-none rounded-sm"
+                                                className="w-full h-full object-fill pointer-events-none select-none rounded-md"
                                                 width={150}
                                                 height={150}
                                                 src={actor.avatar}
@@ -100,8 +100,8 @@ export default async function Page({ params }) {
 
                                         </div>
 
-                                        <div className="w-auto h-auto text-black py-1.5">
-                                            <p className="whitespace-normal text-xs font-semibold font-sans text-center leading-[14px]">
+                                        <div className="w-auto h-auto text-black mt-1.5">
+                                            <p className="whitespace-normal text-xs font-semibold font-sans text-center leading-[14px] line-clamp-2 mx-2 text-center">
                                                 {actor.name}
                                             </p>
                                         </div>

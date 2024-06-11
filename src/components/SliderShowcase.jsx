@@ -1,13 +1,14 @@
 'use client';
 
+import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRef, useEffect } from 'react';
 import { creatUrlLink } from '@/utils';
 
 export default function SliderShowcase({ title, moviesData, linkUrl, children }) {
 
     const sliderContainerRef = useRef(null);
+    const movieCardRef = useRef(null);
     const leftButtonRef = useRef(null)
     const rightButtonRef = useRef(null)
 
@@ -38,9 +39,29 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
         }
     };
 
+    const handleObservers = (entries) => {
+
+        const rightButton = rightButtonRef.current;
+        const lastTarget = entries[entries.length - 1];
+
+        if (rightButton && lastTarget.isIntersecting) {
+            rightButton.style.display = 'none';
+        };
+    };
+
     useEffect(() => {
 
         const element = sliderContainerRef.current;
+
+        const observer = new IntersectionObserver(handleObservers, {
+            root: null,
+            rootMargin: "10px",
+            threshold: 1.0,
+        });
+
+        if (movieCardRef.current) {
+            observer.observe(movieCardRef.current);
+        };
 
         const handleScroll = () => {
             if (window.innerWidth > 767) {
@@ -49,10 +70,14 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
         };
 
         element?.addEventListener('scroll', handleScroll);
+
         return () => {
+            if (movieCardRef.current) {
+                observer.unobserve(movieCardRef.current);
+            };
             element?.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [handleObservers]);
 
 
     if ((!moviesData || moviesData.length === 0) && !children) {
@@ -74,7 +99,7 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                 {children ? children : (
                     <>
                         {moviesData?.map((data) => (
-                            <div key={data.imdbId} className="movie_card text-xs mobile:text-[10px]">
+                            <div ref={movieCardRef} key={data.imdbId} className="movie_card text-xs mobile:text-[10px]">
                                 <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}>
                                     <div className="relative w-[160px] h-[200px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
                                         <Image
@@ -99,12 +124,37 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
 
             </div>
 
-            <button ref={leftButtonRef} onClick={() => handleSlide('left')} type="button" className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 left-2.5 -translate-y-2/4 rounded-full hidden">
-                <i className="bi bi-chevron-left"></i>
+            <button ref={leftButtonRef} onClick={() => handleSlide('left')} type="button" className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 left-2 -translate-y-2/4 rounded-full hidden">
+                <span className="sr-only">Slide left button</span>
+                <div className="flex justify-center items-center">
+                    <svg
+                        width="24"
+                        height="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        role="presentation"
+                    >
+                        <path d="M18.378 23.369c.398-.402.622-.947.622-1.516 0-.568-.224-1.113-.622-1.515l-8.249-8.34 8.25-8.34a2.16 2.16 0 0 0 .548-2.07A2.132 2.132 0 0 0 17.428.073a2.104 2.104 0 0 0-2.048.555l-9.758 9.866A2.153 2.153 0 0 0 5 12.009c0 .568.224 1.114.622 1.515l9.758 9.866c.808.817 2.17.817 2.998-.021z"></path>
+                    </svg>
+
+                </div>
             </button>
 
-            <button ref={rightButtonRef} onClick={() => handleSlide('right')} type="button" className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 right-2.5 -translate-y-2/4 rounded-full">
-                <i className="bi bi-chevron-right"></i>
+            <button ref={rightButtonRef} onClick={() => handleSlide('right')} type="button" className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 right-2 -translate-y-2/4 rounded-full">
+                <span className="sr-only">Slide right button</span>
+                <div className="flex justify-center items-center">
+                    <svg
+                        width="24"
+                        height="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        role="presentation"
+                    >
+                        <path d="M5.622.631A2.153 2.153 0 0 0 5 2.147c0 .568.224 1.113.622 1.515l8.249 8.34-8.25 8.34a2.16 2.16 0 0 0-.548 2.07c.196.74.768 1.317 1.499 1.515a2.104 2.104 0 0 0 2.048-.555l9.758-9.866a2.153 2.153 0 0 0 0-3.03L8.62.61C7.812-.207 6.45-.207 5.622.63z"></path>
+                    </svg>
+                </div>
             </button>
 
         </section>

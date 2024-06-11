@@ -68,7 +68,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
     };
   }, [playerVisibility]);
 
-  
+
   const originalDate = new Date(fullReleaseDate);
 
   const formattedDate = originalDate.toLocaleDateString('en-GB', {
@@ -99,7 +99,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
           <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
 
-            <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border border-yellow-600 rounded-md relative overflow-hidden">
+            <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border border-gary-600 rounded-md relative overflow-hidden">
 
               <div className="w-full h-full overflow-hidden relative group">
 
@@ -115,8 +115,18 @@ export default function Videoplayer({ movieDetails, suggestions }) {
               {status === "released" ? (
                 <button type="button"
                   onClick={showPlayer}
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rose-500 text-gray-100 w-12 h-12 pl-1 pb-0.5 flex justify-center items-center rounded-full text-3xl hover:text-4xl transition-transform duration-300 hover:scale-110">
-                  <i className="bi bi-play"></i>
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-950 bg-opacity-70 text-gray-100 hover:text-rose-600 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="30"
+                    height="30"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    role="presentation"
+                  >
+                    <path d="M10.8 15.9l4.67-3.5c.27-.2.27-.6 0-.8L10.8 8.1a.5.5 0 0 0-.8.4v7c0 .41.47.65.8.4zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+                  </svg>
+
                   <span className="sr-only">Play video</span>
                 </button>
               ) : (
@@ -174,6 +184,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
                     {genre !== "N/A" ? (
                       <Link href={`/browse/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
                     ) : genre}
+                   
                   </div>
                 ))}
               </div>

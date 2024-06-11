@@ -66,7 +66,7 @@ function Footer() {
             <div className="text-base text-gray-200 font-semibold flex items-center">
                 <div className="text-xl">❤️</div>
                 <div>
-                    <span className="text-orange-500">Love</span> fr<Image src={authorImage} alt="author" width={11} height={11} className="rounded-full inline-block" />m <span className=" text-green-500">india</span>
+                    <span className="text-orange-500">Love</span> fr<Image src={authorImage} alt="Indian flag" width={11} height={11} className="rounded-full inline-block" />m <span className=" text-green-500">india</span>
                 </div>
             </div>
 

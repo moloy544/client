@@ -88,7 +88,7 @@ export default async function Page({ params }) {
     })
   ]);
 
-  const { status, name } = actorData;
+  const { status, name, avatar } = actorData;
 
   if (status === 404) {
     notFound();
@@ -108,7 +108,7 @@ export default async function Page({ params }) {
 
   return (
     <>
-      <NavigateBackTopNav title={name} />
+      <NavigateBackTopNav title={name} titleImage={{src: avatar, alt: name}} />
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2 relative">
 

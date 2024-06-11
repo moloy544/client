@@ -22,6 +22,28 @@ function ActressController() {
         }));
     };
 
+    // get actor data from database
+    const getActorData = async () => {
+        try {
+
+            if (actorState.imdbId.length <=5) {
+                alert('Invalid IMDB ID or its too short');
+            }
+            const response = await axios.post(`${appConfig.backendUrl}/api/v1/admin/actor/get`, {
+               imdbId: actorState.imdbId
+            });
+
+            if (response.status !== 200) {
+                alert(response.data.message || "Somthing went wrong!")
+            };
+            const { actor } = response.data;
+            setActorState(actor)
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     //Send Actor Data to server 
     const sendActorData = async () => {
 
@@ -60,10 +82,14 @@ function ActressController() {
                 <section className="w-auto h-fit flex-none mx-10 my-3 bg-white border border-blue-100 px-8 shadow-xl rounded-lg py-3">
 
                     <h1 className="text-amber-700 text-xl text-center font-semibold">Add Actor Section</h1>
+
                     <div className="flex flex-col my-3">
-                        <label className="font-bold">Imdb id</label>
-                        <input className="border border-black rounded-sm" type="text" value={actorState.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
-                    </div>
+                            <label className="font-bold">Actor IMDB ID</label>
+                            <div className="flex gap-1">
+                            <input className="border border-black rounded-sm w-32 h-auto" type="text" value={actorState.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
+                            <button className="w-16 h-6 bg-green-700 text-sm text-white font-semibold text-center" type="button" onClick={getActorData}>Get</button>
+                            </div>
+                        </div>
 
                     <div className="flex flex-col my-3">
                         <label className="font-bold">Name</label>
