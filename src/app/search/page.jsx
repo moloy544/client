@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,22 +33,25 @@ export default function SearchPage() {
     const [seatrchResult, setSearchResult] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
 
-    const loadMore = () => setPage((prevPage) => prevPage + 1);
+    const loadMore = () => {
+        setPage((prevPage) => prevPage + 1)
+    };
 
     // infinite scroll load data custom hook
-    const bottomObserverElement = useInfiniteScroll({
+    const bottomObserverElement = useCallback(useInfiniteScroll({
         callback: loadMore,
         loading,
         isAllDataLoad: endOfData,
         rootMargin: '100px'
-    });
+    }), [loading]);
 
     // after form submission this function is called
     const handleSubmitForm = (searchText) => {
-        setSearchQuery(searchText);
         setSearchResult([]);
         setPage(1);
-        getMovies(searchText);
+        setEndOfData(false);
+        setSearchQuery(searchText);
+        getMovies(searchText)
     };
 
     // Function to add a search term to the search history
@@ -83,9 +86,9 @@ export default function SearchPage() {
         setSearchHistory(existingHistoryArray);
     };
     // get serach items from database function
-    const getMovies = async (q) => {
+    const getMovies = useCallback(async (q) => {
         try {
-        
+
             if (q == "" || q === " ") {
                 return
             };
@@ -95,16 +98,16 @@ export default function SearchPage() {
             const { status, data, dataIsEnd } = await loadMoreFetch({
                 apiPath: `${backendServer}/api/v1/movies/search?q=${q}`,
                 limitPerPage: 25,
-                skip: seatrchResult?.length || 0,
+                skip: page === 1 ? 0 : page*25
             });
 
             const { moviesData } = data || {};
-
+            
             if (status === 200 && moviesData && moviesData.length > 0) {
 
                 // set search result
                 setSearchResult(prevData => [...prevData, ...moviesData]);
-
+                console.log("I set")
                 // setup search history
                 const thambnail = moviesData[0].thambnail;
                 if (thambnail && thambnail !== '') {
@@ -121,14 +124,15 @@ export default function SearchPage() {
         } finally {
             setLoading(false);
         };
-    };
+    }, []);
 
     // load more effect 
     useEffect(() => {
         if (page !== 1) {
             getMovies(searchQuery);
+            console.log("I call lokkkaka: "+page)
         }
-    }, [page]);
+    }, [page, searchQuery]);
 
     return (
         <>
