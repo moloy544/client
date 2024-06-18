@@ -15,8 +15,9 @@ export async function GET(req) {
         const allowedDomains = ['watchyouflix.com']; // List of allowed domains
 
         // Extract the referer domain
-        const referer = req.headers.get('referer');
-console.log(`Request header object is: `+req);
+        const referer = req.headers.get('origin');
+console.log(req);
+console.log(`origin is ${referer}`)
 
         if (!referer) {
             return new NextResponse(creatErrorMessage("Something Went Wrong!"), {
