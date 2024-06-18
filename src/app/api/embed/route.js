@@ -16,7 +16,7 @@ export async function GET(req) {
 
         // Extract the referer domain
         const referer = req.headers.get('referer');
-console.log("Request header object is: "+req);
+console.log(`Request header object is: `+req);
 
         if (!referer) {
             return new NextResponse(creatErrorMessage("Something Went Wrong!"), {
