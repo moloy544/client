@@ -26,13 +26,13 @@ export async function GET(req) {
         console.log(error);
 
         // if any error occurs then return error message
-        return new NextResponse(creatErrorMessage(`<html>
+        return new NextResponse(`<html>
             <body style="background: black">
             <div style="color: white;font-family: monospace;text-align: center;top: calc(50%);height: 7%;vertical-align: middle;position: relative;">
           Internal serve error occurred
             </div>
             </body>
-            </html>`), {
+            </html>`, {
             headers: {
                 'Content-Type': 'text/html',
             },
