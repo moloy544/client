@@ -40,19 +40,19 @@ export default function Navbar() {
 
                     <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3 mx-3">
 
-                        <Link href="/search" className="cursor-text mobile:hidden">
+                        <Link href="/search" title="Search bar" className="cursor-text mobile:hidden">
                             <div className="flex items-center gap-3 w-96 h-11 mobile:w-full mobile:h-9 rounded-[10px] text-sm py-1 bg-gray-800 text-gray-300 border-2 border-gray-700">
                                 <i className="bi bi-search pl-3 text-base"></i>
                                 <span>Search by title, cast, genre and more...</span>
                             </div>
                         </Link>
 
-                        <Link aria-label="Notification" href="/search" className="hidden mobile:block p-0.5 mx-3">
+                        <Link aria-label="Search" title="Search"  href="/search" className="hidden mobile:block p-0.5 mx-3">
                             <i className="bi bi-search text-gray-200 text-xl"></i>
                         </Link>
 
                         <div className="w-auto h-auto relative">
-                            <button onClick={toggleWatchLaterModel} type="button" className={`w-auto h-auto flex items-center px-2 py-1.5 hover:bg-gray-800 text-[13px] rounded-sm ${isVisible ? "text-yellow-500 bg-gray-800" : "text-gray-100"}`}>
+                            <button onClick={toggleWatchLaterModel} type="button" title="Watch later" className={`w-auto h-auto flex items-center px-2 py-1.5 hover:bg-gray-800 text-[13px] rounded-sm ${isVisible ? "text-yellow-500 bg-gray-800" : "text-gray-100"}`}>
                                 <svg
                                     width="24"
                                     height="24"

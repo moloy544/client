@@ -7,12 +7,12 @@ function Footer() {
 
             <div className="text-sm text-gray-200 gap-5 mobile:gap-2 flex flex-wrap items-center justify-center px-2">
 
-                <a className="flex items-center gap-1" href="https://github.com/sanjoy504" target="_blank" rel="noopener noreferrer">
+                <a className="flex items-center gap-1" title="Github" href="https://github.com/sanjoy504" target="_blank" rel="noopener noreferrer">
                     <i className="bi bi-github text-[26px]"></i>
                     <span className="text-cyan-400">Github</span>
                 </a>
 
-                <a className="flex items-center" href="https://www.instagram.com/sanjoyrakshit504/" target="_blank" rel="noopener noreferrer">
+                <a className="flex items-center" href="https://www.instagram.com/sanjoyrakshit504/" title="Instagram" target="_blank" rel="noopener noreferrer">
                     <svg
                         width="34px"
                         height="34px"
@@ -49,7 +49,7 @@ function Footer() {
                     <span className="text-cyan-400">Instagram</span>
                 </a>
 
-                <a className="flex items-center" href="https://www.facebook.com/sanjoy.rokshit.5" target="_blank" rel="noopener noreferrer">
+                <a className="flex items-center" href="https://www.facebook.com/sanjoy.rokshit.5" title="Facebook" target="_blank" rel="noopener noreferrer">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0 0 48 48">
                         <linearGradient id="Ld6sqrtcxMyckEl6xeDdMa_uLWV5A9vXIPu_gr1" x1="9.993" x2="40.615" y1="9.993" y2="40.615" gradientUnits="userSpaceOnUse">
                             <stop offset="0" stopColor="#2aa4f4"></stop>

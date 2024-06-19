@@ -1,5 +1,6 @@
-import { categoryArray, moviesGenreArray } from "@/constant/constsnt"
+
 import Link from "next/link"
+import { categoryArray, moviesGenreArray } from "@/constant/constsnt"
 
 const LinkButton = ({ linkData, linkUrl }) => {
 
@@ -8,6 +9,7 @@ const LinkButton = ({ linkData, linkUrl }) => {
       {linkData?.map((data) =>
       (<div key={data.id} className="bg-rose-600 w-auto h-auto py-2 px-3 rounded-[5px] flex-none text-xs text-gray-100">
         <Link
+        title={data.name}
           href={data.linkUrl ? data.linkUrl.toLowerCase().replace(/[' ']/g, '-') :
             linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')}>
           {data.name}

@@ -65,7 +65,7 @@ export default function MoviesUserActionOptions({ movieData }) {
 
       <div className="w-auto h-auto mobile:mt-1 mt-4 mobile:pr-4 flex gap-5 overflow-x-scroll scrollbar-hidden">
 
-        <div onClick={saveInLocalStorage} role="button" className="w-auto h-auto flex gap-1 justify-center items-center bg-gray-200 hover:bg-gray-300 py-1 px-2.5 rounded-xl">
+        <div onClick={saveInLocalStorage} role="button" title="Save" className="w-auto h-auto flex gap-1 justify-center items-center bg-gray-200 hover:bg-gray-300 py-1 px-2.5 rounded-xl">
           {isSaved ? (
             <i className="bi bi-check-square-fill text-rose-500"></i>
           ) : (
@@ -79,7 +79,7 @@ export default function MoviesUserActionOptions({ movieData }) {
         </div>
 
 
-        <div onClick={handleShare} role="button" className="flex gap-1.5 items-center bg-gray-200 hover:bg-gray-300 px-3.5 py-1 rounded-2xl">
+        <div onClick={handleShare} role="button" title="Share" className="flex gap-1.5 items-center bg-gray-200 hover:bg-gray-300 px-3.5 py-1 rounded-2xl">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false">
             <path d="M15 5.63 20.66 12 15 18.37V14h-1c-3.96 0-7.14 1-9.75 3.09 1.84-4.07 5.11-6.4 9.89-7.1l.86-.13V5.63M14 3v6C6.22 10.13 3.11 15.33 2 21c2.78-3.97 6.44-6 12-6v6l8-9-8-9z"></path>
           </svg>
@@ -186,6 +186,7 @@ function ReportModel({ movieData }) {
       <div
         onClick={openModel}
         role="button"
+        title="Report"
         className="flex gap-1.5 items-center bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-xl"
       >
         <svg

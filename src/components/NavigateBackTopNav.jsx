@@ -8,7 +8,7 @@ function NavigateBackTopNav({ title, titleImage = null }) {
 
             <div className="w-auto h-auto flex gap-4 mobile:gap-2.5 items-center py-4 mobile:py-2">
                 <NavigateBack>
-                    <i className="bi bi-arrow-left text-3xl mobile:text-[25px] cursor-pointer"></i>
+                    <i className="bi bi-arrow-left text-3xl mobile:text-[25px] cursor-pointer" title="Back"></i>
                 </NavigateBack>
                 <div className="flex items-center gap-2">
                     {titleImage && titleImage.src && titleImage.alt && (
@@ -25,7 +25,7 @@ function NavigateBackTopNav({ title, titleImage = null }) {
                     </div>
                 </div>
             </div>
-            <Link href="/search" className="mr-10 mobile:mr-2 p-1 text-2xl mobile:text-xl">
+            <Link href="/search" title="Search" className="mr-10 mobile:mr-2 p-1 text-2xl mobile:text-xl">
                 <i className="bi bi-search"></i>
             </Link>
 

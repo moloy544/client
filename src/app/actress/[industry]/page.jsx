@@ -86,7 +86,7 @@ export default async function Page({ params }) {
                             {actors?.map((actor) => (
                                 <div key={actor.imdbId} className="w-auto h-auto py-2.5 cursor-pointer bg-pink-100 rounded-md border border-yellow-500">
 
-                                    <Link href={`/actress/${creatUrlLink(actor.name)}/${actor.imdbId.replace('nm', '')}`}>
+                                    <Link href={`/actress/${creatUrlLink(actor.name)}/${actor.imdbId.replace('nm', '')}`} title={actor.name}>
 
                                         <div className="w-auto h-[110px] mobile:h-20 rounded-md mx-4 mobile:mx-2 border border-yellow-600">
 

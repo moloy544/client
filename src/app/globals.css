@@ -37,9 +37,9 @@
   }
 
   .movie_card{
-    width: auto; 
+    width: 100%; 
     max-width: 220px;
-    height: auto; 
+    height: 100%; 
     border-radius: 4px; 
     cursor: pointer;
     position: relative;
@@ -51,9 +51,7 @@
   width: 100%;
   height: auto;
   font-weight: 500;
-  background-color: rgba(0, 0, 0, 0.50);
-  padding-block: 6px;
-  padding-inline: 4px;
+  background-color: rgba(0, 0, 0, 0.60);
   position: absolute;
   bottom: 0;
   z-index: 4;

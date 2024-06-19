@@ -100,8 +100,8 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                     <>
                         {moviesData?.map((data) => (
                             <div ref={movieCardRef} key={data.imdbId} className="movie_card text-xs mobile:text-[10px]">
-                                <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}>
-                                    <div className="relative w-[160px] h-[200px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
+                                <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title}>
+                                    <div className="relative w-[155px] h-[210px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
                                         <Image
                                             priority
                                             className="pointer-events-none select-none rounded-[3px]"
@@ -111,7 +111,7 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                                         />
                                     </div>
                                     <div className="movie_name_container">
-                                        <span className="w-auto text-white font-sans line-clamp-3 leading-[13px]">{data.title}</span>
+                                        <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[14px] px-2 py-1.5">{data.title}</span>
                                     </div>
                                     <div className="absolute top-0.5 right-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-950 bg-opacity-75 text-yellow-300 text-center font-sans font-semibold rounded-md">
                                         {data.releaseYear}
@@ -124,7 +124,12 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
 
             </div>
 
-            <button ref={leftButtonRef} onClick={() => handleSlide('left')} type="button" className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 left-2 -translate-y-2/4 rounded-full hidden">
+            <button
+                ref={leftButtonRef}
+                onClick={() => handleSlide('left')}
+                type="button"
+                title="Slide right"
+                className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 left-2 -translate-y-2/4 rounded-full hidden">
                 <span className="sr-only">Slide left button</span>
                 <div className="flex justify-center items-center">
                     <svg
@@ -141,7 +146,11 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                 </div>
             </button>
 
-            <button ref={rightButtonRef} onClick={() => handleSlide('right')} type="button" className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 right-2 -translate-y-2/4 rounded-full">
+            <button
+                ref={rightButtonRef}
+                onClick={() => handleSlide('right')}
+                type="button" title="Slide left"
+                className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 right-2 -translate-y-2/4 rounded-full">
                 <span className="sr-only">Slide right button</span>
                 <div className="flex justify-center items-center">
                     <svg

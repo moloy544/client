@@ -25,11 +25,9 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
         <>
             {moviesData?.map((data) => (
 
-                <div key={data.imdbId} className="movie_card border">
+                <div key={data.imdbId} className="movie_card border min-h-[160px] max-h-52">
 
-                    <Link className="w-auto h-auto" href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} prefetch={false}>
-
-                        <div className="w-auto object-cover h-[12.50rem] max-h-[220px] mobile:max-h-[160px] bg-white rounded-[3px]">
+                    <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title} prefetch={false}>
 
                             <Image
                                 priority
@@ -42,10 +40,8 @@ export default function LoadMoreMoviesCard({ isLoading, moviesData, limit }) {
                                 blurDataURL={data.thambnail}
                                  />
 
-                        </div>
-
                         <div className="movie_name_container">
-                            <span className="text-white text-[11px] mobile:text-[9px] font-sans line-clamp-3 leading-[14px]">
+                            <span className="text-white text-xs mobile:text-[10px] font-sans line-clamp-3 leading-[14px] px-2 mobile:py-0.5 py-1">
                                 {data.title}
                             </span>
                         </div>

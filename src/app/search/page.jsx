@@ -293,6 +293,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                                     <div className="text-gray-700 text-sm font-bold">Recent serches</div>
                                     <button
                                         type="button"
+                                        title="Clear all"
                                         onClick={() => deleteHistoryItem('Clear all')} className="text-rose-600 text-xs hover:underline underline-offset-1 px-1.5 py-1">
                                         Clear
                                     </button>
@@ -316,7 +317,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                                                 {data.searchKeyword}
                                             </div>
                                         </div>
-                                        <button onClick={() => deleteHistoryItem(index)} type="button" className="w-8 h-8 rounded-full hover:bg-blue-100 text-base text-center text-gray-900 hidden mobile:block group-hover:block px-2">
+                                        <button onClick={() => deleteHistoryItem(index)} type="button" title="Remove" className="w-8 h-8 rounded-full hover:bg-blue-100 text-base text-center text-gray-900 hidden mobile:block group-hover:block px-2">
                                             <span className="sr-only"></span>
                                             <i className="bi bi-x"></i>
                                         </button>

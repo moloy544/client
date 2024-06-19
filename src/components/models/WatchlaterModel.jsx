@@ -126,7 +126,7 @@ export default function WatchlaterModel({ visibility, functions }) {
             <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border border-gray-400 right-0 z-40 select-none">
                 <div className="relative">
                     <div className="px-2 py-2 text-sm text-gray-800 font-semibold border-b border-b-slate-200">Watch later</div>
-                    <button onClick={hideModel} type="button" className="w-7 h-7 absolute top-1 right-1 text-xl text-gray-700 font-semibold">
+                    <button onClick={hideModel} type="button" title="Close" className="w-7 h-7 absolute top-1 right-1 text-xl text-gray-700 font-semibold">
                         <span className="sr-only">Close Watch later model button</span>
                         <i className="bi bi-x"></i>
                     </button>
@@ -191,7 +191,7 @@ function Card({ data, remove }) {
     return (
         <InspectPreventer forceToPrevent={isMobileDevice()}>
             <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
-                <Link className="w-full h-fit flex gap-3 items-center" href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
+                <Link className="w-full h-fit flex gap-3 items-center" title={title} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
                     <div className="w-16 h-20 border border-slate-200 rounded-sm flex-none">
                         <Image
                             priority
@@ -222,6 +222,7 @@ function Card({ data, remove }) {
                 <button
                     onClick={(event) => remove(event, imdbId)}
                     type="button"
+                    title="Delete"
                     className="w-8 h-8 text-sm hidden group-hover:block text-gray-500 hover:text-red-600 float-right">
                     <span className="sr-only">Delete</span>
                     <i className="bi bi-trash"></i>
