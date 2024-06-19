@@ -99,9 +99,9 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
           <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
 
-            <div className="w-[280px] h-[350px] mobile:w-[260px] mobile:mt-2 mobile:h-[300px] border border-gary-600 rounded-md relative overflow-hidden">
+          <div className="w-[280px] h-[350px] mobile:w-full mobile:max-w-[280px] mobile:mt-2 relative overflow-hidden">
 
-              <div className="w-full h-full overflow-hidden relative group">
+              <div className="w-full h-full overflow-hidden relative group border border-gary-700 rounded-md">
 
                 <Image
                   priority
@@ -137,7 +137,10 @@ export default function Videoplayer({ movieDetails, suggestions }) {
                 </>
               )}
               {imdbRating && (
-                <div className="absolute top-1 right-2 w-auto h-auto bg-gray-800 text-xs font-semibold text-yellow-400 px-2 py-1 rounded-md">{imdbRating}/10</div>
+                <div className="absolute top-1 right-2 w-auto h-auto flex gap-1 items-center bg-gray-900 bg-opacity-70 text-xs font-semibold text-gray-200 px-2 py-1 rounded-md">
+                  <svg width="12" height="12" className="text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="presentation"><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"></path></svg>
+                  {imdbRating}
+                  </div>
               )}
 
             </div>

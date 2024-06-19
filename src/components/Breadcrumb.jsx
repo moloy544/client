@@ -9,7 +9,7 @@ function Breadcrumb({ data }) {
             <div className="flex items-center text-base mobile:text-sm text-gray-300">
 
                 <div>
-                    <Link href="/" className="block transition hover:text-cyan-500">
+                    <Link href="/" title="Home page" className="block transition hover:text-cyan-500">
 
                         <span className="sr-only"> Home </span>
 
