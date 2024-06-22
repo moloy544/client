@@ -111,7 +111,7 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                                         />
                                     </div>
                                     <div className="movie_name_container">
-                                        <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[14px] px-2 py-1.5">{data.title}</span>
+                                        <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[14px] px-2 py-1">{data.title}</span>
                                     </div>
                                     <div className="absolute top-0.5 right-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-950 bg-opacity-75 text-yellow-300 text-center font-sans font-semibold rounded-md">
                                         {data.releaseYear}
