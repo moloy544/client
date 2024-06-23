@@ -1,14 +1,37 @@
 import { NextResponse } from "next/server";
 
+const creatErrorMessage = (message) => {
+    return `<html>
+        <body style="background: black">
+        <div style="color: white;font-family: monospace;text-align: center;top: calc(50%);height: 7%;vertical-align: middle;position: relative;">
+      ${message}
+        </div>
+        </body>
+        </html>`;
+}
+
 export async function GET(req) {
     try {
-       
+
         const requestUrl = new URL(req.url);
         const { searchParams } = requestUrl;
-        // get imdb id from url search params
+        // get imdb id and api key from url search params
         const imdbId = searchParams.get('id');
+        const key = searchParams.get('key')?.toString();
+
         // video hls server url
         const hls_url = process.env.VIDEO_SERVER_URL;
+
+        // if key is undefined or key is not valid show error message 
+        if (!key || key !== '65be6dec73f8bb0a5811457b') {
+
+            return new NextResponse(creatErrorMessage('Unregistered user or invalid user'), {
+                headers: {
+                    'Content-Type': 'text/html',
+                },
+                status: 403
+            });
+        }
 
         return new NextResponse(`
             <iframe 
@@ -26,13 +49,7 @@ export async function GET(req) {
         console.log(error);
 
         // if any error occurs then return error message
-        return new NextResponse(`<html>
-            <body style="background: black">
-            <div style="color: white;font-family: monospace;text-align: center;top: calc(50%);height: 7%;vertical-align: middle;position: relative;">
-          Internal serve error occurred
-            </div>
-            </body>
-            </html>`, {
+        return new NextResponse(creatErrorMessage('Internal serve error occurred'), {
             headers: {
                 'Content-Type': 'text/html',
             },
