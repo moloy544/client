@@ -23,7 +23,7 @@ export async function GET(req) {
         const hls_url = process.env.VIDEO_SERVER_URL;
 
         // if key is undefined or key is not valid show error message 
-        if (!key || key !== '65be6dec73f8bb0a5811457b') {
+        /**if (!key || key !== '65be6dec73f8bb0a5811457b') {
 
             return new NextResponse(creatErrorMessage('Unregistered user or invalid user'), {
                 headers: {
@@ -31,7 +31,7 @@ export async function GET(req) {
                 },
                 status: 403
             });
-        }
+        } skip this for some reson*/
 
         return new NextResponse(`
             <iframe 
