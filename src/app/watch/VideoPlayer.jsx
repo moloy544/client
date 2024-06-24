@@ -115,6 +115,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
               {status === "released" ? (
                 <button type="button"
                   onClick={showPlayer}
+                  title="Play"
                   className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-950 bg-opacity-70 text-gray-100 hover:text-rose-600 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

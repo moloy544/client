@@ -42,8 +42,16 @@ export const moviesGenreArray = [
       name: "Action"
     },
     {
+      id: 80,
+      name: "Crime"
+    },
+    {
       id: 12,
       name: "Thriller"
+    },
+    {
+      id: 9648,
+      name: "Mystery"
     },
     {
       id: 16,
@@ -54,16 +62,20 @@ export const moviesGenreArray = [
       name: "Comedy"
     },
     {
-      id: 80,
-      name: "Crime"
+      id: 27,
+      name: "Horror"
+    },
+    {
+      id: 36,
+      name: "Sci-Fi"
+    },
+    {
+      id: 10749,
+      name: "Adventure"
     },
     {
       id: 99,
       name: "War"
-    },
-    {
-      id: 18,
-      name: "Drama"
     },
     {
       id: 10751,
@@ -74,24 +86,8 @@ export const moviesGenreArray = [
       name: "Fantasy"
     },
     {
-      id: 36,
-      name: "Sci-Fi"
-    },
-    {
-      id: 27,
-      name: "Horror"
-    },
-    {
       id: 10402,
       name: "Music"
-    },
-    {
-      id: 9648,
-      name: "Mystery"
-    },
-    {
-      id: 10749,
-      name: "Adventure"
     },
     {
       id: 878,

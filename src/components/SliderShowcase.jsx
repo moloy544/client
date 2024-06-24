@@ -14,10 +14,11 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
 
     const handleSlide = (direction) => {
         const element = sliderContainerRef.current;
+        const scroll_amount = sliderContainerRef.current.clientWidth / 1.5;
         if (direction === 'left') {
-            element.scrollLeft -= window.innerWidth;
+            element.scrollLeft -= scroll_amount;
         } else if (direction === 'right') {
-            element.scrollLeft += window.innerWidth;
+            element.scrollLeft += scroll_amount;
         }
     };
 
@@ -85,12 +86,15 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
     }
 
     return (
-        <section className="w-full h-auto py-2 mobile:py-1.5 relative">
-            <div className="w-full h-auto flex justify-between items-center px-2.5 pb-3 mobile:pb-2">
-                <div className="text-gray-100 text-[18px] mobile:text-sm font-medium line-clamp-1">{title}</div>
+        <section className="w-full h-auto py-2 mobile:py-1.5 relative space-y-2.5">
+            <div className="w-full h-auto flex justify-between items-center px-2.5">
+                <h2 className="text-gray-200 text-[18px] mobile:text-sm font-medium line-clamp-1">
+                    {title}
+                </h2>
                 {linkUrl && (
-                    <Link href={linkUrl} className="text-[14px] mobile:text-[12px] text-cyan-500 hover:text-cyan-400 font-medium">
-                        View All
+                    <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium">
+                        <span>View All</span>
+                        <i className="bi bi-chevron-right"></i>
                     </Link>
                 )}
             </div>
@@ -113,9 +117,11 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                                     <div className="movie_name_container">
                                         <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[14px] px-2 py-1">{data.title}</span>
                                     </div>
-                                    <div className="absolute top-0.5 right-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-950 bg-opacity-75 text-yellow-300 text-center font-sans font-semibold rounded-md">
+                                    
+                                        <div className="absolute top-0.5 left-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-950 bg-opacity-75 text-yellow-300 text-center font-sans font-semibold rounded-md">
                                         {data.releaseYear}
                                     </div>
+                    
                                 </Link>
                             </div>
                         ))}
@@ -129,7 +135,7 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                 onClick={() => handleSlide('left')}
                 type="button"
                 title="Slide right"
-                className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 left-2 -translate-y-2/4 rounded-full hidden">
+                className="w-11 h-11 mobile:hidden bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 left-2 -translate-y-2/4 rounded-full hidden">
                 <span className="sr-only">Slide left button</span>
                 <div className="flex justify-center items-center">
                     <svg
@@ -150,7 +156,7 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                 ref={rightButtonRef}
                 onClick={() => handleSlide('right')}
                 type="button" title="Slide left"
-                className="mobile:hidden w-11 h-11 bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 right-2 -translate-y-2/4 rounded-full">
+                className="w-11 h-11 mobile:hidden bg-gray-950 bg-opacity-60 text-base text-white font-medium absolute top-2/4 right-2 -translate-y-2/4 rounded-full">
                 <span className="sr-only">Slide right button</span>
                 <div className="flex justify-center items-center">
                     <svg
