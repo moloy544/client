@@ -109,7 +109,7 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                                         <Image
                                             priority
                                             className="pointer-events-none select-none rounded-[3px]"
-                                            src={data.thambnail}
+                                            src={data.thambnail?.replace('/upload/', '/upload/w_500,h_700,c_scale/')}
                                             fill
                                             alt={data.title}
                                         />

@@ -1,18 +1,15 @@
 'use client'
 
 import { useCallback, useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import { appConfig } from "@/config/config";
 import { loadMoreFetch } from "@/utils";
 import { useInfiniteScroll } from "@/lib/lib";
+import { ModelsController } from "@/lib/EventsHandler";
 import NavigateBack from "@/components/NavigateBack";
 import CategoryGroupSlider from "@/components/CategoryGroupSlider";
-import { ModelsController } from "@/lib/EventsHandler";
-
-// dinamically import movies card
-const LoadMoreMoviesCard = dynamic(() => import('@/components/LoadMoreMoviesCard'));
+import { MovieCardSkleaton, ResponsiveMovieCard } from "@/components/cards/Cards";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -24,6 +21,8 @@ const getLocalStorageSearchHistory = () => {
 export default function SearchPage() {
 
     const backendServer = appConfig.backendUrl;
+
+    const limitPerPage = 30;
 
     // Set all state
     const [searchHistory, setSearchHistory] = useState([]);
@@ -92,13 +91,13 @@ export default function SearchPage() {
             if (q === " " || q === "") {
                 return
             };
-            
+
             setLoading(true);
 
             const { status, data, dataIsEnd } = await loadMoreFetch({
                 apiPath: `${backendServer}/api/v1/movies/search?q=${q}`,
-                limitPerPage: 25,
-                skip: page === 1 ? 0 : page * 25
+                limitPerPage,
+                skip: page === 1 ? 0 : page * limitPerPage
             });
 
             const { moviesData } = data || {};
@@ -171,9 +170,17 @@ export default function SearchPage() {
                                 </h3>
                                 <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
 
-                                    <LoadMoreMoviesCard limit={25} isLoading={loading} moviesData={seatrchResult} />
-                                    <div ref={bottomObserverElement}></div>
+                                    {!loading && seatrchResult.length > 0 && (
+                                        seatrchResult.map((movie, index) => (
+                                            <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
+                                        )))}
+
+                                    {loading && (
+                                        <MovieCardSkleaton limit={limitPerPage}
+                                        />)}
+
                                 </main>
+                                <div ref={bottomObserverElement}></div>
                             </>
                         ) : (
                             <>

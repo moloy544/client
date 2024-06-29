@@ -5,10 +5,11 @@ import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
-import LoadMoreMoviesCard from "./LoadMoreMoviesCard";
 import FilterModel from "./models/FilterModel";
 import BacktoTopButton from "./BacktoTopButton";
 import { useInfiniteScroll } from "@/lib/lib";
+import { MovieCardSkleaton, ResponsiveMovieCard } from "./cards/Cards";
+
 
 function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
 
@@ -22,10 +23,10 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
     const [page, setPage] = useState(1);
     const conditionalData = (loadMoviesPathname !== patname) ? (initialMovies || []) : loadMoviesData || [];
     const [moviesData, setMoviesData] = useState(conditionalData);
-    
+
     const loadMore = () => setPage((prevPage) => prevPage + 1);
-    
-  // infinite scroll load data custom hook
+
+    // infinite scroll load data custom hook
     const bottomObserverElement = useInfiniteScroll({
         callback: loadMore,
         loading,
@@ -45,9 +46,9 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
             }));
 
             window.scrollTo({
-                top:0,
-                 behavior: 'instant',
-             });
+                top: 0,
+                behavior: 'instant',
+            });
         };
     };
 
@@ -65,7 +66,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
         };
 
         //Load more movies 
-        if (!isAllDataLoad && loadMoviesPathname === patname && page !== 1&& !loading) {
+        if (!isAllDataLoad && loadMoviesPathname === patname && page !== 1 && !loading) {
 
             const loadMoreData = async () => {
 
@@ -119,14 +120,20 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
     }, [isAllDataLoad, loadMoviesPathname, patname, page, filterData, initialMovies, initialFilter, isDataEnd, apiUrl]);
 
-
     return (
         <>
             <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
 
                 <div className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
 
-                    <LoadMoreMoviesCard limit={limitPerPage} isLoading={loading} moviesData={moviesData} />
+                    {!loading && moviesData.length > 0 && (
+                        moviesData.map((movie, index) => (
+                            <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
+                        )))}
+
+                    {loading && (
+                        <MovieCardSkleaton limit={limitPerPage}
+                        />)}
 
                     {!loading && moviesData.length === 0 && (
                         <div className="my-40 text-gray-400 text-xl mobile:text-base text-center font-semibold">

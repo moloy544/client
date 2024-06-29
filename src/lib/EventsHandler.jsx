@@ -13,7 +13,7 @@ const ModelsController = ({ children, visibility, closeEvent }) => {
     useEffect(() => {
         const outsideClickHandler = ({ target }) => {
             if (!elementRef.current) return;
-            if (!visibility || elementRef.current.contains(target)) return;
+            if (!visibility || elementRef.current.contains(target) || !closeEvent) return;
             closeEvent();
         };
 

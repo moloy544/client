@@ -106,7 +106,7 @@ export default function Videoplayer({ movieDetails, suggestions }) {
                 <Image
                   priority
                   className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
-                  src={thambnail}
+                  src={thambnail?.replace('/upload/', '/upload/w_500,h_700,c_scale/')}
                   alt={title}
                   fill />
 
