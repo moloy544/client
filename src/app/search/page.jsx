@@ -170,7 +170,7 @@ export default function SearchPage() {
                                 </h3>
                                 <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
 
-                                    {!loading && seatrchResult.length > 0 && (
+                                    {seatrchResult.length > 0 && (
                                         seatrchResult.map((movie, index) => (
                                             <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
                                         )))}

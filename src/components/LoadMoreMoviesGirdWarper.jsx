@@ -126,7 +126,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
                 <div className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
 
-                    {!loading && moviesData.length > 0 && (
+                    {moviesData.length > 0 && (
                         moviesData.map((movie, index) => (
                             <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
                         )))}
