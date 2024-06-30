@@ -1,5 +1,7 @@
-import { ModelsController } from "@/lib/EventsHandler";
 import { useRef, useState } from "react";
+import axios from "axios";
+import { ModelsController } from "@/lib/EventsHandler";
+import { appConfig } from "@/config/config";
 
 export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
 
