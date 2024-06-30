@@ -175,4 +175,6 @@ import { creatUrlLink } from '@/utils';
         </section>
     );
 });
+
+SliderShowcase.displayName = 'SliderShowcase';
 export default SliderShowcase;
