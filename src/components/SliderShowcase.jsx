@@ -1,11 +1,11 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { creatUrlLink } from '@/utils';
 
-export default function SliderShowcase({ title, moviesData, linkUrl, children }) {
+ const SliderShowcase = memo(({ title, moviesData, linkUrl, children })=> {
 
     const sliderContainerRef = useRef(null);
     const movieCardRef = useRef(null);
@@ -104,8 +104,8 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
                     <>
                         {moviesData?.map((data) => (
                             <div ref={movieCardRef} key={data.imdbId} className="movie_card text-xs mobile:text-[10px]">
-                                <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title}>
-                                    <div className="relative w-[155px] h-[210px] mobile:w-28 mobile:h-40 bg-white rounded-[3px] object-cover">
+                                <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title+' '+ data.releaseYear+ ' '+ data.type} prefetch={false}>
+                                    <div className="relative w-[155px] h-[210px] mobile:w-28 mobile:h-40 bg-white rounded-[3px]">
                                         <Image
                                             priority
                                             className="pointer-events-none select-none rounded-[3px]"
@@ -174,4 +174,5 @@ export default function SliderShowcase({ title, moviesData, linkUrl, children })
 
         </section>
     );
-};
+});
+export default SliderShowcase;

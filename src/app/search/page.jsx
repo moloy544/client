@@ -10,6 +10,7 @@ import { ModelsController } from "@/lib/EventsHandler";
 import NavigateBack from "@/components/NavigateBack";
 import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "@/components/cards/Cards";
+import SomthingWrongError from "@/components/errors/SomthingWrongError";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -28,6 +29,7 @@ export default function SearchPage() {
     const [searchHistory, setSearchHistory] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
     const [page, setPage] = useState(1);
     const [seatrchResult, setSearchResult] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
@@ -92,13 +94,22 @@ export default function SearchPage() {
                 return
             };
 
-            setLoading(true);
+            if (error) {
+                setError(false);
+            };
 
+            setLoading(true);
             const { status, data, dataIsEnd } = await loadMoreFetch({
                 apiPath: `${backendServer}/api/v1/movies/search?q=${q}`,
                 limitPerPage,
                 skip: page === 1 ? 0 : page * limitPerPage
             });
+
+            if (status !== 200) {
+                setError(true);
+                setLoading(false);
+                return
+            }
 
             const { moviesData } = data || {};
 
@@ -119,7 +130,8 @@ export default function SearchPage() {
             };
 
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            setError(true);
         } finally {
             setLoading(false);
         };
@@ -129,6 +141,14 @@ export default function SearchPage() {
             getMovies(searchQuery)
         }
     }, [page]);
+
+
+    if (error) {
+
+        return (
+            <SomthingWrongError />
+        )
+    }
 
     return (
         <>

@@ -1,13 +1,18 @@
 'use client'
 
-import { appConfig } from "@/config/config";
-import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import axios from "axios";
+import { appConfig } from "@/config/config";
+import { creatUrlLink } from "@/utils";
+import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SliderShowcase from "@/components/SliderShowcase";
+import FixedSearchIcon from "@/components/FixedSearchIcon";
 
-function HomePageLayout() {
+
+function HomePageLayout({ initialLayoutData }) {
 
     const homePageState = useSelector((state) => state.homePage);
 
@@ -97,6 +102,48 @@ function HomePageLayout() {
 
     return (
         <>
+            <FixedSearchIcon />
+            
+            {initialLayoutData && (
+                <>
+
+                    {initialLayoutData.sliderMovies?.map((data) => (
+
+                        <SliderShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
+                    ))}
+
+                    <SliderShowcase title="Bollywood hindi actress" linkUrl="/actress/bollywood">
+
+                        {initialLayoutData.bollywoodActressData?.map((actor) => (
+
+                            <Link
+                                href={`/actress/${creatUrlLink(actor.name)}/${actor.imdbId?.replace('nm', '')}`}
+                                key={actor.imdbId}
+                                title={actor.name}
+                                className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
+
+                                <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-cyan-500">
+
+                                    <Image
+                                        className="w-full h-full object-fill pointer-events-none select-none rounded-full"
+                                        src={actor.avatar}
+                                        width={100}
+                                        height={100}
+                                        alt={actor.name}
+                                    />
+                                </div>
+
+                                <div className="w-24 h-auto mobile:w-20 text-gray-900 overflow-hidden py-1.5">
+                                    <p className="whitespace-normal text-xs font-semibold font-sans text-center leading-[14px]">
+                                        {actor.name}
+                                    </p>
+                                </div>
+
+                            </Link>
+                        ))}
+                    </SliderShowcase>
+                </>
+            )}
             {sectionTwo && (
                 <>
                     {sectionTwo?.sliderMovies?.map((data) => (
