@@ -39,7 +39,7 @@ export default function Navbar() {
                             src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1719952317/moviesbazaar/brand_logo.png"
                             width={35}
                             height={35}
-                            className="w-12 h-12"
+                            className="w-12 h-12 mobile:w-10 mobile:h-10"
                         />
                         <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[14px] leading-[14px]">
                             Movies Bazaar

@@ -11,7 +11,6 @@ import NavigateBack from "@/components/NavigateBack";
 import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
-import brandLogo from "../../assets/images/brand_logo.png";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -157,14 +156,15 @@ export default function SearchPage() {
 
                     <div className="flex items-center mobile:hidden">
                         <Image
-                            src={brandLogo}
-                            width={40}
-                            height={40}
+                            src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1719952317/moviesbazaar/brand_logo.png"
+                            width={35}
+                            height={35}
+                            className="w-12 h-12 mobile:w-10 mobile:h-10"
                         />
-                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-sm">
+                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[14px] leading-[14px]">
                             Movies Bazaar
                         </Link>
-                        </div>
+                    </div>
 
                         <SearchBar
                             searchHistory={searchHistory}
