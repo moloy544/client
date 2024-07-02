@@ -155,10 +155,9 @@ export default function SearchPage() {
 
                     <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
 
-                    <div className="flex items-center">
+                    <div className="flex items-center mobile:hidden">
                         <Image
                             src={brandLogo}
-                            className="mobile:hidden"
                             width={40}
                             height={40}
                         />

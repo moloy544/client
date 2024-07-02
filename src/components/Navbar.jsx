@@ -42,7 +42,7 @@ export default function Navbar() {
                             width={40}
                             height={40}
                         />
-                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-sm">
+                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-base">
                             Movies Bazaar
                         </Link>
                     </div>
