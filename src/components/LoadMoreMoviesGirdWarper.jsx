@@ -31,7 +31,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
         callback: loadMore,
         loading,
         isAllDataLoad,
-        rootMargin: '200px'
+        rootMargin: '300px'
     });
 
     const setFilter = (data) => {
@@ -54,7 +54,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
     useEffect(() => {
 
-        //First component mount set states in redux store
+        //First component mount store page initial data and current path name in redux store
         if (loadMoviesPathname !== patname) {
 
             dispatch(updateLoadMovies({
@@ -131,9 +131,9 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                             <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
                         )))}
 
-                    {loading && (
-                        <MovieCardSkleaton limit={limitPerPage}
-                        />)}
+                        {loading && moviesData.length ===0&&(
+                            <MovieCardSkleaton limit={limitPerPage} />
+                        )}
 
                     {!loading && moviesData.length === 0 && (
                         <div className="my-40 text-gray-400 text-xl mobile:text-base text-center font-semibold">
@@ -141,6 +141,16 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                         </div>
                     )}
                 </div>
+
+                {loading && moviesData.length>0 && (
+                    <div className="w-full h-auto mobile:py-6 py-10 flex justify-center items-center">
+                        <div className="text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                            role="status">
+                            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                            >Loading...</span>
+                        </div>
+                    </div>
+                )}
 
                 <div className="w-full h-2" ref={bottomObserverElement}></div>
 

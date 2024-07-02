@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { creatUrlLink } from '@/utils';
 
- const SliderShowcase = memo(({ title, moviesData, linkUrl, children })=> {
+const SliderShowcase = memo(({ title, moviesData, space, linkUrl, children }) => {
 
     const sliderContainerRef = useRef(null);
     const movieCardRef = useRef(null);
@@ -99,12 +99,12 @@ import { creatUrlLink } from '@/utils';
                 )}
             </div>
 
-            <div ref={sliderContainerRef} className="w-full h-auto flex flex-row overflow-x-scroll gap-2.5 mobile:gap-2 px-2 scrollbar-hidden relative scroll-smooth">
+            <div ref={sliderContainerRef} className={`w-full h-auto flex flex-row overflow-x-scroll ${!space ? 'space-x-2.5 mobile:space-x-2.5' : space}  px-2 scrollbar-hidden relative scroll-smooth`}>
                 {children ? children : (
                     <>
                         {moviesData?.map((data) => (
                             <div ref={movieCardRef} key={data.imdbId} className="movie_card text-xs mobile:text-[10px]">
-                                <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title+' '+ data.releaseYear+ ' '+ data.type} prefetch={false}>
+                                <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title + ' ' + data.releaseYear + ' ' + data.type} prefetch={false}>
                                     <div className="relative w-[155px] h-[210px] mobile:w-28 mobile:h-40 bg-white rounded-[3px]">
                                         <Image
                                             priority
@@ -117,11 +117,11 @@ import { creatUrlLink } from '@/utils';
                                     <div className="movie_name_container">
                                         <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[14px] px-2 py-1">{data.title}</span>
                                     </div>
-                                    
-                                        <div className="absolute top-0.5 left-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-950 bg-opacity-75 text-yellow-300 text-center font-sans font-semibold rounded-md">
+
+                                    <div className="absolute top-0.5 left-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-950 bg-opacity-75 text-yellow-400 text-center font-sans font-semibold rounded-md">
                                         {data.releaseYear}
                                     </div>
-                    
+
                                 </Link>
                             </div>
                         ))}

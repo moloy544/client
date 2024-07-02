@@ -20,7 +20,7 @@ export const metadata = {
   keywords: 'online movies, watch movies online, movie streaming, film, cinema, entertainment, Hollywood movies, Hollywood dubbed movies, South movies, South dubbed movies, Bollywood movies',
 
   openGraph: {
-    images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
+    images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/w_300,h_300/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
     title: {
       default: 'Movies Bazaar',
       template: '%s | Movies Bazaar',

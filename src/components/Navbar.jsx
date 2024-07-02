@@ -1,9 +1,11 @@
 'use client'
 
+import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
-import { useState } from "react";
+import brandLogo from '../assets/images/brand_logo.png';
 
 const WatchlaterModel = dynamic(() => import('./models/WatchlaterModel'), { ssr: false });
 
@@ -33,10 +35,17 @@ export default function Navbar() {
             <header className="w-full h-auto">
 
                 <nav className="w-auto h-auto bg-gray-900 py-4 px-5 mobile:px-3 mobile:py-2 flex items-center justify-between">
-
-                    <Link href="/" className="font-semibold text-rose-500 text-xl mobile:text-base">
-                        Movies Bazaar
-                    </Link>
+                    <div className="flex items-center">
+                        <Image
+                            src={brandLogo}
+                            className="mobile:hidden"
+                            width={40}
+                            height={40}
+                        />
+                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-sm">
+                            Movies Bazaar
+                        </Link>
+                    </div>
 
                     <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3 mx-3">
 
@@ -47,7 +56,7 @@ export default function Navbar() {
                             </div>
                         </Link>
 
-                        <Link aria-label="Search" title="Search"  href="/search" className="hidden mobile:block p-0.5 mx-3">
+                        <Link aria-label="Search" title="Search" href="/search" className="hidden mobile:block p-0.5 mx-3">
                             <i className="bi bi-search text-gray-200 text-xl"></i>
                         </Link>
 

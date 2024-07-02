@@ -11,6 +11,7 @@ import NavigateBack from "@/components/NavigateBack";
 import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
+import brandLogo from "../../assets/images/brand_logo.png";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -136,12 +137,6 @@ export default function SearchPage() {
             setLoading(false);
         };
     }, [page]);
-    useEffect(() => {
-        if (page !== 1) {
-            getMovies(searchQuery)
-        }
-    }, [page]);
-
 
     if (error) {
 
@@ -160,7 +155,17 @@ export default function SearchPage() {
 
                     <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
 
-                        <Link href="/" className="text-xl text-rose-500 text-ellipsis font-semibold block mobile:hidden">Movies Bazaar</Link>
+                    <div className="flex items-center">
+                        <Image
+                            src={brandLogo}
+                            className="mobile:hidden"
+                            width={40}
+                            height={40}
+                        />
+                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-sm">
+                            Movies Bazaar
+                        </Link>
+                        </div>
 
                         <SearchBar
                             searchHistory={searchHistory}
@@ -181,48 +186,47 @@ export default function SearchPage() {
 
                 {searchQuery !== "" ? (
 
-                    <div className="w-full h-full py-3 mobile:py-2">
+                    <div className="w-full h-full">
 
-                        {seatrchResult.length > 0 ? (
-                            <>
-                                <h3 className="text-gray-300 text-base mobile:text-sm py-2 font-bold px-2">
-                                    Results for <span className=" text-cyan-500">{searchQuery}</span>
-                                </h3>
-                                <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
-
-                                    {seatrchResult.length > 0 && (
-                                        seatrchResult.map((movie, index) => (
-                                            <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
-                                        )))}
-
-                                    {loading && (
-                                        <MovieCardSkleaton limit={limitPerPage}
-                                        />)}
-
-                                </main>
-                                <div ref={bottomObserverElement}></div>
-                            </>
-                        ) : (
-                            <>
-                                {loading && seatrchResult.length < 1 && (
-                                    <div className="w-full py-5 flex justify-center items-center">
-                                        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-white motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                                            role="status">
-                                            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-                                            >Loading...</span>
-                                        </div>
-                                    </div>
-                                )}
-                                {!loading && seatrchResult.length < 1 && searchQuery !== " " && (
-                                    <h2 className="my-40 text-gray-300 text-xl mobile:text-base text-center font-semibold">We are not found anything</h2>
-                                )}
-                            </>
+                        {seatrchResult.length > 0 && (
+                            <h3 className="text-gray-300 text-base mobile:text-sm py-2 font-bold px-2">
+                                Results for <span className=" text-cyan-500">{searchQuery}</span>
+                            </h3>
                         )}
+                        <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
+                            {loading && seatrchResult.length === 0 ? (
+                                <MovieCardSkleaton limit={limitPerPage} />
+                            ) : seatrchResult.map((movie, index) => (
+                                <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
+                            ))}
+
+                        </main>
+
+                        {loading && seatrchResult.length > 0 && (
+                            <div className="w-full h-full flex justify-center items-center my-40">
+                                <div className="text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                                    role="status">
+                                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                                    >Loading...</span>
+                                </div>
+                            </div>
+                        )}
+
+                        {!loading && seatrchResult.length < 1 && searchQuery !== " " && (
+                            <div className="flex flex-col justify-center my-40 space-y-2 px-4">
+                                <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">
+                                    We are not found anything
+                                </h2>
+                                <small className="text-xs text-gray-400 text-center font-medium">Please double check the search keywork pelling and try again for 100% best result try with same title</small>
+                            </div>
+                        )}
+
+                        <div ref={bottomObserverElement}></div>
 
                     </div>
                 ) : (
                     <div className="w-full h-full my-40">
-                        <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">Search and watch movies and series</h2>
+                        <h2 className="text-gray-400 text-xl mobile:text-base text-center font-semibold">Search and watch movies and series</h2>
                     </div>
                 )}
 

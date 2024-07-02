@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import authorImage from '../assets/images/author.jpg';
+import authorImage from '../assets/images/india_flag.jpg';
 
 function Footer() {
     return (
