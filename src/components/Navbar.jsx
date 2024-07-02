@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
-import brandLogo from '../assets/images/brand_logo.png';
 
 const WatchlaterModel = dynamic(() => import('./models/WatchlaterModel'), { ssr: false });
 
@@ -34,20 +33,20 @@ export default function Navbar() {
         <>
             <header className="w-full h-auto">
 
-                <nav className="w-auto h-auto bg-gray-900 py-4 px-5 mobile:px-3 mobile:py-2 flex items-center justify-between">
+                <nav className="w-auto h-auto bg-gray-900 py-3 px-5 mobile:px-2 mobile:py-2 flex items-center justify-between">
                     <div className="flex items-center">
                         <Image
-                            src={brandLogo}
-                            className="mobile:hidden"
-                            width={40}
-                            height={40}
+                            src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1719952317/moviesbazaar/brand_logo.png"
+                            width={35}
+                            height={35}
+                            className="w-12 h-12"
                         />
-                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-base">
+                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[14px] leading-[14px]">
                             Movies Bazaar
                         </Link>
                     </div>
 
-                    <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3 mx-3">
+                    <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3">
 
                         <Link href="/search" title="Search bar" className="cursor-text mobile:hidden">
                             <div className="flex items-center gap-3 w-96 h-11 mobile:w-full mobile:h-9 rounded-[10px] text-sm py-1 bg-gray-800 text-gray-300 border-2 border-gray-700">
@@ -56,7 +55,7 @@ export default function Navbar() {
                             </div>
                         </Link>
 
-                        <Link aria-label="Search" title="Search" href="/search" className="hidden mobile:block p-0.5 mx-3">
+                        <Link aria-label="Search" title="Search" href="/search" className="hidden mobile:block p-0.5">
                             <i className="bi bi-search text-gray-200 text-xl"></i>
                         </Link>
 
