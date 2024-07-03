@@ -23,9 +23,8 @@ const ResponsiveMovieCard = ({ data }) => {
             <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title+' '+ data.releaseYear+ ' '+ data.type} prefetch={false}>
 
                 <Image
-                    className="w-full aspect-[3/4] object-fill select-none pointer-events-none rounded-[3px]"
-                    width={200}
-                    height={250}
+                    className="w-full aspect-[2/3] select-none pointer-events-none rounded-[3px]"
+                    fill
                     src={data.thambnail?.replace('/upload/', '/upload/w_500,h_700,c_scale/')}
                     alt={data.title || 'movie thumbnail'}
                     placeholder="blur"

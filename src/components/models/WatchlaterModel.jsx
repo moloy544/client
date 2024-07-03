@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
@@ -20,7 +20,9 @@ const formatDate = (dateString) => {
 }
 
 export default function WatchlaterModel({ visibility, functions }) {
+
     const { hideModel } = functions;
+    
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [watchLaterData, setWatchLaterData] = useState([]);
@@ -106,6 +108,10 @@ export default function WatchlaterModel({ visibility, functions }) {
                     // after slider remove effect hide it for replace another list item
                     parentElement.classList.add('hidden');
 
+                    // update watchLaterData with new array without this item
+                    const newData = watchLaterData.filter((data) => data.imdbId !==imdbId);
+                    setWatchLaterData(newData);
+
                     /* check after remove is watchlater localStorage length is zero so
                   remove localStorage key from browser and also empty watchlater state for show empty message */
                     if (parseData.length === 0) {
@@ -172,7 +178,13 @@ export default function WatchlaterModel({ visibility, functions }) {
     );
 };
 
-function Card({ data, remove }) {
+const areEqual = (prevProps, nextProps) => {
+    return (
+        JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data)
+    );
+};
+
+const Card = memo(({ data, remove }) =>{
 
     const { imdbId, type, title, thambnail, releaseYear, addAt } = data || {};
 
@@ -230,4 +242,4 @@ function Card({ data, remove }) {
             </div>
         </InspectPreventer>
     )
-}
+}, areEqual);
