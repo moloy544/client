@@ -22,7 +22,7 @@ const formatDate = (dateString) => {
 export default function WatchlaterModel({ visibility, functions }) {
 
     const { hideModel } = functions;
-    
+
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [watchLaterData, setWatchLaterData] = useState([]);
@@ -243,3 +243,5 @@ const Card = memo(({ data, remove }) =>{
         </InspectPreventer>
     )
 }, areEqual);
+
+Card.displayName = 'Card';
