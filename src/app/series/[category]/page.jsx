@@ -46,20 +46,27 @@ export default async function Page({ params }) {
 
   const title = transformToCapitalize(category + ' series');
 
+  const filterOptions = [];
+
+  if (data.genreFilter) {
+    filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter });
+  };
+
   return (
     <>
       <NavigateBackTopNav title={title} />
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
-           <LoadMoreMoviesGirdWarper
-            apiUrl={apiUrl}
-            limitPerPage={30}
-            initialFilter={filterData}
-            filterCounter={data.filterCount}
-            initialMovies={data.moviesData || []}
-            isDataEnd={dataIsEnd}
-          />
+
+        <LoadMoreMoviesGirdWarper
+          apiUrl={apiUrl}
+          limitPerPage={40}
+          serverResponseExtraFilter={filterOptions}
+          initialFilter={filterData}
+          initialMovies={data.moviesData || []}
+          isDataEnd={dataIsEnd}
+        />
 
       </div>
 
