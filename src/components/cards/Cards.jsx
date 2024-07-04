@@ -18,12 +18,12 @@ const ResponsiveMovieCard = ({ data }) => {
 
     return (
 
-        <div className="movie_card border mobile:min-h-[160px] min-h-[200px] max-h-52 overflow-hidden">
+        <div className="movie_card mobile:max-w-[160px] border overflow-hidden">
 
             <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title + ' ' + data.releaseYear + ' ' + data.type} prefetch={false}>
-                <div className="relative w-full h-full">
+                <div className="relative w-full mobile:max-w-[160px] aspect-[2/3] mobile:min-h-[160px] min-h-[200px] max-h-52">
                     <Image
-                        className="w-full aspect-[2/3] select-none rounded-[3px]"
+                        className="w-full h-full select-none rounded-[3px]"
                         fill
                         src={data.thambnail?.replace('/upload/', '/upload/w_500,h_700,c_scale/')}
                         alt={data.title || 'movie thumbnail'}

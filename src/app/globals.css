@@ -38,10 +38,9 @@
 
   .movie_card{
     width: auto; 
-    max-width: 220px;
+    max-width: 200px;
     height: auto; 
     border-radius: 4px; 
-    cursor: pointer;
     position: relative;
     color: rgb(12, 15, 15);
     border: 1px solid rgb(137, 119, 1);
