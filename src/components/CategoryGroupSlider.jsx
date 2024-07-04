@@ -7,7 +7,7 @@ const LinkButton = ({ linkData, linkUrl }) => {
   return (
     <>
       {linkData?.map((data) =>
-      (<div key={data.id} className="bg-gray-700 w-auto h-auto py-2 px-3 rounded-[5px] flex-none text-xs text-gray-200">
+      (<div key={data.id} className="bg-gray-700 w-auto h-auto py-2 px-3 rounded-[5px] flex-none text-xs text-gray-200 hover:bg-gray-600 hover:text-gray-300">
         <Link
         title={data.name}
           href={data.linkUrl ? data.linkUrl.toLowerCase().replace(/[' ']/g, '-') :

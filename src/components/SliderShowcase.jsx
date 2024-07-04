@@ -86,7 +86,7 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, children }) =>
     }
 
     return (
-        <section className="w-full h-auto py-2 mobile:py-1.5 relative space-y-2.5">
+        <section className="w-full h-auto relative space-y-2">
             <div className="w-full h-auto flex justify-between items-center px-2.5">
                 <h2 className="text-gray-200 text-[18px] mobile:text-sm font-medium line-clamp-1">
                     {title}
@@ -99,7 +99,7 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, children }) =>
                 )}
             </div>
 
-            <div ref={sliderContainerRef} className={`w-full h-auto flex flex-row overflow-x-scroll ${!space ? 'space-x-2.5 mobile:space-x-2.5' : space}  px-2 scrollbar-hidden relative scroll-smooth`}>
+            <div ref={sliderContainerRef} className={`w-full h-auto flex flex-row overflow-x-scroll ${!space ? 'space-x-2 mobile:space-x-1.5' : space} px-2 scrollbar-hidden relative scroll-smooth`}>
                 {children ? children : (
                     <>
                         {moviesData?.map((data) => (
@@ -108,7 +108,7 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, children }) =>
                                     <div className="relative w-[155px] h-[210px] mobile:w-28 mobile:h-40 bg-white rounded-[3px]">
                                         <Image
                                             priority
-                                            className="pointer-events-none select-none rounded-[3px]"
+                                            className="select-none rounded-[3px]"
                                             src={data.thambnail?.replace('/upload/', '/upload/w_500,h_700,c_scale/')}
                                             fill
                                             alt={data.title}

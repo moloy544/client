@@ -9,7 +9,7 @@ import { creatUrlLink } from "@/utils";
 import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SliderShowcase from "@/components/SliderShowcase";
-import FixedSearchIcon from "@/components/FixedSearchIcon";
+import BacktoTopButton from "@/components/BacktoTopButton";
 
 
 function HomePageLayout({ initialLayoutData }) {
@@ -103,7 +103,9 @@ function HomePageLayout({ initialLayoutData }) {
     return (
         <>
             <FixedSearchIcon />
-            
+
+            <BacktoTopButton />
+
             {initialLayoutData && (
                 <>
 
@@ -185,12 +187,12 @@ function HomePageLayout({ initialLayoutData }) {
 
             {loading && (
                 <div className="w-full h-auto mobile:py-6 py-10 flex justify-center items-center">
-                <div className="text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                    role="status">
-                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-                    >Loading...</span>
+                    <div className="text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                        role="status">
+                        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                        >Loading...</span>
+                    </div>
                 </div>
-            </div>
             )}
 
             <div className="w-full h-2" ref={observerRefElement}></div>
@@ -199,3 +201,39 @@ function HomePageLayout({ initialLayoutData }) {
 }
 
 export default HomePageLayout;
+
+function FixedSearchIcon() {
+
+    const [searchIconVisibility, setSearchIconVisibility] = useState(false);
+
+    const prevScrollY = useRef(0);
+
+    const handleScroll = () => {
+
+        const scrollY = window.scrollY;
+
+        // For Search icon visibility
+        setSearchIconVisibility(window.innerWidth <= 767 ? scrollY > 48 : scrollY > 72);
+
+        prevScrollY.current = scrollY;
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    if (!searchIconVisibility) {
+        return null;
+    };
+
+    return (
+        <div className="fixed right-14 bottom-16 mobile:bottom-10 mobile:right-8 w-12 h-12 md:w-14 md:h-14 bg-yellow-500 rounded-full z-20 flex items-center justify-center" style={{ boxShadow: 'rgb(212, 206, 7) 0px 0px 6px' }}>
+            <Link aria-label="Search" title="Search" href="/search">
+                <i className="bi bi-search md:text-2xl text-[20px] text-gray-900 font-bold"></i>
+            </Link>
+        </div>
+    );
+}
