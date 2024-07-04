@@ -9,7 +9,7 @@ import { useInfiniteScroll } from "@/lib/lib";
 import { ModelsController } from "@/lib/EventsHandler";
 import NavigateBack from "@/components/NavigateBack";
 import CategoryGroupSlider from "@/components/CategoryGroupSlider";
-import { MovieCardSkleaton, ResponsiveMovieCard } from "@/components/cards/Cards";
+import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 
 // this is return user search history data
@@ -52,7 +52,6 @@ export default function SearchPage() {
         setPage(1);
         setSearchResult([]);
         setEndOfData(false);
-        getMovies(searchText);
     };
 
     // Function to add a search term to the search history
@@ -90,7 +89,7 @@ export default function SearchPage() {
     const getMovies = useCallback(async (q) => {
         try {
 
-            if (q === " " || q === "") {
+            if (q === " " || q === "" || loading) {
                 return
             };
 
@@ -102,7 +101,10 @@ export default function SearchPage() {
             const { status, data, dataIsEnd } = await loadMoreFetch({
                 apiPath: `${backendServer}/api/v1/movies/search?q=${q}`,
                 limitPerPage,
-                skip: page === 1 ? 0 : page * limitPerPage
+                skip: page === 1 ? 0 : page * limitPerPage,
+                bodyData: {
+                    dateSort: -1,
+                }
             });
 
             if (status !== 200) {
@@ -135,13 +137,15 @@ export default function SearchPage() {
         } finally {
             setLoading(false);
         };
-    }, [page]);
+    }, [page, loading]);
 
+    useEffect(() => {
+        getMovies(searchQuery);
+    }, [page, searchQuery]);
+
+   // check is error encountered show error message
     if (error) {
-
-        return (
-            <SomthingWrongError />
-        )
+        return <SomthingWrongError />
     }
 
     return (
@@ -152,19 +156,23 @@ export default function SearchPage() {
 
                     <NavigateBack className="bi bi-arrow-left text-gray-100 ml-4 mobile:ml-2 text-3xl mobile:text-[25px] cursor-pointer w-fit" />
 
-                    <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-4 px-5 mobile:py-3 mobile:px-2">
+                    <div className="w-full mobile:bg-transparent h-auto flex justify-between items-center py-2 px-2.5 mobile:py-1.5 mobile:px-2">
 
-                    <div className="flex items-center mobile:hidden">
-                        <Image
-                            src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1719952317/moviesbazaar/brand_logo.png"
-                            width={35}
-                            height={35}
-                            className="w-12 h-12 mobile:w-10 mobile:h-10"
-                        />
-                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[14px] leading-[14px]">
-                            Movies Bazaar
-                        </Link>
-                    </div>
+                        <div className="flex items-center space-x-0.5 mobile:hidden">
+                            <Image
+                                src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1720111766/moviesbazaar/brand_logo.png"
+                                width={35}
+                                height={35}
+                                alt="Mobies bazar logo"
+                                className="w-11 h-11 mobile:w-9 mobile:h-9"
+                            />
+                            <div className="flex flex-col mt-1">
+                                <Link href="/" className="font-semibold text-yellow-600 text-xl mobile:text-[15px] leading-[14px]">
+                                    Movies Bazar
+                                </Link>
+                                <small className="text-yellow-600 mt-1 mobile:mt-0.5 text-xs mobile:text-[10px] font-medium pl-0.5">Made with love</small>
+                            </div>
+                        </div>
 
                         <SearchBar
                             searchHistory={searchHistory}
@@ -175,10 +183,8 @@ export default function SearchPage() {
                     </div>
                 </div>
 
-                {seatrchResult.length === 0 && (
                     <CategoryGroupSlider />
-                )}
-
+                    
             </header >
 
             <div className="w-full h-auto overflow-x-hidden">
@@ -193,16 +199,14 @@ export default function SearchPage() {
                             </h3>
                         )}
                         <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
-                            {loading && seatrchResult.length === 0 ? (
-                                <MovieCardSkleaton limit={limitPerPage} />
-                            ) : seatrchResult.map((movie, index) => (
+                            {seatrchResult.map((movie, index) => (
                                 <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
                             ))}
 
                         </main>
 
-                        {loading && seatrchResult.length > 0 && (
-                            <div className="w-full h-full flex justify-center items-center my-40">
+                        {loading && (
+                            <div className="w-full h-full flex justify-center items-center my-14 mobile:my-12">
                                 <div className="text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                                     role="status">
                                     <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"

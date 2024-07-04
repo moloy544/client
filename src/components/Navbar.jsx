@@ -31,25 +31,24 @@ export default function Navbar() {
 
     return (
         <>
-            <header className="w-full h-auto">
-
-                <nav className="w-auto h-auto bg-gray-900 pt-2 px-2.5 mobile:px-0 flex items-center justify-between">
-                    <div className="flex items-center">
+                <header className="w-auto h-auto bg-gray-900 pt-2 px-2.5 mobile:px-2 flex items-center justify-between">
+                    <div className="flex items-center space-x-0.5">
                         <Image
-                            src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1719952317/moviesbazaar/brand_logo.png"
+                            src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1720111766/moviesbazaar/brand_logo.png"
                             width={35}
                             height={35}
-                            className="w-14 h-14 mobile:w-11 mobile:h-11 transform translate-x-1.5 mobile:translate-x-1"
+                            alt="Mobies bazar logo"
+                            className="w-11 h-11 mobile:w-9 mobile:h-9"
                         />
-                        <div className="flex flex-col">
+                        <div className="flex flex-col mt-1">
                         <Link href="/" className="font-semibold text-yellow-600 text-xl mobile:text-[15px] leading-[14px]">
                             Movies Bazar
                         </Link>
-                        <small className="text-yellow-600 mt-1 mobile:mt-0.5 text-xs mobile:text-[9px] font-medium pl-0.5">Made with love</small>
+                        <small className="text-yellow-600 mt-1 mobile:mt-0.5 text-xs mobile:text-[10px] font-medium pl-0.5">Made with love</small>
                         </div>
                     </div>
 
-                    <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3 px-2">
+                    <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3">
 
                         <Link href="/search" title="Search bar" className="cursor-text mobile:hidden">
                             <div className="flex items-center gap-3 w-96 h-11 mobile:w-full mobile:h-9 rounded-[10px] text-sm py-1 bg-gray-800 text-gray-300 border-2 border-gray-700">
@@ -86,13 +85,10 @@ export default function Navbar() {
 
                         </div>
                     </div>
-
-                </nav>
-
+                    
             </header>
-
             <CategoryGroupSlider />
+</>
 
-        </>
     )
 };

@@ -1,5 +1,6 @@
 'use client'
 
+import { creatToastAlert } from "@/utils";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -36,10 +37,17 @@ export default function MoviesUserActionOptions({ movieData }) {
       setIsSaved(true);
       const dateNow = new Date();
       parseData.unshift({ imdbId: movieData.imdbId, addAt: dateNow });
+      creatToastAlert({
+        message: `Add ${movieData.title} To Watch Later`
+      });
+      
     } else {
       // Movie found, remove it
       parseData.splice(index, 1);
       setIsSaved(false);
+      creatToastAlert({
+        message: `Remove ${movieData.title+ ' '+ movieData.type} From Watch Later`
+      })
     }
 
     if (parseData.length === 0) {

@@ -3,6 +3,7 @@ import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import { filterOptionsOnject } from "@/constant/filterOptions";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
@@ -17,22 +18,9 @@ export default async function Page() {
     dateSort: 'recent added'
   };
 
-  const filterOptions = [
-{
+  const { typeOptions, providerOptions } = filterOptionsOnject;
 
-  title: "Filter by type",
-  data: [
-      {
-          id: 1,
-          filter: 'type',
-          name: "movie"
-      },
-      {
-          id: 2,
-          filter: 'type',
-          name: "series"
-      }]
-}];
+  const filterOptions = [typeOptions, providerOptions];
 
   const { status, data, dataIsEnd } = await loadMoreFetch({
 

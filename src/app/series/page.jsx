@@ -7,7 +7,7 @@ const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWro
 
 export const metadata = {
 
-    title: 'Series',
+    title: 'Series collaction',
     description: 'Explore a diverse collection of web series from Hollywood, Bollywood, and South Indian cinema. Enjoy top-rated series in each category with compelling stories and brilliant performances.',
     keywords: 'web series, hollywood series, bollywood series, south indian series, south series, netflix series free, watch netflix series free, latest hindi series',
 

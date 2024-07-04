@@ -3,6 +3,7 @@ import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import { filterOptionsOnject } from "@/constant/filterOptions";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
@@ -51,53 +52,12 @@ export default async function Page({ params }) {
 
     const capitalizeGenre = transformToCapitalize(genre);
 
-    const filterOptions = [{
+    const { providerOptions, typeOptions } = filterOptionsOnject;
 
-        title: "Filter by type",
-        data: [
-            {
-                id: 1,
-                filter: 'type',
-                name: "movie"
-            },
-            {
-                id: 2,
-                filter: 'type',
-                name: "series"
-            }]
-    }, {
-
-        title: "Filter by provider",
-        data: [
-            {
-                id: 1,
-                filter: 'provider',
-                name: "Netflix"
-            },
-            {
-                id: 2,
-                filter: 'provider',
-                name: "Amazon Prime"
-            },
-            {
-                id: 3,
-                filter: 'provider',
-                name: "Amazon Mini Tv"
-            }, {
-                id: 4,
-                filter: 'provider',
-                name: "HotStar"
-            },
-            {
-                id: 5,
-                filter: 'provider',
-                name: "Zee5"
-            }]
-    }];
-
+    const filterOptions = [providerOptions, typeOptions];
+    
     if (data.industryFilter) {
         filterOptions.unshift({ title: "Filter by industry", data: data.industryFilter });
-        
     };
 
     return (

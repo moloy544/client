@@ -86,7 +86,7 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, children }) =>
     }
 
     return (
-        <section className="w-full h-auto relative space-y-2">
+        <section className="w-full h-auto relative space-y-2 py-1.5">
             <div className="w-full h-auto flex justify-between items-center px-2.5">
                 <h2 className="text-gray-200 text-[18px] mobile:text-sm font-medium line-clamp-1">
                     {title}

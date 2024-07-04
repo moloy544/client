@@ -122,6 +122,38 @@ const imageToBase64Url = (file) => {
   });
 };
 
+// ******** Creat Toast Message Alert In Dom For Temporarily *******/
+//Creat Tooltip Popup Messages 
+let currentTooltip = null;
+const creatToastAlert = ({ message, visiblityTime = 8000 }) => {
+  // If there's already a tooltip displayed, remove it before showing the new one
+  if (currentTooltip && currentTooltip.element) {
+    document.body.removeChild(currentTooltip.element);
+    clearTimeout(currentTooltip.timerId);
+  }
+
+  // Create a div element for the tooltip
+  const toolTip = document.createElement('div');
+
+   toolTip.classList.add('custome_toast_message', 'md:text-base');
+
+  // Set inner text (or inner HTML if needed)
+  toolTip.innerText = transformToCapitalize(message);
+  
+  // Append the created element to the DOM, assuming you want to add it to the body
+  document.body.appendChild(toolTip);
+
+  // Remove the tooltip after the specified visibility time
+  const timerId = setTimeout(() => {
+    document.body.removeChild(toolTip);
+    // Clear the reference to the tooltip
+    currentTooltip = null;
+  }, visiblityTime);
+
+  // Update the currentTooltip and store the DOM element and timerId
+  currentTooltip = { element: toolTip, timerId };
+};
+
 /**** Export all utilities *****/
 export {
   loadMoreFetch,
@@ -131,4 +163,5 @@ export {
   transformToCapitalize,
   formatNumberCounter,
   imageToBase64Url,
+  creatToastAlert
 }

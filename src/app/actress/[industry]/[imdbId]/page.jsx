@@ -5,6 +5,7 @@ import { creatUrlLink, loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import { filterOptionsOnject } from "@/constant/filterOptions";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
  
@@ -100,7 +101,9 @@ export default async function Page({ params }) {
 
   const { data, dataIsEnd } = moviesData;
 
-  const filterOptions = [];
+  const { typeOptions } = filterOptionsOnject;
+
+  const filterOptions = [typeOptions];
 
   if (data.genreFilter) {
     filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter })

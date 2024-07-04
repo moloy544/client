@@ -20,17 +20,18 @@ const ResponsiveMovieCard = ({ data }) => {
 
         <div className="movie_card border mobile:min-h-[160px] min-h-[200px] max-h-52 overflow-hidden">
 
-            <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title+' '+ data.releaseYear+ ' '+ data.type} prefetch={false}>
-
-                <Image
-                    className="w-full aspect-[2/3] select-none rounded-[3px]"
-                    fill
-                    src={data.thambnail?.replace('/upload/', '/upload/w_500,h_700,c_scale/')}
-                    alt={data.title || 'movie thumbnail'}
-                    placeholder="blur"
-                    blurDataURL={data.thambnail}
-                    priority
-                />
+            <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title + ' ' + data.releaseYear + ' ' + data.type} prefetch={false}>
+                <div className="relative w-full h-full">
+                    <Image
+                        className="w-full aspect-[2/3] select-none rounded-[3px]"
+                        fill
+                        src={data.thambnail?.replace('/upload/', '/upload/w_500,h_700,c_scale/')}
+                        alt={data.title || 'movie thumbnail'}
+                        placeholder="blur"
+                        blurDataURL={data.thambnail}
+                        priority
+                    />
+                </div>
 
                 <div className="movie_name_container">
                     <span className="text-white text-xs mobile:text-[10px] font-sans line-clamp-3 leading-[14px] px-2 mobile:py-0.5 py-1">

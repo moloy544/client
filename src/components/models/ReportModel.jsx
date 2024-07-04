@@ -88,7 +88,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
   
     return (
       <ModelsController visibility={isOpen}>
-        <div className="w-full h-full fixed top-0 left-0 z flex justify-center items-center bg-gray-950 bg-opacity-50 z-[300]">
+        <div className="w-full h-full fixed top-0 left-0 flex justify-center items-center bg-gray-950 bg-opacity-50 z-[60]">
           <div className="mobile:w-[90%] mx-4 max-w-sm mobile:m-auto w-auto h-auto rounded-lg bg-white p-4 shadow-2xl border border-gray-300">
   
             {(message === "Pending") || (message === "Invalid") ? (

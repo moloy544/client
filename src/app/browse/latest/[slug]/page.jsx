@@ -2,6 +2,7 @@ import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import { filterOptionsOnject } from "@/constant/filterOptions";
 
 export async function generateMetadata({ params }) {
 
@@ -41,21 +42,9 @@ export default async function Page({ params }) {
 
   const title = transformToCapitalize(params.slug);
 
-  const filterOptions = [{
+  const { typeOptions } = filterOptionsOnject;
 
-    title: "Filter by type",
-    data: [
-        {
-            id: 1,
-            filter: 'type',
-            name: "movie"
-        },
-        {
-            id: 2,
-            filter: 'type',
-            name: "series"
-        }]
-}];
+  const filterOptions = [typeOptions];
 
   if (data.genreFilter) {
     filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter })

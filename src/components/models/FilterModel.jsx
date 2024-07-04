@@ -101,7 +101,7 @@ const FilterModel = memo(({ initialFilterData, filterData, functions, filterOpti
                     </div>
                 </div>
             )}
-            <div className={`w-auto h-auto bg-white fixed bottom-1.5 right-0 transition-all duration-500 ease-in-out z-20 ${visible ? 'translate-y-0' : '-translate-y-[-110%]'} border border-gray-300 shadow-2xl py-1 rounded-md select-none`}>
+            <div className={`w-auto h-auto bg-white fixed bottom-1.5 right-0 transition-all duration-500 ease-in-out z-[100] ${visible ? 'translate-y-0' : '-translate-y-[-110%]'} border border-gray-300 shadow-2xl py-1 rounded-md select-none`}>
 
                 <div className="w-full h-auto flex justify-between items-center px-2">
                     <div className="text-sm text-black font-bold">Sort options</div>
@@ -172,7 +172,7 @@ const FilterModel = memo(({ initialFilterData, filterData, functions, filterOpti
                                                 <Fragment key={filterName}>
 
                                                     <div onClick={() => addFilter({ genre: filterName })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genre === filterName ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                                        <span>{filterName + ` (${count})`}</span>
+                                                        <span>{filterName + ` (${formatNumberCounter(count)})`}</span>
                                                         <i className={`text-base ${selectedFilter.genre === filterName ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
                                                     </div>
 
@@ -187,7 +187,7 @@ const FilterModel = memo(({ initialFilterData, filterData, functions, filterOpti
 
                                                     <div onClick={() => addFilter({ [filter]: name })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter[filter] === name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
                                                         {count ? (
-                                                            <span>{transformToCapitalize(name) + ` (${count})`}</span>
+                                                            <span>{transformToCapitalize(name) + ` (${formatNumberCounter(count)})`}</span>
                                                         ) : (
                                                             <span>{transformToCapitalize(name)}</span>
                                                         )}

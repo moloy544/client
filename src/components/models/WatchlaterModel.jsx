@@ -4,7 +4,7 @@ import Image from "next/image";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
-import { creatUrlLink } from "@/utils";
+import { creatToastAlert, creatUrlLink } from "@/utils";
 import { InspectPreventer, useInfiniteScroll } from "@/lib/lib";
 
 const formatDate = (dateString) => {
@@ -103,6 +103,12 @@ export default function WatchlaterModel({ visibility, functions }) {
             if (parentElement) {
                 // creat item hidden effect
                 parentElement.classList.add(...transitionEffect.split(' '));
+
+                // get the data title for showing title in toast message
+                const title = watchLaterData[index].title;
+                creatToastAlert({
+                message: `Removed ${title} from Watch later`
+                })
                 setTimeout(() => {
 
                     // after slider remove effect hide it for replace another list item
@@ -131,7 +137,7 @@ export default function WatchlaterModel({ visibility, functions }) {
         <ModelsController visibility={visibility} closeEvent={hideModel}>
             <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border border-gray-400 right-0 z-40 select-none">
                 <div className="relative">
-                    <div className="px-2 py-2 text-sm text-gray-800 font-semibold border-b border-b-slate-200">Watch later</div>
+                    <div className="px-2 py-2 text-sm text-gray-800 font-bold border-b border-b-slate-200">Watch later</div>
                     <button onClick={hideModel} type="button" title="Close" className="w-7 h-7 absolute top-1 right-1 text-xl text-gray-700 font-semibold">
                         <span className="sr-only">Close Watch later model button</span>
                         <i className="bi bi-x"></i>
@@ -203,14 +209,14 @@ const Card = memo(({ data, remove }) =>{
     return (
         <InspectPreventer forceToPrevent={isMobileDevice()}>
             <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
-                <Link className="w-full h-fit flex gap-3 items-center" title={title} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
+                <Link className="w-full h-fit flex gap-3 items-center" title={title+' '+releaseYear+' ' +type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
                     <div className="w-16 h-20 border border-slate-200 rounded-sm flex-none">
                         <Image
                             priority
                             className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
                             width={80}
                             height={80}
-                            src={thambnail}
+                            src={thambnail?.replace('/upload/', '/upload/w_400,h_600,c_scale/')}
                             alt={title || 'movie poster image'}
                             placeholder="blur"
                             blurDataURL={thambnail}

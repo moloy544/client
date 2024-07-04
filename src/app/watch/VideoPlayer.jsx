@@ -79,8 +79,8 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
   const breadcrumbData = [
     {
-      name: type,
-      pathLink: type === 'series' ? `/${type}` : undefined,
+      name: type === 'movie' ? type.replace('movie', 'movies') : type,
+      pathLink: type === 'series' ? `/${type}` : `/browse/category/${type.replace('movie', 'movies')}`,
     },
     {
       name: category,

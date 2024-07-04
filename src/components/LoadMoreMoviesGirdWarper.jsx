@@ -156,7 +156,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
             </main>
 
-            {initialMovies.length >= 30 && initialFilter && (
+            {initialMovies && initialMovies.length >= 30 && initialFilter && (
                 <FilterModel
                     initialFilterData={initialFilter}
                     filterData={filterData}

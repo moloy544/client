@@ -4,15 +4,16 @@ import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import { filterOptionsOnject } from "@/constant/filterOptions";
 
-const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
+const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
 export async function generateMetadata({ params }) {
 
   const editParamsQuery = transformToCapitalize(params.categoryName);
 
   const metaData = {
-    title: `${editParamsQuery} movies collaction`,
+    title: `${editParamsQuery} collaction`,
     description: `Watch ${editParamsQuery} movies, series free  of cost online Movies Bazaar have lot of ${editParamsQuery} movies and series collaction`,
     keywords: `${editParamsQuery} movie, Watch ${editParamsQuery} movie online, ${editParamsQuery} movie watch free online, Where to watch ${editParamsQuery} movies online`,
 
@@ -54,22 +55,13 @@ export default async function Page({ params }) {
 
   const categoryName = transformToCapitalize(params.categoryName);
 
-  const filterOptions = [
-  {
+  const { typeOptions, providerOptions } = filterOptionsOnject;
 
-    title: "Filter by type",
-    data: [
-      {
-        id: 1,
-        filter: 'type',
-        name: "movie"
-      },
-      {
-        id: 2,
-        filter: 'type',
-        name: "series"
-      }]
-  }];
+  const filterOptions = [typeOptions];
+
+  if (category?.toLowerCase() === 'movies') {
+    filterOptions.push(providerOptions)
+  }
 
   if (data.genreFilter) {
     filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter });
@@ -77,7 +69,6 @@ export default async function Page({ params }) {
 
   if (data.industryFilter) {
     filterOptions.unshift({ title: "Filter by industry", data: data.industryFilter });
-    
 };
 
   return (
