@@ -48,10 +48,17 @@ export default function SearchPage() {
 
     // after form submission this function is called
     const handleSubmitForm = (searchText) => {
+
+        // Reset the search result and end of data flag and back to top window for best user experience
+        window.scrollTo({
+            top: 0,
+            behavior: 'instant',
+        })
         setSearchQuery(searchText);
         setPage(1);
         setSearchResult([]);
         setEndOfData(false);
+        getMovies(searchText);
     };
 
     // Function to add a search term to the search history
@@ -140,10 +147,13 @@ export default function SearchPage() {
     }, [page, loading]);
 
     useEffect(() => {
-        getMovies(searchQuery);
+        if (page !== 1) {
+            getMovies(searchQuery);
+        }
+
     }, [page, searchQuery]);
 
-   // check is error encountered show error message
+    // check is error encountered show error message
     if (error) {
         return <SomthingWrongError />
     }
@@ -183,8 +193,8 @@ export default function SearchPage() {
                     </div>
                 </div>
 
-                    <CategoryGroupSlider />
-                    
+                <CategoryGroupSlider />
+
             </header >
 
             <div className="w-full h-auto overflow-x-hidden">
