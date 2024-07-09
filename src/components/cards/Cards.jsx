@@ -25,10 +25,10 @@ const ResponsiveMovieCard = ({ data }) => {
                     <Image
                         className="w-full h-full select-none rounded-[3px]"
                         fill
-                        src={data.thambnail?.replace('/upload/', '/upload/w_500,h_700,c_scale/')}
+                        src={data.thambnail?.replace('/upload/', '/upload/w_280,h_350,c_scale/')}
                         alt={data.title || 'movie thumbnail'}
                         placeholder="blur"
-                        blurDataURL={data.thambnail}
+                        blurDataURL={data.thambnail?.replace('/upload/', '/upload/w_250,h_350,c_scale/')}
                         priority
                     />
                 </div>
