@@ -3,11 +3,14 @@ import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
-import { filterOptionsOnject } from "@/constant/filterOptions";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export const revalidate = 3600 // revalidate at most every hour
+
+export const metadata = {
+  title: 'Recently Added',
+}
 
 export default async function Page() {
 
@@ -17,10 +20,6 @@ export default async function Page() {
     genre: "all",
     dateSort: 'recent added'
   };
-
-  const { typeOptions, providerOptions } = filterOptionsOnject;
-
-  const filterOptions = [typeOptions, providerOptions];
 
   const { status, data, dataIsEnd } = await loadMoreFetch({
 
@@ -35,14 +34,7 @@ export default async function Page() {
     )
   };
 
-  if (data.genreFilter) {
-    filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter });
-  };
-
-  if (data.industryFilter) {
-    filterOptions.unshift({ title: "Filter by industry", data: data.industryFilter });
-    
-};
+  const { filterOptions, moviesData } = data;
 
   return (
     <>
@@ -53,9 +45,9 @@ export default async function Page() {
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
           initialFilter={filterData}
-          serverResponseExtraFilter={filterOptions}
+          serverResponseExtraFilter={filterOptions || []}
           limitPerPage={40}
-          initialMovies={data.moviesData || []}
+          initialMovies={moviesData || []}
           isDataEnd={dataIsEnd}
         />
 

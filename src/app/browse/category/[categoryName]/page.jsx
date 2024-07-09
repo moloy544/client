@@ -4,7 +4,6 @@ import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
-import { filterOptionsOnject } from "@/constant/filterOptions";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
@@ -54,22 +53,8 @@ export default async function Page({ params }) {
   };
 
   const categoryName = transformToCapitalize(params.categoryName);
-
-  const { typeOptions, providerOptions } = filterOptionsOnject;
-
-  const filterOptions = [typeOptions];
-
-  if (category?.toLowerCase() === 'movies') {
-    filterOptions.push(providerOptions)
-  }
-
-  if (data.genreFilter) {
-    filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter });
-  };
-
-  if (data.industryFilter) {
-    filterOptions.unshift({ title: "Filter by industry", data: data.industryFilter });
-};
+  
+  const { filterOptions, moviesData } = data;
 
   return (
     <>
@@ -80,9 +65,9 @@ export default async function Page({ params }) {
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
           limitPerPage={40}
-          serverResponseExtraFilter={filterOptions}
+          serverResponseExtraFilter={filterOptions || []}
           initialFilter={filterData}
-          initialMovies={data.moviesData || []}
+          initialMovies={moviesData || []}
           isDataEnd={dataIsEnd}
         />
 

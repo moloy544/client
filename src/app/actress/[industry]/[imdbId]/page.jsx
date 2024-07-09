@@ -8,7 +8,7 @@ import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import { filterOptionsOnject } from "@/constant/filterOptions";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
- 
+
 const getActorData = async (imdbId) => {
   let status = 500; // Default status in case of an error
   let name = null;
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }) {
 
     const { imdbId } = params;
 
-    const { status, name, avatar } = await getActorData('nm'+imdbId);
+    const { status, name, avatar } = await getActorData('nm' + imdbId);
 
     if (status === 200) {
 
@@ -78,13 +78,13 @@ export default async function Page({ params }) {
     genre: "all",
   };
 
-  const [actorData, moviesData] = await Promise.all([
+  const [actorData, data] = await Promise.all([
 
-    getActorData('nm'+imdbId),
+    getActorData('nm' + imdbId),
 
     loadMoreFetch({
       apiPath: apiUrl,
-      bodyData: { filterData, actor: 'nm'+imdbId },
+      bodyData: { filterData, actor: 'nm' + imdbId },
       limitPerPage: 40,
     })
   ]);
@@ -99,29 +99,21 @@ export default async function Page({ params }) {
     )
   };
 
-  const { data, dataIsEnd } = moviesData;
-
-  const { typeOptions } = filterOptionsOnject;
-
-  const filterOptions = [typeOptions];
-
-  if (data.genreFilter) {
-    filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter })
-  };
+  const { moviesData, dataIsEnd, filterOptions } = data;
 
   return (
     <>
-      <NavigateBackTopNav title={name} titleImage={{src: avatar, alt: name}} />
+      <NavigateBackTopNav title={name} titleImage={{ src: avatar, alt: name }} />
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2 relative">
 
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
-          apiBodyData={{ actor: 'nm'+imdbId }}
+          apiBodyData={{ actor: 'nm' + imdbId }}
           limitPerPage={40}
-          serverResponseExtraFilter={filterOptions}
+          serverResponseExtraFilter={filterOptions || []}
           initialFilter={filterData}
-          initialMovies={data.moviesData || []}
+          initialMovies={moviesData || []}
           isDataEnd={dataIsEnd} />
 
       </div>

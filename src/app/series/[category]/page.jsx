@@ -3,7 +3,6 @@ import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 
-
 export async function generateMetadata({ params }) {
 
   const editParamsQuery = transformToCapitalize(params.category);
@@ -44,11 +43,7 @@ export default async function Page({ params }) {
 
   const title = transformToCapitalize(category + ' series');
 
-  const filterOptions = [];
-
-  if (data.genreFilter) {
-    filterOptions.unshift({ title: "Filter by genre", data: data.genreFilter });
-  };
+  const { filterOptions, moviesData } = data;
 
   return (
     <>
@@ -56,13 +51,12 @@ export default async function Page({ params }) {
 
       <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
 
-
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
           limitPerPage={40}
-          serverResponseExtraFilter={filterOptions}
+          serverResponseExtraFilter={filterOptions || []}
           initialFilter={filterData}
-          initialMovies={data.moviesData || []}
+          initialMovies={moviesData || []}
           isDataEnd={dataIsEnd}
         />
 

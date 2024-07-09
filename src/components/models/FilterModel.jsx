@@ -9,7 +9,7 @@ const areEqual = (prevProps, nextProps) => {
     );
 };
 
-const FilterModel = memo(({ initialFilterData, filterData, functions, filterOptions })=> {
+const FilterModel = memo(({ initialFilterData, filterData, functions, filterOptions }) => {
 
     const [visible, setVisible] = useState(false);
 
@@ -90,6 +90,9 @@ const FilterModel = memo(({ initialFilterData, filterData, functions, filterOpti
         };
     };
 
+    // Counting filters that differ from initialFilterData
+    const countChangedFilters = Object.keys(selectedFilter).filter(key => selectedFilter[key] !== initialFilterData[key]).length;
+
     return (
         <>
             {!visible && (
@@ -99,6 +102,11 @@ const FilterModel = memo(({ initialFilterData, filterData, functions, filterOpti
                         <i className="bi bi-filter text-2xl"></i>
                         <span className="text-xs">Filter</span>
                     </div>
+                    {countChangedFilters !==0 && (
+                        <div className="absolute top-[-10px] left-[-1px] bg-red-600 rounded-xl py-0.5 px-1.5 justify-center items-center text-xs font-semibold text-gray-100">
+                        <span>{countChangedFilters}</span>
+                    </div>
+                    )}
                 </div>
             )}
             <div className={`w-auto h-auto bg-white fixed bottom-1.5 right-0 transition-all duration-500 ease-in-out z-[100] ${visible ? 'translate-y-0' : '-translate-y-[-110%]'} border border-gray-300 shadow-2xl py-1 rounded-md select-none`}>
@@ -155,50 +163,18 @@ const FilterModel = memo(({ initialFilterData, filterData, functions, filterOpti
 
                                 <div className="w-auto h-auto my-1">
 
-                                    {data.genre ? (
-                                        <>
-                                            <div onClick={() => addFilter({ genre: "all" })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genre === "all" ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                                {data.totalCount ? (
-                                                    <span>All {` (${formatNumberCounter(data.totalCount)})`}</span>
+                                    {data?.map(({ id, filter, name, count }, index) => (
 
-                                                ) : (
-                                                    <span>All</span>
-                                                )}
-                                                <i className={`text-base ${selectedFilter.genre === "all" ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                            </div>
+                                        <div key={!id ? index : id} onClick={() => addFilter({ [filter]: name })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter[filter] === name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
+                                            {count ? (
+                                                <span>{transformToCapitalize(name) + ` (${formatNumberCounter(count)})`}</span>
+                                            ) : (
+                                                <span>{transformToCapitalize(name)}</span>
+                                            )}
 
-                                            {data.genre?.map(({ filterName, count }) => (
-
-                                                <Fragment key={filterName}>
-
-                                                    <div onClick={() => addFilter({ genre: filterName })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter.genre === filterName ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                                        <span>{filterName + ` (${formatNumberCounter(count)})`}</span>
-                                                        <i className={`text-base ${selectedFilter.genre === filterName ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                                    </div>
-
-                                                </Fragment>
-                                            ))}
-                                        </>
-                                    ) : (
-                                        <>
-                                            {data?.map(({ id, filter, name, count }, index) => (
-
-                                                <Fragment key={!id ? index : id}>
-
-                                                    <div onClick={() => addFilter({ [filter]: name })} className={`flex justify-between items-center text-xs font-medium ${selectedFilter[filter] === name ? "bg-cyan-50 text-cyan-600" : "text-gray-600"} my-1 py-0.5 px-3 cursor-pointer transition-all duration-500 ease-in-out`}>
-                                                        {count ? (
-                                                            <span>{transformToCapitalize(name) + ` (${formatNumberCounter(count)})`}</span>
-                                                        ) : (
-                                                            <span>{transformToCapitalize(name)}</span>
-                                                        )}
-
-                                                        <i className={`text-base ${selectedFilter[filter] === name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
-                                                    </div>
-
-                                                </Fragment>
-                                            ))}
-                                        </>
-                                    )}
+                                            <i className={`text-base ${selectedFilter[filter] === name ? "bi bi-check-circle-fill text-cyan-500" : "bi bi-circle text-gray-300"} transition-all duration-500 ease-in-out`}></i>
+                                        </div>
+                                    ))}
 
                                 </div>
                             </details>
