@@ -96,12 +96,12 @@ export default async function Page({ params }) {
                                                 width={150}
                                                 height={150}
                                                 src={actor.avatar}
-                                                alt={actor.name} />
+                                                alt={actor.name || 'Actor avatar'} />
 
                                         </div>
 
                                         <div className="w-auto h-auto text-black mt-1.5">
-                                            <p className="whitespace-normal text-xs font-semibold font-sans text-center leading-[14px] line-clamp-2 mx-2 text-center">
+                                            <p className="whitespace-normal text-xs font-semibold font-sans leading-[14px] line-clamp-2 mx-2 text-center">
                                                 {actor.name}
                                             </p>
                                         </div>
