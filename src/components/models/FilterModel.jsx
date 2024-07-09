@@ -91,7 +91,7 @@ const FilterModel = memo(({ initialFilterData, filterData, functions, filterOpti
     };
 
     // Counting filters that differ from initialFilterData
-    const countChangedFilters = Object.keys(selectedFilter).filter(key => selectedFilter[key] !== initialFilterData[key]).length;
+    const countChangedFilters = Object.keys(filterData).filter(key => filterData[key] !== initialFilterData[key]).length;
 
     return (
         <>
