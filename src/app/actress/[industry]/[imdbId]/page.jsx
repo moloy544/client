@@ -77,7 +77,7 @@ export default async function Page({ params }) {
     genre: "all",
   };
 
-  const [actorData, data] = await Promise.all([
+  const [actorData, { data, dataIsEnd }] = await Promise.all([
 
     getActorData('nm' + imdbId),
 
@@ -98,7 +98,7 @@ export default async function Page({ params }) {
     )
   };
 
-  const { moviesData, dataIsEnd, filterOptions } = data;
+  const { moviesData, filterOptions } = data;
 
   return (
     <>

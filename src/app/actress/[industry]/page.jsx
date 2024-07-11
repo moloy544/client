@@ -5,9 +5,9 @@ import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import NavigateBack from "@/components/NavigateBack";
 import { creatUrlLink, transformToCapitalize } from "@/utils";
 import Breadcrumb from "@/components/Breadcrumb";
+import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
  
@@ -46,7 +46,7 @@ export default async function Page({ params }) {
 
     const { actors, industry } = data;
 
-    const title = transformToCapitalize(industry + " Top Actress");
+    const title = transformToCapitalize(industry + " Hindi Actress");
 
     const breadcrumbData = [
         {
@@ -60,19 +60,7 @@ export default async function Page({ params }) {
 
     return (
         <>
-            <header className="sticky top-0 z-30 px-3 py-2 flex justify-center items-center bg-gray-900 border-b border-b-cyan-700">
-                <NavigateBack className="bi bi-arrow-left text-gray-100 text-3xl mobile:text-[25px] cursor-pointer" />
-                <div className="w-full h-auto flex justify-center items-center mx-2.5 my-2">
-                    <div className="w-fit h-auto px-10 mobile:px-5 pb-0.5">
-                        <h1 className="text-xl mobile:text-sm text-rose-500 text-center font-semibold">
-                            {title}
-                        </h1>
-                    </div>
-                </div>
-                <Link href="/search" className="text-gray-100 mr-10 mobile:mr-2 p-1 text-2xl mobile:text-xl">
-                    <i className="bi bi-search"></i>
-                </Link>
-            </header>
+            <NavigateBackTopNav title={title} />
 
             <Breadcrumb data={breadcrumbData} />
 
