@@ -95,8 +95,8 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
       <div className="w-full h-full py-6 mobile:py-2 px-2 flex justify-center items-center">
 
-        <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:min-w-[700px] md:max-w-[800px] p-3 flex mobile:flex-col items-center gap-5 mobile:gap-0 mobile:marker:gap-0 bg-white rounded-md shadow-xl">
- 
+        <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:min-w-[700px] md:max-w-[800px] p-3 flex mobile:flex-col items-center gap-5 mobile:gap-0 mobile:marker:gap-0 bg-gray-700 rounded-md shadow-xl">
+
           <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
 
             <div className="w-[300px] h-[380px] mobile:w-full mobile:max-w-[280px] mobile:mt-2 relative overflow-hidden">
@@ -150,46 +150,57 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
           <div className="w-auto h-auto max-w-md py-3 flex flex-col mobile:flex-col-reverse">
 
-            <div className="mobile:px-2.5">
+            <div className="mobile:px-2.5 space-y-3">
 
-              <div className="text-base text-gray-900 font-bold my-3.5">Title: <span className="text-sm text-gray-600 font-medium">{title}</span></div>
-              <div className="text-base text-gray-900 font-bold my-3.5">Year: <span className="text-sm text-gray-600 font-medium">{releaseYear}</span></div>
+              <div className="flex flex-wrap items-center space-x-1">
+                <div className="text-base text-gray-200 font-bold">Title:</div>
+                <div className="text-sm text-gray-300 font-medium">{title}</div>
+              </div>
+
+              <div className="flex flex-wrap items-center space-x-1">
+                <div className="text-base text-gray-200 font-bold">Year:</div>
+                <div className="text-sm text-gray-300 font-medium mt-1">{releaseYear}</div>
+              </div>
+
               {fullReleaseDate && (
-
-                <div className="text-base text-gray-900 font-bold my-3.5">
-                  {status === "released" ? "Released:" : "Expeted relesed:"} <span className="text-sm text-gray-600 font-medium">{formattedDate}</span>
+                <div className="flex flex-wrap items-center space-x-1">
+                  <div className="text-base text-gray-200 font-bold">
+                    {status === "released" ? "Released:" : "Expeted relesed:"}
+                  </div>
+                  <div className="text-sm text-gray-300 font-medium mt-1">{formattedDate}</div>
                 </div>
               )}
 
-              <div className="text-base text-gray-900 font-bold my-3.5">Language: <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-600 font-medium">
-                {language?.charAt(0).toUpperCase() + language?.slice(1)}
-                {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)"}
-              </Link>
+              <div className="flex flex-wrap items-center space-x-1">
+                <div className="text-base text-gray-200 font-bold">Language:</div>
+                <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-300 font-medium mt-1">
+                  {language?.charAt(0).toUpperCase() + language?.slice(1)}
+                  {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)"}
+                </Link>
               </div>
 
               {castDetails?.length > 0 && (
-                <>
-                  <div className="w-auto h-auto flex flex-wrap gap-1 items-center my-3.5 md:mr-3">
-                    <div className="text-base text-gray-900 font-bold">Star cast: </div>
-                    {castDetails?.map((cast, index) => (
-                      <div key={index} className="text-gray-600 text-xs font-medium rounded-md">
-                        {cast}
-                        {index !== castDetails.length - 1 && ','}
-                      </div>
-                    ))}
-                  </div>
-                </>
+                <div className="flex flex-wrap items-center space-x-1">
+                  <div className="text-base text-gray-200 font-bold">Star cast:</div>
+                  {castDetails?.map((cast, index) => (
+                    <div key={index} className="text-gray-300 text-xs font-medium mt-1">
+                      {cast}
+                      {index !== castDetails.length - 1 && ','}
+                    </div>
+                  ))}
+                </div>
               )}
 
-              <div className="w-auto h-auto flex flex-wrap gap-1.5 items-center my-3.5 mt-6">
-                <div className="text-base text-gray-900 font-bold">Genre: </div>
-                {genre?.map((genre) => (
-                  <div key={genre} className="bg-gray-100 text-gray-600 w-fit h-auto px-2 py-1 text-xs font-medium rounded-md">
-                    {genre !== "N/A" ? (
-                      <Link href={`/browse/genre/${genre?.toLowerCase().replace(/[' ']/g, '-')}`}>{genre}</Link>
-                    ) : genre}
-
-                  </div>
+              <div className="flex items-center space-x-1">
+                <div className="text-base text-gray-200 font-bold flex-wrap">Genre: </div>
+                {genre?.map((g, index) => (
+                  <>
+                    {g !== "N/A" && (
+                      <Link key={g} className="text-gray-300 text-xs font-medium mt-1" href={`/browse/genre/${g?.toLowerCase().replace(/[' ']/g, '-')}`}>
+                        {index !== genre.length - 1 ? `${g} ${'\u2022'} ` : g}
+                      </Link>
+                    )}
+                  </>
                 ))}
               </div>
 
@@ -197,9 +208,9 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
             <MoviesUserActionOptions movieData={movieDetails} />
 
-            <div className="mb-2 px-1.5">
-              <strong className="text-sm">Note: <span className="text-xs text-red-600 font-semibold">
-                If some time this {type} is not play anything please connect the VPN and enjoy.
+            <div className="px-1.5 mobile:pb-3">
+              <strong className="text-sm text-gray-300">Note: <span className="text-xs text-yellow-500 font-semibold">
+                If sometimes this {type} does not play, please connect to VPN and enjoy.
               </span>
               </strong>
             </div>

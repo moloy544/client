@@ -114,17 +114,17 @@ function HomePageLayout({ initialLayoutData }) {
                         <SliderShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
                     ))}
 
-                    <SliderShowcase title="Bollywood hindi actress" linkUrl="/actress/bollywood">
+                    <SliderShowcase title="Bollywood hindi Actors" linkUrl="/actors/bollywood">
 
                         {initialLayoutData.bollywoodActressData?.map((actor) => (
 
                             <Link
-                                href={`/actress/${creatUrlLink(actor.name)}/${actor.imdbId?.replace('nm', '')}`}
+                                href={`/actors/${creatUrlLink(actor.name)}/${actor.imdbId?.replace('nm', '')}`}
                                 key={actor.imdbId}
                                 title={actor.name}
-                                className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-pink-100 rounded-md">
+                                className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-gray-700 rounded-md">
 
-                                <div className="w-24 h-24 mobile:w-20 mobile:h-20 rounded-full border-2 border-cyan-500">
+                                <div className="w-28 h-28 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-600">
 
                                     <Image
                                         className="w-full h-full object-fill pointer-events-none select-none rounded-full"
@@ -135,8 +135,8 @@ function HomePageLayout({ initialLayoutData }) {
                                     />
                                 </div>
 
-                                <div className="w-24 h-auto mobile:w-20 text-gray-900 overflow-hidden py-1.5">
-                                    <p className="whitespace-normal text-xs font-semibold font-sans text-center leading-[14px]">
+                                <div className="w-auto h-auto mobile:w-20 text-gray-300 overflow-hidden py-1.5">
+                                    <p className="whitespace-normal text-xs font-semibold text-center leading-[15px] line-clamp-2">
                                         {actor.name}
                                     </p>
                                 </div>

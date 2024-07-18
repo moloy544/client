@@ -31,7 +31,7 @@ const getData = async (industry) => {
 
 export default async function Page({ params }) {
 
-    const paramIndustry = params?.industry || ' ';
+    const paramIndustry = params?.slug || ' ';
 
     const { status, data } = await getData(paramIndustry);
 
@@ -50,7 +50,7 @@ export default async function Page({ params }) {
 
     const breadcrumbData = [
         {
-            name: "actress",
+            name: "actors",
         },
         {
             name: industry,
@@ -69,27 +69,27 @@ export default async function Page({ params }) {
                 {actors?.length > 0 ? (
                     <main className="w-full h-full pt-2">
 
-                        <div className="w-auto h-fit gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-2">
+                        <div className="w-auto h-fit gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-2">
 
                             {actors?.map((actor) => (
-                                <div key={actor.imdbId} className="w-auto h-auto py-2.5 cursor-pointer bg-pink-100 rounded-md border border-yellow-500">
+                                <div key={actor.imdbId} className="w-auto h-auto py-2.5 cursor-pointer bg-gray-700 rounded-md">
 
-                                    <Link href={`/actress/${creatUrlLink(actor.name)}/${actor.imdbId.replace('nm', '')}`} title={actor.name}>
+                                    <Link href={`/actors/${creatUrlLink(actor.name)}/${actor.imdbId.replace('nm', '')}`} title={actor.name}>
 
-                                        <div className="w-auto h-[110px] mobile:h-20 rounded-md mx-4 mobile:mx-2 border border-yellow-600">
+                                        <div className="w-auto h-auto max-h-32 rounded-full mx-2.5 mobile:mx-2 overflow-hidden border-2 border-yellow-600">
 
                                             <Image
                                                 priority
-                                                className="w-full h-full object-fill pointer-events-none select-none rounded-md"
+                                                className="w-full object-fill pointer-events-none select-none rounded-md mx-auto block"
                                                 width={150}
                                                 height={150}
-                                                src={actor.avatar}
+                                                src={actor.avatar?.replace('/upload/', '/upload/w_250,h_280,c_scale/')}
                                                 alt={actor.name || 'Actor avatar'} />
 
                                         </div>
 
-                                        <div className="w-auto h-auto text-black mt-1.5">
-                                            <p className="whitespace-normal text-xs font-semibold font-sans leading-[14px] line-clamp-2 mx-2 text-center">
+                                        <div className="w-auto h-6 text-gray-300 mt-1.5 px-1.5">
+                                            <p className="whitespace-normal text-xs font-semibold leading-[14px] line-clamp-2 text-center">
                                                 {actor.name}
                                             </p>
                                         </div>
