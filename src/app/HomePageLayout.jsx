@@ -127,8 +127,8 @@ function HomePageLayout({ initialLayoutData }) {
                                 <div className="w-28 h-28 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-600">
 
                                     <Image
-                                        className="w-full h-full object-fill pointer-events-none select-none rounded-full"
-                                        src={actor.avatar}
+                                        className="w-full h-full object-fill select-none rounded-full"
+                                        src={actor.avatar?.replace('/upload/', '/upload/w_250,h_250,c_scale/')}
                                         width={100}
                                         height={100}
                                         alt={actor.name}

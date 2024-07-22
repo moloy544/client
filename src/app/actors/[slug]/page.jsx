@@ -72,18 +72,18 @@ export default async function Page({ params }) {
                         <div className="w-auto h-fit gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-2">
 
                             {actors?.map((actor) => (
-                                <div key={actor.imdbId} className="w-auto h-auto py-2.5 cursor-pointer bg-gray-700 rounded-md">
+                                <div key={actor.imdbId} className="w-auto h-auto flex justify-center cursor-pointer bg-gray-700 rounded-md px-3 py-3.5">
 
                                     <Link href={`/actors/${creatUrlLink(actor.name)}/${actor.imdbId.replace('nm', '')}`} title={actor.name}>
 
-                                        <div className="w-auto h-auto max-h-32 rounded-full mx-2.5 mobile:mx-2 overflow-hidden border-2 border-yellow-600">
+                                        <div className="w-auto h-auto rounded-full overflow-hidden border-2 border-yellow-600">
 
                                             <Image
                                                 priority
-                                                className="w-full object-fill pointer-events-none select-none rounded-md mx-auto block"
+                                                className="w-full object-fill pointer-events-none select-none rounded-full"
                                                 width={150}
                                                 height={150}
-                                                src={actor.avatar?.replace('/upload/', '/upload/w_250,h_280,c_scale/')}
+                                                src={actor.avatar?.replace('/upload/', '/upload/w_250,h_250,c_scale/')}
                                                 alt={actor.name || 'Actor avatar'} />
 
                                         </div>
