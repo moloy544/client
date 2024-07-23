@@ -63,7 +63,7 @@ export async function generateMetadata({ params }) {
   }
 
   if (thambnail) {
-    metaDataObject.openGraph.images = thambnail?.replace('/upload/', '/upload/w_400,h_550,c_scale/');
+    metaDataObject.openGraph.images = thambnail?.replace('/upload/', '/upload/w_400,h_600,c_scale/');
   };
 
   return metaDataObject
