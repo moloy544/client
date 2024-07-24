@@ -26,6 +26,8 @@ export default function AdminPage() {
         tags: [],
     });
 
+    const [processing, setProcessing] = useState(false);
+
     const availableLanguages = ['hindi', 'hindi dubbed', 'bengali'];
     const availableCategory = ['bollywood', 'hollywood', 'south'];
     const availableTags = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons'];
@@ -105,6 +107,10 @@ export default function AdminPage() {
 
         try {
 
+            if (processing) {
+                return
+            };
+            setProcessing(true);
             const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/admin/movie/add`, {
                 data: { ...state }
             });
@@ -130,11 +136,12 @@ export default function AdminPage() {
             } else {
                 alert(responseMessage);
             }
-            console.log(addResponse.data);
 
         } catch (error) {
             console.error('Error sending movies to backend:', error);
             alert("An error occurred while adding movies");
+        } finally {
+            setProcessing(false);
         }
     };
 
@@ -184,10 +191,15 @@ export default function AdminPage() {
             // get input value from provided id present element
             const inputText = element.value || "";
 
+            if (!inputText || inputText === "") {
+
+                alert("Input value is required");
+            };
+
             // get filed name from provided id present element data attribute
             const arrayFiled = element.getAttribute('data-field');
 
-            const isExist = state[arrayFiled]?.some(data => inputText == data)
+            const isExist = state[arrayFiled]?.some(data => inputText?.toLowerCase() == data?.toLowerCase())
 
             if (isExist) {
                 alert(`${inputText} in ${arrayFiled} filed is already exists`);
@@ -201,7 +213,7 @@ export default function AdminPage() {
 
             setState(prevState => ({
                 ...prevState,
-                [arrayFiled]: [...state[arrayFiled], inputText]
+                [arrayFiled]: [...state[arrayFiled], arrayFiled === "tags" ? inputText?.toLowerCase() : inputText]
             }));
 
             element.value = '';
@@ -406,9 +418,10 @@ export default function AdminPage() {
                         </div>
 
                         <button
+                            disabled={processing}
                             type="submit"
-                            className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">
-                            Send server
+                            className="my-4 w-full max-w-[300px] h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer font-semibold">
+                            {!processing ? "Upload" : "Uploading..."}
                         </button>
 
                     </div>

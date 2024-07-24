@@ -113,8 +113,8 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, children }) =>
                                         <Image
                                             priority
                                             className="select-none rounded-[3px]"
-                                            src={data.thambnail?.replace('/upload/', '/upload/w_250,h_300,c_scale/')}
-                                            blurDataURL={data.thambnail?.replace('/upload/', '/upload/w_280,h_350,c_scale/')}
+                                            src={data.thambnail?.replace('/upload/', '/upload/w_220,h_280,c_scale/')}
+                                            blurDataURL={data.thambnail?.replace('/upload/', '/upload/w_220,h_280,c_scale/')}
                                             fill
                                             alt={data.title}
                                         />

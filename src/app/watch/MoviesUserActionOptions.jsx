@@ -79,9 +79,9 @@ export default function MoviesUserActionOptions({ movieData }) {
   return (
     <>
 
-      <div className="w-auto h-auto mobile:mt-1 mt-10 flex gap-5 mobile:gap-2.5 mobile:justify-around flex-wrap overflow-x-scroll scrollbar-hidden">
+      <div className="w-auto h-auto mobile:mt-1 mt-10 flex gap-5 mobile:gap-2.5 mobile:justify-around overflow-x-scroll scrollbar-hidden">
 
-        <div onClick={saveInLocalStorage} role="button" title="Save" className="w-auto h-auto flex gap-1 justify-center items-center bg-gray-600 hover:bg-gray-500 py-1 px-3 rounded-2xl">
+        <div onClick={saveInLocalStorage} role="button" title="Save" className="w-auto h-auto flex gap-1 justify-center items-center text-gray-300 bg-gray-900 hover:bg-gray-800 py-1.5 px-3 rounded-2xl">
           {isSaved ? (
             <i className="bi bi-check-square-fill text-yellow-500"></i>
           ) : (
@@ -90,22 +90,22 @@ export default function MoviesUserActionOptions({ movieData }) {
             </svg>
           )}
 
-          <div className="text-xs text-gray-300 font-semibold">{isSaved ? "Saved" : "Save"}</div>
+          <div className="text-xs font-semibold">{isSaved ? "Saved" : "Save"}</div>
 
         </div>
 
-        <div onClick={handleShare} role="button" title="Share" className="flex gap-1.5 items-center bg-gray-600 hover:bg-gray-500 px-3.5 py-1 rounded-2xl">
+        <div onClick={handleShare} role="button" title="Share" className="flex gap-1.5 items-center text-gray-300 bg-gray-900 hover:bg-gray-800 px-3.5 py-1 rounded-2xl">
           <svg fill="#d1d5db" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false">
             <path d="M15 5.63L20.66 12 15 18.37V14h-1c-3.96 0-7.14 1-9.75 3.09 1.84-4.07 5.11-6.4 9.89-7.1l.86-.13V5.63M14 3v6C6.22 10.13 3.11 15.33 2 21c2.78-3.97 6.44-6 12-6v6l8-9-8-9z"></path>
           </svg>
-          <div className="text-xs text-gray-300 font-semibold">Share</div>
+          <div className="text-xs font-semibold">Share</div>
         </div>
 
         <div
           onClick={openModel}
           role="button"
           title="Report"
-          className="flex gap-1.5 items-center bg-gray-600 hover:bg-gray-500 px-3 py-1 rounded-2xl"
+          className="flex gap-1.5 items-center text-gray-300 bg-gray-900 hover:bg-gray-800 px-3 py-1.5 rounded-2xl"
         >
           <svg
           fill="#d1d5db"
@@ -119,7 +119,7 @@ export default function MoviesUserActionOptions({ movieData }) {
             <path d="m13.18 4 .24 1.2.16.8H19v7h-5.18l-.24-1.2-.16-.8H6V4h7.18M14 3H5v18h1v-9h6.6l.4 2h7V5h-5.6L14 3z"></path>
           </svg>
 
-          <div className="text-xs text-gray-300 font-semibold">Report</div>
+          <div className="text-xs font-semibold">Report</div>
         </div>
 
       </div>

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { creatUrlLink, getMovieDeatils } from "@/utils";
 import { appConfig } from "@/config/config";
 import { InspectPreventer } from "@/lib/lib";
-import Videoplayer from "../VideoPlayer";
+import MovieDetails from "../MovieDetails";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
@@ -86,7 +86,7 @@ export default async function Page({ params }) {
   return (
     <InspectPreventer>
       <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
-      <Videoplayer movieDetails={movieData} suggestions={suggetions} />
+      <MovieDetails movieDetails={movieData} suggestions={suggetions} />
     </InspectPreventer>
   )
 }

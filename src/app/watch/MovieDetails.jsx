@@ -8,7 +8,7 @@ import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
 
-export default function Videoplayer({ movieDetails, suggestions }) {
+export default function MovieDetails({ movieDetails, suggestions }) {
 
   const iframeRef = useRef(null);
 
@@ -93,87 +93,79 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
       <Breadcrumb data={breadcrumbData} />
 
-      <div className="w-full h-full py-6 mobile:py-2 px-2 flex justify-center items-center">
+      <div className="w-full h-full my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
-        <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:min-w-[700px] md:max-w-[800px] p-3 flex mobile:flex-col items-center gap-5 mobile:gap-0 mobile:marker:gap-0 bg-gray-700 rounded-md shadow-xl">
+        <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:min-w-[700px] lg:min-w-[800px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
 
-          <div className="w-auto mobile:w-full h-auto mobile:flex mobile:justify-center">
+          <div className="w-full max-w-[300px] max-h-[400px] aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-500 bg-gray-800">
 
-            <div className="w-[300px] h-[380px] mobile:w-full mobile:max-w-[280px] mobile:mt-2 relative overflow-hidden">
+            <Image
+              priority
+              className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
+              src={thambnail?.replace('/upload/', '/upload/w_400,h_520,c_scale/')}
+              alt={title}
+              fill />
 
-              <div className="w-full h-full overflow-hidden relative group border border-gary-700 rounded-md">
+            {status === "released" ? (
+              <button type="button"
+                onClick={showPlayer}
+                title="Play"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-950 bg-opacity-70 text-gray-100 hover:text-yellow-500 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  role="presentation"
+                >
+                  <path d="M10.8 15.9l4.67-3.5c.27-.2.27-.6 0-.8L10.8 8.1a.5.5 0 0 0-.8.4v7c0 .41.47.65.8.4zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+                </svg>
 
-                <Image
-                  priority
-                  className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
-                  src={thambnail?.replace('/upload/', '/upload/w_400,h_600,c_scale/')}
-                  alt={title}
-                  fill />
-
-              </div>
-
-              {status === "released" ? (
-                <button type="button"
-                  onClick={showPlayer}
-                  title="Play"
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-950 bg-opacity-70 text-gray-100 hover:text-rose-600 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="30"
-                    height="30"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    role="presentation"
-                  >
-                    <path d="M10.8 15.9l4.67-3.5c.27-.2.27-.6 0-.8L10.8 8.1a.5.5 0 0 0-.8.4v7c0 .41.47.65.8.4zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
-                  </svg>
-
-                  <span className="sr-only">Play video</span>
-                </button>
-              ) : (
-                <>
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white text-sm">
-                    {transformToCapitalize(status)}
-                  </div>
-                </>
-              )}
-              {imdbRating && (
-                <div className="absolute top-1 right-2 w-auto h-auto flex gap-1 items-center bg-gray-900 bg-opacity-70 text-xs font-semibold text-gray-200 px-2 py-1 rounded-md">
-                  <svg width="12" height="12" className="text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="presentation"><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"></path></svg>
-                  {imdbRating}
+                <span className="sr-only">Play video</span>
+              </button>
+            ) : (
+              <>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white text-sm">
+                  {transformToCapitalize(status)}
                 </div>
-              )}
-
-            </div>
+              </>
+            )}
+            {imdbRating && (
+              <div className="absolute top-1 right-2 w-auto h-auto flex gap-1 items-center bg-gray-900 bg-opacity-70 text-xs font-semibold text-gray-200 px-2 py-1 rounded-md">
+                <svg width="12" height="12" className="text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="presentation"><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"></path></svg>
+                {imdbRating}
+              </div>
+            )}
 
           </div>
 
-          <div className="w-auto h-auto max-w-md py-3 flex flex-col mobile:flex-col-reverse">
+          <div className="w-full h-auto px-2 py-3 flex flex-col mobile:flex-col-reverse">
 
             <div className="mobile:px-2.5 space-y-3">
 
               <div className="flex flex-wrap items-center space-x-1">
-                <div className="text-base text-gray-200 font-bold">Title:</div>
-                <div className="text-sm text-gray-300 font-medium">{title}</div>
+                <strong className="text-base text-gray-200 font-bold">Title:</strong>
+                <h1 className="text-sm text-gray-300 font-semibold">{title}</h1>
               </div>
 
               <div className="flex flex-wrap items-center space-x-1">
-                <div className="text-base text-gray-200 font-bold">Year:</div>
-                <div className="text-sm text-gray-300 font-medium mt-1">{releaseYear}</div>
+                <strong className="text-base text-gray-200 font-bold">Year:</strong>
+                <div className="text-sm text-gray-300 font-semibold mt-1">{releaseYear}</div>
               </div>
 
               {fullReleaseDate && (
                 <div className="flex flex-wrap items-center space-x-1">
-                  <div className="text-base text-gray-200 font-bold">
+                  <strong className="text-base text-gray-200 font-bold">
                     {status === "released" ? "Released:" : "Expeted relesed:"}
-                  </div>
-                  <div className="text-sm text-gray-300 font-medium mt-1">{formattedDate}</div>
+                  </strong>
+                  <div className="text-sm text-gray-300 font-semibold mt-1">{formattedDate}</div>
                 </div>
               )}
 
               <div className="flex flex-wrap items-center space-x-1">
-                <div className="text-base text-gray-200 font-bold">Language:</div>
-                <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-300 font-medium mt-1">
+                <strong className="text-base text-gray-200 font-bold">Language:</strong>
+                <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-300 font-semibold mt-1">
                   {language?.charAt(0).toUpperCase() + language?.slice(1)}
                   {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)"}
                 </Link>
@@ -181,9 +173,9 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
               {castDetails?.length > 0 && (
                 <div className="flex flex-wrap items-center space-x-1">
-                  <div className="text-base text-gray-200 font-bold">Star cast:</div>
+                  <strong className="text-base text-gray-200 font-bold">Star cast:</strong>
                   {castDetails?.map((cast, index) => (
-                    <div key={index} className="text-gray-300 text-xs font-medium mt-1">
+                    <div key={index} className="text-gray-300 text-xs font-semibold mt-1">
                       {cast}
                       {index !== castDetails.length - 1 && ','}
                     </div>
@@ -192,11 +184,11 @@ export default function Videoplayer({ movieDetails, suggestions }) {
               )}
 
               <div className="flex items-center space-x-1">
-                <div className="text-base text-gray-200 font-bold flex-wrap">Genre: </div>
+                <strong className="text-base text-gray-200 font-bold flex-wrap">Genre:</strong>
                 {genre?.map((g, index) => (
                   <>
                     {g !== "N/A" && (
-                      <Link key={g} className="text-gray-300 text-xs font-medium mt-1" href={`/browse/genre/${g?.toLowerCase().replace(/[' ']/g, '-')}`}>
+                      <Link key={g} className="text-gray-300 text-xs font-semibold mt-1" href={`/browse/genre/${g?.toLowerCase().replace(/[' ']/g, '-')}`}>
                         {index !== genre.length - 1 ? `${g} ${'\u2022'} ` : g}
                       </Link>
                     )}
@@ -208,11 +200,10 @@ export default function Videoplayer({ movieDetails, suggestions }) {
 
             <MoviesUserActionOptions movieData={movieDetails} />
 
-            <div className="px-1.5 mobile:pb-3">
+            <div className="px-1.5 mobile:pb-3 flex justify-center space-x-1.5">
               <strong className="text-sm text-gray-300">Note: <span className="text-xs text-yellow-500 font-semibold">
                 If sometimes this {type} does not play, please connect to VPN and enjoy.
-              </span>
-              </strong>
+              </span></strong>
             </div>
 
           </div>
@@ -244,12 +235,15 @@ export default function Videoplayer({ movieDetails, suggestions }) {
           </>
 
         )}
-
       </div>
-      {/**** Show Suggest Data Based on Gnere ******/}
-      <SliderShowcase moviesData={suggestions?.genreList} title="You might also like" />
-      {/**** Show Suggest Data Based on Cast ******/}
-      <SliderShowcase moviesData={suggestions?.castList} title="From same actors" />
+      
+      <div className="py-2">
+        {/**** Show Suggest Data Based on Gnere ******/}
+        <SliderShowcase moviesData={suggestions?.genreList} title="You might also like" />
+        {/**** Show Suggest Data Based on Cast ******/}
+        <SliderShowcase moviesData={suggestions?.castList} title="From same actors" />
+      </div>
+
     </>
   )
 }

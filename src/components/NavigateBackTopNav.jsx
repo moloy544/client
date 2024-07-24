@@ -3,6 +3,7 @@ import NavigateBack from "./NavigateBack"
 import Image from "next/image"
 
 function NavigateBackTopNav({ title, titleImage = null }) {
+    
     return (
         <header className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-gray-900 text-gray-300 px-3 border-b border-b-cyan-800">
 
