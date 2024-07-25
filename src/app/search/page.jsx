@@ -64,22 +64,30 @@ export default function SearchPage() {
     // Function to add a search term to the search history
     const addToSearchHistory = (newData) => {
 
+        const { image , text } = newData || {}; 
+
         const existingHistoryArray = getLocalStorageSearchHistory();
 
         // Check if the search term already exists in the search history
-        const searchTermIndex = existingHistoryArray.findIndex(search => search.searchKeyword?.toLowerCase() === newData.text?.toLowerCase());
-
+        const searchTermIndex = existingHistoryArray.findIndex(search => search.searchKeyword?.toLowerCase() === text?.toLowerCase());
+       
         // If the search term exists, update clickCount and move it to the beginning
         if (searchTermIndex !== -1) {
-
+         
             const existingTerm = existingHistoryArray.splice(searchTermIndex, 1)[0];
+            //update the search count
             existingTerm.count += 1;
+
+            // check if the search data are same but image is different so update it
+            if (existingTerm.image!== image) {
+                existingTerm.image = image;
+            };
             existingHistoryArray.unshift(existingTerm);
 
         } else {
 
             // If the search term doesn't exist, add it to the beginning with clickCount 1
-            existingHistoryArray.unshift({ searchKeyword: newData.text, image: newData.image, count: 1 });
+            existingHistoryArray.unshift({ searchKeyword: text, image, count: 1 });
         };
 
         // Limit the search history to 20 items
@@ -126,12 +134,6 @@ export default function SearchPage() {
 
                 // set search result
                 setSearchResult(prevData => [...prevData, ...moviesData]);
-
-                // setup search history
-                const thambnail = moviesData[0].thambnail;
-                if (thambnail && thambnail !== '') {
-                    addToSearchHistory({ text: q, image: thambnail });
-                };
             };
 
             if (dataIsEnd) {
@@ -153,10 +155,22 @@ export default function SearchPage() {
 
     }, [page, searchQuery]);
 
+    const onMovieCardClickHandler = (e) => {
+        const tragetElement = e.target;
+        if (tragetElement) {
+            const imgUrl = tragetElement.src || null;
+            const altData =tragetElement.alt || null;
+            if (imgUrl && altData) {
+                addToSearchHistory({ text: searchQuery, image: imgUrl });
+            }
+        }
+        
+    }
+
     // check is error encountered show error message
     if (error) {
         return <SomthingWrongError />
-    }
+    };
 
     return (
         <>
@@ -210,7 +224,11 @@ export default function SearchPage() {
                         )}
                         <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
                             {seatrchResult.map((movie, index) => (
-                                <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
+                                <ResponsiveMovieCard
+                                    key={movie.imdbId || index}
+                                    data={movie}
+                                    onClickEvent={onMovieCardClickHandler}
+                                />
                             ))}
 
                         </main>
@@ -339,7 +357,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                                         Clear
                                     </button>
                                 </div>
-                                <small className="text-xs text-gray-500 font-normal w-[80%]">Recent show history data based on past success search result</small>
+                                <small className="text-xs text-gray-500 font-normal w-[80%]">This is your recent success search history results</small>
                             </div>
 
                             <div className="py-3 px-1.5 w-auto max-h-60 overflow-y-scroll scrollbar-hidden">
@@ -352,7 +370,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                                                 className="w-9 h-12 border border-gray-500 rounded-sm"
                                                 width={28}
                                                 height={28}
-                                                src={data.image}
+                                                src={data.image?.replace('/upload/', '/upload/w_150,h_200,c_scale/')}
                                                 alt="Search history items image" />
                                             <div className="line-clamp-2 max-w-xs">
                                                 {data.searchKeyword}

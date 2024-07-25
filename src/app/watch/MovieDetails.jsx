@@ -185,15 +185,13 @@ export default function MovieDetails({ movieDetails, suggestions }) {
 
               <div className="flex items-center space-x-1">
                 <strong className="text-base text-gray-200 font-bold flex-wrap">Genre:</strong>
-                {genre?.map((g, index) => (
-                  <>
-                    {g !== "N/A" && (
-                      <Link key={g} className="text-gray-300 text-xs font-semibold mt-1" href={`/browse/genre/${g?.toLowerCase().replace(/[' ']/g, '-')}`}>
-                        {index !== genre.length - 1 ? `${g} ${'\u2022'} ` : g}
-                      </Link>
-                    )}
-                  </>
-                ))}
+                {genre?.map((g, index) =>
+                  g !== "N/A" && (
+                    <Link key={index} className="text-gray-300 text-xs font-semibold mt-1" href={`/browse/genre/${g?.toLowerCase().replace(/[' ']/g, '-')}`}>
+                      {index !== genre.length - 1 ? `${g} ${'\u2022'} ` : g}
+                    </Link>
+
+                  ))}
               </div>
 
             </div>
@@ -236,7 +234,7 @@ export default function MovieDetails({ movieDetails, suggestions }) {
 
         )}
       </div>
-      
+
       <div className="py-2">
         {/**** Show Suggest Data Based on Gnere ******/}
         <SliderShowcase moviesData={suggestions?.genreList} title="You might also like" />

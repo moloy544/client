@@ -28,7 +28,7 @@ export default function AdminPage() {
 
     const [processing, setProcessing] = useState(false);
 
-    const availableLanguages = ['hindi', 'hindi dubbed', 'bengali'];
+    const availableLanguages = ['hindi', 'hindi dubbed', 'bengali', 'punjabi'];
     const availableCategory = ['bollywood', 'hollywood', 'south'];
     const availableTags = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons'];
 
@@ -237,23 +237,22 @@ export default function AdminPage() {
                 <h2 className="text-base text-white font-semibold">Moviesbazar admin</h2>
             </header>
 
-            {state.watchLink !== "" && (
-                <iframe
-                    className="w-full aspect-video border-none z-30"
-                    src={state.watchLink}
-                    allowFullScreen="allowfullscreen" />
-            )}
-
             <main className="w-auto h-full min-h-screen bg-white text-gray-950 flex justify-center flex-wrap overflow-x-hidden py-2">
 
-                <form onSubmit={sendMoviesToBackend} className="mx-10 mt-5 md:flex md:gap-10 border-blue-100 px-10 shadow-xl rounded-lg py-2">
+                <form onSubmit={sendMoviesToBackend} className="md:mx-10 flex flex-wrap gap-5 md:mt-4 md:gap-10 border-blue-100 px-3 md:px-10 shadow-xl rounded-lg py-2 overflow-hidden">
 
-                    <div className="w-auto h-auto">
-
+                    {/** first row */}
+                    <div className="w-full md:w-auto h-auto">
+                        {state.watchLink !== "" && (
+                            <iframe
+                                className="w-full aspect-video border-none z-30"
+                                src={state.watchLink}
+                                allowFullScreen="allowfullscreen" />
+                        )}
                         <div className="flex flex-col my-3">
                             <label className="font-bold">IMDB ID</label>
                             <div className="flex gap-1">
-                                <input className="border border-black rounded-sm w-32" type="text" value={state.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
+                                <input className="border border-black rounded-sm w-36" type="text" value={state.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
                                 <button className="w-16 h-6 bg-green-700 text-sm text-white font-semibold text-center" type="button" onClick={getImbdResponse}>Get</button>
                             </div>
                         </div>
@@ -273,11 +272,11 @@ export default function AdminPage() {
                                     src={state.thambnail} alt="thambnail" />
 
                             )}
-                            <label className="font-bold">Thambnail</label>
+                            <label className="font-bold">Thambnail url</label>
                             <input className="border border-black rounded-sm" type="text" value={state.thambnail} onChange={(e) => handleInputChange(e, 'thambnail')} />
                         </div>
 
-                        <div className="flex flex-col my-3">
+                        <div className="max-w-[200px] flex flex-col my-3">
                             <label className="font-bold">Imdb Rating</label>
                             <input className="border border-black rounded-sm" type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} />
                         </div>
@@ -287,17 +286,22 @@ export default function AdminPage() {
                             <input className="border border-black rounded-sm" type="text" value={state.title} onChange={(e) => handleInputChange(e, 'title')} />
                         </div>
 
-                        <div className="flex flex-col my-3">
+                        <div className="max-w-[200px] flex flex-col my-3">
                             <label className="font-bold">Release Year</label>
                             <input className="border border-black rounded-sm" type="number" value={state.releaseYear} onChange={(e) => handleInputChange(e, 'releaseYear')} />
                         </div>
 
-                        <div className="flex flex-col my-3">
+                        <div className="max-w-[200px] flex flex-col my-3">
                             <label className="font-bold">Full release date</label>
                             <input className="border border-black rounded-sm" type="text" value={state.fullReleaseDate} onChange={(e) => handleInputChange(e, 'fullReleaseDate')} />
                         </div>
 
-                        <div className="flex flex-col my-3">
+                    </div>
+
+                    {/** Second row **/}
+                    <div className="w-full md:w-auto h-auto">
+
+                    <div className="flex flex-col my-3">
                             <label className="font-bold">Release status {"(" + state.status + ")"}</label>
                             <div className="flex gap-5">
                                 <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
@@ -322,38 +326,6 @@ export default function AdminPage() {
                                 ))}
                             </div>
                         </div>
-
-                        <div className="flex flex-col my-3">
-                            <label className="font-bold">Type {"(" + state.type + ")"}</label>
-                            <div className="flex gap-5">
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Movie
-                                    <input onChange={(e) => handleInputChange(e, 'type')} type="radio" value="movie" name="type" checked={state.type === 'movie'} />
-                                </label>
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Series
-                                    <input onChange={(e) => handleInputChange(e, 'type')} type="radio" value="series" name="type" checked={state.type === 'series'} />
-                                </label>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col my-3">
-
-                            <label className="font-bold">Language {"(" + state.language + ")"}</label>
-
-                            <div className="flex gap-5">
-                                {availableLanguages.map((language) => (
-                                    <label key={language} className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
-                                        {language}
-                                        <input onChange={(e) => handleInputChange(e, 'language')} type="radio" value={language} name="language" checked={state.language === language} />
-                                    </label>
-                                ))}
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div className="w-auto h-auto">
 
                         {state.genre?.length > 0 && (
                             <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">

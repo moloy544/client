@@ -216,7 +216,7 @@ const Card = memo(({ data, remove }) =>{
                             className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
                             width={80}
                             height={80}
-                            src={thambnail?.replace('/upload/', '/upload/w_400,h_600,c_scale/')}
+                            src={thambnail?.replace('/upload/', '/upload/w_150,h_200,c_scale/')}
                             alt={title || 'movie poster image'}
                             placeholder="blur"
                             blurDataURL={thambnail}

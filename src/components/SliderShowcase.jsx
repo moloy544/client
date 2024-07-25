@@ -81,9 +81,9 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, children }) =>
     }, [handleObservers]);
 
 
-    if ((!moviesData || moviesData.length === 0) && !children) {
+    if ((!moviesData || moviesData.length === 0 && !Array.isArray(moviesData)) && !children) {
         return null;
-    }
+    };
 
     return (
         <section className="w-full h-auto relative space-y-2.5 py-1.5">

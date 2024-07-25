@@ -19,8 +19,12 @@ function UpdateMoviesPage() {
             if (id.length >= 15) {
 
                 const deleteResponse = await axios.delete(`${backendServer}/api/v1/admin/movie/delete/${id}`);
-
-                alert(deleteResponse.data.message);
+                if (deleteResponse.status === 200) {
+                    alert(deleteResponse.data.message || "Delete success");
+                    setId('')
+                } else {
+                    alert("Movie not found in database.");
+                }
 
             } else {
                 alert("id is two short as expected");
@@ -28,7 +32,9 @@ function UpdateMoviesPage() {
 
         } catch (error) {
             console.error('Error delete movies to backend:', error);
-            alert("An error occurred while adding movies");
+            if (error.response.data) {
+                alert(error.response.data.message || "An error occurred while delete data"); 
+            };
         };
     };
 
