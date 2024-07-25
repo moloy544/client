@@ -46,7 +46,7 @@ export default async function Page({ params }) {
 
     const { actors, industry } = data;
 
-    const title = transformToCapitalize(industry + " Hindi Actress");
+    const title = transformToCapitalize(industry + " actors");
 
     const breadcrumbData = [
         {
@@ -72,7 +72,7 @@ export default async function Page({ params }) {
                         <div className="w-auto h-fit gap-2 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-2">
 
                             {actors?.map((actor) => (
-                                <div key={actor.imdbId} className="w-auto h-auto flex justify-center cursor-pointer bg-gray-700 rounded-md px-3 py-3.5">
+                                <div key={actor.imdbId} className="w-auto max-w-[150px] h-auto flex justify-center cursor-pointer bg-gray-700 rounded-md px-3 py-3.5">
 
                                     <Link href={`/actors/${creatUrlLink(actor.name)}/${actor.imdbId.replace('nm', '')}`} title={actor.name}>
 

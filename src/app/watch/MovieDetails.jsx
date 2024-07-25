@@ -102,7 +102,7 @@ export default function MovieDetails({ movieDetails, suggestions }) {
             <Image
               priority
               className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
-              src={thambnail?.replace('/upload/', '/upload/w_400,h_520,c_scale/')}
+              src={thambnail}
               alt={title}
               fill />
 

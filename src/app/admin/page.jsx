@@ -1,18 +1,27 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
 import ActressController from "./components/ActressController";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
+import { creatToastAlert } from "@/utils";
+
+// text or number input style properties
+const inputStyle = "border-2 border-blue-700 rounded-md p-1";
+
+// all options arrays
+const statusOptions = ['released', 'coming soon']
+const languageOptions = ['hindi', 'hindi dubbed', 'bengali', 'punjabi'];
+const industryOptions = ['bollywood', 'hollywood', 'south'];
+const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons'];
 
 export default function AdminPage() {
 
     const [state, setState] = useState({
         imdbId: '',
         imdbRating: 0,
-        thambnail: '',
         title: '',
         releaseYear: 0,
         fullReleaseDate: '',
@@ -26,11 +35,8 @@ export default function AdminPage() {
         tags: [],
     });
 
+    const [imagePreview, setImagePreview] = useState(null);
     const [processing, setProcessing] = useState(false);
-
-    const availableLanguages = ['hindi', 'hindi dubbed', 'bengali', 'punjabi'];
-    const availableCategory = ['bollywood', 'hollywood', 'south'];
-    const availableTags = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons'];
 
     const getImbdResponse = async () => {
 
@@ -57,7 +63,6 @@ export default function AdminPage() {
                     setState(prevState => ({
                         ...prevState,
                         imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
-                        thambnail: movieData.thambnail,
                         title: movieData.title,
                         releaseYear: movieData.releaseYear,
                         fullReleaseDate: formattedDate,
@@ -70,6 +75,7 @@ export default function AdminPage() {
                         watchLink: movieData.watchLink,
                         tags: movieData.tags
                     }));
+                    setImagePreview(movieData.thambnail)
                     return;
                 };
 
@@ -110,21 +116,38 @@ export default function AdminPage() {
             if (processing) {
                 return
             };
+
             setProcessing(true);
-            const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/admin/movie/add`, {
-                data: { ...state }
+
+            // Create a FormData object to hold the form data
+            const formData = new FormData();
+
+            // add movie data sate in form data
+            formData.append('data', JSON.stringify(state));
+
+            // add file in from data 
+            const fileInput = document.getElementById('thambnail-file');
+
+            if (fileInput && fileInput.files[0]) {
+                formData.append('file', fileInput.files[0]);
+            };
+
+            // send the form data to the backend API
+            const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/admin/movie/add`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
             const responseMessage = addResponse.data?.message;
 
             if (addResponse.status === 200) {
 
-                alert(responseMessage);
+                creatToastAlert({message: responseMessage || "Movie added successfully"});
 
                 setState(prevState => ({
                     ...prevState,
                     imdbId: '',
                     imdbRating: 0,
-                    thambnail: '',
                     title: '',
                     releaseYear: 0,
                     fullReleaseDate: '',
@@ -133,6 +156,8 @@ export default function AdminPage() {
                     watchLink: '',
                     tags: []
                 }));
+                fileInput.value = '';
+                setImagePreview(null);
             } else {
                 alert(responseMessage);
             }
@@ -231,6 +256,24 @@ export default function AdminPage() {
         }));
     };
 
+    // creat image ptreview 
+    const handleFileInputChnage = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const blobUri = URL.createObjectURL(file);
+            setImagePreview(blobUri);
+        }
+    };
+
+    // remove image ptreview after componet mount
+    useEffect(() => {
+        return () => {
+            if (imagePreview) {
+                URL.revokeObjectURL(imagePreview);
+            }
+        };
+    }, [imagePreview]);
+
     return (
         <>
             <header className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2.5 py-3.5 text-base text-gray-100 bg-purple-600 shadow-md">
@@ -239,163 +282,215 @@ export default function AdminPage() {
 
             <main className="w-auto h-full min-h-screen bg-white text-gray-950 flex justify-center flex-wrap overflow-x-hidden py-2">
 
-                <form onSubmit={sendMoviesToBackend} className="md:mx-10 flex flex-wrap gap-5 md:mt-4 md:gap-10 border-blue-100 px-3 md:px-10 shadow-xl rounded-lg py-2 overflow-hidden">
+                <form onSubmit={sendMoviesToBackend} className="bg-slate-50 md:mx-10 md:mt-4 border-blue-100 px-3 md:px-10 shadow-xl rounded-lg py-2 overflow-hidden">
+                    <h1 className="text-xl text-gray-900 text-center font-bold my-3">Add Movie Section</h1>
 
-                    {/** first row */}
-                    <div className="w-full md:w-auto h-auto">
-                        {state.watchLink !== "" && (
-                            <iframe
-                                className="w-full aspect-video border-none z-30"
-                                src={state.watchLink}
-                                allowFullScreen="allowfullscreen" />
-                        )}
-                        <div className="flex flex-col my-3">
-                            <label className="font-bold">IMDB ID</label>
-                            <div className="flex gap-1">
-                                <input className="border border-black rounded-sm w-36" type="text" value={state.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
-                                <button className="w-16 h-6 bg-green-700 text-sm text-white font-semibold text-center" type="button" onClick={getImbdResponse}>Get</button>
-                            </div>
-                        </div>
+                    <div className="flex flex-wrap gap-5 md:gap-10">
+                        {/** first row */}
+                        <div className="w-full md:w-auto h-auto">
 
-                        <div className="flex flex-col my-3">
-                            <label className="font-bold">WatchLink</label>
-                            <input className="border border-black rounded-sm" type="text" value={state.watchLink} onChange={(e) => handleInputChange(e, 'watchLink')} />
-                        </div>
-
-                        <div className="flex flex-col my-3">
-                            {state.thambnail !== '' && (
-                                <Image
-                                    priority
-                                    width={145}
-                                    height={145}
-                                    className="w-36 h-36 text-xs"
-                                    src={state.thambnail} alt="thambnail" />
-
+                            {state.watchLink !== "" && (
+                                <iframe
+                                    className="w-full aspect-video border-none z-30"
+                                    src={state.watchLink}
+                                    allowFullScreen="allowfullscreen" />
                             )}
-                            <label className="font-bold">Thambnail url</label>
-                            <input className="border border-black rounded-sm" type="text" value={state.thambnail} onChange={(e) => handleInputChange(e, 'thambnail')} />
-                        </div>
-
-                        <div className="max-w-[200px] flex flex-col my-3">
-                            <label className="font-bold">Imdb Rating</label>
-                            <input className="border border-black rounded-sm" type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} />
-                        </div>
-
-                        <div className="flex flex-col my-3">
-                            <label className="font-bold">Title</label>
-                            <input className="border border-black rounded-sm" type="text" value={state.title} onChange={(e) => handleInputChange(e, 'title')} />
-                        </div>
-
-                        <div className="max-w-[200px] flex flex-col my-3">
-                            <label className="font-bold">Release Year</label>
-                            <input className="border border-black rounded-sm" type="number" value={state.releaseYear} onChange={(e) => handleInputChange(e, 'releaseYear')} />
-                        </div>
-
-                        <div className="max-w-[200px] flex flex-col my-3">
-                            <label className="font-bold">Full release date</label>
-                            <input className="border border-black rounded-sm" type="text" value={state.fullReleaseDate} onChange={(e) => handleInputChange(e, 'fullReleaseDate')} />
-                        </div>
-
-                    </div>
-
-                    {/** Second row **/}
-                    <div className="w-full md:w-auto h-auto">
-
-                    <div className="flex flex-col my-3">
-                            <label className="font-bold">Release status {"(" + state.status + ")"}</label>
-                            <div className="flex gap-5">
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Released
-                                    <input onChange={(e) => handleInputChange(e, 'status')} type="radio" value="released" name="status" checked={state.status === 'released'} />
-                                </label>
-                                <label className="text-gray-700 text-sm cursor-pointer flex items-center gap-1">
-                                    Coming Soon
-                                    <input onChange={(e) => handleInputChange(e, 'status')} type="radio" value="coming soon" name="status" checked={state.status === 'coming soon'} />
-                                </label>
+                            <div className="flex flex-col my-3">
+                                <label className="font-bold text-gray-800">IMDB ID</label>
+                                <div className="flex items-center gap-1">
+                                    <input className={inputStyle+' w-40'} type="text" value={state.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
+                                    <button className="w-16 h-8 bg-green-700 text-sm text-white font-semibold text-center rounded-sm" type="button" onClick={getImbdResponse}>Get</button>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="flex flex-col my-3">
-                            <label className="font-bold">Category {"(" + state.category + ")"}</label>
-                            <div className="flex gap-5">
-                                {availableCategory.map((category) => (
-                                    <label key={category} className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
-                                        {category}
-                                        <input onChange={(e) => handleInputChange(e, 'category')} type="radio" value={category} name="category" checked={state.category === category} />
-                                    </label>
-                                ))}
+                            <div className="flex flex-col my-3">
+                                <label className="font-bold text-gray-800">WatchLink</label>
+                                <input className={inputStyle} type="text" value={state.watchLink} onChange={(e) => handleInputChange(e, 'watchLink')} />
                             </div>
+
+                            <div className="flex flex-col my-3">
+                                {imagePreview && (
+                                    <Image
+                                        priority
+                                        width={150}
+                                        height={165}
+                                        className="w-36 h-40 text-xs rounded-sm"
+                                        src={imagePreview} alt="thambnail" />
+
+                                )}
+                                <label className="font-bold text-gray-800">Select image</label>
+                                <input onChange={handleFileInputChnage} type="file" name="thambnail-file" id="thambnail-file" accept="image/*" />
+                            </div>
+
+                            <div className="max-w-[200px] flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Imdb Rating</label>
+                                <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} />
+                            </div>
+
+                            <div className="flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Title</label>
+                                <input className={inputStyle} type="text" value={state.title} onChange={(e) => handleInputChange(e, 'title')} />
+                            </div>
+
+                            <div className="max-w-[200px] flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Release Year</label>
+                                <input className={inputStyle} type="number" value={state.releaseYear} onChange={(e) => handleInputChange(e, 'releaseYear')} />
+                            </div>
+
+                            <div className="max-w-[200px] flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Full release date</label>
+                                <input className={inputStyle} type="text" value={state.fullReleaseDate} onChange={(e) => handleInputChange(e, 'fullReleaseDate')} />
+                            </div>
+
                         </div>
 
-                        {state.genre?.length > 0 && (
-                            <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
-                                {state.genre?.map((genre) => (
-                                    <div key={genre} className="w-auto h-auto relative py-2">
-                                        <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
-                                            <span className="text-gray-800 text-sm ">{genre}</span>
+                        {/** Second row **/}
+                        <div className="w-full md:w-auto h-auto">
+
+                            <div className="flex flex-col space-y-2">
+                                <label className="font-bold text-gray-800">Release status</label>
+                                <fieldset className="flex flex-wrap gap-3">
+                                    {statusOptions.map((status) => (
+                                        <div key={status}>
+                                            <label
+                                                htmlFor={status}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border border-gray-200 hover:border-gray-300 bg-white px-3 py-2 text-gray-900 ${state.status === status && `${state.status === "released" ? "border-green-500 bg-green-500" : " border-yellow-500 bg-yellow-500"} text-white`}`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    id={status}
+                                                    value={status}
+                                                    className="sr-only"
+                                                    onChange={(e) => handleInputChange(e, 'status')}
+                                                    checked={state.status === status}
+                                                />
+
+                                                <p className="text-xs font-medium capitalize">{status}</p>
+                                            </label>
                                         </div>
-                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('genre', genre)}></i>
-                                    </div>
-                                ))}
+                                    ))}
+                                </fieldset>
                             </div>
-                        )}
 
-                        <div className="flex flex-col my-3">
-                            <label className="font-bold">Genre Details</label>
-                            <input type="text" data-field="genre" id="genre-input" className="border border-black rounded-sm" />
-                            <button type="button" onClick={() => creatInputValueToArrayHandler('genre-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
-                        </div>
+                            <div className="flex flex-col my-3 space-y-2">
+                                <label className="font-bold text-gray-800">Industry</label>
+                                <fieldset className="flex flex-wrap gap-3">
+                                    {industryOptions.map((industry) => (
+                                        <div key={industry}>
+                                            <label
+                                                htmlFor={industry}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border border-gray-200 hover:border-gray-300 bg-white px-3 py-2 text-gray-900 ${state.category === industry && "border-blue-500 bg-blue-500 text-white"}`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    id={industry}
+                                                    value={industry}
+                                                    className="sr-only"
+                                                    onChange={(e) => handleInputChange(e, 'category')}
+                                                    checked={state.category === industry}
+                                                />
 
-                        {state.castDetails?.length > 0 && (
-                            <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
-                                {state.castDetails?.map((cast) => (
-                                    <div key={cast} className="w-auto h-auto relative py-2">
-                                        <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
-                                            <span className="text-gray-800 text-sm ">{cast}</span>
+                                                <p className="text-xs font-medium capitalize">{industry}</p>
+                                            </label>
                                         </div>
-                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('castDetails', cast)}></i>
-                                    </div>
-                                ))}
+                                    ))}
+                                </fieldset>
                             </div>
-                        )}
 
-                        <div className="flex flex-col my-3">
-                            <label className="font-bold">Cast Details</label>
-                            <input type="text" data-field="castDetails" id="cast-details-input" className="border border-black rounded-sm" />
-                            <button type="button" onClick={() => creatInputValueToArrayHandler('cast-details-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
-                        </div>
+                            <div className="flex flex-col my-3 gap-2 space-y-2">
+                                <label className="font-bold text-gray-800">Language</label>
+                                <fieldset className="flex flex-wrap gap-3">
+                                    {languageOptions.map((lng) => (
+                                        <div key={lng}>
+                                            <label
+                                                htmlFor={lng}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border border-gray-200 hover:border-gray-300 bg-white px-3 py-2 text-gray-900 ${state.language === lng && "border-blue-500 bg-blue-500 text-white"}`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    id={lng}
+                                                    value={lng}
+                                                    className="sr-only"
+                                                    onChange={(e) => handleInputChange(e, 'language')}
+                                                    checked={state.language === lng}
+                                                />
 
-                        {state.tags?.length > 0 && (
-                            <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
-                                {state.tags?.map((tag) => (
-                                    <div key={tag} className="w-auto h-auto relative py-2">
-                                        <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
-                                            <span className="text-gray-800 text-sm ">{tag}</span>
+                                                <p className="text-xs font-medium capitalize">{lng}</p>
+                                            </label>
                                         </div>
-                                        <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('tags', tag)}></i>
-                                    </div>
-                                ))}
+                                    ))}
+                                </fieldset>
                             </div>
-                        )}
 
-                        <div className="flex flex-col my-3">
-                            <label className="font-bold">Adition tags</label>
-                            <input type="text" list="tagOptions" id="tags-input" data-field="tags" className="border border-black rounded-sm" />
-                            <datalist id="tagOptions">
-                                {availableTags.map((tag) => (
-                                    <option key={tag} value={tag} />
-                                ))}
-                            </datalist>
-                            <button type="button" onClick={() => creatInputValueToArrayHandler('tags-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
+                            {state.genre?.length > 0 && (
+                                <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
+                                    {state.genre?.map((genre) => (
+                                        <div key={genre} className="w-auto h-auto relative py-2">
+                                            <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
+                                                <span className="text-gray-800 text-sm ">{genre}</span>
+                                            </div>
+                                            <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('genre', genre)}></i>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Genre Details</label>
+                                <input type="text" data-field="genre" id="genre-input" className={inputStyle} />
+                                <button type="button" onClick={() => creatInputValueToArrayHandler('genre-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
+                            </div>
+
+                            {state.castDetails?.length > 0 && (
+                                <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
+                                    {state.castDetails?.map((cast) => (
+                                        <div key={cast} className="w-auto h-auto relative py-2">
+                                            <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
+                                                <span className="text-gray-800 text-sm ">{cast}</span>
+                                            </div>
+                                            <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('castDetails', cast)}></i>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Cast Details</label>
+                                <input type="text" data-field="castDetails" id="cast-details-input" className={inputStyle} />
+                                <button type="button" onClick={() => creatInputValueToArrayHandler('cast-details-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
+                            </div>
+
+                            {state.tags?.length > 0 && (
+                                <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
+                                    {state.tags?.map((tag) => (
+                                        <div key={tag} className="w-auto h-auto relative py-2">
+                                            <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
+                                                <span className="text-gray-800 text-sm ">{tag}</span>
+                                            </div>
+                                            <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('tags', tag)}></i>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Adition tags</label>
+                                <input type="text" list="tagOptions" id="tags-input" data-field="tags" className={inputStyle} />
+                                <datalist id="tagOptions">
+                                    {tagOptions.map((tag) => (
+                                        <option key={tag} value={tag} />
+                                    ))}
+                                </datalist>
+                                <button type="button" onClick={() => creatInputValueToArrayHandler('tags-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
+                            </div>
+
+                            <button
+                                disabled={processing}
+                                type="submit"
+                                className="my-4 w-full max-w-[300px] h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer font-semibold">
+                                {!processing ? "Upload" : "Uploading..."}
+                            </button>
                         </div>
-
-                        <button
-                            disabled={processing}
-                            type="submit"
-                            className="my-4 w-full max-w-[300px] h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer font-semibold">
-                            {!processing ? "Upload" : "Uploading..."}
-                        </button>
-
                     </div>
                 </form>
 

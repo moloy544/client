@@ -16,12 +16,7 @@ function HomePageLayout({ initialLayoutData }) {
 
     const homePageState = useSelector((state) => state.homePage);
 
-    const {
-        isAllLoad,
-        sectionTwo,
-        sectionThree,
-        sectionFour
-    } = homePageState;
+    const { isAllLoad, sliderMovies, sliderActors } = homePageState;
 
     const dispatch = useDispatch();
 
@@ -33,7 +28,7 @@ function HomePageLayout({ initialLayoutData }) {
 
     const handleObserver = (entries) => {
         const target = entries[0];
-        if (target.isIntersecting && !loading && offset !== maxOffset) {
+        if (target.isIntersecting && !loading && !isAllLoad) {
             setOffset((prevOffset) => prevOffset + 1);
         }
     };
@@ -46,12 +41,8 @@ function HomePageLayout({ initialLayoutData }) {
             threshold: 1.0,
         });
 
-        if (observerRefElement.current && !loading) {
+        if (observerRefElement.current && !loading && !isAllLoad) {
             observer.observe(observerRefElement.current);
-        };
-
-        if (observerRefElement.current && offset === maxOffset) {
-            observer.unobserve(observerRefElement.current);
         };
 
         return () => {
@@ -59,7 +50,7 @@ function HomePageLayout({ initialLayoutData }) {
                 observer.unobserve(observerRefElement.current);
             }
         };
-    }, [offset, loading]);
+    }, [offset, loading, isAllLoad]);
 
     useEffect(() => {
 
@@ -75,9 +66,13 @@ function HomePageLayout({ initialLayoutData }) {
 
                 if (response.status === 200) {
 
-                    const data = response.data
+                    if (response.data.sliderMovies) {
+                        dispatch(updateHomePageState({ sliderMovies: [...sliderMovies, ...response.data.sliderMovies] }))
+                    };
 
-                    dispatch(updateHomePageState({ ...data }))
+                    if (response.data.sliderActors) {
+                        dispatch(updateHomePageState({ sliderActors: [...sliderActors,...response.data.sliderActors] }))
+                    }
                 }
 
             } catch (error) {
@@ -99,91 +94,64 @@ function HomePageLayout({ initialLayoutData }) {
         }
 
     }, [offset]);
-
+console.log(sliderActors)
     return (
         <>
             <FixedSearchIcon />
 
             <BacktoTopButton />
 
-            {initialLayoutData && (
-                <>
+            {/**** For Initail Static Data ******/}
 
-                    {initialLayoutData.sliderMovies?.map((data) => (
+            {initialLayoutData && initialLayoutData.sliderMovies?.map((data) => (
 
-                        <SliderShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
+                <SliderShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
+            ))}
+
+            {/**** For Load More Dinamic Dtaa *****/}
+
+            {sliderActors?.length > 0 && sliderActors.map((data, index) => (
+
+                <SliderShowcase key={data.title || index} title={data.title} linkUrl={data.linkUrl}>
+
+                    {data.actors?.map((actor) => (
+
+                        <Link
+                            href={`/actors/${creatUrlLink(actor.name)}/${actor.imdbId?.replace('nm', '')}`}
+                            key={actor.imdbId}
+                            title={actor.name}
+                            className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-gray-700 rounded-md">
+
+                            <div className="w-28 h-28 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-600">
+
+                                <Image
+                                    className="w-full h-full object-fill select-none rounded-full"
+                                    src={actor.avatar?.replace('/upload/', '/upload/w_250,h_250,c_scale/')}
+                                    width={100}
+                                    height={100}
+                                    alt={actor.name}
+                                />
+                            </div>
+
+                            <div className="w-auto h-auto mobile:w-20 text-gray-300 overflow-hidden py-1.5">
+                                <p className="whitespace-normal text-xs font-semibold text-center leading-[15px] line-clamp-2">
+                                    {actor.name}
+                                </p>
+                            </div>
+
+                        </Link>
                     ))}
+                </SliderShowcase>
+            ))}
 
-                    <SliderShowcase title="Bollywood hindi Actors" linkUrl="/actors/bollywood">
+            {sliderMovies?.length > 0 && sliderMovies?.map((data, index) => (
+                <SliderShowcase
+                    key={data.title || index}
+                    title={data.title}
+                    moviesData={data.movies}
+                    linkUrl={data.linkUrl} />
 
-                        {initialLayoutData.bollywoodActressData?.map((actor) => (
-
-                            <Link
-                                href={`/actors/${creatUrlLink(actor.name)}/${actor.imdbId?.replace('nm', '')}`}
-                                key={actor.imdbId}
-                                title={actor.name}
-                                className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-gray-700 rounded-md">
-
-                                <div className="w-28 h-28 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-600">
-
-                                    <Image
-                                        className="w-full h-full object-fill select-none rounded-full"
-                                        src={actor.avatar?.replace('/upload/', '/upload/w_250,h_250,c_scale/')}
-                                        width={100}
-                                        height={100}
-                                        alt={actor.name}
-                                    />
-                                </div>
-
-                                <div className="w-auto h-auto mobile:w-20 text-gray-300 overflow-hidden py-1.5">
-                                    <p className="whitespace-normal text-xs font-semibold text-center leading-[15px] line-clamp-2">
-                                        {actor.name}
-                                    </p>
-                                </div>
-
-                            </Link>
-                        ))}
-                    </SliderShowcase>
-                </>
-            )}
-            {sectionTwo && (
-                <>
-                    {sectionTwo?.sliderMovies?.map((data) => (
-                        <SliderShowcase
-                            key={data.title}
-                            title={data.title}
-                            moviesData={data.movies}
-                            linkUrl={data.linkUrl} />
-
-                    ))}
-                </>
-            )}
-
-            {sectionThree && (
-                <>
-                    {sectionThree?.sliderMovies?.map((data) => (
-
-                        <SliderShowcase
-                            key={data.title}
-                            title={data.title}
-                            moviesData={data.movies}
-                            linkUrl={data.linkUrl} />
-                    ))}
-                </>
-            )}
-
-            {sectionFour && (
-                <>
-                    {sectionFour?.sliderMovies?.map((data) => (
-
-                        <SliderShowcase
-                            key={data.title}
-                            title={data.title}
-                            moviesData={data.movies}
-                            linkUrl={data.linkUrl} />
-                    ))}
-                </>
-            )}
+            ))}
 
             {loading && (
                 <div className="w-full h-auto mobile:py-6 py-10 flex justify-center items-center">

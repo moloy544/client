@@ -11,15 +11,13 @@ export default async function Page() {
 
   const response = await axios.post(apiUrl, { offset: 1 });
 
-  const { sectionOne } = response.data;
-
   return (
     <>
       <Navbar />
 
       <main className="w-full overflow-x-hidden h-full py-2">
 
-        <HomePageLayout initialLayoutData={sectionOne} />
+        <HomePageLayout initialLayoutData={response.data} />
 
       </main>
 

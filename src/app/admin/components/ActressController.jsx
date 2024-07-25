@@ -1,18 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
+import { creatToastAlert } from "@/utils";
+
+// text or number input style properties
+const inputStyle = "border-2 border-blue-700 rounded-md p-1";
+const industryOptions = ['bollywood', 'hollywood', 'south'];
 
 function ActressController() {
 
     const [actorState, setActorState] = useState({
         imdbId: '',
-        avatar: '',
         name: '',
-        industry: '',
+        industry: 'bollywood',
     });
 
-    const availableIndusters = ['bollywood', 'hollywood', 'south']
+    const [imagePreview, setImagePreview] = useState(null);
+    const [processing, setProcessing] = useState(false);
 
     const handleInputChange = (e, field) => {
 
@@ -26,11 +31,11 @@ function ActressController() {
     const getActorData = async () => {
         try {
 
-            if (actorState.imdbId.length <=5) {
+            if (actorState.imdbId.length <= 5) {
                 alert('Invalid IMDB ID or its too short');
             }
             const response = await axios.post(`${appConfig.backendUrl}/api/v1/admin/actor/get`, {
-               imdbId: actorState.imdbId
+                imdbId: actorState.imdbId
             });
 
             if (response.status !== 200) {
@@ -38,99 +43,162 @@ function ActressController() {
             };
             const { actor } = response.data;
             setActorState(actor)
-            
+
         } catch (error) {
             console.log(error);
         }
     }
 
     //Send Actor Data to server 
-    const sendActorData = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
         try {
 
-            const { imdbId, avatar, name, industry } = actorState;
+            const { imdbId, name, industry } = actorState;
 
-            const fieldsToValidate = [imdbId, avatar, name, industry];
+            const fieldsToValidate = [imdbId, name, industry];
             // Check if any field is missing or undefined
             const isAnyFieldMissing = fieldsToValidate.some(field => field === '');
 
             if (isAnyFieldMissing) {
-                alert('Some fields are missing');
+                creatToastAlert({ message: 'Some fields are missing' });
+                return;
+            } else if (imdbId.length < 5) {
+                creatToastAlert({ message: 'Invalid IMDB ID or its too short' });
                 return;
             };
 
-            const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/admin/actor/add`, {
-                actorData: actorState
+            setProcessing(true);
+
+            // Create a FormData object to hold the form data
+            const formData = new FormData();
+
+            // add movie data sate in form data
+            formData.append('data', JSON.stringify(actorState));
+
+            // add file in from data 
+            const fileInput = document.getElementById('actor-avatar-file');
+
+            if (fileInput && fileInput.files[0]) {
+                formData.append('file', fileInput.files[0]);
+            };
+
+            // send the form data to the backend API
+            const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/admin/actor/add`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
 
             const { message } = addResponse.data;
 
-            alert(message);
+            if (addResponse.status === 200) {
+                creatToastAlert({ message });
+                setActorState({
+                    imdbId: '',
+                    name: '',
+                    industry: '',
+                });
+                fileInput.value = '';
+                setImagePreview(null);
+            } else {
+                creatToastAlert({ message: message || "An error occurred while adding actor" });
+            };
 
-            console.log(addResponse.data);
 
         } catch (error) {
             console.error('Error sending actor to backend:', error);
             alert("An error occurred while adding actor");
+        } finally {
+            setProcessing(false);
         }
     };
 
+    // creat image ptreview 
+    const handleFileInputChnage = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const blobUri = URL.createObjectURL(file);
+            setImagePreview(blobUri);
+        }
+    };
+
+    // remove image ptreview after componet mount
+    useEffect(() => {
+        return () => {
+            if (imagePreview) {
+                URL.revokeObjectURL(imagePreview);
+            }
+        };
+    }, [imagePreview]);
+
     return (
-        <>
-        
-                <section className="w-auto h-fit flex-none mx-10 my-3 bg-white border border-blue-100 px-8 shadow-xl rounded-lg py-3">
+        <section className="w-full md:w-fit h-fit flex-none my-3 ">
+            <form onSubmit={handleSubmit} className="bg-white border border-blue-100 px-3 shadow-xl rounded-lg py-3 overflow-hidden">
 
-                    <h1 className="text-amber-700 text-xl text-center font-semibold">Add Actor Section</h1>
-
-                    <div className="flex flex-col my-3">
-                            <label className="font-bold">Actor IMDB ID</label>
-                            <div className="flex gap-1">
-                            <input className="border border-black rounded-sm w-32 h-auto" type="text" value={actorState.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
-                            <button className="w-16 h-6 bg-green-700 text-sm text-white font-semibold text-center" type="button" onClick={getActorData}>Get</button>
-                            </div>
-                        </div>
-
-                    <div className="flex flex-col my-3">
-                        <label className="font-bold">Name</label>
-                        <input className="border border-black rounded-sm" type="text" value={actorState.name} onChange={(e) => handleInputChange(e, 'name')} />
+                <h1 className="text-amber-700 text-xl text-center font-semibold">Add Actor Section</h1>
+                <div className="flex flex-col my-3">
+                    <label className="font-bold">Actor IMDB ID</label>
+                    <div className="flex gap-1">
+                        <input className={inputStyle + ' w-40'} type="text" value={actorState.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
+                        <button className="w-16 h-8 bg-green-700 text-sm text-white font-semibold text-center rounded-md" type="button" onClick={getActorData}>Get</button>
                     </div>
+                </div>
 
-                    {actorState.avatar !== '' && (
-                        <div className="w-auto h-auto my-2">
-                            <Image
+                <div className="flex flex-col my-3 max-w-[250px]">
+                    <label className="font-bold">Name</label>
+                    <input className={inputStyle} type="text" value={actorState.name} onChange={(e) => handleInputChange(e, 'name')} />
+                </div>
+
+                {imagePreview && (
+                    <div className="w-auto h-auto my-2">
+                        <Image
                             priority
                             width={145}
                             height={145}
-                             className="w-36 h-40 rounded-sm" src={actorState.avatar} alt="actor image" />
-                        </div>
-                    )}
-
-                    <div className="flex flex-col my-3">
-                        <label className="font-bold">Image link</label>
-                        <input className="border border-black rounded-sm" type="text" value={actorState.avatar} onChange={(e) => handleInputChange(e, 'avatar')} />
+                            className="w-36 h-40 rounded-sm" src={imagePreview} alt="actor image" />
                     </div>
+                )}
 
-                    <div className="flex flex-col my-3">
-                        <label className="font-bold">
-                            Industry
-                            {actorState.industry !== '' && (
-                                <span className="text-xs text-gray-500 font-medium">{"(" + actorState.industry + ")"}</span>)}
-                        </label>
-                        <div className="flex gap-5">
-                            {availableIndusters.map((industry) => (
-                                <label key={industry} className="text-gray-700 text-sm cursor-pointer flex items-center gap-1 capitalize">
-                                    {industry}
-                                    <input onChange={(e) => handleInputChange(e, 'industry')} type="radio" value={industry} name="industry" checked={actorState.industry === industry} />
+                <div className="flex flex-col my-3">
+                    <label className="font-bold">Select image</label>
+                    <input onChange={handleFileInputChnage} type="file" id="actor-avatar-file" accept="image/*" />
+
+                </div>
+
+                <div className="flex flex-col my-3">
+                    <label className="font-bold">Industry</label>
+
+                    <fieldset className="flex flex-wrap gap-3">
+                        {industryOptions.map((industry) => (
+                            <div key={industry}>
+                                <label
+                                    htmlFor={`Actor-${industry}`}
+                                    className={`flex cursor-pointer items-center justify-center rounded-md border border-gray-200 hover:border-gray-300 bg-white px-3 py-2 text-gray-900 ${actorState.industry === industry && "border-blue-500 bg-blue-500 text-white"}`}
+                                >
+                                    <input
+                                        type="radio"
+                                        id={`Actor-${industry}`}
+                                        value={industry}
+                                        className="sr-only"
+                                        onChange={(e) => handleInputChange(e, 'industry')}
+                                        checked={actorState.category === industry}
+                                    />
+
+                                    <p className="text-xs font-medium capitalize">{industry}</p>
                                 </label>
-                            ))}
-                        </div>
-                    </div>
-                    <div onClick={sendActorData} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">Send server</div>
+                            </div>
+                        ))}
 
-                </section>
-        </>
+                    </fieldset>
 
+                </div>
+                <button type="submit" disabled={processing} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">
+                    {!processing ? "Uploaded" : "Uploading..."}
+                </button>
+            </form>
+        </section>
     )
 }
 
