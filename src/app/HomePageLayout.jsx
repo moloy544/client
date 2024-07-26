@@ -94,7 +94,7 @@ function HomePageLayout({ initialLayoutData }) {
         }
 
     }, [offset]);
-console.log(sliderActors)
+
     return (
         <>
             <FixedSearchIcon />
@@ -105,7 +105,7 @@ console.log(sliderActors)
 
             {initialLayoutData && initialLayoutData.sliderMovies?.map((data) => (
 
-                <SliderShowcase key={data.title} title={data.title} moviesData={data.moviesData} linkUrl={data.linkUrl} />
+                <SliderShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
             ))}
 
             {/**** For Load More Dinamic Dtaa *****/}
