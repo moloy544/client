@@ -7,25 +7,26 @@ import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import Footer from '@/components/Footer';
 import { appConfig } from '@/config/config';
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
 
   title: {
-    default: 'Movies Bazaar',
-    template: '%s | Movies Bazaar'
+    default: 'Movies Bazar',
+    template: '%s | Movies Bazar'
   },
-  description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazaar',
+  description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazar',
   keywords: 'online movies, watch movies online, movie streaming, film, cinema, entertainment, Hollywood movies, Hollywood dubbed movies, South movies, South dubbed movies, Bollywood movies',
 
   openGraph: {
-    images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/w_300,h_300/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
+    images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
     title: {
-      default: 'Movies Bazaar',
-      template: '%s | Movies Bazaar',
+      default: 'Movies Bazar',
+      template: '%s | Movies Bazar',
     },
-    description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazaar',
+    description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazar.',
     url: appConfig.appDomain
   },
 }
@@ -55,14 +56,17 @@ export default function RootLayout({ children }) {
             {children}
           </div>
         </ReduxStatePrivider>
-
-        <SpeedInsights />
-        <Analytics />
+        {process.env.NODE_ENV === "production" && (
+          <Suspense>
+            <SpeedInsights />
+            <Analytics />
+          </Suspense>
+        )}
 
         <Footer />
 
       </body>
-      
+
     </html>
   )
 }
