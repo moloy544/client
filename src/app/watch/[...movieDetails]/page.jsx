@@ -58,14 +58,11 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: metaTitle,
       description: metaDesc,
-      url: metaOgUrl
+      url: metaOgUrl,
+      images: thambnail,
     },
   }
-
-  if (thambnail) {
-    metaDataObject.openGraph.images = thambnail?.replace('/upload/', '/upload/w_400,h_600,c_scale/');
-  };
-
+ 
   return metaDataObject
 };
 
