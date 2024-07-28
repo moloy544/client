@@ -99,6 +99,9 @@ export default function AdminPage() {
                         genre: genreAray,
                         castDetails: actorsArray
                     }));
+                    if (Poster && Poster!== "N/A") {
+                        setImagePreview(Poster)
+                    }
                 } else {
                     alert(omdbApiResponse.data.Error)
                 };;
