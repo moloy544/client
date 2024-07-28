@@ -354,7 +354,7 @@ export default function AdminPage() {
                                         <div key={status}>
                                             <label
                                                 htmlFor={status}
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border border-gray-200 hover:border-gray-300 bg-white px-3 py-2 text-gray-900 ${state.status === status && `${state.status === "released" ? "border-green-500 bg-green-500" : " border-yellow-500 bg-yellow-500"} text-white`}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.status === status ? "border-blue-500 bg-blue-500 text-white": "bg-white border-gray-200 hover:border-gray-300"}`}
                                             >
                                                 <input
                                                     type="radio"
@@ -379,7 +379,7 @@ export default function AdminPage() {
                                         <div key={industry}>
                                             <label
                                                 htmlFor={industry}
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border border-gray-200 hover:border-gray-300 bg-white px-3 py-2 text-gray-900 ${state.category === industry && "border-blue-500 bg-blue-500 text-white"}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.category === industry ? "border-blue-500 bg-blue-500 text-white": "bg-white border-gray-200 hover:border-gray-300"}`}
                                             >
                                                 <input
                                                     type="radio"
@@ -404,7 +404,7 @@ export default function AdminPage() {
                                         <div key={lng}>
                                             <label
                                                 htmlFor={lng}
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border border-gray-200 hover:border-gray-300 bg-white px-3 py-2 text-gray-900 ${state.language === lng && "border-blue-500 bg-blue-500 text-white"}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.language === lng ? "border-blue-500 bg-blue-500 text-white": "bg-white border-gray-200 hover:border-gray-300"}`}
                                             >
                                                 <input
                                                     type="radio"

@@ -5,6 +5,9 @@ import axios from "axios";
 import { appConfig } from "@/config/config";
 
 const backendServer = appConfig.backendUrl || appConfig.localhostUrl;
+// text or number input style properties
+const inputStyle = "border-2 border-blue-700 rounded-md p-1";
+
 
 function UpdateMoviesPage() {
 
@@ -16,7 +19,7 @@ function UpdateMoviesPage() {
 
         try {
 
-            if (id.length >= 15) {
+            if (id.length >= 5) {
 
                 const deleteResponse = await axios.delete(`${backendServer}/api/v1/admin/movie/delete/${id}`);
                 if (deleteResponse.status === 200) {
@@ -63,8 +66,8 @@ function UpdateMoviesPage() {
                         <h3 className=" text-center text-lg text-gray-900 font-bold">Delete Movie or Series</h3>
 
                         <div className="flex flex-col my-3">
-                            <label className="font-medium">Movie id</label>
-                            <input className="border border-black rounded-sm px-2 py-1 placeholder:text-gray-700 text-sm" type="text" placeholder="Enter movie or series id" value={id} onChange={(e) => setId(e.target.value)} />
+                            <label className="font-medium">Movie IMDB id</label>
+                            <input className={inputStyle+ ' placeholder:text-gray-700 text-sm'} type="text" placeholder="Enter movie or series IMDB id" value={id} onChange={(e) => setId(e.target.value)} />
                         </div>
 
                         <div onClick={deleteMovieFromMongoDb} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-red-pure rounded-md cursor-pointer">Delete</div>

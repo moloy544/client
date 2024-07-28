@@ -147,7 +147,7 @@ function ActressController() {
                 </div>
 
                 <div className="flex flex-col my-3 max-w-[250px]">
-                    <label className="font-bold">Name</label>
+                    <label className="font-bold text-gray-800">Name</label>
                     <input className={inputStyle} type="text" value={actorState.name} onChange={(e) => handleInputChange(e, 'name')} />
                 </div>
 
@@ -162,20 +162,20 @@ function ActressController() {
                 )}
 
                 <div className="flex flex-col my-3">
-                    <label className="font-bold">Select image</label>
+                    <label className="font-bold text-gray-800">Select image</label>
                     <input onChange={handleFileInputChnage} type="file" id="actor-avatar-file" accept="image/*" />
 
                 </div>
 
                 <div className="flex flex-col my-3">
-                    <label className="font-bold">Industry</label>
+                    <label className="font-bold text-gray-800">Industry</label>
 
                     <fieldset className="flex flex-wrap gap-3">
                         {industryOptions.map((industry) => (
                             <div key={industry}>
                                 <label
                                     htmlFor={`Actor-${industry}`}
-                                    className={`flex cursor-pointer items-center justify-center rounded-md border border-gray-200 hover:border-gray-300 bg-white px-3 py-2 text-gray-900 ${actorState.industry === industry && "border-blue-500 bg-blue-500 text-white"}`}
+                                    className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${actorState.industry === industry ? "border-blue-500 bg-blue-500 text-white": "bg-white border-gray-200 hover:border-gray-300"}`}
                                 >
                                     <input
                                         type="radio"
@@ -194,9 +194,11 @@ function ActressController() {
                     </fieldset>
 
                 </div>
-                <button type="submit" disabled={processing} className="my-8 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">
+                <div className="w-full flex justify-center">
+                <button type="submit" disabled={processing} className="my-3.5 w-auto h-auto px-10 py-3 text-sm text-center text-white bg-purple-600 rounded-md cursor-pointer">
                     {!processing ? "Uploaded" : "Uploading..."}
                 </button>
+                </div>
             </form>
         </section>
     )
