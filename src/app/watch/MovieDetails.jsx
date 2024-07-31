@@ -26,7 +26,6 @@ export default function MovieDetails({ movieDetails, suggestions }) {
     category,
     type,
     status,
-    server,
     watchLink
   } = movieDetails || {};
 
@@ -210,7 +209,7 @@ export default function MovieDetails({ movieDetails, suggestions }) {
 
         {playerVisibility && (
           <>
-            {server && server === "work" ? (
+            {2>1 ? (
               <iframe
                 ref={iframeRef}
                 className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"

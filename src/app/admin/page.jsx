@@ -1,15 +1,16 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
 import ActressController from "./components/ActressController";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
 import { creatToastAlert } from "@/utils";
+import { getTodayDate, validateMovieDetailsInput } from "@/utils/admin.utils";
 
 // text or number input style properties
-const inputStyle = "border-2 border-blue-700 rounded-md p-1";
+const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
 
 // all options arrays
 const statusOptions = ['released', 'coming soon']
@@ -21,7 +22,7 @@ export default function AdminPage() {
 
     const [state, setState] = useState({
         imdbId: '',
-        imdbRating: 0,
+        imdbRating: 1,
         title: '',
         releaseYear: 0,
         fullReleaseDate: '',
@@ -37,6 +38,7 @@ export default function AdminPage() {
 
     const [imagePreview, setImagePreview] = useState(null);
     const [processing, setProcessing] = useState(false);
+    const dateInputRef = useRef(null);
 
     const getImbdResponse = async () => {
 
@@ -58,7 +60,7 @@ export default function AdminPage() {
                         year: 'numeric',
                     });
 
-                    alert("Movie is already exist");
+                    creatToastAlert({message:"Movie is already exist"});
 
                     setState(prevState => ({
                         ...prevState,
@@ -94,12 +96,14 @@ export default function AdminPage() {
                         imdbRating: imdbRating !== "N/A" ? imdbRating : 0,
                         thambnail: Poster,
                         title: Title,
-                        releaseYear: Year,
                         fullReleaseDate: Released,
                         genre: genreAray,
                         castDetails: actorsArray
                     }));
-                    if (Poster && Poster!== "N/A") {
+                    if (Released && Released !== "N/A") {
+                        handleDateChange(Released)
+                    }
+                    if (Poster && Poster !== "N/A") {
                         setImagePreview(Poster)
                     }
                 } else {
@@ -117,6 +121,12 @@ export default function AdminPage() {
         try {
 
             if (processing) {
+                return
+            };
+
+            const validationMessage = validateMovieDetailsInput(state);
+            if (validationMessage) {
+                creatToastAlert({ message: validationMessage });
                 return
             };
 
@@ -145,7 +155,7 @@ export default function AdminPage() {
 
             if (addResponse.status === 200) {
 
-                creatToastAlert({message: responseMessage || "Movie added successfully"});
+                creatToastAlert({ message: responseMessage || "Movie added successfully" });
 
                 setState(prevState => ({
                     ...prevState,
@@ -176,9 +186,15 @@ export default function AdminPage() {
     // all input fields handler
     const handleInputChange = (e, field) => {
 
+       let value = e.target?.value || null;
+
+        if (!value) {
+          return;  
+        };
+
         if (field == 'imdbId') {
 
-            const creatWatchLink = process.env.VIDEO_SERVER_URL + e.target.value;
+            const creatWatchLink = process.env.VIDEO_SERVER_URL + value;
 
             setState(prevState => ({
                 ...prevState,
@@ -187,9 +203,13 @@ export default function AdminPage() {
 
         };
 
+        if (field === "imdbRating") {
+            value = Number(value);
+        };
+
         if (field == 'category') {
 
-            if (e.target.value === 'bollywood') {
+            if (value === 'bollywood') {
 
                 setState(prevState => ({
                     ...prevState,
@@ -205,7 +225,7 @@ export default function AdminPage() {
 
         setState(prevState => ({
             ...prevState,
-            [field]: e.target.value
+            [field]: value
         }));
     };
 
@@ -221,7 +241,7 @@ export default function AdminPage() {
 
             if (!inputText || inputText === "") {
 
-                alert("Input value is required");
+            creatToastAlert({message:"Input value is required"});
             };
 
             // get filed name from provided id present element data attribute
@@ -230,12 +250,12 @@ export default function AdminPage() {
             const isExist = state[arrayFiled]?.some(data => inputText?.toLowerCase() == data?.toLowerCase())
 
             if (isExist) {
-                alert(`${inputText} in ${arrayFiled} filed is already exists`);
+                creatToastAlert({message:`${inputText} in ${arrayFiled} filed is already exists`});
                 return
             };
 
             if (inputText.length < 2) {
-                alert("Value is very short");
+                creatToastAlert({message:"Value is very short"});
                 return
             }
 
@@ -268,6 +288,35 @@ export default function AdminPage() {
         }
     };
 
+    // Handle changes for the date input
+    const handleDateChange = (e) => {
+
+        const selectedDate = e.target?.value || e;
+
+        // check if date is null or empty empty the existing date
+        if (!selectedDate) {
+            setState(prevState => ({
+                ...prevState,
+                fullReleaseDate: '',
+                releaseYear: 0,
+            }));
+            return;
+        };
+        const date = new Date(selectedDate);
+        const year = date.getFullYear();
+        const formattedDate = date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+        });
+        // set selected date in state
+        setState(prevState => ({
+            ...prevState,
+            releaseYear: year,
+            fullReleaseDate: formattedDate
+        }));
+    };
+
     // remove image ptreview after componet mount
     useEffect(() => {
         return () => {
@@ -276,6 +325,13 @@ export default function AdminPage() {
             }
         };
     }, [imagePreview]);
+
+    useEffect(() => {
+        // Update max date when the component mounts
+        if (dateInputRef.current) {
+            dateInputRef.current.setAttribute('max', getTodayDate());
+        }
+    }, []);
 
     return (
         <>
@@ -301,14 +357,14 @@ export default function AdminPage() {
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">IMDB ID</label>
                                 <div className="flex items-center gap-1">
-                                    <input className={inputStyle+' w-40'} type="text" value={state.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} />
+                                    <input className={inputStyle + ' w-40'} type="text" value={state.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} placeholder="Enter IMDB id" />
                                     <button className="w-16 h-8 bg-green-700 text-sm text-white font-semibold text-center rounded-sm" type="button" onClick={getImbdResponse}>Get</button>
                                 </div>
                             </div>
 
                             <div className="flex flex-col my-3">
-                                <label className="font-bold text-gray-800">WatchLink</label>
-                                <input className={inputStyle} type="text" value={state.watchLink} onChange={(e) => handleInputChange(e, 'watchLink')} />
+                                <label className="font-bold text-gray-800">Video source link</label>
+                                <input className={inputStyle} type="text" value={state.watchLink} onChange={(e) => handleInputChange(e, 'watchLink')} placeholder="Enter video source link" />
                             </div>
 
                             <div className="flex flex-col my-3">
@@ -327,22 +383,27 @@ export default function AdminPage() {
 
                             <div className="max-w-[200px] flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Imdb Rating</label>
-                                <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} />
+                              <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} min={1} />
                             </div>
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Title</label>
-                                <input className={inputStyle} type="text" value={state.title} onChange={(e) => handleInputChange(e, 'title')} />
+                                <input className={inputStyle} type="text" value={state.title} onChange={(e) => handleInputChange(e, 'title')} placeholder="Enter title" />
                             </div>
 
                             <div className="max-w-[200px] flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Release Year</label>
-                                <input className={inputStyle} type="number" value={state.releaseYear} onChange={(e) => handleInputChange(e, 'releaseYear')} />
+                                <input className={inputStyle+' bg-slate-100'} type="number" value={state.releaseYear} readOnly />
                             </div>
 
                             <div className="max-w-[200px] flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Full release date</label>
-                                <input className={inputStyle} type="text" value={state.fullReleaseDate} onChange={(e) => handleInputChange(e, 'fullReleaseDate')} />
+                                <input
+                                    ref={dateInputRef}
+                                    type="date"
+                                    onChange={handleDateChange}
+                                />
+                                  <input className={inputStyle+' bg-slate-100'} type="text" value={state.fullReleaseDate} readOnly />
                             </div>
 
                         </div>
@@ -357,7 +418,7 @@ export default function AdminPage() {
                                         <div key={status}>
                                             <label
                                                 htmlFor={status}
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.status === status ? "border-blue-500 bg-blue-500 text-white": "bg-white border-gray-200 hover:border-gray-300"}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.status === status ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
                                             >
                                                 <input
                                                     type="radio"
@@ -382,7 +443,7 @@ export default function AdminPage() {
                                         <div key={industry}>
                                             <label
                                                 htmlFor={industry}
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.category === industry ? "border-blue-500 bg-blue-500 text-white": "bg-white border-gray-200 hover:border-gray-300"}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.category === industry ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
                                             >
                                                 <input
                                                     type="radio"
@@ -407,7 +468,7 @@ export default function AdminPage() {
                                         <div key={lng}>
                                             <label
                                                 htmlFor={lng}
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.language === lng ? "border-blue-500 bg-blue-500 text-white": "bg-white border-gray-200 hover:border-gray-300"}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.language === lng ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
                                             >
                                                 <input
                                                     type="radio"
@@ -440,7 +501,7 @@ export default function AdminPage() {
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Genre Details</label>
-                                <input type="text" data-field="genre" id="genre-input" className={inputStyle} />
+                                <input type="text" data-field="genre" id="genre-input" className={inputStyle} placeholder="Enter genre name" />
                                 <button type="button" onClick={() => creatInputValueToArrayHandler('genre-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                             </div>
 
@@ -459,7 +520,7 @@ export default function AdminPage() {
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Cast Details</label>
-                                <input type="text" data-field="castDetails" id="cast-details-input" className={inputStyle} />
+                                <input type="text" data-field="castDetails" id="cast-details-input" className={inputStyle} placeholder="Enter cast name" />
                                 <button type="button" onClick={() => creatInputValueToArrayHandler('cast-details-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                             </div>
 
@@ -478,7 +539,7 @@ export default function AdminPage() {
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Adition tags</label>
-                                <input type="text" list="tagOptions" id="tags-input" data-field="tags" className={inputStyle} />
+                                <input type="text" list="tagOptions" id="tags-input" data-field="tags" className={inputStyle} placeholder="Enter tags" />
                                 <datalist id="tagOptions">
                                     {tagOptions.map((tag) => (
                                         <option key={tag} value={tag} />
