@@ -64,7 +64,7 @@ export default function AdminPage() {
 
                     setState(prevState => ({
                         ...prevState,
-                        imdbRating: Number(movieData.imdbRating) || 0,
+                        imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
                         title: movieData.title,
                         releaseYear: movieData.releaseYear,
                         fullReleaseDate: formattedDate,
@@ -85,7 +85,7 @@ export default function AdminPage() {
 
                 if (omdbApiResponse.data.Title) {
 
-                    const { imdbRating, Title, Year, Released, Poster, Genre, Actors } = omdbApiResponse.data;
+                    const { imdbRating, Title, Released, Poster, Genre, Actors } = omdbApiResponse.data;
 
                     const genreAray = Genre.split(',').map(genre => genre.trim());
 
@@ -94,7 +94,6 @@ export default function AdminPage() {
                     setState(prevState => ({
                         ...prevState,
                         imdbRating: imdbRating !== "N/A" ? Number(imdbRating) : 0,
-                        thambnail: Poster,
                         title: Title,
                         fullReleaseDate: Released,
                         genre: genreAray,
