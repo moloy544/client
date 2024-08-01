@@ -64,7 +64,7 @@ export default function AdminPage() {
 
                     setState(prevState => ({
                         ...prevState,
-                        imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
+                        imdbRating: Number(movieData.imdbRating) || 0,
                         title: movieData.title,
                         releaseYear: movieData.releaseYear,
                         fullReleaseDate: formattedDate,
@@ -93,7 +93,7 @@ export default function AdminPage() {
 
                     setState(prevState => ({
                         ...prevState,
-                        imdbRating: imdbRating !== "N/A" ? imdbRating : 0,
+                        imdbRating: imdbRating !== "N/A" ? Number(imdbRating) : 0,
                         thambnail: Poster,
                         title: Title,
                         fullReleaseDate: Released,
@@ -160,7 +160,7 @@ export default function AdminPage() {
                 setState(prevState => ({
                     ...prevState,
                     imdbId: '',
-                    imdbRating: 0,
+                    imdbRating: 1,
                     title: '',
                     releaseYear: 0,
                     fullReleaseDate: '',
