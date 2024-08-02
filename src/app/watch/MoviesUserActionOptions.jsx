@@ -79,7 +79,7 @@ export default function MoviesUserActionOptions({ movieData }) {
   return (
     <>
 
-      <div className="w-auto h-auto mobile:mt-1 mt-10 flex gap-5 mobile:gap-2.5 mobile:justify-around overflow-x-scroll scrollbar-hidden">
+      <div className="w-auto h-auto mt-3 flex gap-5 mobile:gap-2.5 justify-around overflow-x-scroll scrollbar-hidden">
 
         <div onClick={saveInLocalStorage} role="button" title="Save" className="w-auto h-auto flex gap-1 justify-center items-center text-gray-300 bg-gray-900 hover:bg-gray-800 py-1.5 px-3 rounded-2xl">
           {isSaved ? (
@@ -108,7 +108,7 @@ export default function MoviesUserActionOptions({ movieData }) {
           className="flex gap-1.5 items-center text-gray-300 bg-gray-900 hover:bg-gray-800 px-3 py-1.5 rounded-2xl"
         >
           <svg
-          fill="#d1d5db"
+            fill="#d1d5db"
             xmlns="http://www.w3.org/2000/svg"
             enableBackground="new 0 0 24 24"
             height="22"

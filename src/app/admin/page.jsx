@@ -8,11 +8,13 @@ import ActressController from "./components/ActressController";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
 import { creatToastAlert } from "@/utils";
 import { getTodayDate, validateMovieDetailsInput } from "@/utils/admin.utils";
+import VidStackPlayer from "../watch/PlayerJs";
 
 // text or number input style properties
 const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
 
 // all options arrays
+const typeOptions = ["movie", "series"];
 const statusOptions = ['released', 'coming soon']
 const languageOptions = ['hindi', 'hindi dubbed', 'bengali', 'punjabi'];
 const industryOptions = ['bollywood', 'hollywood', 'south'];
@@ -60,7 +62,7 @@ export default function AdminPage() {
                         year: 'numeric',
                     });
 
-                    creatToastAlert({message:"Movie is already exist"});
+                    creatToastAlert({ message: "Movie is already exist" });
 
                     setState(prevState => ({
                         ...prevState,
@@ -185,21 +187,14 @@ export default function AdminPage() {
     // all input fields handler
     const handleInputChange = (e, field) => {
 
-       let value = e.target?.value || null;
-
-        if (!value) {
-          return;  
-        };
+        let value = e.target?.value || null;
 
         if (field == 'imdbId') {
 
-            const creatWatchLink = process.env.VIDEO_SERVER_URL + value;
-
             setState(prevState => ({
                 ...prevState,
-                watchLink: creatWatchLink
+                watchLink: !value ? '' : process.env.VIDEO_SERVER_URL + value
             }));
-
         };
 
         if (field === "imdbRating") {
@@ -240,7 +235,7 @@ export default function AdminPage() {
 
             if (!inputText || inputText === "") {
 
-            creatToastAlert({message:"Input value is required"});
+                creatToastAlert({ message: "Input value is required" });
             };
 
             // get filed name from provided id present element data attribute
@@ -249,12 +244,12 @@ export default function AdminPage() {
             const isExist = state[arrayFiled]?.some(data => inputText?.toLowerCase() == data?.toLowerCase())
 
             if (isExist) {
-                creatToastAlert({message:`${inputText} in ${arrayFiled} filed is already exists`});
+                creatToastAlert({ message: `${inputText} in ${arrayFiled} filed is already exists` });
                 return
             };
 
             if (inputText.length < 2) {
-                creatToastAlert({message:"Value is very short"});
+                creatToastAlert({ message: "Value is very short" });
                 return
             }
 
@@ -347,12 +342,16 @@ export default function AdminPage() {
                         {/** first row */}
                         <div className="w-full md:w-auto h-auto">
 
-                            {state.watchLink !== "" && (
+                            {state.watchLink && state.watchLink.includes('index.m3u8') ? (
+                                <VidStackPlayer title={state.title!=='' ? state.title : "Video preview"} source={state.watchLink} />
+
+                            ) : state.watchLink && (
                                 <iframe
                                     className="w-full aspect-video border-none z-30"
                                     src={state.watchLink}
                                     allowFullScreen="allowfullscreen" />
                             )}
+
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">IMDB ID</label>
                                 <div className="flex items-center gap-1">
@@ -360,12 +359,10 @@ export default function AdminPage() {
                                     <button className="w-16 h-8 bg-green-700 text-sm text-white font-semibold text-center rounded-sm" type="button" onClick={getImbdResponse}>Get</button>
                                 </div>
                             </div>
-
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Video source link</label>
                                 <input className={inputStyle} type="text" value={state.watchLink} onChange={(e) => handleInputChange(e, 'watchLink')} placeholder="Enter video source link" />
                             </div>
-
                             <div className="flex flex-col my-3">
                                 {imagePreview && (
                                     <Image
@@ -380,9 +377,10 @@ export default function AdminPage() {
                                 <input onChange={handleFileInputChnage} type="file" name="thambnail-file" id="thambnail-file" accept="image/*" />
                             </div>
 
+
                             <div className="max-w-[200px] flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Imdb Rating</label>
-                              <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} min={1} />
+                                <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} min={1} />
                             </div>
 
                             <div className="flex flex-col my-3">
@@ -392,7 +390,7 @@ export default function AdminPage() {
 
                             <div className="max-w-[200px] flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Release Year</label>
-                                <input className={inputStyle+' bg-slate-100'} type="number" value={state.releaseYear} readOnly />
+                                <input className={inputStyle + ' bg-slate-100'} type="number" value={state.releaseYear} readOnly />
                             </div>
 
                             <div className="max-w-[200px] flex flex-col my-3">
@@ -402,7 +400,7 @@ export default function AdminPage() {
                                     type="date"
                                     onChange={handleDateChange}
                                 />
-                                  <input className={inputStyle+' bg-slate-100'} type="text" value={state.fullReleaseDate} readOnly />
+                                <input className={inputStyle + ' bg-slate-100'} type="text" value={state.fullReleaseDate} readOnly />
                             </div>
 
                         </div>
@@ -429,6 +427,31 @@ export default function AdminPage() {
                                                 />
 
                                                 <p className="text-xs font-medium capitalize">{status}</p>
+                                            </label>
+                                        </div>
+                                    ))}
+                                </fieldset>
+                            </div>
+
+                            <div className="flex flex-col space-y-2">
+                                <label className="font-bold text-gray-800">Type</label>
+                                <fieldset className="flex flex-wrap gap-3">
+                                    {typeOptions.map((type) => (
+                                        <div key={type}>
+                                            <label
+                                                htmlFor={`Video-type-${type}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.type === type ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    id={`Video-type-${type}`}
+                                                    value={type}
+                                                    className="sr-only"
+                                                    onChange={(e) => handleInputChange(e, 'type')}
+                                                    checked={state.type === type}
+                                                />
+
+                                                <p className="text-xs font-medium capitalize">{type}</p>
                                             </label>
                                         </div>
                                     ))}

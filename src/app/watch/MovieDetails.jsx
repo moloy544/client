@@ -1,20 +1,19 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { transformToCapitalize } from "@/utils";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
+import VidStackPlayer from "./PlayerJs";
+import { ModelsController } from "@/lib/EventsHandler";
 
 export default function MovieDetails({ movieDetails, suggestions }) {
 
-  const iframeRef = useRef(null);
-
-  const [playerVisibility, setPlayerVisibility] = useState(false);
-
   const {
+    imdbId,
     imdbRating,
     title,
     thambnail,
@@ -29,45 +28,36 @@ export default function MovieDetails({ movieDetails, suggestions }) {
     watchLink
   } = movieDetails || {};
 
-  const showPlayer = () => {
-    window.location.hash = "play"
+  const [playerVisibility, setPlayerVisibility] = useState(false);
+  const [videoSource, setVideoSource] = useState(watchLink[0]);
+
+  const handleVideoSourcePlay = (source) => {
+    setVideoSource(source);
+    if (window.location.hash || window.location.hash !== 'play') {
+      window.location.hash = "play"
+    }
   };
 
-  const hidePlayer = () => {
-    window.history.back();
-    setPlayerVisibility(false);
-  };
   useEffect(() => {
 
-    setPlayerVisibility(true);
-
     const handleHashChange = () => {
-      const body = document.querySelector('body');
-      const playerIframe = iframeRef.current;
 
-      if (window.location.hash === "#play" && !playerVisibility) {
+      if (window.location.hash === "#play") {
         setPlayerVisibility(true);
-      };
-
-      if (window.location.hash === "#play" && playerIframe) {
-        playerIframe.style.display = "block";
-        body.setAttribute('class', 'overflow-y-hidden');
-      } else if (playerIframe) {
-        playerIframe.style.display = "none";
-        body.removeAttribute('class', 'overflow-y-hidden');
+      } else {
+        setPlayerVisibility(false);
       }
     };
 
     handleHashChange();
-
     window.addEventListener('hashchange', handleHashChange);
 
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, [playerVisibility]);
+  }, []);
 
-
+  console.log("re render")
   const originalDate = new Date(fullReleaseDate);
 
   const formattedDate = originalDate.toLocaleDateString('en-GB', {
@@ -95,8 +85,20 @@ export default function MovieDetails({ movieDetails, suggestions }) {
       <div className="w-full h-full my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
         <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:min-w-[700px] lg:min-w-[800px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
+          <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] min-h-full ${playerVisibility ? "block" : "hidden"}`}>
+            {videoSource.includes('index.m3u8') ? (
+              <VidStackPlayer
+                title={title}
+                source={videoSource}
+              />
+            ) : (
+              <iframe
+                src={videoSource}
+                allowFullScreen="allowfullscreen" />
+            )}
 
-          <div className="w-full max-w-[300px] max-h-[400px] aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-500 bg-gray-800">
+          </div>
+          <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility ? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-500 bg-gray-800`}>
 
             <Image
               priority
@@ -106,23 +108,7 @@ export default function MovieDetails({ movieDetails, suggestions }) {
               fill />
 
             {status === "released" ? (
-              <button type="button"
-                onClick={showPlayer}
-                title="Play"
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-950 bg-opacity-70 text-gray-100 hover:text-yellow-500 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  role="presentation"
-                >
-                  <path d="M10.8 15.9l4.67-3.5c.27-.2.27-.6 0-.8L10.8 8.1a.5.5 0 0 0-.8.4v7c0 .41.47.65.8.4zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
-                </svg>
-
-                <span className="sr-only">Play video</span>
-              </button>
+              <PlayButton watchLinks={watchLink} playHandler={handleVideoSourcePlay} />
             ) : (
               <>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white text-sm">
@@ -194,44 +180,16 @@ export default function MovieDetails({ movieDetails, suggestions }) {
               </div>
 
             </div>
-
-            <MoviesUserActionOptions movieData={movieDetails} />
-
-            <div className="px-1.5 mobile:pb-3 flex justify-center space-x-1.5">
+            <div className="px-1.5 mobile:pb-3 flex justify-center space-x-1.5 md:my-6">
               <strong className="text-sm text-gray-300">Note: <span className="text-xs text-yellow-500 font-semibold">
                 If sometimes this {type} does not play, please connect to VPN and enjoy.
               </span></strong>
             </div>
-
+            <MoviesUserActionOptions movieData={movieDetails} />
           </div>
 
         </div>
 
-        {playerVisibility && (
-          <>
-            {2>1 ? (
-              <iframe
-                ref={iframeRef}
-                className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden"
-                src={watchLink}
-                allowFullScreen="allowfullscreen" />
-            ) : (
-              <div ref={iframeRef} className="fixed top-0 left-0 w-full h-full border-none z-[300] hidden bg-black px-3 py-5">
-                <div className="w-full h-full flex flex-col space-y-2 items-center justify-center relative">
-                  <button type="button"
-                    onClick={hidePlayer}
-                    className="absolute top-2 right-3 bg-white hover:bg-rose-500 rounded-full w-8 h-8 flex justify-center items-center">
-                    <i className="bi bi-x-lg text-gray-800 hover:text-gray-100"></i>
-                    <span className="sr-only">Close</span>
-                  </button>
-                  <div className="mobile:text-base text-xl font-semibold text-center text-blue-400">Please come back after some hours site is under maintenance</div>
-                  <small className="text-gray-200 text-center font-medium max-w-md">We are provide best service to our user. but for some reasons currently our service is off please come after some hours thanks for using our site. </small>
-                </div>
-              </div>
-            )}
-          </>
-
-        )}
       </div>
 
       <div className="py-2">
@@ -242,5 +200,61 @@ export default function MovieDetails({ movieDetails, suggestions }) {
       </div>
 
     </>
+  )
+};
+
+function PlayButton({ watchLinks, playHandler }) {
+  const [showDropdown, setDropDown] = useState(false);
+  const play = () => {
+    if (watchLinks.length === 1) {
+      playHandler(watchLinks[0]);
+    } else {
+      setDropDown((prev) => !prev)
+    };
+  };
+
+  function reorderWatchLinks(watchLinks) {
+    const m3u8LinkIndex = watchLinks.findIndex(link => link.includes('.m3u8'));
+
+    if (m3u8LinkIndex > 0) {
+      // Move the m3u8 link to the first position
+      const [m3u8Link] = watchLinks.splice(m3u8LinkIndex, 1);
+      watchLinks.unshift(m3u8Link);
+    }
+
+    return watchLinks;
+  };
+  const filterOutWatchLinks = reorderWatchLinks(watchLinks);
+
+
+  return (
+    <div className="w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="relative w-full h-auto">
+        <button type="button"
+          onClick={play}
+          title="Play"
+          className="bg-gray-950 bg-opacity-70 text-gray-100 hover:text-yellow-500 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="30"
+            height="30"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            role="presentation"
+          >
+            <path d="M10.8 15.9l4.67-3.5c.27-.2.27-.6 0-.8L10.8 8.1a.5.5 0 0 0-.8.4v7c0 .41.47.65.8.4zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+          </svg>
+
+          <span className="sr-only">Play video</span>
+        </button>
+        <ModelsController visibility={showDropdown} closeEvent={() => setDropDown(false)}>
+          <div className={`w-auto flex gap-3 whitespace-nowrap h-auto px-2 py-2.5 bg-white shadow-xl rounded-md absolute top-16 left-1/2 transform -translate-x-1/2 z-20 text-sm font-semibold text-gray-600`}>
+            {filterOutWatchLinks.map((data, index) => (
+              <button key={index} onClick={() => playHandler(data)} type="button">Server {index + 1}</button>
+            ))}
+          </div>
+        </ModelsController>
+      </div>
+    </div>
   )
 }

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-module.exports = {
+const nextConfig = {
   // this env set for client side access
   env: {
     APP_DOMAIN: 'https://moviesbazar.online',
@@ -13,3 +13,5 @@ module.exports = {
     unoptimized: true,
   },
 }
+
+module.exports = nextConfig;
