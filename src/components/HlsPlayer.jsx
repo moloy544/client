@@ -42,7 +42,7 @@ function VidStackPlayer({ title, source, visibility, paused}) {
     }
 
     return (
-        <MediaPlayer title={title} src={modifiedSource} autoPlay playsInline paused={paused}>
+        <MediaPlayer aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline paused={paused}>
             <MediaProvider />
             <DefaultVideoLayout 
             colorScheme="dark"

@@ -345,7 +345,7 @@ export default function AdminPage() {
                         {/** first row */}
                         <div className="w-full md:w-auto h-auto">
 
-                            {state.imdbId !== '' && state.imdbId.length >= 6 && (
+                            {state.imdbId !== '' && state.imdbId?.length >= 6 && (
                                 <iframe
                                     className="w-full aspect-video border-none z-30"
                                     src={videoSource + state.imdbId}

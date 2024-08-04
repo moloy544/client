@@ -254,7 +254,7 @@ function PlayButton({ watchLinks, playHandler }) {
             <div className="text-sm text-gray-300 space-y-2.5 mt-2 mx-1">
               {filterOutWatchLinks.map((data, index) => (
                 <div key={index} className="mx-auto self-center">
-                  <button className="flex items-center font-light" onClick={() => playHandler(data)} type="button">
+                  <button className="flex items-center font-medium" onClick={() => playHandler(data)} type="button">
                     <i className="bi bi-dot text-cyan-500 text-xl"></i>
                     <span>Server {index + 1}</span>
                     </button>
