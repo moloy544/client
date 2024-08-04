@@ -29,7 +29,7 @@ export default function MovieDetails({ movieDetails, suggestions }) {
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
-
+  
   const handleVideoSourcePlay = (source) => {
     setVideoSource(source);
     if (window.location.hash || window.location.hash !== 'play') {
@@ -40,14 +40,13 @@ export default function MovieDetails({ movieDetails, suggestions }) {
   useEffect(() => {
 
     window.location.hash = "";
-
+   
     const handleHashChange = () => {
 
       if (window.location.hash === "#play") {
         setPlayerVisibility(true);
       } else {
         setPlayerVisibility(false);
-        setVideoSource(null);
       }
     };
 
@@ -77,7 +76,7 @@ export default function MovieDetails({ movieDetails, suggestions }) {
       pathLink: `/browse/category/${category}`,
     }
   ];
-
+console.log(videoSource)
   return (
     <>
 
