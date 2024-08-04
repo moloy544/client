@@ -27,7 +27,7 @@ function generateSourceURL(originalURL) {
     return modifiedURL;
 }
 
-function VidStackPlayer({ title, source, visibility }) {
+function VidStackPlayer({ title, source, visibility, paused}) {
     const [modifiedSource, setModifiedSource] = useState(null);
 
     useEffect(() => {
@@ -35,16 +35,19 @@ function VidStackPlayer({ title, source, visibility }) {
             const newSource = generateSourceURL(source);
             setModifiedSource(newSource);
         }
-    }, [source]);
+    }, [source, generateSourceURL]);
 
     if (!visibility || !modifiedSource) {
         return null;
     }
 
     return (
-        <MediaPlayer title={title} src={modifiedSource}>
+        <MediaPlayer title={title} src={modifiedSource} autoPlay playsInline paused={paused}>
             <MediaProvider />
-            <DefaultVideoLayout icons={defaultLayoutIcons} />
+            <DefaultVideoLayout 
+            colorScheme="dark"
+            icons={defaultLayoutIcons}
+             />
         </MediaPlayer>
     );
 }

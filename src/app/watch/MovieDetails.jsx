@@ -76,7 +76,7 @@ export default function MovieDetails({ movieDetails, suggestions }) {
       pathLink: `/browse/category/${category}`,
     }
   ];
-console.log(videoSource)
+
   return (
     <>
 
@@ -88,9 +88,10 @@ console.log(videoSource)
         <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full ${playerVisibility ? "block" : "hidden"}`}>
 
             <VidStackPlayer
-              visibility={playerVisibility && videoSource.includes('index.m3u8')}
+              visibility={playerVisibility || videoSource?.includes('index.m3u8') || false}
               title={title}
               source={videoSource}
+              paused={!playerVisibility}
             />
             {playerVisibility && !videoSource.includes('index.m3u8') && (
               <iframe
