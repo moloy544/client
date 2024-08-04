@@ -7,8 +7,7 @@ import { appConfig } from "@/config/config";
 import ActressController from "./components/ActressController";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
 import { creatToastAlert } from "@/utils";
-import { getTodayDate, validateMovieDetailsInput } from "@/utils/admin.utils";
-import VidStackPlayer from "../watch/PlayerJs";
+import { getTodayDate, validateMovieDetailsInput } from "./utils/admin.utils";
 
 // text or number input style properties
 const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
@@ -19,7 +18,7 @@ const statusOptions = ['released', 'coming soon']
 const languageOptions = ['hindi', 'hindi dubbed', 'bengali', 'punjabi'];
 const industryOptions = ['bollywood', 'hollywood', 'south'];
 const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons'];
-
+const videoSource = process.env.VIDEO_SERVER_URL;
 export default function AdminPage() {
 
     const [state, setState] = useState({
@@ -33,7 +32,7 @@ export default function AdminPage() {
         type: 'movie',
         language: 'hindi',
         genre: [],
-        watchLink: '',
+        watchLink: [],
         castDetails: [],
         tags: [],
     });
@@ -125,6 +124,18 @@ export default function AdminPage() {
                 return
             };
 
+            // update or add environment variables video source if is not exist
+            const modifiedSources = state.watchLink.find(link => link.includes(videoSource))
+                ? state.watchLink
+                : [...state.watchLink, `${videoSource}${state.imdbId}`];
+
+            // update state watchlink with new updated watchlink
+            const modifiedState = {
+                ...state,
+                watchLink: modifiedSources
+            };
+
+            // validate movie details before sending to backend
             const validationMessage = validateMovieDetailsInput(state);
             if (validationMessage) {
                 creatToastAlert({ message: validationMessage });
@@ -137,7 +148,7 @@ export default function AdminPage() {
             const formData = new FormData();
 
             // add movie data sate in form data
-            formData.append('data', JSON.stringify(state));
+            formData.append('data', JSON.stringify(modifiedState));
 
             // add file in from data 
             const fileInput = document.getElementById('thambnail-file');
@@ -167,7 +178,7 @@ export default function AdminPage() {
                     fullReleaseDate: '',
                     genre: [],
                     castDetails: [],
-                    watchLink: '',
+                    watchLink: [],
                     tags: []
                 }));
                 fileInput.value = '';
@@ -188,14 +199,6 @@ export default function AdminPage() {
     const handleInputChange = (e, field) => {
 
         let value = e.target?.value || null;
-
-        if (field == 'imdbId') {
-
-            setState(prevState => ({
-                ...prevState,
-                watchLink: !value ? '' : process.env.VIDEO_SERVER_URL + value
-            }));
-        };
 
         if (field === "imdbRating") {
             value = Number(value);
@@ -342,13 +345,10 @@ export default function AdminPage() {
                         {/** first row */}
                         <div className="w-full md:w-auto h-auto">
 
-                            {state.watchLink && state.watchLink.includes('index.m3u8') ? (
-                                <VidStackPlayer title={state.title!=='' ? state.title : "Video preview"} source={state.watchLink} />
-
-                            ) : state.watchLink && (
+                            {state.imdbId !== '' && state.imdbId.length >= 6 && (
                                 <iframe
                                     className="w-full aspect-video border-none z-30"
-                                    src={state.watchLink}
+                                    src={videoSource + state.imdbId}
                                     allowFullScreen="allowfullscreen" />
                             )}
 
@@ -359,10 +359,7 @@ export default function AdminPage() {
                                     <button className="w-16 h-8 bg-green-700 text-sm text-white font-semibold text-center rounded-sm" type="button" onClick={getImbdResponse}>Get</button>
                                 </div>
                             </div>
-                            <div className="flex flex-col my-3">
-                                <label className="font-bold text-gray-800">Video source link</label>
-                                <input className={inputStyle} type="text" value={state.watchLink} onChange={(e) => handleInputChange(e, 'watchLink')} placeholder="Enter video source link" />
-                            </div>
+
                             <div className="flex flex-col my-3">
                                 {imagePreview && (
                                     <Image
@@ -377,16 +374,35 @@ export default function AdminPage() {
                                 <input onChange={handleFileInputChnage} type="file" name="thambnail-file" id="thambnail-file" accept="image/*" />
                             </div>
 
+                            {state.watchLink?.length > 0 && (
+                                <div className="text-sm flex gap-2 w-60 h-auto flex-row overflow-x-scroll whitespace-nowrap">
+                                    {state.watchLink.map((source, index) => (
+                                        <div key={index} className="w-auto h-auto relative py-2">
+                                            <div className="bg-gray-300 w-auto h-auto px-1.5 py-0.5 rounded-md">
+                                                <span className="text-gray-800 text-sm ">{source}</span>
+                                            </div>
+                                            <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('watchLink', source)}></i>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
 
-                            <div className="max-w-[200px] flex flex-col my-3">
-                                <label className="font-bold text-gray-800">Imdb Rating</label>
-                                <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} min={1} />
+                            <div className="flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Video sources</label>
+                                <input type="text" data-field="watchLink" id="video-source-input" className={inputStyle} placeholder="Enter video source" />
+                                <button type="button" onClick={() => creatInputValueToArrayHandler('video-source-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                             </div>
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Title</label>
                                 <input className={inputStyle} type="text" value={state.title} onChange={(e) => handleInputChange(e, 'title')} placeholder="Enter title" />
                             </div>
+
+                            <div className="max-w-[200px] flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Imdb Rating</label>
+                                <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} min={1} />
+                            </div>
+
 
                             <div className="max-w-[200px] flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Release Year</label>

@@ -7,13 +7,12 @@ import { transformToCapitalize } from "@/utils";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
-import VidStackPlayer from "./PlayerJs";
 import { ModelsController } from "@/lib/EventsHandler";
+import VidStackPlayer from "@/components/HlsPlayer";
 
 export default function MovieDetails({ movieDetails, suggestions }) {
 
   const {
-    imdbId,
     imdbRating,
     title,
     thambnail,
@@ -29,7 +28,7 @@ export default function MovieDetails({ movieDetails, suggestions }) {
   } = movieDetails || {};
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
-  const [videoSource, setVideoSource] = useState(watchLink[0]);
+  const [videoSource, setVideoSource] = useState(null);
 
   const handleVideoSourcePlay = (source) => {
     setVideoSource(source);
@@ -40,12 +39,15 @@ export default function MovieDetails({ movieDetails, suggestions }) {
 
   useEffect(() => {
 
+    window.location.hash = "";
+
     const handleHashChange = () => {
 
       if (window.location.hash === "#play") {
         setPlayerVisibility(true);
       } else {
         setPlayerVisibility(false);
+        setVideoSource(null);
       }
     };
 
@@ -57,7 +59,6 @@ export default function MovieDetails({ movieDetails, suggestions }) {
     };
   }, []);
 
-  console.log("re render")
   const originalDate = new Date(fullReleaseDate);
 
   const formattedDate = originalDate.toLocaleDateString('en-GB', {
@@ -84,14 +85,15 @@ export default function MovieDetails({ movieDetails, suggestions }) {
 
       <div className="w-full h-full my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
-        <div className="w-fit h-fit mobile:w-full mobile:max-w-[600px] md:min-w-[700px] lg:min-w-[800px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
-          <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] min-h-full ${playerVisibility ? "block" : "hidden"}`}>
-            {videoSource.includes('index.m3u8') ? (
-              <VidStackPlayer
-                title={title}
-                source={videoSource}
-              />
-            ) : (
+        <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[800px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
+        <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full ${playerVisibility ? "block" : "hidden"}`}>
+
+            <VidStackPlayer
+              visibility={playerVisibility && videoSource.includes('index.m3u8')}
+              title={title}
+              source={videoSource}
+            />
+            {playerVisibility && !videoSource.includes('index.m3u8') && (
               <iframe
                 src={videoSource}
                 allowFullScreen="allowfullscreen" />
@@ -226,14 +228,13 @@ function PlayButton({ watchLinks, playHandler }) {
   };
   const filterOutWatchLinks = reorderWatchLinks(watchLinks);
 
-
   return (
     <div className="w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <div className="relative w-full h-auto">
         <button type="button"
           onClick={play}
           title="Play"
-          className="bg-gray-950 bg-opacity-70 text-gray-100 hover:text-yellow-500 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110">
+          className="bg-gray-950 bg-opacity-70 text-gray-100 hover:text-cyan-500 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="30"
@@ -248,10 +249,18 @@ function PlayButton({ watchLinks, playHandler }) {
           <span className="sr-only">Play video</span>
         </button>
         <ModelsController visibility={showDropdown} closeEvent={() => setDropDown(false)}>
-          <div className={`w-auto flex gap-3 whitespace-nowrap h-auto px-2 py-2.5 bg-white shadow-xl rounded-md absolute top-16 left-1/2 transform -translate-x-1/2 z-20 text-sm font-semibold text-gray-600`}>
-            {filterOutWatchLinks.map((data, index) => (
-              <button key={index} onClick={() => playHandler(data)} type="button">Server {index + 1}</button>
-            ))}
+          <div className={`w-40 h-auto py-2.5 px-2 bg-gray-800 shadow-xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
+            <div className=" text-gray-200 font-semibold mx-1.5">Select server</div>
+            <div className="text-sm text-gray-300 space-y-2.5 mt-2 mx-1">
+              {filterOutWatchLinks.map((data, index) => (
+                <div key={index} className="mx-auto self-center">
+                  <button className="flex items-center font-light" onClick={() => playHandler(data)} type="button">
+                    <i className="bi bi-dot text-cyan-500 text-xl"></i>
+                    <span>Server {index + 1}</span>
+                    </button>
+                </div>
+              ))}
+            </div>
           </div>
         </ModelsController>
       </div>

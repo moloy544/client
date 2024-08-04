@@ -32,13 +32,17 @@ const validateMovieDetailsInput = (data) => {
         return "Category is required";
     }
 
-    if (!data.imdbRating || typeof data.imdbRating !== 'number' || data.imdbRating < 0 || data.imdbRating > 10) {
+    if (!data.imdbRating || typeof data.imdbRating !== 'number' || data.imdbRating > 10) {
         return "IMDB Rating is required and must be a number between 0 and 10";
     }
 
     if (!data.castDetails || !Array.isArray(data.castDetails) || data.castDetails.length === 0) {
         return "Cast Details is required and must be a non-empty array";
-    }
+    };
+
+    if (!data.watchLink || !Array.isArray(data.watchLink) || data.watchLink.length === 0) {
+        return "Video sources is required and must be a non-empty array";
+    };
 
     return null;
 };

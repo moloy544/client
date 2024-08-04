@@ -20,10 +20,7 @@ export default function MoviesUserActionOptions({ movieData }) {
         url: window.location.href,
       })
         .catch((error) => console.error('Error sharing movie:', error));
-    } else {
-
-      console.log('Movie URL copied to clipboard');
-    }
+    };
   };
 
 
@@ -79,7 +76,7 @@ export default function MoviesUserActionOptions({ movieData }) {
   return (
     <>
 
-      <div className="w-auto h-auto mt-3 flex gap-5 mobile:gap-2.5 justify-around overflow-x-scroll scrollbar-hidden">
+      <div className="w-auto h-auto mt-3 flex gap-5 mobile:gap-2.5 justify-around mobile:justify-evenly overflow-x-scroll scrollbar-hidden">
 
         <div onClick={saveInLocalStorage} role="button" title="Save" className="w-auto h-auto flex gap-1 justify-center items-center text-gray-300 bg-gray-900 hover:bg-gray-800 py-1.5 px-3 rounded-2xl">
           {isSaved ? (

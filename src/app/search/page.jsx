@@ -64,7 +64,7 @@ export default function SearchPage() {
     // Function to add a search term to the search history
     const addToSearchHistory = (newData) => {
 
-        const { image , text } = newData || {}; 
+        const { text } = newData || {}; 
 
         const existingHistoryArray = getLocalStorageSearchHistory();
 
@@ -78,16 +78,12 @@ export default function SearchPage() {
             //update the search count
             existingTerm.count += 1;
 
-            // check if the search data are same but image is different so update it
-            if (existingTerm.image!== image) {
-                existingTerm.image = image;
-            };
             existingHistoryArray.unshift(existingTerm);
 
         } else {
 
             // If the search term doesn't exist, add it to the beginning with clickCount 1
-            existingHistoryArray.unshift({ searchKeyword: text, image, count: 1 });
+            existingHistoryArray.unshift({ searchKeyword: text, count: 1 });
         };
 
         // Limit the search history to 20 items
@@ -158,10 +154,9 @@ export default function SearchPage() {
     const onMovieCardClickHandler = (e) => {
         const tragetElement = e.target;
         if (tragetElement) {
-            const imgUrl = tragetElement.src || null;
             const altData =tragetElement.alt || null;
-            if (imgUrl && altData) {
-                addToSearchHistory({ text: searchQuery, image: imgUrl });
+            if (altData) {
+                addToSearchHistory({ text: searchQuery });
             }
         }
         
@@ -365,13 +360,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                                     <div key={index} className="group flex justify-between items-center h-auto hover:bg-slate-200 hover:bg-opacity-50 p-2 rounded-md">
                                         <div onClick={() => handleSelectHistoryItem(data.searchKeyword)} className="w-full mobile:text-xs text-sm text-gray-600 font-medium cursor-pointer flex items-center gap-3">
                                             <i className="bi bi-clock-history"></i>
-                                            <Image
-                                                priority
-                                                className="w-9 h-12 border border-gray-500 rounded-sm"
-                                                width={28}
-                                                height={28}
-                                                src={data.image?.replace('/upload/', '/upload/w_150,h_200,c_scale/')}
-                                                alt="Search history items image" />
                                             <div className="line-clamp-2 max-w-xs">
                                                 {data.searchKeyword}
                                             </div>
