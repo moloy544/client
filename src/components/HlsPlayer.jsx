@@ -11,8 +11,8 @@ function generateSourceURL(originalURL) {
         return '';
     }
 
-     // Generate a unique IP-like pattern
-     const generateIP = () => {
+    // Generate a unique IP-like pattern
+    const generateIP = () => {
         return `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
     };
 
@@ -23,11 +23,11 @@ function generateSourceURL(originalURL) {
 
     // Replace the expiration time and IP in the original URL
     const modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${ip}:`);
-    
+
     return modifiedURL;
 }
 
-function VidStackPlayer({ title, source, visibility, paused}) {
+function VidStackPlayer({ title, source, visibility }) {
     const [modifiedSource, setModifiedSource] = useState(null);
 
     useEffect(() => {
@@ -35,19 +35,19 @@ function VidStackPlayer({ title, source, visibility, paused}) {
             const newSource = generateSourceURL(source);
             setModifiedSource(newSource);
         }
-    }, [source, generateSourceURL]);
+    }, [source, generateSourceURL,]);
 
     if (!visibility || !modifiedSource) {
         return null;
     }
 
     return (
-        <MediaPlayer aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline paused={paused}>
+        <MediaPlayer aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline>
             <MediaProvider />
-            <DefaultVideoLayout 
-            colorScheme="dark"
-            icons={defaultLayoutIcons}
-             />
+            <DefaultVideoLayout
+                colorScheme="dark"
+                icons={defaultLayoutIcons}
+            />
         </MediaPlayer>
     );
 }

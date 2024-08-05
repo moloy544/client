@@ -88,12 +88,11 @@ export default function MovieDetails({ movieDetails, suggestions }) {
         <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full ${playerVisibility ? "block" : "hidden"}`}>
 
             <VidStackPlayer
-              visibility={playerVisibility || videoSource?.includes('index.m3u8') || false}
+              visibility={playerVisibility && videoSource && videoSource?.includes('index.m3u8')}
               title={title}
               source={videoSource}
-              paused={!playerVisibility}
             />
-            {playerVisibility && !videoSource.includes('index.m3u8') && (
+            {playerVisibility && !videoSource?.includes('index.m3u8') && (
               <iframe
                 src={videoSource}
                 allowFullScreen="allowfullscreen" />
