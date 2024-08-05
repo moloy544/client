@@ -10,7 +10,7 @@ import SliderShowcase from "@/components/SliderShowcase";
 import { ModelsController } from "@/lib/EventsHandler";
 import VidStackPlayer from "@/components/HlsPlayer";
 
-export default function MovieDetails({ movieDetails, suggestions }) {
+export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   const {
     imdbRating,
@@ -91,6 +91,7 @@ export default function MovieDetails({ movieDetails, suggestions }) {
               visibility={playerVisibility && videoSource && videoSource?.includes('index.m3u8')}
               title={title}
               source={videoSource}
+              userIp={userIp}
             />
             {playerVisibility && !videoSource?.includes('index.m3u8') && (
               <iframe

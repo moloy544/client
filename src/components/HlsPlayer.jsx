@@ -6,36 +6,28 @@ import { MediaPlayer, MediaProvider } from '@vidstack/react';
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
 
 // Utility function to generate a new token, get user IP-like pattern, and set expiration
-function generateSourceURL(originalURL) {
+function generateSourceURL(originalURL, userIp) {
     if (!originalURL) {
         return '';
-    }
-
-    // Generate a unique IP-like pattern
-    const generateIP = () => {
-        return `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
     };
-
-    const ip = generateIP();
-
     // Calculate the expiration timestamp (6 hours from now)
     const expirationTimestamp = Math.floor(Date.now() / 1000) + (10 * 60 * 60);
 
     // Replace the expiration time and IP in the original URL
-    const modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${ip}:`);
+    const modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
 
     return modifiedURL;
 }
 
-function VidStackPlayer({ title, source, visibility }) {
+function VidStackPlayer({ title, source, visibility, userIp }) {
     const [modifiedSource, setModifiedSource] = useState(null);
 
     useEffect(() => {
         if (source) {
-            const newSource = generateSourceURL(source);
+            const newSource = generateSourceURL(source, userIp);
             setModifiedSource(newSource);
         }
-    }, [source, generateSourceURL,]);
+    }, [source]);
 
     if (!visibility || !modifiedSource) {
         return null;

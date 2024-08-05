@@ -1,12 +1,25 @@
 
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { creatUrlLink, getMovieDeatils } from "@/utils";
 import { appConfig } from "@/config/config";
 import { InspectPreventer } from "@/lib/lib";
 import MovieDetails from "../MovieDetails";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
-const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
+
+const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
+
+function getIP() {
+  const FALLBACK_IP_ADDRESS = '76.76.21.123'
+  const forwardedFor = headers().get('x-forwarded-for')
+ 
+  if (forwardedFor) {
+    return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
+  }
+ 
+  return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
+}
 
 export async function generateMetadata({ params }) {
 
@@ -69,6 +82,7 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
 
   const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
+  const ip = getIP();
 
   const { status, movieData, suggetions } = await getMovieDeatils('tt' + movieId);
 
@@ -83,7 +97,11 @@ export default async function Page({ params }) {
   return (
     <InspectPreventer>
       <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
-      <MovieDetails movieDetails={movieData} suggestions={suggetions} />
+      <MovieDetails 
+      movieDetails={movieData} 
+      suggestions={suggetions}
+      userIp={ip}
+       />
     </InspectPreventer>
   )
 }
