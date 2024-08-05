@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { creatUrlLink } from '@/utils';
 
-const SliderShowcase = memo(({ title, moviesData, space, linkUrl, children }) => {
+const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize=false, children }) => {
 
     const sliderContainerRef = useRef(null);
     const movieCardRef = useRef(null);
@@ -113,7 +113,7 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, children }) =>
                                         <Image
                                             priority
                                             className="select-none rounded-[3px]"
-                                            src={data.thambnail}
+                                            src={!imageResize ? data.thambnail : data.thambnail?.replace('/upload/','/upload/w_220,h_280/')}
                                             blurDataURL={data.thambnail}
                                             fill
                                             alt={data.title}

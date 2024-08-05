@@ -105,7 +105,12 @@ function HomePageLayout({ initialLayoutData }) {
 
             {initialLayoutData && initialLayoutData.sliderMovies?.map((data) => (
 
-                <SliderShowcase key={data.title} title={data.title} moviesData={data.movies} linkUrl={data.linkUrl} />
+                <SliderShowcase key={data.title}
+                 title={data.title} 
+                 moviesData={data.movies} 
+                 linkUrl={data.linkUrl}
+                 imageResize={true}
+                  />
             ))}
 
             {/**** For Load More Dinamic Dtaa *****/}

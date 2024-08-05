@@ -4,7 +4,7 @@ import { creatToastAlert } from "@/utils";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-const ReportModel = dynamic(() => import('@/components/models/ReportModel'), { ssr: false });
+const ReportModel = dynamic(() => import('@/components/models/ReportModel'));
 
 export default function MoviesUserActionOptions({ movieData }) {
 
