@@ -30,12 +30,13 @@ function EmbedPage({ searchParams }) {
     };
 
     return (
-        
+        <div className="w-full h-screen flex justify-center items-center">
         <VidStackPlayer
             visibility={true}
             source={url}
             userIp={userIp}
         />
+        </div>
     )
 }
 

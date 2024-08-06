@@ -36,13 +36,15 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
     }
 
     return (
-        <MediaPlayer aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline>
+        <div className="w-full h-full flex justify-center items-center">
+        <MediaPlayer aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline className="w-full h-full">
             <MediaProvider />
             <DefaultVideoLayout
                 colorScheme="dark"
                 icons={defaultLayoutIcons}
             />
         </MediaPlayer>
+        </div>
     );
 }
 
