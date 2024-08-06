@@ -249,14 +249,15 @@ function PlayButton({ watchLinks, playHandler }) {
           <span className="sr-only">Play video</span>
         </button>
         <ModelsController visibility={showDropdown} closeEvent={() => setDropDown(false)}>
-          <div className={`w-40 h-auto py-2.5 px-2 bg-gray-800 shadow-xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
-            <div className=" text-gray-200 font-semibold mx-1.5">Select server</div>
-            <div className="text-sm text-gray-300 space-y-2.5 mt-2 mx-1">
+          <div className={`w-56 h-auto py-3.5 px-2 bg-gray-100 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
+            <div className="text-gray-900 font-semibold mx-1.5">Select server</div>
+            <div className="text-sm text-gray-800 space-y-2.5 mt-2 mx-1">
               {filterOutWatchLinks.map((data, index) => (
                 <div key={index} className="mx-auto self-center">
                   <button className="flex items-center font-medium" onClick={() => playHandler(data)} type="button">
-                    <i className="bi bi-dot text-cyan-500 text-xl"></i>
-                    <span>Server {index + 1}</span>
+                    <i className={`bi bi-dot ${index ===0 ?"text-cyan-500" :"text-yellow-500"} text-xl`}></i>
+                    <span className="mr-1.5">{`Server ${index + 1}`}</span>
+                    <span className="text-xs text-gray-700 font-normal">{data?.includes('.m3u8') ? "(No ads)" : "(Multi language)"}</span>
                     </button>
                 </div>
               ))}

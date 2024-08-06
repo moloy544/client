@@ -11,13 +11,17 @@ import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
 function getIP() {
+  
   const FALLBACK_IP_ADDRESS = '76.76.21.123'
-  const forwardedFor = headers().get('x-forwarded-for')
- 
+  const forwardedFor = headers().get('x-forwarded-for');
+  if (process.env.NODE_ENV === "development") {
+    return FALLBACK_IP_ADDRESS;
+  }
+
   if (forwardedFor) {
     return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
   }
- 
+
   return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 }
 
@@ -41,7 +45,7 @@ export async function generateMetadata({ params }) {
   const movieCast = castDetails ? castDetails.join(', ') : null;
 
   // metadata related fields
-  const metaTitle = `${title + " ("+ releaseYear + ") " + type}`
+  const metaTitle = `${title + " (" + releaseYear + ") " + type}`
   const metaDesc = `Watch ${title + " " + releaseYear + " " + type} featuring lead actress ${movieCast} online for free only on Movies Bazaar. Enjoy it in ${language} and this is ${genre?.join(' ')} genre based ${type}.`;
   const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${movieId}`;
   const metaKeywords = [
@@ -61,7 +65,7 @@ export async function generateMetadata({ params }) {
     `Watch ${genres} ${type} online`,
     `Watch ${language} ${type} online`,
     ...castDetails.map(cast => `Watch ${cast} ${type}`)
-].join(', ');
+  ].join(', ');
 
   // meta data for this movie or series page
   const metaDataObject = {
@@ -75,7 +79,7 @@ export async function generateMetadata({ params }) {
       images: thambnail,
     },
   }
- 
+
   return metaDataObject
 };
 
@@ -97,11 +101,11 @@ export default async function Page({ params }) {
   return (
     <InspectPreventer>
       <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
-      <MovieDetails 
-      movieDetails={movieData} 
-      suggestions={suggetions}
-      userIp={ip}
-       />
+      <MovieDetails
+        movieDetails={movieData}
+        suggestions={suggetions}
+        userIp={ip}
+      />
     </InspectPreventer>
   )
 }
