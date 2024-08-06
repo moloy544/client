@@ -5,7 +5,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
-import Footer from '@/components/Footer';
 import { appConfig } from '@/config/config';
 import { Suspense } from 'react';
 
@@ -52,9 +51,7 @@ export default function RootLayout({ children }) {
         />
 
         <ReduxStatePrivider>
-          <div className="w-full h-full bg-gray-800 min-h-screen">
             {children}
-          </div>
         </ReduxStatePrivider>
         {process.env.NODE_ENV === "production" && (
           <Suspense>
@@ -62,8 +59,6 @@ export default function RootLayout({ children }) {
             <Analytics />
           </Suspense>
         )}
-
-        <Footer />
 
       </body>
 

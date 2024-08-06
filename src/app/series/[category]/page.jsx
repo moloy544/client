@@ -2,6 +2,7 @@ import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import Footer from "@/components/Footer";
 
 export async function generateMetadata({ params }) {
 
@@ -49,7 +50,7 @@ export default async function Page({ params }) {
     <>
       <NavigateBackTopNav title={title} />
 
-      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
+      <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2">
 
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
@@ -61,7 +62,7 @@ export default async function Page({ params }) {
         />
 
       </div>
-
+      <Footer />
     </>
   )
 };

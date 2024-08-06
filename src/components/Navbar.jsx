@@ -62,7 +62,7 @@ export default function Navbar() {
                         </Link>
 
                         <div className="w-auto h-auto relative">
-                            <button onClick={toggleWatchLaterModel} type="button" title="Watch later" className={`w-auto h-auto flex items-center px-2 py-1.5 hover:bg-gray-800 text-[13px] rounded-sm ${isVisible ? "text-yellow-500 bg-gray-800" : "text-gray-100"}`}>
+                            <button onClick={toggleWatchLaterModel} type="button" title="Watch later" className={`w-auto h-auto flex items-center px-2 py-1.5 hover:bg-gray-800 text-[13px] rounded-sm ${isVisible ? "text-cyan-500 bg-gray-800" : "text-gray-100"}`}>
                                 <svg
                                     width="24"
                                     height="24"

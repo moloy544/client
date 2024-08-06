@@ -11,6 +11,7 @@ import NavigateBack from "@/components/NavigateBack";
 import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
+import Footer from "@/components/Footer";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -206,7 +207,7 @@ export default function SearchPage() {
 
             </header >
 
-            <div className="w-full h-auto overflow-x-hidden">
+            <div className="w-full min-h-screen overflow-x-hidden bg-gray-800">
 
                 {searchQuery !== "" ? (
 
@@ -257,6 +258,7 @@ export default function SearchPage() {
                 )}
 
             </div>
+            <Footer />
         </>
     )
 };

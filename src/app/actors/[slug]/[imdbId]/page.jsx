@@ -5,6 +5,7 @@ import { creatUrlLink, loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import Footer from "@/components/Footer";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
@@ -104,7 +105,7 @@ export default async function Page({ params }) {
     <>
       <NavigateBackTopNav title={name} titleImage={{ src: avatar, alt: name }} />
 
-      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2 relative">
+      <div className="w-full h-full min-h-screen bg-gray-800 py-3 mobile:py-2 relative">
 
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}
@@ -116,6 +117,7 @@ export default async function Page({ params }) {
           isDataEnd={dataIsEnd} />
 
       </div>
+      <Footer />
     </>
   )
 };

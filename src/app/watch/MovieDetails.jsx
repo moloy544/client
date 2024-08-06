@@ -78,11 +78,11 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   ];
 
   return (
-    <>
+    <div className="w-full h-full bg-gray-800">
 
       <Breadcrumb data={breadcrumbData} />
 
-      <div className="w-full h-full my-6 mobile:my-2.5 px-2 flex justify-center items-center">
+      <div className="my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
         <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[800px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
         <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full ${playerVisibility ? "block" : "hidden"}`}>
@@ -201,7 +201,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         <SliderShowcase moviesData={suggestions?.castList} title="From same actors" />
       </div>
 
-    </>
+    </div>
   )
 };
 

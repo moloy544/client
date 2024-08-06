@@ -3,6 +3,7 @@ import axios from "axios";
 import { appConfig } from "@/config/config";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import SliderShowcase from "@/components/SliderShowcase";
+import Footer from "@/components/Footer";
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export const metadata = {
@@ -15,7 +16,7 @@ export const metadata = {
         images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
         title: `Series`,
         description: `Watch bollywood hollywood south netflix series online Movies Bazaar`,
-        url: appConfig.appDomain+'/series'
+        url: appConfig.appDomain + '/series'
     },
 }
 
@@ -56,7 +57,7 @@ export default async function Page() {
         <>
             <NavigateBackTopNav title="Series" />
 
-            <main className="w-full overflow-x-hidden h-full py-2">
+            <main className="w-full overflow-x-hidden h-full py-2 bg-gray-800">
 
                 {sliderSeries?.map((data) => (
 
@@ -64,7 +65,7 @@ export default async function Page() {
                 ))}
 
             </main>
-
+            <Footer />
         </>
     )
 };

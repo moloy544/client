@@ -8,6 +8,7 @@ import { appConfig } from "@/config/config";
 import { creatUrlLink, transformToCapitalize } from "@/utils";
 import Breadcrumb from "@/components/Breadcrumb";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import Footer from "@/components/Footer";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
  
@@ -64,7 +65,7 @@ export default async function Page({ params }) {
 
             <Breadcrumb data={breadcrumbData} />
 
-            <div className="w-full overflow-x-hidden h-full pb-2">
+            <div className="w-full min-h-screen overflow-x-hidden bg-gray-800 pb-2">
 
                 {actors?.length > 0 ? (
                     <main className="w-full h-full pt-2">
@@ -108,6 +109,7 @@ export default async function Page({ params }) {
                     </div>
                 )}
             </div>
+            <Footer />
         </>
     )
 }
