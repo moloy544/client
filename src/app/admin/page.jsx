@@ -45,6 +45,11 @@ export default function AdminPage() {
 
         try {
 
+            setState((prev) => ({
+                ...prev,
+                watchLink: [...state.watchLink.filter(link => !link.includes(videoSource)), videoSource + prev.imdbId]
+            }));
+
             if (state.imdbId.length >= 8) {
 
                 const mongodbApiResponse = await axios.get(`${appConfig.backendUrl}/api/v1/admin/movie/get/${state.imdbId}`);
@@ -124,17 +129,6 @@ export default function AdminPage() {
                 return
             };
 
-            // update or add environment variables video source if is not exist
-            const modifiedSources = state.watchLink.find(link => link.includes(videoSource))
-                ? state.watchLink
-                : [...state.watchLink, `${videoSource}${state.imdbId}`];
-
-            // update state watchlink with new updated watchlink
-            const modifiedState = {
-                ...state,
-                watchLink: modifiedSources
-            };
-
             // validate movie details before sending to backend
             const validationMessage = validateMovieDetailsInput(state);
             if (validationMessage) {
@@ -148,7 +142,7 @@ export default function AdminPage() {
             const formData = new FormData();
 
             // add movie data sate in form data
-            formData.append('data', JSON.stringify(modifiedState));
+            formData.append('data', JSON.stringify(state));
 
             // add file in from data 
             const fileInput = document.getElementById('thambnail-file');

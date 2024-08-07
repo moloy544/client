@@ -12,6 +12,10 @@ function generateSourceURL(originalURL, userIp) {
     if (!originalURL) {
         return '';
     };
+
+    if (!originalURL.includes('loner300artoa.com')) {
+        return originalURL;
+    }
     // Calculate the expiration timestamp (6 hours from now)
     const expirationTimestamp = Math.floor(Date.now() / 1000) + (10 * 60 * 60);
 

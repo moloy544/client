@@ -88,12 +88,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full ${playerVisibility ? "block" : "hidden"}`}>
 
             <VidStackPlayer
-              visibility={playerVisibility && videoSource && videoSource?.includes('index.m3u8')}
+              visibility={playerVisibility && videoSource && videoSource?.includes('.m3u8')}
               title={title}
               source={videoSource}
               userIp={userIp}
             />
-            {playerVisibility && !videoSource?.includes('index.m3u8') && (
+            {playerVisibility && !videoSource?.includes('.m3u8') && (
               <iframe
                 src={videoSource}
                 allowFullScreen="allowfullscreen" />
@@ -215,19 +215,7 @@ function PlayButton({ watchLinks, playHandler }) {
     };
   };
 
-  function reorderWatchLinks(watchLinks) {
-    const m3u8LinkIndex = watchLinks.findIndex(link => link.includes('.m3u8'));
-
-    if (m3u8LinkIndex > 0) {
-      // Move the m3u8 link to the first position
-      const [m3u8Link] = watchLinks.splice(m3u8LinkIndex, 1);
-      watchLinks.unshift(m3u8Link);
-    }
-
-    return watchLinks;
-  };
-  const filterOutWatchLinks = reorderWatchLinks(watchLinks);
-
+  
   return (
     <div className="w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <div className="relative w-full h-auto">
@@ -252,7 +240,7 @@ function PlayButton({ watchLinks, playHandler }) {
           <div className={`w-56 h-auto py-3.5 px-2 bg-gray-100 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
             <div className="text-gray-900 font-semibold mx-1.5">Select server</div>
             <div className="text-sm text-gray-800 space-y-2.5 mt-2 mx-1">
-              {filterOutWatchLinks.map((data, index) => (
+              {watchLinks.map((data, index) => (
                 <div key={index} className="mx-auto self-center">
                   <button className="flex items-center font-medium" onClick={() => playHandler(data)} type="button">
                     <i className={`bi bi-dot ${index ===0 ?"text-cyan-500" :"text-yellow-500"} text-xl`}></i>

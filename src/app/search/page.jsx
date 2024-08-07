@@ -165,7 +165,7 @@ export default function SearchPage() {
 
     // check is error encountered show error message
     if (error) {
-        return <SomthingWrongError />
+        return <SomthingWrongError onclickEvent={()=> window.location.reload()} />
     };
 
     return (
