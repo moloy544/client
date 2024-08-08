@@ -4,7 +4,7 @@ import { appConfig } from '@/config/config';
 export default async function sitemap() {
 
   const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/generate-sitemap`, {
-    params: { limit },
+    params: { limit: 10000 },
   });
 
   const { movies } = response.data
