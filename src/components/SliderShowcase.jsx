@@ -1,11 +1,11 @@
 'use client';
 
-import { useRef, useEffect, memo } from 'react';
+import { useRef, useEffect, memo, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { creatUrlLink } from '@/utils';
 
-const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize=false, children }) => {
+const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize = false, children }) => {
 
     const sliderContainerRef = useRef(null);
     const movieCardRef = useRef(null);
@@ -40,7 +40,7 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize=fa
         }
     };
 
-    const handleObservers = (entries) => {
+    const handleObservers = useCallback((entries) => {
 
         const rightButton = rightButtonRef.current;
         const lastTarget = entries[entries.length - 1];
@@ -48,11 +48,12 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize=fa
         if (rightButton && lastTarget.isIntersecting) {
             rightButton.style.display = 'none';
         };
-    };
+    }, []);
 
     useEffect(() => {
 
         const element = sliderContainerRef.current;
+        const movieCard = movieCardRef.current;
 
         const observer = new IntersectionObserver(handleObservers, {
             root: null,
@@ -60,8 +61,8 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize=fa
             threshold: 1.0,
         });
 
-        if (movieCardRef.current) {
-            observer.observe(movieCardRef.current);
+        if (movieCard) {
+            observer.observe(movieCard);
         };
 
         const handleScroll = () => {
@@ -73,8 +74,8 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize=fa
         element?.addEventListener('scroll', handleScroll);
 
         return () => {
-            if (movieCardRef.current) {
-                observer.unobserve(movieCardRef.current);
+            if (movieCard) {
+                observer.unobserve(movieCard);
             };
             element?.removeEventListener('scroll', handleScroll);
         };
@@ -90,11 +91,11 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize=fa
             <div className="w-full h-auto flex justify-between items-center px-2.5">
 
                 <div className="flex items-center border-l-[3px] rounded-sm border-yellow-500 pl-1">
-                <h2 className="text-gray-200 text-[18px] mobile:text-sm font-medium line-clamp-1">
-                    {title}
-                </h2>
+                    <h2 className="text-gray-200 text-[18px] mobile:text-sm font-medium line-clamp-1">
+                        {title}
+                    </h2>
                 </div>
-                
+
                 {linkUrl && (
                     <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium">
                         <span>View All</span>
@@ -113,7 +114,7 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize=fa
                                         <Image
                                             priority
                                             className="select-none rounded-[3px]"
-                                            src={!imageResize ? data.thambnail : data.thambnail?.replace('/upload/','/upload/w_220,h_280/')}
+                                            src={!imageResize ? data.thambnail : data.thambnail?.replace('/upload/', '/upload/w_220,h_280/')}
                                             blurDataURL={data.thambnail}
                                             fill
                                             alt={data.title}

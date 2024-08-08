@@ -29,7 +29,7 @@ export async function generateMetadata({ params }) {
 
   const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
 
-  const { movieData, status } = await getMovieDeatils('tt' + movieId);
+  const { movieData, status } = await getMovieDeatils('tt' + movieId, false);
 
   if (status !== 200 || movieData.status === "coming soon") {
     return;
@@ -88,7 +88,7 @@ export default async function Page({ params }) {
   const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
   const ip = getIP();
 
-  const { status, movieData, suggetions } = await getMovieDeatils('tt' + movieId);
+  const { status, movieData, suggetions } = await getMovieDeatils('tt' + movieId, true);
 
   if (status === 404) {
     notFound();

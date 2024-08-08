@@ -39,26 +39,30 @@ const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 20, pag
 };
 
 /**************** Get movie serirs details from database ***************/
-async function getMovieDeatils(imdbId) {
+async function getMovieDeatils(imdbId, suggetion= true) {
 
   let status = 500; // Default status in case of an error
   let movieData = null;
   let suggetions = null
 
   try {
-    const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`);
+    const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`, {
+      params: { suggetion }
+    });
+  
     if (response.status === 200) {
       status = response.status;
-      movieData = response.data.movieData;
-      suggetions = response.data.suggetions;
-    }else{
+      movieData = response.data.movieData || null;
+      suggetions = response.data.suggetions || null;
+    } else {
       status = response.status
     }
-   
+
   } catch (error) {
     if (error.response) {
       status = error.response.status;
     }
+    console.log(error);
   } finally {
     return { status, movieData, suggetions };
   }
@@ -80,10 +84,10 @@ const creatUrlLink = (title) => {
 const debounceDelay = (func, delay) => {
   let timeoutId;
   return function (...args) {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-          func.apply(this, args);
-      }, delay);
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
   };
 };
 
@@ -111,14 +115,14 @@ const formatNumberCounter = (value) => Intl.NumberFormat('en-US', {
 /******************* Function to convert image to base64 *****************/
 const imageToBase64Url = (file) => {
   return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-          resolve(reader.result);
-      };
-      reader.onerror = (error) => {
-          reject(error);
-      };
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
   });
 };
 
@@ -135,11 +139,11 @@ const creatToastAlert = ({ message, visiblityTime = 8000 }) => {
   // Create a div element for the tooltip
   const toolTip = document.createElement('div');
 
-   toolTip.classList.add('custome_toast_message', 'md:text-base');
+  toolTip.classList.add('custome_toast_message', 'md:text-base');
 
   // Set inner text (or inner HTML if needed)
   toolTip.innerText = transformToCapitalize(message);
-  
+
   // Append the created element to the DOM, assuming you want to add it to the body
   document.body.appendChild(toolTip);
 

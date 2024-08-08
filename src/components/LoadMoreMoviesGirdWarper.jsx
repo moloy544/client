@@ -118,8 +118,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
             loadMoreData();
         };
 
-    }, [isAllDataLoad, loadMoviesPathname, patname, page, filterData, initialMovies, initialFilter, isDataEnd, apiUrl]);
-
+    }, [isAllDataLoad, loadMoviesPathname, patname, page, filterData, initialMovies, limitPerPage, initialFilter, isDataEnd, apiUrl, apiBodyData]);
+ 
     return (
         <>
             <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">

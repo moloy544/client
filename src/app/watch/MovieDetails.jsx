@@ -84,8 +84,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       <div className="my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
-        <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[800px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
-        <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full ${playerVisibility ? "block" : "hidden"}`}>
+        <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
+        <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility ? "block" : "hidden"}`}>
 
             <VidStackPlayer
               visibility={playerVisibility && videoSource && videoSource?.includes('.m3u8')}
@@ -98,8 +98,10 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 src={videoSource}
                 allowFullScreen="allowfullscreen" />
             )}
+            
 
           </div>
+        
           <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility ? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-500 bg-gray-800`}>
 
             <Image
@@ -182,7 +184,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               </div>
 
             </div>
-            <div className="px-1.5 mobile:pb-3 flex justify-center space-x-1.5 md:my-6">
+            <div className="px-1.5 mobile:pb-3 space-x-1.5 md:my-6">
               <strong className="text-sm text-gray-300">Note: <span className="text-xs text-yellow-500 font-semibold">
                 If sometimes this {type} does not play, please connect to VPN and enjoy.
               </span></strong>

@@ -27,7 +27,7 @@ const FilterModel = memo(({ initialFilterData, filterData, functions, filterOpti
             setSelctedFilter(filterData);
         };
 
-    }, [initialFilterData, filterData]);
+    }, [initialFilterData, filterData, isInitialFilterChange]);
 
 
     const toggleModel = () => {

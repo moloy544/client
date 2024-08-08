@@ -21,7 +21,7 @@ export function InspectPreventer({ children, forceToPrevent = true }) {
         return () => {
             document.body.removeEventListener("contextmenu", handleContextmenu);
         };
-    }, []);
+    }, [forceToPrevent]);
 
     return children
 };
