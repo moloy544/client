@@ -10,7 +10,7 @@ export default async function sitemap() {
   const { movies } = response.data
 
   return movies.map(({ imdbId, title, type, createdAt }) => ({
-    url: `${BASE_URL}/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`,
+    url: `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`,
     lastModified: new Date(createdAt).toISOString(),
     changeFrequency: 'weekly'
   }))
