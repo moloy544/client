@@ -219,8 +219,8 @@ function PlayButton({ watchLinks, playHandler }) {
 
   
   return (
+    <>
     <div className="w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <div className="relative w-full h-auto">
         <button type="button"
           onClick={play}
           title="Play"
@@ -238,7 +238,8 @@ function PlayButton({ watchLinks, playHandler }) {
 
           <span className="sr-only">Play video</span>
         </button>
-        <ModelsController visibility={showDropdown} closeEvent={() => setDropDown(false)}>
+        </div>
+        <ModelsController visibility={showDropdown} closeEvent={()=> setDropDown(false)}>
           <div className={`w-56 h-auto py-3.5 px-2 bg-gray-100 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
             <div className="text-gray-900 font-semibold mx-1.5">Select server</div>
             <div className="text-sm text-gray-800 space-y-2.5 mt-2 mx-1">
@@ -253,8 +254,9 @@ function PlayButton({ watchLinks, playHandler }) {
               ))}
             </div>
           </div>
-        </ModelsController>
-      </div>
-    </div>
+          </ModelsController>
+       
+        </>
+      
   )
 }

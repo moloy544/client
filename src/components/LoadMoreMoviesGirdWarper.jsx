@@ -33,7 +33,6 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
         isAllDataLoad,
         rootMargin: '300px'
     });
-
     const setFilter = (data) => {
 
         if (!loading) {

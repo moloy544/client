@@ -394,7 +394,7 @@ export default function AdminPage() {
 
                             <div className="max-w-[200px] flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Imdb Rating</label>
-                                <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} min={1} />
+                                <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} min={0} />
                             </div>
 
 
