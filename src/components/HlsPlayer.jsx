@@ -6,7 +6,7 @@ import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
-import { creatToastAlert } from '@/utils';
+import useOnlineStatus from '@/lib/lib';
 
 // Utility function to generate a new token, get user IP-like pattern, and set expiration
 function generateSourceURL(originalURL, userIp) {
@@ -27,8 +27,10 @@ function generateSourceURL(originalURL, userIp) {
 }
 
 function VidStackPlayer({ title, source, visibility, userIp }) {
+
     const [modifiedSource, setModifiedSource] = useState(null);
     const [playbackError, setPlaybackError] = useState(null);
+    const isOnline = useOnlineStatus();
 
     useEffect(() => {
         if (source) {
@@ -37,6 +39,22 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
         }
     }, [source, userIp]);
 
+    const handleError = useCallback((error) => {
+        if (!isOnline) {
+            setPlaybackError("You are not connected to internet please connect to internet connection and try again.");
+            return;
+        }
+        if (error && error.code === 1) {
+
+            const isLonerHost = modifiedSource.includes('loner300artoa.com');
+            if (isLonerHost) {
+                setPlaybackError("The video could not be played. Please check your internet connection or connect to any VPN and try again.");
+            } else {
+                setPlaybackError("Please wait a moment video is loading. in case is not playing video please report us.")
+            }
+        };
+    }, [modifiedSource, isOnline]);
+
     if (!visibility || !modifiedSource) {
         return null;
     }
@@ -44,12 +62,7 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
     return (
         <>
             <div className="w-full h-full flex justify-center items-center">
-                <MediaPlayer onError={(error) => {
-                    if (error && error.code === 1) {
-                        setPlaybackError("The video could not be played. Please Check your internet connection or connect to any VPN and try again.");
-                        console.log("Play back error: "+error);
-                    }
-                }} aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline className="w-full h-full">
+                <MediaPlayer onError={handleError} aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline className="w-full h-full">
                     <MediaProvider />
                     <DefaultVideoLayout
                         colorScheme="dark"
@@ -58,26 +71,26 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
                 </MediaPlayer>
             </div>
             {playbackError && (
-            <div className="fixed left-0 top-0 w-full h-full z-[100] bg-gray-900 bg-opacity-60 flex justify-center items-center">
-                <div className="w-full max-w-sm bg-white px-3 py-4 space-y-5 border border-gray-500 shadow-2xl rounded-sm mx-2">
-                    <div className="flex items-center gap-2">
-                        <i className="bi bi-exclamation-triangle-fill text-red-600 text-2xl"></i>
-                        <div className="text-sm text-gray-800 font-bold">
-                           {playbackError}
+                <div className="fixed left-0 top-0 w-full h-full z-[100] bg-gray-900 bg-opacity-60 flex justify-center items-center">
+                    <div className="w-full max-w-sm bg-white px-3 py-4 space-y-5 border border-gray-500 shadow-2xl rounded-sm mx-2">
+                        <div className="flex items-center gap-2">
+                            <i className="bi bi-exclamation-triangle-fill text-red-600 text-2xl"></i>
+                            <div className="text-sm text-gray-800 font-bold">
+                                {playbackError}
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-2 mx-3">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setPlaybackError(null);
+                                }}
+                                className="w-full h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm font-bold">
+                                Got it, thanks!
+                            </button>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2 mx-3">
-                        <button
-                            type="button"
-                            onClick={() => {
-                               setPlaybackError(null);
-                            }}
-                            className="w-full h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm font-bold">
-                            Got it, thanks!
-                        </button>
-                    </div>
                 </div>
-            </div>
             )}
         </>
     );

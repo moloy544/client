@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 
 // Prevent browser inspector custom component all children under this component is not use browser inspector
 export function InspectPreventer({ children, forceToPrevent = true }) {
@@ -57,3 +57,31 @@ export function useInfiniteScroll({ callback, loading, isAllDataLoad, rootMargin
 
     return observerElement;
 }
+
+
+const useOnlineStatus = () => {
+    const [isOnline, setIsOnline] = useState(true); // Default to true assuming server-side rendering
+
+    useEffect(() => {
+        // Check if window and navigator are available (which means we're on the client side)
+        if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+            setIsOnline(navigator.onLine);
+
+            const handleOnline = () => setIsOnline(true);
+            const handleOffline = () => setIsOnline(false);
+
+            window.addEventListener('online', handleOnline);
+            window.addEventListener('offline', handleOffline);
+
+            // Clean up the event listeners when the component unmounts
+            return () => {
+                window.removeEventListener('online', handleOnline);
+                window.removeEventListener('offline', handleOffline);
+            };
+        }
+    }, []);
+
+    return isOnline;
+};
+
+export default useOnlineStatus;
