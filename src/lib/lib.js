@@ -59,7 +59,7 @@ export function useInfiniteScroll({ callback, loading, isAllDataLoad, rootMargin
 }
 
 
-const useOnlineStatus = () => {
+const useOnlineStatus = ({ onlineCallback, offlineCallback }) => {
     const [isOnline, setIsOnline] = useState(true); // Default to true assuming server-side rendering
 
     useEffect(() => {
@@ -67,8 +67,18 @@ const useOnlineStatus = () => {
         if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
             setIsOnline(navigator.onLine);
 
-            const handleOnline = () => setIsOnline(true);
-            const handleOffline = () => setIsOnline(false);
+            const handleOnline = () => {
+                setIsOnline(true);
+                if (onlineCallback && typeof onlineCallback === 'function') {
+                    onlineCallback();
+                }
+            }
+            const handleOffline = () => {
+                if (offlineCallback && typeof offlineCallback === 'function') {
+                    offlineCallback();
+                }
+                setIsOnline(false);
+            }
 
             window.addEventListener('online', handleOnline);
             window.addEventListener('offline', handleOffline);
@@ -79,7 +89,7 @@ const useOnlineStatus = () => {
                 window.removeEventListener('offline', handleOffline);
             };
         }
-    }, []);
+    }, [onlineCallback, offlineCallback]);
 
     return isOnline;
 };

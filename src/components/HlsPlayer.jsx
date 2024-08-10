@@ -30,7 +30,14 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
 
     const [modifiedSource, setModifiedSource] = useState(null);
     const [playbackError, setPlaybackError] = useState(null);
-    const isOnline = useOnlineStatus();
+    const isOnline = useOnlineStatus({
+        onlineCallback: ()=>{
+            setPlaybackError(null);
+        },
+       offlineCallback: ()=>{
+            setPlaybackError("You are not connected to internet please connect to internet connection and try again.");
+        }
+    });
 
     useEffect(() => {
         if (source) {
@@ -40,11 +47,8 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
     }, [source, userIp]);
 
     const handleError = useCallback((error) => {
-        if (!isOnline) {
-            setPlaybackError("You are not connected to internet please connect to internet connection and try again.");
-            return;
-        }
-        if (error && error.code === 1) {
+
+        if (error && error.code === 1 && isOnline) {
 
             const isLonerHost = modifiedSource.includes('loner300artoa.com');
             if (isLonerHost) {
@@ -57,7 +61,7 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
 
     if (!visibility || !modifiedSource) {
         return null;
-    }
+    };
 
     return (
         <>
