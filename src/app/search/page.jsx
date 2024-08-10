@@ -244,7 +244,7 @@ export default function SearchPage() {
                                 <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">
                                     We are not found anything
                                 </h2>
-                                <small className="text-xs text-gray-400 text-center font-medium">Please double check the search keywork pelling and try again for 100% best result try with same title</small>
+                                <small className="text-xs text-gray-400 text-center font-medium">Please double check the search keyword spelling and try again for 100% best result try with same title</small>
                             </div>
                         )}
 
