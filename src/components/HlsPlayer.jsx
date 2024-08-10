@@ -30,11 +30,12 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
 
     const [modifiedSource, setModifiedSource] = useState(null);
     const [playbackError, setPlaybackError] = useState(null);
+    // online offline handler
     const isOnline = useOnlineStatus({
-        onlineCallback: ()=>{
+        onlineCallback: () => {
             setPlaybackError(null);
         },
-       offlineCallback: ()=>{
+        offlineCallback: () => {
             setPlaybackError("You are not connected to internet please connect to internet connection and try again.");
         }
     });
