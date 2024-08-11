@@ -66,7 +66,7 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
 
     return (
         <>
-            <div className="w-full h-full flex justify-center items-center">
+            <div className="w-full h-full flex justify-center items-center bg-transparent">
                 <MediaPlayer onError={handleError} aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline className="w-full h-full">
                     <MediaProvider />
                     <DefaultVideoLayout
