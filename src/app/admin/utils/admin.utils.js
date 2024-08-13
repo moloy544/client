@@ -32,7 +32,7 @@ const validateMovieDetailsInput = (data) => {
         return "Category is required";
     }
 
-    if (!data.imdbRating || typeof data.imdbRating !== 'number' || data.imdbRating > 10) {
+    if (typeof data.imdbRating !== 'number' || data.imdbRating > 10) {
         return "IMDB Rating is required and must be a number between 0 and 10";
     }
 

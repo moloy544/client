@@ -318,11 +318,14 @@ export default function AdminPage() {
     }, [imagePreview]);
 
     useEffect(() => {
+        const dateInputElement = dateInputRef.current;
         // Update max date when the component mounts
-        if (dateInputRef.current) {
-            dateInputRef.current.setAttribute('max', getTodayDate());
+        if (dateInputElement && state.status === 'released') {
+            dateInputElement.setAttribute('max', getTodayDate());
+        }else{
+            dateInputElement.removeAttribute('max');
         }
-    }, []);
+    }, [dateInputRef, state.status]);
 
     return (
         <>
