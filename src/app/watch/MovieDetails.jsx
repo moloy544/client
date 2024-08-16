@@ -200,7 +200,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         {/**** Show Suggest Data Based on Gnere ******/}
         <SliderShowcase moviesData={suggestions?.genreList} title="You might also like" />
         {/**** Show Suggest Data Based on Cast ******/}
-        <SliderShowcase moviesData={suggestions?.castList} title="From same actors" />
+        <SliderShowcase moviesData={suggestions?.castList} title="Explore more from same actor" />
       </div>
 
     </div>
