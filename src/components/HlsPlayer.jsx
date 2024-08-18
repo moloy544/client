@@ -2,9 +2,12 @@
 "use client"
 
 import { useCallback, useEffect, useState } from 'react';
+import '@vidstack/react/player/styles/base.css';
+import '@vidstack/react/player/styles/plyr/theme.css';
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
+import { PlyrLayout, plyrLayoutIcons } from '@vidstack/react/player/layouts/plyr';
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
 import useOnlineStatus from '@/lib/lib';
 
@@ -26,7 +29,7 @@ function generateSourceURL(originalURL, userIp) {
     return modifiedURL;
 }
 
-function VidStackPlayer({ title, source, visibility, userIp }) {
+function VidStackPlayer({ title, source, visibility, userIp, playerType = "default" }) {
 
     const [modifiedSource, setModifiedSource] = useState(null);
     const [playbackError, setPlaybackError] = useState(null);
@@ -69,10 +72,17 @@ function VidStackPlayer({ title, source, visibility, userIp }) {
             <div className="w-full h-full flex justify-center items-center bg-transparent">
                 <MediaPlayer onError={handleError} aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline className="w-full h-full">
                     <MediaProvider />
-                    <DefaultVideoLayout
-                        colorScheme="dark"
-                        icons={defaultLayoutIcons}
-                    />
+                    {playerType === "default" ? (
+
+                        <DefaultVideoLayout
+                            colorScheme="dark"
+                            icons={defaultLayoutIcons}
+                        />
+                    ) : (
+                        <PlyrLayout
+                            icons={plyrLayoutIcons}
+                        />
+                    )}
                 </MediaPlayer>
             </div>
             {playbackError && (

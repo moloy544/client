@@ -20,7 +20,8 @@
     "nextjs-toploader": "^1.6.4",
     "react": "latest",
     "react-dom": "latest",
-    "react-redux": "^9.0.4"
+    "react-redux": "^9.0.4",
+    "remotion": "^4.0.200"
   },
   "devDependencies": {
     "autoprefixer": "latest",
