@@ -1,7 +1,13 @@
+import { memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { creatUrlLink } from "@/utils";
 
+const areEqual = (prevProps, nextProps) => {
+    return (
+        JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data)
+    );
+};
 const MovieCardSkleaton = ({ limit = 20 }) => {
     return (
         <>
@@ -14,7 +20,7 @@ const MovieCardSkleaton = ({ limit = 20 }) => {
     )
 };
 
-const ResponsiveMovieCard = ({ data, onClickEvent }) => {
+const ResponsiveMovieCard = memo(({ data, onClickEvent }) => {
 
     return (
 
@@ -45,10 +51,39 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
             </Link>
         </div>
     )
-};
+}, areEqual);
 
+const ResponsiveActorCard = memo(({ data }) => {
+    return (
+        <div className="w-auto max-w-[150px] h-auto flex justify-center cursor-pointer bg-gray-700 rounded-md px-3 py-3.5">
+
+            <Link href={`/actors/${creatUrlLink(data.name)}/${data.imdbId.replace('nm', '')}`} title={data.name}>
+
+                <div className="w-auto h-auto rounded-full overflow-hidden border-2 border-yellow-600">
+
+                    <Image
+                        priority
+                        className="w-full object-fill pointer-events-none select-none rounded-full"
+                        width={150}
+                        height={150}
+                        src={data.avatar?.replace('/upload/', '/upload/w_250,h_250,c_scale/')}
+                        alt={data.name || 'Movies Bazar Actor avatar'} />
+
+                </div>
+
+                <div className="w-auto h-6 text-gray-300 mt-1.5 px-1.5">
+                    <p className="whitespace-normal text-xs font-semibold leading-[14px] line-clamp-2 text-center">
+                        {data.name}
+                    </p>
+                </div>
+
+            </Link>
+        </div>
+    )
+}, areEqual);
 
 export {
     ResponsiveMovieCard,
+    ResponsiveActorCard,
     MovieCardSkleaton,
 }

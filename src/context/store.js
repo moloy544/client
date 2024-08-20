@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import loadMoviesReducer from "./loadMoviesState/loadMoviesSlice";
 import homePageReducer from "./HomePageState/homePageSlice";
+import loadMoviesReducer from "./loadMoviesState/loadMoviesSlice";
+import loadActorsReducer from "./loadActorsState/loadActorsSlice";
 
 export const store = configureStore({
     reducer: {
         homePage: homePageReducer,
-        loadMovies: loadMoviesReducer
+        loadMovies: loadMoviesReducer,
+        loadActors: loadActorsReducer
     },
 });
