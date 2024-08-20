@@ -17,7 +17,7 @@ function getIP() {
 }
 
 function EmbedPage({ searchParams }) {
-    const { url } = searchParams || {};
+    const { url, player } = searchParams || {};
 
     const userIp = getIP();
 
@@ -35,7 +35,7 @@ function EmbedPage({ searchParams }) {
             visibility={true}
             source={url}
             userIp={userIp}
-            playerType="plyr"
+            playerType={!player && player !== "2" ? null : "plyr"}
         />
         </div>
     )
