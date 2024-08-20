@@ -35,7 +35,7 @@ function EmbedPage({ searchParams }) {
             visibility={true}
             source={url}
             userIp={userIp}
-            playerType={!player && player !== "2" ? null : "plyr"}
+            playerType={!player && player !== "2" ? "default" : "plyr"}
         />
         </div>
     )
