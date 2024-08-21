@@ -28,7 +28,7 @@ function SomthingWrongError({ onclickEvent }) {
                     src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1705937258/moviesbazaar/somthing_was_wrong.jpg"
                     width={280}
                     height={250}
-                    alt="somthing was wrong message"
+                    alt="Somthing waent wrong message picture"
                 />
 
                 <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">

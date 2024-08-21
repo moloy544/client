@@ -33,6 +33,7 @@ function VidStackPlayer({ title, source, visibility, userIp, playerType = "defau
 
     const [modifiedSource, setModifiedSource] = useState(null);
     const [playbackError, setPlaybackError] = useState(null);
+    const [errorCount, setErrorCount] = useState(0);
     // online offline handler
     const isOnline = useOnlineStatus({
         onlineCallback: () => {
@@ -44,24 +45,41 @@ function VidStackPlayer({ title, source, visibility, userIp, playerType = "defau
     });
 
     useEffect(() => {
-        if (source) {
+        if (source && visibility) {
             const newSource = generateSourceURL(source, userIp);
             setModifiedSource(newSource);
         }
-    }, [source, userIp]);
+        if (errorCount !== 0) {
+            setErrorCount(0);
+        }
+    }, [source, userIp, visibility]);
 
     const handleError = useCallback((error) => {
-
         if (error && error.code === 1 && isOnline) {
-
             const isLonerHost = modifiedSource.includes('loner300artoa.com');
             if (isLonerHost) {
-                setPlaybackError("The video could not be played. Please check your internet connection or connect to any VPN and try again.");
+                setErrorCount((prevCount) => {
+                    const newCount = prevCount + 1;
+                    if (newCount < 2) {
+                        if (modifiedSource.startsWith('https://cdn4521.loner300artoa.com/stream2/i-arch-400/')) {
+                            const replaceSource = modifiedSource.replace('https://cdn4521.loner300artoa.com/stream2/i-arch-400/', 'https://cdn4504.loner300artoa.com/stream2/i-cdn-0/');
+                            const source = generateSourceURL(replaceSource, userIp);
+                            setModifiedSource(source);
+                        } else if (modifiedSource.startsWith('https://cdn4504.loner300artoa.com/stream2/i-cdn-0/')) {
+                            const replaceSource = modifiedSource.replace('https://cdn4504.loner300artoa.com/stream2/i-cdn-0/', 'https://cdn4521.loner300artoa.com/stream2/i-arch-400/');
+                            const source = generateSourceURL(replaceSource, userIp);
+                            setModifiedSource(source);
+                        }
+                    } else {
+                        setPlaybackError("The video could not be played. Please check your internet connection or connect to a VPN and try again.");
+                    }
+                    return newCount;
+                });
             } else {
-                setPlaybackError("Please wait a moment video is loading. in case is not playing video please report us.")
+                setPlaybackError("Please wait a moment while the video is loading. If it doesn't play, please report it to us.");
             }
-        };
-    }, [modifiedSource, isOnline]);
+        }
+    }, [modifiedSource, isOnline, userIp]);
 
     if (!visibility || !modifiedSource) {
         return null;
