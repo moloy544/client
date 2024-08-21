@@ -27,8 +27,6 @@ export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActo
             setPage((prevPage) => prevPage + 1)
         }
         }, [isAllDataLoad]);
-        console.log(isAllDataLoad)
-        console.log(page)
 
     // infinite scroll load data custom hook
     const bottomObserverElement = useInfiniteScroll({
