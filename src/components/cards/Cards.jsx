@@ -52,6 +52,7 @@ const ResponsiveMovieCard = memo(({ data, onClickEvent }) => {
         </div>
     )
 }, areEqual);
+ResponsiveMovieCard.displayName = "ResponsiveMovieCard";
 
 const ResponsiveActorCard = memo(({ data }) => {
     return (
@@ -81,6 +82,7 @@ const ResponsiveActorCard = memo(({ data }) => {
         </div>
     )
 }, areEqual);
+ResponsiveActorCard.displayName = "RespsiveActorCard";
 
 export {
     ResponsiveMovieCard,
