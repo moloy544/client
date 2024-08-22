@@ -17,7 +17,7 @@ function generateSourceURL(originalURL, userIp) {
         return '';
     };
 
-    if (!originalURL.includes('loner300artoa.com')) {
+    if (!originalURL.includes('ooat310wind.com')) {
         return originalURL;
     }
     // Calculate the expiration timestamp (6 hours from now)
@@ -56,17 +56,17 @@ function VidStackPlayer({ title, source, visibility, userIp, playerType = "defau
 
     const handleError = useCallback((error) => {
         if (error && error.code === 1 && isOnline) {
-            const isLonerHost = modifiedSource.includes('loner300artoa.com');
-            if (isLonerHost) {
+            const isWindHost = modifiedSource.includes('ooat310wind.com');
+            if (isWindHost) {
                 setErrorCount((prevCount) => {
                     const newCount = prevCount + 1;
                     if (newCount < 2) {
-                        if (modifiedSource.startsWith('https://cdn4521.loner300artoa.com/stream2/i-arch-400/')) {
-                            const replaceSource = modifiedSource.replace('https://cdn4521.loner300artoa.com/stream2/i-arch-400/', 'https://cdn4504.loner300artoa.com/stream2/i-cdn-0/');
+                        if (modifiedSource.startsWith('https://cdn4505.ooat310wind.com/stream2/i-arch-400/')) {
+                            const replaceSource = modifiedSource.replace('https://cdn4505.ooat310wind.com/stream2/i-arch-400/', 'https://cdn4505.ooat310wind.com/stream2/i-cdn-0/');
                             const source = generateSourceURL(replaceSource, userIp);
                             setModifiedSource(source);
-                        } else if (modifiedSource.startsWith('https://cdn4504.loner300artoa.com/stream2/i-cdn-0/')) {
-                            const replaceSource = modifiedSource.replace('https://cdn4504.loner300artoa.com/stream2/i-cdn-0/', 'https://cdn4521.loner300artoa.com/stream2/i-arch-400/');
+                        } else if (modifiedSource.startsWith('https://cdn4505.ooat310wind.com/stream2/i-cdn-0/')) {
+                            const replaceSource = modifiedSource.replace('https://cdn4505.ooat310wind.com/stream2/i-cdn-0/', 'https://cdn4505.ooat310wind.com/stream2/i-arch-400/');
                             const source = generateSourceURL(replaceSource, userIp);
                             setModifiedSource(source);
                         }

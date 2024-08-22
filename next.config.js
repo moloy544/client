@@ -5,7 +5,7 @@ const nextConfig = {
   env: {
     APP_DOMAIN: 'https://moviesbazar.online',
     BACKEND_SERVER_URL: process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://moviesbazaar-api.vercel.app',
-    VIDEO_SERVER_URL: 'https://loner300artoa.com/play/'
+    VIDEO_SERVER_URL: 'https://ooat310wind.com/play/'
   },
 
   images: {
