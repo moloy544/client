@@ -62,11 +62,11 @@ function VidStackPlayer({ title, source, visibility, userIp, playerType = "defau
                     const newCount = prevCount + 1;
                     if (newCount < 2) {
                         if (modifiedSource.startsWith('https://cdn4505.ooat310wind.com/stream2/i-arch-400/')) {
-                            const replaceSource = modifiedSource.replace('https://cdn4505.ooat310wind.com/stream2/i-arch-400/', 'https://cdn4505.ooat310wind.com/stream2/i-cdn-0/');
+                            const replaceSource = modifiedSource.replace('https://cdn4505.ooat310wind.com/stream2/i-arch-400/', 'https://cdn4521.ooat310wind.com/stream2/i-arch-400/');
                             const source = generateSourceURL(replaceSource, userIp);
                             setModifiedSource(source);
-                        } else if (modifiedSource.startsWith('https://cdn4505.ooat310wind.com/stream2/i-cdn-0/')) {
-                            const replaceSource = modifiedSource.replace('https://cdn4505.ooat310wind.com/stream2/i-cdn-0/', 'https://cdn4505.ooat310wind.com/stream2/i-arch-400/');
+                        } else if (modifiedSource.startsWith('https://cdn4521.ooat310wind.com/stream2/i-arch-400/')) {
+                            const replaceSource = modifiedSource.replace('https://cdn4521.ooat310wind.com/stream2/i-arch-400/', 'https://cdn4505.ooat310wind.com/stream2/i-arch-400/');
                             const source = generateSourceURL(replaceSource, userIp);
                             setModifiedSource(source);
                         }
