@@ -33,7 +33,6 @@ function VidStackPlayer({ title, source, visibility, userIp, playerType = "defau
 
     const [modifiedSource, setModifiedSource] = useState(null);
     const [playbackError, setPlaybackError] = useState(null);
-    const [errorCount, setErrorCount] = useState(0);
     // online offline handler
     const isOnline = useOnlineStatus({
         onlineCallback: () => {
@@ -49,32 +48,13 @@ function VidStackPlayer({ title, source, visibility, userIp, playerType = "defau
             const newSource = generateSourceURL(source, userIp);
             setModifiedSource(newSource);
         }
-        if (errorCount !== 0) {
-            setErrorCount(0);
-        }
     }, [source, userIp, visibility]);
 
     const handleError = useCallback((error) => {
         if (error && error.code === 1 && isOnline) {
             const isWindHost = modifiedSource.includes('ooat310wind.com');
             if (isWindHost) {
-                setErrorCount((prevCount) => {
-                    const newCount = prevCount + 1;
-                    if (newCount < 2) {
-                        if (modifiedSource.startsWith('https://cdn4505.ooat310wind.com/stream2/i-arch-400/')) {
-                            const replaceSource = modifiedSource.replace('https://cdn4505.ooat310wind.com/stream2/i-arch-400/', 'https://cdn4521.ooat310wind.com/stream2/i-arch-400/');
-                            const source = generateSourceURL(replaceSource, userIp);
-                            setModifiedSource(source);
-                        } else if (modifiedSource.startsWith('https://cdn4521.ooat310wind.com/stream2/i-arch-400/')) {
-                            const replaceSource = modifiedSource.replace('https://cdn4521.ooat310wind.com/stream2/i-arch-400/', 'https://cdn4505.ooat310wind.com/stream2/i-arch-400/');
-                            const source = generateSourceURL(replaceSource, userIp);
-                            setModifiedSource(source);
-                        }
-                    } else {
-                        setPlaybackError("The video could not be played. Please check your internet connection or connect to a VPN and try again.");
-                    }
-                    return newCount;
-                });
+                setPlaybackError("The video could not be played. Please check your internet connection or hold minimum 30 seconds if video not play then please connect to a VPN and try again.");
             } else {
                 setPlaybackError("Please wait a moment while the video is loading. If it doesn't play, please report it to us.");
             }
