@@ -1,16 +1,7 @@
-
-'use client'
-
+import NavigateBack from '@/components/NavigateBack';
 import Image from 'next/image'
-import { useRouter } from 'next/navigation';
 
 export default function NotFound() {
-
-    const router = useRouter();
-
-    const back = () => {
-        router.back();
-      };
 
     return (
         <div className="grid h-screen place-content-center bg-white px-4">
@@ -29,15 +20,16 @@ export default function NotFound() {
 
                 <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-3xl">Uh-oh page not found!</h1>
 
-                <p className="mt-4 text-gray-500 text-base mobile:text-sm">{"We can't find that page maybe its removed from our site plese back to home page and explore your favorite or latest movies or series."}</p>
-
+                <p className="mt-4 text-gray-500 text-base mobile:text-sm">{"We can't find that page maybe its removed from our site plese go back and explore your favorite movies and series."}</p>
+               
+               <NavigateBack>
                 <button 
-                onClick={back}
                     type="button"
                     className="mt-6 inline-block rounded bg-rose-500 px-4 py-3 text-sm font-medium text-white hover:bg-rose-600 focus:outline-none focus:ring"
                 >
                    Back and explore
                 </button>
+                </NavigateBack>
             </div>
         </div>
     )

@@ -1,15 +1,17 @@
 import Link from "next/link"
-import NavigateBack from "./NavigateBack"
 import Image from "next/image"
+import NavigateBack from "./NavigateBack"
 
 function NavigateBackTopNav({ title, titleImage = null }) {
-    
+
     return (
         <header className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-gray-900 text-gray-300 px-3 border-b border-b-cyan-800">
 
             <div className="w-auto h-auto flex gap-4 mobile:gap-2.5 items-center py-4 mobile:py-2">
                 <NavigateBack>
-                    <i className="bi bi-arrow-left text-3xl mobile:text-[25px] cursor-pointer" title="Back"></i>
+                    <button className=" bg-transparent px-1.5 py-1 text-3xl mobile:text-[25px]" type="button" title="Back">
+                        <i className="bi bi-arrow-left"></i>
+                    </button>
                 </NavigateBack>
                 <div className="flex items-center gap-2">
                     {titleImage && titleImage.src && titleImage.alt && (

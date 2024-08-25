@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { cloneElement } from 'react';
 
 function NavigateBack({ children }) {
 
@@ -15,11 +16,10 @@ function NavigateBack({ children }) {
 
   };
 
-  return (
-    <div onClick={back}>
-      {children}
-    </div>
-  )
+ // Clone the child element and add the onClick handler
+ const childWithOnClickBack = children ? cloneElement(children, { onClick: back }) : null;
+  
+ return childWithOnClickBack;
 };
 
 export default NavigateBack;
