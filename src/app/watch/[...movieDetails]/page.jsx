@@ -11,7 +11,7 @@ import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
 function getIP() {
-  
+
   const FALLBACK_IP_ADDRESS = '76.76.21.123'
   const forwardedFor = headers().get('x-forwarded-for');
   if (process.env.NODE_ENV === "development") {
@@ -85,12 +85,26 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
 
-  const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
+  const { movieDetails } = params;
+  const movieId = movieDetails ? movieDetails[2] : ' ';
   const ip = getIP();
 
   const { status, movieData, suggetions } = await getMovieDeatils('tt' + movieId, true);
+  let isValidPath = true;
 
-  if (status === 404) {
+   // Verify if the browser url is expted url or not
+    // If not math then show not found by set validapath false and call notFound.
+  if (status === 200 && movieData) {
+    const type = movieDetails[0]
+    const title = movieDetails[1]
+    const browserUrlath = `/watch/${type}/${title}/${movieId}`;
+    const createdUrlPath = `/watch/${movieData.type}/${creatUrlLink(movieData.title)}/${movieId}`;
+    if (browserUrlath !== createdUrlPath || movieDetails.length !== 3) {
+      isValidPath = false;
+    }
+  }
+
+  if (status === 404 || !isValidPath) {
     notFound();
   } else if (status === 400 || status === 500) {
     return (
