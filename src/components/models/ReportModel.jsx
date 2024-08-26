@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useState } from "react";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
@@ -7,6 +9,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
+  const [processedReports, setProcessedReports] = useState(false);
 
   const writtenReportRef = useRef(null);
 
@@ -54,9 +57,10 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
   const handleReportSubmit = async () => {
 
     try {
+      if(processedReports) return;
 
       if (selectedReports.length > 0 || writtenReportRef.current?.value.length >= 10) {
-
+        setProcessedReports(true);
         const reportResponse = await axios.post(`${appConfig.backendUrl}/api/v1/user/action/report`, {
           reportData: {
             movie: movieData._id,
@@ -83,21 +87,27 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
 
     } catch (error) {
       console.log(error)
+    }finally {
+      setProcessedReports(false);
     };
   };
 
   return (
-    <ModelsController visibility={isOpen}>
-      <div className="w-full h-full fixed top-0 left-0 flex justify-center items-center bg-gray-950 bg-opacity-50 z-[60]">
-        <div className="mobile:w-[90%] mx-4 max-w-sm mobile:m-auto w-auto h-auto rounded-lg bg-white p-4 shadow-2xl border border-gray-300">
+    <ModelsController visibility={isOpen} transformEffect={window.innerWidth <= 769}>
+      <div className="w-full h-full fixed top-0 left-0 flex justify-center mobile:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
+      style={{transform: 'translateY(100%)'}}
+      >
 
-          {(message === "Pending") || (message === "Invalid") ? (
+        <div className={`mobile:w-full w-auto mx-4 ${message !== "Success" ? "mobile:absolute z-20 mobile:bottom-0 mobile:rounded-b-none" : "max-w-[fit-content]"} mobile:m-auto w-auto h-fit rounded-lg bg-white p-4 shadow-2xl border border-gray-300`}>
+
+          {message !== 'Success' ? (
             <>
-              <h2 className="text-base font-bold leading-4">Are you sure you want to report?</h2>
-
-              <p className="mt-2 text-xs text-gray-600">
-                Please select the issue or describe the problem. We are solve your problem within 6 hours.
-              </p>
+              <div className="space-y-2 mb-4 max-w-sm">
+                <h2 className="text-base font-bold leading-4">Are you sure you want to report?</h2>
+                <p className="mt-2 text-xs text-gray-600 font-medium">
+                  Please select the issue or describe the problem. We are solve your problem within 6 hours.
+                </p>
+              </div>
 
               <div className="flex flex-wrap gap-3 my-2">
 
@@ -167,17 +177,17 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
                   placeholder="Write your problem here..."
                 />
               </div>
-              
+
               {message === "Invalid" && (
                 <p className="text-red-pure text-xs my-1">Please select or describe your problem  minimum 8 words</p>
               )}
-              <div className="mt-4 flex gap-5">
+              <div className="py-3 flex gap-5 mobile:my-3">
                 <button
                   type="button"
                   onClick={handleReportSubmit}
-                  className="rounded bg-rose-600 px-5 py-2 text-xs font-medium text-gray-100"
+                  className="rounded bg-rose-600 w-20 h-10 flex justify-center items-center text-xs font-medium text-gray-100"
                 >
-                  Report
+                  {!processedReports ? "Report" : <div className="three_dots_loading w-2 h-2"></div>}
                 </button>
 
                 <button
@@ -188,10 +198,11 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
                   No, close
                 </button>
               </div>
+
             </>
 
           ) : (
-            <div className="w-60 h-auto text-green-600 text-center text-sm font-medium">Thanks for reporting us we are solve your issue soon as possible</div>
+            <h2 className="w-60 h-auto text-green-600 text-center text-sm font-medium">Thanks for reporting us we are solve your issue soon as possible</h2>
           )}
         </div>
       </div>

@@ -39,12 +39,14 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   useEffect(() => {
 
-    window.location.hash = "";
-   
+      window.location.hash = "";
+
     const handleHashChange = () => {
 
       if (window.location.hash === "#play") {
-        setPlayerVisibility(true);
+       
+          setPlayerVisibility(true);
+
       } else {
         setPlayerVisibility(false);
       }
@@ -85,7 +87,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       <div className="my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
         <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
-        <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility ? "block" : "hidden"}`}>
+        <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
             <VidStackPlayer
               visibility={playerVisibility && videoSource && videoSource?.includes('.m3u8')}
@@ -93,7 +95,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               source={videoSource}
               userIp={userIp}
             />
-            {playerVisibility && !videoSource?.includes('.m3u8') && (
+            {videoSource && !videoSource?.includes('.m3u8') && (
               <iframe
                 src={videoSource}
                 allowFullScreen="allowfullscreen" />
@@ -102,7 +104,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
           </div>
         
-          <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility ? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-500 bg-gray-800`}>
+          <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility && videoSource? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-500 bg-gray-800`}>
 
             <Image
               priority
@@ -257,6 +259,5 @@ function PlayButton({ watchLinks, playHandler }) {
           </ModelsController>
        
         </>
-      
   )
 }

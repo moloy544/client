@@ -114,3 +114,31 @@
     opacity: 0;
   }
 }
+
+/****** Loadings Css Styles ********************************
+// 3 dots loading 
+/*** Buttons Proceed Loading ***/
+.three_dots_loading{
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 12px 0 #fff, -12px 0 #fff;
+  position: relative;
+  animation: whiteflash 0.5s ease-out infinite alternate;
+}
+
+@keyframes whiteflash {
+  0% {
+    background-color: #FFF2;
+    box-shadow: 20px 0 #FFF2, -20px 0 #FFF;
+  }
+
+  50% {
+    background-color: #FFF;
+    box-shadow: 20px 0 #FFF2, -20px 0 #FFF2;
+  }
+
+  100% {
+    background-color: #FFF2;
+    box-shadow: 20px 0 #FFF, -20px 0 #FFF2;
+  }
+}
