@@ -17,8 +17,9 @@ function getIP() {
 }
 
 function EmbedPage({ searchParams }) {
-    const { url, player } = searchParams || {};
 
+    const { url, player } = searchParams || {};
+    const decodedUrl = decodeURIComponent(url || '');
     const userIp = getIP();
 
     if (!searchParams || !url || !url?.includes('.m3u8')) {
@@ -31,12 +32,12 @@ function EmbedPage({ searchParams }) {
 
     return (
         <div className="w-full h-screen flex justify-center items-center bg-[#111827] overflow-hidden fixed">
-        <VidStackPlayer
-            visibility={true}
-            source={url}
-            userIp={userIp}
-            playerType={!player && player !== "2" ? "default" : "plyr"}
-        />
+            <VidStackPlayer
+                visibility={true}
+                source={decodedUrl}
+                userIp={userIp}
+                playerType={!player && player !== "2" ? "default" : "plyr"}
+            />
         </div>
     )
 }
