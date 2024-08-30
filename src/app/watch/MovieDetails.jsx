@@ -29,7 +29,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
-  
+
   const handleVideoSourcePlay = (source) => {
     setVideoSource(source);
     if (window.location.hash || window.location.hash !== 'play') {
@@ -39,13 +39,13 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   useEffect(() => {
 
-      window.location.hash = "";
+    window.location.hash = "";
 
     const handleHashChange = () => {
 
       if (window.location.hash === "#play") {
-       
-          setPlayerVisibility(true);
+
+        setPlayerVisibility(true);
 
       } else {
         setPlayerVisibility(false);
@@ -87,7 +87,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       <div className="my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
         <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
-        <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility && videoSource ? "block" : "hidden"}`}>
+          <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
             <VidStackPlayer
               visibility={playerVisibility && videoSource && videoSource?.includes('.m3u8')}
@@ -100,11 +100,11 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 src={videoSource}
                 allowFullScreen="allowfullscreen" />
             )}
-            
+
 
           </div>
-        
-          <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility && videoSource? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-500 bg-gray-800`}>
+
+          <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility && videoSource ? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-500 bg-gray-800`}>
 
             <Image
               priority
@@ -186,10 +186,10 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               </div>
 
             </div>
-            <div className="px-1.5 mobile:pb-3 space-x-1.5 md:my-6">
-              <strong className="text-sm text-gray-300">Note: <span className="text-xs text-yellow-500 font-semibold">
-                If sometimes this {type} does not play, please connect to VPN and enjoy.
-              </span></strong>
+            <div className="px-1.5 mobile:pb-3 space-x-1.5 md:my-6 max-w-lg">
+              <p className="text-xs text-yellow-500 font-semibold leading-[18px]"><strong className="text-sm text-gray-200 mr-0.5">Note: </strong>
+                If this {type} does not play, then please connect to any VPN and enjoy. <span className="font-bold text-gray-200">Our suggestion:</span> This problem occurs mostly at night so try to watch before night. thanks for using our site.
+              </p>
             </div>
             <MoviesUserActionOptions movieData={movieDetails} />
           </div>
@@ -219,10 +219,9 @@ function PlayButton({ watchLinks, playHandler }) {
     };
   };
 
-  
   return (
     <>
-    <div className="w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <button type="button"
           onClick={play}
           title="Play"
@@ -240,24 +239,32 @@ function PlayButton({ watchLinks, playHandler }) {
 
           <span className="sr-only">Play video</span>
         </button>
-        </div>
-        <ModelsController visibility={showDropdown} closeEvent={()=> setDropDown(false)}>
-          <div className={`w-56 h-auto py-3.5 px-2 bg-gray-100 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
-            <div className="text-gray-900 font-semibold mx-1.5">Select server</div>
-            <div className="text-sm text-gray-800 space-y-2.5 mt-2 mx-1">
-              {watchLinks.map((data, index) => (
-                <div key={index} className="mx-auto self-center">
-                  <button className="flex items-center font-medium" onClick={() => playHandler(data)} type="button">
-                    <i className={`bi bi-dot ${index ===0 ?"text-cyan-500" :"text-yellow-500"} text-xl`}></i>
-                    <span className="mr-1.5">{`Server ${index + 1}`}</span>
-                    <span className="text-xs text-gray-700 font-normal">{data?.includes('.m3u8') ? "(No ads)" : "(Multi language)"}</span>
-                    </button>
-                </div>
-              ))}
-            </div>
+      </div>
+      <ModelsController visibility={showDropdown} closeEvent={() => setDropDown(false)}>
+        <div className={`w-56 h-auto py-3.5 px-2 bg-gray-100 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
+          <button
+            onClick={() => setDropDown(false)}
+            className="font-medium text-gray-600 hover:text-gray-800 float-right outline-none"
+            type="button"
+          >
+            <i className="bi bi-x-circle"></i>
+            <span className="sr-only">Close</span>
+        </button>
+          <div className="text-gray-900 font-semibold mx-1.5">Select server</div>
+          <div className="text-sm text-gray-800 space-y-2.5 mt-2 mx-1">
+            {watchLinks.map((data, index) => (
+              <div key={index} className="mx-auto self-center">
+                <button className="flex items-center font-medium w-full h-auto" onClick={() => playHandler(data.source)} type="button">
+                  <i className={`bi bi-dot ${index === 0 ? "text-cyan-500" : "text-yellow-500"} text-xl`}></i>
+                  <span className="mr-1.5">{data.label}</span>
+                  <span className="text-xs text-gray-700 font-normal">{data.labelTag}</span>
+                </button>
+              </div>
+            ))}
           </div>
-          </ModelsController>
-       
-        </>
+        </div>
+      </ModelsController>
+
+    </>
   )
 }
