@@ -39,21 +39,21 @@ const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 20, pag
 };
 
 /**************** Get movie serirs details from database ***************/
-async function getMovieDeatils(imdbId, suggetion= true) {
+async function getMovieDeatils(imdbId, suggestion= true) {
 
   let status = 500; // Default status in case of an error
   let movieData = null;
-  let suggetions = null
+  let suggestions = null
 
   try {
     const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`, {
-      params: { suggetion }
+      params: { suggestion }
     });
   
     if (response.status === 200) {
       status = response.status;
       movieData = response.data.movieData || null;
-      suggetions = response.data.suggetions || null;
+      suggestions = response.data.suggestions || null;
     } else {
       status = response.status
     }
@@ -64,7 +64,7 @@ async function getMovieDeatils(imdbId, suggetion= true) {
     }
     console.log(error);
   } finally {
-    return { status, movieData, suggetions };
+    return { status, movieData, suggestions };
   }
 };
 

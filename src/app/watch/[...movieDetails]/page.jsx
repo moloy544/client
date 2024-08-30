@@ -89,7 +89,7 @@ export default async function Page({ params }) {
   const movieId = movieDetails ? movieDetails[2] : ' ';
   const ip = getIP();
 
-  const { status, movieData, suggetions } = await getMovieDeatils('tt' + movieId, true);
+  const { status, movieData, suggestions } = await getMovieDeatils('tt' + movieId, true);
   let isValidPath = true;
 
    // Verify if the browser url is expted url or not
@@ -117,7 +117,7 @@ export default async function Page({ params }) {
       <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
       <MovieDetails
         movieDetails={movieData}
-        suggestions={suggetions}
+        suggestions={suggestions}
         userIp={ip}
       />
     </InspectPreventer>
