@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useCallback, useEffect, useState } from 'react';
@@ -33,6 +32,7 @@ function VidStackPlayer({ title, source, visibility, userIp, playerType = "defau
 
     const [modifiedSource, setModifiedSource] = useState(null);
     const [playbackError, setPlaybackError] = useState(null);
+    const [errorAccept, setErrorAccept] = useState(false);
     // online offline handler
     const isOnline = useOnlineStatus({
         onlineCallback: () => {
@@ -51,10 +51,10 @@ function VidStackPlayer({ title, source, visibility, userIp, playerType = "defau
     }, [source, userIp, visibility]);
 
     const handleError = useCallback((error) => {
-        if (error && error.code === 1 && isOnline) {
+        if (error && error.code === 1 && isOnline && !errorAccept) {
             const isWindHost = modifiedSource.includes('ooat310wind.com');
             if (isWindHost) {
-                setPlaybackError("The video could not be played. Please check your internet connection or hold minimum 30 seconds if video not play then please connect to a VPN and try again.");
+                setPlaybackError("Playback stopped please hold minimum 30 seconds or black and play again if video not play then please connect to any VPN and try again.");
             } else {
                 setPlaybackError("Please wait a moment while the video is loading. If it doesn't play, please report it to us.");
             }
@@ -97,6 +97,7 @@ function VidStackPlayer({ title, source, visibility, userIp, playerType = "defau
                                 type="button"
                                 onClick={() => {
                                     setPlaybackError(null);
+                                    setErrorAccept(true);
                                 }}
                                 className="w-full h-10 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm font-bold">
                                 Got it, thanks!
