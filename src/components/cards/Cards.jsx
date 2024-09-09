@@ -73,7 +73,7 @@ const ResponsiveActorCard = memo(({ data }) => {
                 </div>
 
                 <div className="w-auto h-6 text-gray-300 mt-1.5 px-1.5">
-                    <p className="whitespace-normal text-xs font-semibold leading-[14px] line-clamp-2 text-center">
+                    <p className="whitespace-normal text-xs font-semibold leading-[14px] line-clamp-2 text-center capitalize">
                         {data.name}
                     </p>
                 </div>
