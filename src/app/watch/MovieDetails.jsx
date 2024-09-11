@@ -89,12 +89,13 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
           <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
-            <VidStackPlayer
-              visibility={playerVisibility && videoSource && videoSource?.includes('.m3u8')}
+            {playerVisibility && videoSource && videoSource?.includes('.m3u8') &&(
+              <VidStackPlayer
               title={title}
               source={videoSource}
               userIp={userIp}
             />
+            )}
             {videoSource && !videoSource?.includes('.m3u8') && (
               <iframe
                 src={videoSource}
@@ -131,7 +132,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
           </div>
 
-          <div className="w-full h-auto px-2 py-3 flex flex-col mobile:flex-col-reverse">
+          <div className="w-full h-auto py-3 flex flex-col mobile:flex-col-reverse">
 
             <div className="mobile:px-2.5 space-y-3">
 
@@ -174,7 +175,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 </div>
               )}
 
-              <div className="flex items-center space-x-1">
+              <div className="flex flex-wrap items-center space-x-1">
                 <strong className="text-base text-gray-200 font-bold flex-wrap">Genre:</strong>
                 {genre?.map((g, index) =>
                   g !== "N/A" && (

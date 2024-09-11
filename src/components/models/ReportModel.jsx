@@ -31,6 +31,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
     setIsModelOpen(false);
 
     body.removeAttribute('class', 'scrollbar-hidden');
+    body.style.overflow = '';
 
   }
 
@@ -57,7 +58,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
   const handleReportSubmit = async () => {
 
     try {
-      if(processedReports) return;
+      if (processedReports) return;
 
       if (selectedReports.length > 0 || writtenReportRef.current?.value.length >= 10) {
         setProcessedReports(true);
@@ -87,7 +88,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
 
     } catch (error) {
       console.log(error)
-    }finally {
+    } finally {
       setProcessedReports(false);
     };
   };
@@ -95,7 +96,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
   return (
     <ModelsController visibility={isOpen} transformEffect={window.innerWidth <= 769}>
       <div className="w-full h-full fixed top-0 left-0 flex justify-center mobile:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
-      style={{transform: 'translateY(100%)'}}
+        style={{ transform: 'translateY(100%)' }}
       >
 
         <div className={`mobile:w-full w-auto mx-4 ${message !== "Success" ? "mobile:absolute z-20 mobile:bottom-0 mobile:rounded-b-none" : "max-w-[fit-content]"} mobile:m-auto w-auto h-fit rounded-lg bg-white p-4 shadow-2xl border border-gray-300`}>

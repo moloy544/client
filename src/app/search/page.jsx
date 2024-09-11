@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { appConfig } from "@/config/config";
 import { loadMoreFetch } from "@/utils";
-import { useInfiniteScroll } from "@/lib/lib";
+import { useInfiniteScroll } from "@/hooks/observers";
 import { ModelsController } from "@/lib/EventsHandler";
 import NavigateBack from "@/components/NavigateBack";
 import CategoryGroupSlider from "@/components/CategoryGroupSlider";

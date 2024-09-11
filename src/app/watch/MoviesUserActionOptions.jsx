@@ -57,6 +57,7 @@ export default function MoviesUserActionOptions({ movieData }) {
   const openModel = () => {
     const body = document.querySelector('body');
     body.setAttribute('class', 'scrollbar-hidden');
+    body.setAttribute('style', 'overflow: hidden;');
     setIsModelOpen(true);
   }
 

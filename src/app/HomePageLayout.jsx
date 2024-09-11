@@ -139,7 +139,7 @@ function HomePageLayout({ initialLayoutData }) {
                             </div>
 
                             <div className="w-auto h-auto mobile:w-20 text-gray-300 overflow-hidden py-1.5">
-                                <p className="whitespace-normal text-xs font-semibold text-center leading-[15px] line-clamp-2">
+                                <p className="whitespace-normal text-xs font-semibold text-center leading-[15px] line-clamp-2 capitalize">
                                     {actor.name}
                                 </p>
                             </div>

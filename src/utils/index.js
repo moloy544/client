@@ -94,17 +94,14 @@ const debounceDelay = (func, delay) => {
 /*************** Transfrom capitalize **************/
 const transformToCapitalize = (text) => {
 
-  // Split the text into an array of words
-  const words = text?.split('-');
+  return text
+    .toLowerCase() // Convert the entire string to lowercase
+    .replace(/-/g, ' ') // Replace hyphens with spaces globally
+    .split(' ')    // Split the string by spaces to get individual words
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+    .join(' ');    // Join the words back into a single string
+}
 
-  // Capitalize the first letter of each word and join them with a space
-  const capitalizedWords = words?.map(word => {
-    return word?.charAt(0).toUpperCase() + word.slice(1);
-  });
-
-  // Join the words with a space and return the result
-  return capitalizedWords?.join(' ');
-};
 
 /**************** format numbers to compact like 1K 50k ****************/
 const formatNumberCounter = (value) => Intl.NumberFormat('en-US', {

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { updateLoadActors } from "@/context/loadActorsState/loadActorsSlice";
 import BacktoTopButton from "./BacktoTopButton";
-import { useInfiniteScroll } from "@/lib/lib";
+import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveActorCard } from "./cards/Cards";
 
 export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActors, isDataEnd }) {

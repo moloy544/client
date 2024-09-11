@@ -82,7 +82,7 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize = 
     }, [handleObservers]);
 
 
-    if ((!moviesData || moviesData.length === 0 && !Array.isArray(moviesData)) && !children) {
+    if (!children && (!moviesData || !Array.isArray(moviesData) || moviesData.length === 0)) {
         return null;
     };
 

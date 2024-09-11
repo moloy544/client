@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
-import { creatUrlLink, loadMoreFetch } from "@/utils";
+import { creatUrlLink, loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
@@ -19,7 +19,7 @@ const getActorData = async (imdbId) => {
     const response = await axios.post(`${appConfig.backendUrl}/api/v1/actress/info/${imdbId}`);
     const { actor } = response.data || {};
     if (actor) {
-      name = actor.name;
+      name = transformToCapitalize(actor.name);
       avatar = actor.avatar;
       industry = actor.industry;
     }

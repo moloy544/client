@@ -7,7 +7,7 @@ import { loadMoreFetch } from "@/utils";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import FilterModel from "./models/FilterModel";
 import BacktoTopButton from "./BacktoTopButton";
-import { useInfiniteScroll } from "@/lib/lib";
+import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "./cards/Cards";
 
 

@@ -5,7 +5,8 @@ import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink } from "@/utils";
-import { InspectPreventer, useInfiniteScroll } from "@/lib/lib";
+import { InspectPreventer } from "@/lib/lib";
+import { useInfiniteScroll } from "@/hooks/observers";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);

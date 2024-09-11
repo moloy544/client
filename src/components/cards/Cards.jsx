@@ -39,8 +39,8 @@ const ResponsiveMovieCard = memo(({ data, onClickEvent }) => {
                     />
                 </div>
 
-                <div className="movie_name_container">
-                    <span className="text-white text-xs mobile:text-[10px] font-sans line-clamp-3 leading-[14px] px-2 mobile:py-0.5 py-1">
+                <div className="movie_name_container px-1.5 mobile:py-0.5 py-1">
+                    <span className="text-white text-xs mobile:text-[10px] font-sans line-clamp-3 leading-[14px]">
                         {data.title}
                     </span>
                 </div>
@@ -73,7 +73,7 @@ const ResponsiveActorCard = memo(({ data }) => {
                 </div>
 
                 <div className="w-auto h-6 text-gray-300 mt-1.5 px-1.5">
-                    <p className="whitespace-normal text-xs font-semibold leading-[14px] line-clamp-2 text-center">
+                    <p className="whitespace-normal text-xs font-semibold leading-[14px] line-clamp-2 text-center capitalize">
                         {data.name}
                     </p>
                 </div>
