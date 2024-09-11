@@ -28,7 +28,7 @@ const isMobileDevice = () => {
         // Fallback to older method
         return /Mobi|Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
-};        
+};
 
 function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
     const [modifiedSource, setModifiedSource] = useState(source);
@@ -143,17 +143,18 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
                 playerContainer.removeChild(replacingPlayer);
             }
             setTimeout(() => {
+
                 player.classList.remove('opacity-40');
                 playerContainer.classList.remove(...playerContainerFloatingClass.split(' '));
                 playerContainer.classList.add(...playerContainerStaticClass.split(' '));
             }, 300);
 
         } else {
-
+            makeReplacingPlayer();
             player.classList.remove(...staticClass.split(' '));
             player.classList.add(...floatingClass.split(' '));
             player.removeAttribute('style');
-            makeReplacingPlayer();
+
             setTimeout(() => {
                 player.classList.remove('opacity-40');
                 playerContainer.classList.remove(...playerContainerStaticClass.split(' '));
