@@ -9,6 +9,7 @@ import { MediaPlayer, MediaProvider } from "@vidstack/react";
 import { PlyrLayout, plyrLayoutIcons } from "@vidstack/react/player/layouts/plyr";
 import { defaultLayoutIcons, DefaultVideoLayout } from "@vidstack/react/player/layouts/default";
 import useOnlineStatus from "@/lib/lib";
+import { useOrientation } from "@/hooks/hook";
 
 function generateSourceURL(originalURL, userIp) {
     if (!originalURL) return "";
@@ -27,6 +28,8 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
 
     const playerRef = useRef(null);
     const containerRef = useRef(null);
+
+    const isPortrait = useOrientation();
 
     const isOnline = useOnlineStatus({
         onlineCallback: () => setPlaybackError(null),
@@ -64,6 +67,16 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
 
         if (!playerContainer || !player) return;
 
+        // Handle non-portrait mode
+        if (!isPortrait) {
+            if (player.classList.contains("fixed")) {
+                player.classList.remove(...floatingClass.split(' '));
+                player.classList.add(...staticClass.split(' '));
+            }
+
+            return;
+        };
+
         const entry = entries[0];
 
         const floatingClass = 'fixed top-0 left-2/4 sm:left-0 transform -translate-x-2/4 sm:translate-x-1/4 sm:w-[60%] w-[98%] max-w-sm h-auto z-50 rounded-md overflow-hidden opacity-40 transition-all duration-500';
@@ -90,7 +103,7 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
                 playerContainer.classList.add(...playerContainerFloatingClass.split(' '));
             }, 300);
         }
-    }, []);
+    }, [isPortrait]);
 
     const dontShowErrorMessageAgain = () => {
         // Set the sessionStorage key to prevent showing the error message again
@@ -114,7 +127,7 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
             if (containerRef.current) observer.unobserve(containerRef.current);
         };
     }, [handleObservers]);
-
+    console.log(isPortrait)
     return (
         <>
             <div
