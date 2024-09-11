@@ -84,6 +84,8 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
             if (player.classList.contains("fixed")) {
                 player.classList.remove(...floatingClass.split(' '));
                 player.classList.add(...staticClass.split(' '));
+                playerContainer.classList.remove(...playerContainerFloatingClass.split(' '));
+                playerContainer.classList.add(...playerContainerStaticClass.split(' '));
             };
 
             // Handle video playback based on intersection
