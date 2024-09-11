@@ -28,6 +28,7 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
 
     const playerRef = useRef(null);
     const containerRef = useRef(null);
+    const mediaPlayerRef = useRef(null);
 
     const isPortrait = useOrientation();
 
@@ -62,8 +63,19 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
     );
 
     const handleObservers = useCallback(async (entries) => {
+
+        const entry = entries[0];
+
+        // player refs
         const playerContainer = containerRef.current;
         const player = playerRef.current;
+        const mediaPlayer = mediaPlayerRef.current;
+
+        // player floating and default effect classes
+        const floatingClass = 'fixed top-0 left-2/4 sm:left-0 transform -translate-x-2/4 sm:translate-x-1/4 sm:w-[60%] w-[98%] max-w-sm h-auto z-50 rounded-md overflow-hidden opacity-40 transition-all duration-500';
+        const staticClass = 'w-full h-full transition-all duration-500';
+        const playerContainerFloatingClass = "w-full h-full flex justify-center items-center transition-all duration-500 shadow-xl shadow-slate-700 p-5";
+        const playerContainerStaticClass = "w-full h-full flex justify-center items-center transition-all duration-500";
 
         if (!playerContainer || !player) return;
 
@@ -72,17 +84,24 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
             if (player.classList.contains("fixed")) {
                 player.classList.remove(...floatingClass.split(' '));
                 player.classList.add(...staticClass.split(' '));
-            }
+            };
+
+            // Handle video playback based on intersection
+            if (!entry.isIntersecting) {
+                if (!mediaPlayer.paused) {
+                    mediaPlayer.pause();
+                }
+            } else {
+                if (mediaPlayer.paused) {
+                    mediaPlayer.play();
+                }
+            };
 
             return;
-        };
+        }
 
-        const entry = entries[0];
 
-        const floatingClass = 'fixed top-0 left-2/4 sm:left-0 transform -translate-x-2/4 sm:translate-x-1/4 sm:w-[60%] w-[98%] max-w-sm h-auto z-50 rounded-md overflow-hidden opacity-40 transition-all duration-500';
-        const staticClass = 'w-full h-full transition-all duration-500';
-        const playerContainerFloatingClass = "w-full h-full flex justify-center items-center transition-all duration-500 shadow-xl shadow-slate-700 p-5";
-        const playerContainerStaticClass = "w-full h-full flex justify-center items-center transition-all duration-500";
+
         if (entry.isIntersecting) {
             player.classList.remove(...floatingClass.split(' '));
             player.classList.add(...staticClass.split(' '));
@@ -127,7 +146,7 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
             if (containerRef.current) observer.unobserve(containerRef.current);
         };
     }, [handleObservers]);
-    console.log(isPortrait)
+
     return (
         <>
             <div
@@ -135,7 +154,7 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
                 className="w-full h-full flex justify-center items-center bg-transparent transition-all duration-500"
             >
                 <div ref={playerRef} className="w-full h-full transition-all duration-500">
-                    <MediaPlayer onError={handleError} aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline className="w-full h-full">
+                    <MediaPlayer ref={mediaPlayerRef} onError={handleError} aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline className="w-full h-full">
                         <MediaProvider />
                         {playerType === "default" ? (
                             <DefaultVideoLayout colorScheme="dark" icons={defaultLayoutIcons} />
