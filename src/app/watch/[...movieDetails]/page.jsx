@@ -7,6 +7,7 @@ import { appConfig } from "@/config/config";
 import { InspectPreventer } from "@/lib/lib";
 import MovieDetails from "../MovieDetails";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import Footer from "@/components/Footer";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
@@ -120,6 +121,7 @@ export default async function Page({ params }) {
         suggestions={suggestions}
         userIp={ip}
       />
+      <Footer />
     </InspectPreventer>
   )
 }
