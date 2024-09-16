@@ -109,7 +109,6 @@ function HomePageLayout({ initialLayoutData }) {
                  title={data.title} 
                  moviesData={data.movies} 
                  linkUrl={data.linkUrl}
-                 imageResize={true}
                   />
             ))}
 
