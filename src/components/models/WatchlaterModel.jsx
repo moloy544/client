@@ -30,6 +30,8 @@ export default function WatchlaterModel({ visibility, functions }) {
     const [isAllDataLoad, setIsAllDataLoad] = useState(false);
 
     const isFirstRender = useRef(true);
+    const moviesCardContauner = useRef(null);
+    const moviesCardRef = useRef(null);
 
     const loadMore = () => setPage((prevPage) => prevPage + 1);
     // infinite scroll load data custom hook
@@ -100,7 +102,7 @@ export default function WatchlaterModel({ visibility, functions }) {
 
             // hide this movie or series from list without change state
             const parentElement = event.currentTarget.closest('.group');
-            const transitionEffect = 'transform transition-all duration-500 ease-in-out translate-x-full';
+            const transitionEffect = "transform transition-all duration-500 ease-in-out translate-x-full";
             if (parentElement) {
                 // creat item hidden effect
                 parentElement.classList.add(...transitionEffect.split(' '));
@@ -108,7 +110,7 @@ export default function WatchlaterModel({ visibility, functions }) {
                 // get the data title for showing title in toast message
                 const title = watchLaterData[index].title;
                 creatToastAlert({
-                message: `Removed ${title} from Watch later`
+                    message: `Removed ${title} from Watch later`
                 })
                 setTimeout(() => {
 
@@ -116,7 +118,7 @@ export default function WatchlaterModel({ visibility, functions }) {
                     parentElement.classList.add('hidden');
 
                     // update watchLaterData with new array without this item
-                    const newData = watchLaterData.filter((data) => data.imdbId !==imdbId);
+                    const newData = watchLaterData.filter((data) => data.imdbId !== imdbId);
                     setWatchLaterData(newData);
 
                     /* check after remove is watchlater localStorage length is zero so
@@ -134,12 +136,65 @@ export default function WatchlaterModel({ visibility, functions }) {
         };
     };
 
+    const clearAll = () => {
+
+        const cardContainer = moviesCardContauner.current;
+        const cards = cardContainer?.children || [];
+
+        const transitionEffect = "transform transition-all duration-300 ease-in-out translate-x-full";
+
+        let intersectingCards = []; // Array to store the intersecting cards
+
+        // Create an IntersectionObserver instance
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    const card = entry.target;
+
+                    intersectingCards.push(card); // Add the intersecting card to the array
+
+                    // Apply effect with increasing delay for each viewport card
+                    setTimeout(() => {
+                        card.classList.add(...transitionEffect.split(' '));
+                    }, index * 200); // Stagger delay by 200ms for each card
+
+                    observer.unobserve(card); // Stop observing once animation starts
+                }
+            });
+            // Once all entries are processed, trigger the final actions
+            if (entries.length > 0) {
+
+                // Clear state after all animations and transitions
+                setTimeout(() => {
+                    setWatchLaterData([]); // Clear the data state
+                    if (localStorage.getItem('saved-movies-data')) {
+                        localStorage.removeItem('saved-movies-data'); // Remove localStorage key from browser
+                    }
+                    creatToastAlert({
+                        message: 'Cleared all movies and series from Watch later',
+                    });
+                }, intersectingCards.length * 300); // Time based only on intersecting cards
+            }
+        }, {
+            threshold: 0.2 // Adjust threshold to detect when a card is in the viewport
+        });
+
+        // Observe each card in the container
+        Array.from(cards).forEach((card) => {
+            observer.observe(card);
+        });
+    };
+
+
     return (
         <ModelsController visibility={visibility} closeEvent={hideModel}>
-            <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border border-gray-400 right-0 z-40 select-none">
-                <div className="relative">
-                    <div className="px-2 py-2 text-sm text-gray-800 font-bold border-b border-b-slate-200">Watch later</div>
-                    <button onClick={hideModel} type="button" title="Close" className="w-7 h-7 absolute top-1 right-1 text-xl text-gray-700 font-semibold">
+            <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border-gray-400 right-0 z-40 select-none">
+                <div className="flex justify-between items-center border-b border-b-slate-200 px-1.5">
+                    {watchLaterData.length > 0 && (
+                        <button onClick={clearAll} type="button" title="Clear all" className="text-xs font-medium text-rose-600 underline px-2 py-1">Clear</button>
+                    )}
+                    <div className="px-2 py-2 text-sm text-gray-800 font-bold inline">Watch later</div>
+                    <button onClick={hideModel} type="button" title="Close" className="w-7 h-7 text-xl text-gray-700 font-semibold bg-slate-100 rounded-full">
                         <span className="sr-only">Close Watch later model button</span>
                         <i className="bi bi-x"></i>
                     </button>
@@ -155,7 +210,7 @@ export default function WatchlaterModel({ visibility, functions }) {
                     ) : (
                         <>
                             {watchLaterData.length > 0 ? (
-                                <>
+                                <div ref={moviesCardContauner}>
                                     {watchLaterData.map((data) => (
                                         <Card key={data.imdbId} data={data} remove={removeWatchListItem} />
                                     ))}
@@ -167,7 +222,7 @@ export default function WatchlaterModel({ visibility, functions }) {
                                             </div>
                                         </div>
                                     )}
-                                </>
+                                </div>
                             ) : (
                                 <div className="w-full h-full flex flex-col justify-center items-center">
                                     <div className="w-10 h-10 bg-blue-50 flex justify-center items-center rounded-full">
@@ -191,7 +246,7 @@ const areEqual = (prevProps, nextProps) => {
     );
 };
 
-const Card = memo(({ data, remove }) =>{
+const Card = memo(({ data, remove }) => {
 
     const { imdbId, type, title, thambnail, releaseYear, addAt } = data || {};
 
@@ -210,7 +265,7 @@ const Card = memo(({ data, remove }) =>{
     return (
         <InspectPreventer forceToPrevent={isMobileDevice()}>
             <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
-                <Link className="w-full h-fit flex gap-3 items-center" title={title+' '+releaseYear+' ' +type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
+                <Link className="w-full h-fit flex gap-3 items-center" title={title + ' ' + releaseYear + ' ' + type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
                     <div className="w-16 h-20 border border-slate-200 rounded-sm flex-none">
                         <Image
                             priority

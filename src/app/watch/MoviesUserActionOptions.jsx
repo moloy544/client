@@ -35,7 +35,7 @@ export default function MoviesUserActionOptions({ movieData }) {
       const dateNow = new Date();
       parseData.unshift({ imdbId: movieData.imdbId, addAt: dateNow });
       creatToastAlert({
-        message: `Add ${movieData.title} To Watch Later`
+        message: `Add ${movieData.title+' ' + movieData.type} To Watch Later`
       });
 
     } else {
