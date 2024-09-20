@@ -39,6 +39,12 @@ export async function generateMetadata({ params }) {
   // movie all dara fields
   const { title, thambnail, releaseYear, type, genre, language, castDetails } = movieData || {}
 
+  const browserUrlath = `/watch/${type}/${title}/${movieId}`;
+  const createdUrlPath = `/watch/${type}/${creatUrlLink(title)}/${movieId}`;
+  if (browserUrlath !== createdUrlPath || params.movieDetails.length !== 3) {
+    return;
+  }
+
   // extract the movie genres
   const genres = genre?.join(' ');
 
@@ -93,8 +99,8 @@ export default async function Page({ params }) {
   const { status, movieData, suggestions } = await getMovieDeatils('tt' + movieId, true);
   let isValidPath = true;
 
-   // Verify if the browser url is expted url or not
-    // If not math then show not found by set validapath false and call notFound.
+  // Verify if the browser url is expted url or not
+  // If not math then show not found by set validapath false and call notFound.
   if (status === 200 && movieData) {
     const type = movieDetails[0]
     const title = movieDetails[1]
@@ -109,7 +115,7 @@ export default async function Page({ params }) {
     notFound();
   } else if (status === 400 || status === 500) {
     return (
-      <SomthingWrongError />
+      <SomthingWrongError reportMessage={`Hello MoviesBazar Team,\n\nI am experiencing an error while exploring the content. The error occurred on the following content id: ${movieId}.\n\nThank you for your assistance!`} />
     )
   };
 

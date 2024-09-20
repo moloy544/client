@@ -31,7 +31,6 @@ export default function WatchlaterModel({ visibility, functions }) {
 
     const isFirstRender = useRef(true);
     const moviesCardContauner = useRef(null);
-    const moviesCardRef = useRef(null);
 
     const loadMore = () => setPage((prevPage) => prevPage + 1);
     // infinite scroll load data custom hook
