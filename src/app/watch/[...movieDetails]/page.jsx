@@ -93,7 +93,7 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
 
   const { movieDetails } = params;
-  const movieId = movieDetails ? movieDetails[2] : ' ';
+  const movieId = movieDetails ? movieDetails[2] : null;
   const ip = getIP();
 
   const { status, movieData, suggestions } = await getMovieDeatils('tt' + movieId, true);
