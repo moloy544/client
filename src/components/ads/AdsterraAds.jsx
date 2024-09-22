@@ -69,3 +69,5 @@ const AdsterraAds = memo(({ adOptions, bannerAd = true, nativeBannerAd = true })
 }, areEqual);
 
 export default AdsterraAds;
+
+AdsterraAds.displayName = "AdsterraAds";
