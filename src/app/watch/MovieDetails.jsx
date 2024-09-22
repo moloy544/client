@@ -31,24 +31,13 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
-  const [isAdsClicked, setIsAdsClicked] = useState(false);
 
   const handleVideoSourcePlay = (source) => {
 
-    // Open the link in a new tab only the first time
-    if (!isAdsClicked) {
-      // Create a temporary anchor element
-      const link = document.createElement('a');
-      link.href = 'https://filthygracefulspinach.com/mi8cmzmk9?key=fbe88493e05091a1c48f844397c022f6';
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-
-      // Trigger the click
-      link.click();
-      setIsAdsClicked(true);
-    }
+    // Set the video source as usual
     setVideoSource(source);
 
+    // Ensure the video hash in the URL is updated to 'play'
     if (window.location.hash !== 'play') {
       window.location.hash = 'play';
     }
@@ -234,9 +223,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 };
 
 function PlayButton({ watchLinks, playHandler }) {
+
   const [showDropdown, setDropDown] = useState(false);
+
   const play = () => {
     if (watchLinks.length === 1) {
+      window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
       playHandler(watchLinks[0]);
     } else {
       setDropDown((prev) => !prev)
@@ -278,11 +270,22 @@ function PlayButton({ watchLinks, playHandler }) {
           <div className="text-sm text-gray-800 space-y-2.5 mt-2 mx-1">
             {watchLinks.map((data, index) => (
               <div key={index} className="mx-auto self-center">
-                <button className="flex items-center font-medium w-full h-auto" onClick={() => playHandler(data.source)} type="button">
+                <a
+                  href={adsConfig.direct_Link}
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent the default action
+                    playHandler(data.source); // Call the play handler
+                    window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+                  }}
+                  className="flex items-center font-medium w-full h-auto"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                >
+
                   <i className={`bi bi-dot ${index === 0 ? "text-cyan-500" : "text-yellow-500"} text-xl`}></i>
                   <span className="mr-1.5">{data.label}</span>
                   <span className="text-xs text-gray-700 font-normal">{data.labelTag}</span>
-                </button>
+                </a>
               </div>
             ))}
           </div>
