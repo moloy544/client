@@ -10,6 +10,7 @@ import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SliderShowcase from "@/components/SliderShowcase";
 import BacktoTopButton from "@/components/BacktoTopButton";
+import AdsterraAds from "@/components/ads/AdsterraAds";
 
 
 function HomePageLayout({ initialLayoutData }) {
@@ -71,7 +72,7 @@ function HomePageLayout({ initialLayoutData }) {
                     };
 
                     if (response.data.sliderActors) {
-                        dispatch(updateHomePageState({ sliderActors: [...sliderActors,...response.data.sliderActors] }))
+                        dispatch(updateHomePageState({ sliderActors: [...sliderActors, ...response.data.sliderActors] }))
                     }
                 }
 
@@ -106,10 +107,10 @@ function HomePageLayout({ initialLayoutData }) {
             {initialLayoutData && initialLayoutData.sliderMovies?.map((data) => (
 
                 <SliderShowcase key={data.title}
-                 title={data.title} 
-                 moviesData={data.movies} 
-                 linkUrl={data.linkUrl}
-                  />
+                    title={data.title}
+                    moviesData={data.movies}
+                    linkUrl={data.linkUrl}
+                />
             ))}
 
             {/**** For Load More Dinamic Dtaa *****/}
@@ -168,6 +169,12 @@ function HomePageLayout({ initialLayoutData }) {
             )}
 
             <div className="w-full h-2" ref={observerRefElement}></div>
+            
+            <AdsterraAds adOptions={{
+                key: '420a5d5490e9ab29cf9014e1d5691b24',
+                height: 250,
+                width: 300,
+            }} />
         </>
     )
 }

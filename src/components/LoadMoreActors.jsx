@@ -8,6 +8,8 @@ import { updateLoadActors } from "@/context/loadActorsState/loadActorsSlice";
 import BacktoTopButton from "./BacktoTopButton";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveActorCard } from "./cards/Cards";
+import AdsterraAds from "./ads/AdsterraAds";
+import { adsConfig } from "@/config/ads.config";
 
 export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActors, isDataEnd }) {
 
@@ -22,11 +24,11 @@ export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActo
     const conditionalData = (loadActorsPathname !== patname) ? (initialActors || []) : loadActorsData || [];
     const [actorsData, setActorsData] = useState(conditionalData);
 
-    const loadMore = useCallback(() =>{
+    const loadMore = useCallback(() => {
         if (!isAllDataLoad) {
             setPage((prevPage) => prevPage + 1)
         }
-        }, [isAllDataLoad]);
+    }, [isAllDataLoad]);
 
     // infinite scroll load data custom hook
     const bottomObserverElement = useInfiniteScroll({
@@ -127,6 +129,7 @@ export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActo
 
                     <div className="w-full h-2" ref={bottomObserverElement}></div>
                 </main>
+                <AdsterraAds adOptions={adsConfig.adOptions1} />
             </div>
 
             <BacktoTopButton postion="mobile:top-20 top-24" />

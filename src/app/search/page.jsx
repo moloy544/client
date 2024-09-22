@@ -12,6 +12,8 @@ import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
+import AdsterraAds from "@/components/ads/AdsterraAds";
+import { adsConfig } from "@/config/ads.config";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -65,16 +67,16 @@ export default function SearchPage() {
     // Function to add a search term to the search history
     const addToSearchHistory = (newData) => {
 
-        const { text } = newData || {}; 
+        const { text } = newData || {};
 
         const existingHistoryArray = getLocalStorageSearchHistory();
 
         // Check if the search term already exists in the search history
         const searchTermIndex = existingHistoryArray.findIndex(search => search.searchKeyword?.toLowerCase() === text?.toLowerCase());
-       
+
         // If the search term exists, update clickCount and move it to the beginning
         if (searchTermIndex !== -1) {
-         
+
             const existingTerm = existingHistoryArray.splice(searchTermIndex, 1)[0];
             //update the search count
             existingTerm.count += 1;
@@ -155,17 +157,17 @@ export default function SearchPage() {
     const onMovieCardClickHandler = (e) => {
         const tragetElement = e.target;
         if (tragetElement) {
-            const altData =tragetElement.alt || null;
+            const altData = tragetElement.alt || null;
             if (altData) {
                 addToSearchHistory({ text: searchQuery });
             }
         }
-        
+
     }
 
     // check is error encountered show error message
     if (error) {
-        return <SomthingWrongError onclickEvent={()=> window.location.reload()} />
+        return <SomthingWrongError onclickEvent={() => window.location.reload()} />
     };
 
     return (
@@ -244,7 +246,7 @@ export default function SearchPage() {
                                 <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">
                                     We are not found anything
                                 </h2>
-                                <small className="text-xs text-gray-400 text-center font-medium">Please double check the search keyword spelling and try again for 100% best result try with same title</small>
+                                <small className="text-xs text-gray-300 text-center font-medium">Please double check the search keyword spelling and try again for 100% best result try with same title</small>
                             </div>
                         )}
 
@@ -253,11 +255,16 @@ export default function SearchPage() {
                     </div>
                 ) : (
                     <div className="w-full h-full my-40">
-                        <h2 className="text-gray-400 text-xl mobile:text-base text-center font-semibold">Search and watch movies and series</h2>
+                        <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">Search and watch movies and series</h2>
                     </div>
                 )}
 
+                {seatrchResult.length === 0 && (
+                    <AdsterraAds adOptions={adsConfig.adOptions1} />
+                    )}
+
             </div>
+
             <Footer />
         </>
     )

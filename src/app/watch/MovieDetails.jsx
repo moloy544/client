@@ -9,6 +9,8 @@ import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
 import { ModelsController } from "@/lib/EventsHandler";
 import VidStackPlayer from "@/components/HlsPlayer";
+import AdsterraAds from "@/components/ads/AdsterraAds";
+import { adsConfig } from "@/config/ads.config";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -29,11 +31,26 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
+  const [isAdsClicked, setIsAdsClicked] = useState(false);
 
   const handleVideoSourcePlay = (source) => {
+
+    // Open the link in a new tab only the first time
+    if (!isAdsClicked) {
+      // Create a temporary anchor element
+      const link = document.createElement('a');
+      link.href = 'https://filthygracefulspinach.com/mi8cmzmk9?key=fbe88493e05091a1c48f844397c022f6';
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+
+      // Trigger the click
+      link.click();
+      setIsAdsClicked(true);
+    }
     setVideoSource(source);
-    if (window.location.hash || window.location.hash !== 'play') {
-      window.location.hash = "play"
+
+    if (window.location.hash !== 'play') {
+      window.location.hash = 'play';
     }
   };
 
@@ -89,12 +106,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
           <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
-            {playerVisibility && videoSource && videoSource?.includes('.m3u8') &&(
+            {playerVisibility && videoSource && videoSource?.includes('.m3u8') && (
               <VidStackPlayer
-              title={title}
-              source={videoSource}
-              userIp={userIp}
-            />
+                title={title}
+                source={videoSource}
+                userIp={userIp}
+              />
             )}
             {videoSource && !videoSource?.includes('.m3u8') && (
               <iframe
@@ -206,6 +223,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         <SliderShowcase moviesData={suggestions?.castList} title="Explore more from same actor" />
       </div>
 
+      <AdsterraAds adOptions={{
+        key: '420a5d5490e9ab29cf9014e1d5691b24',
+        height: 250,
+        width: 300,
+      }} />
+
     </div>
   )
 };
@@ -250,7 +273,7 @@ function PlayButton({ watchLinks, playHandler }) {
           >
             <i className="bi bi-x-circle"></i>
             <span className="sr-only">Close</span>
-        </button>
+          </button>
           <div className="text-gray-900 font-semibold mx-1.5">Select server</div>
           <div className="text-sm text-gray-800 space-y-2.5 mt-2 mx-1">
             {watchLinks.map((data, index) => (
