@@ -45,14 +45,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   useEffect(() => {
 
-    // PopUnder Ad Script
-    const popUnderAdScript = document.createElement('script');
-    popUnderAdScript.type = 'text/javascript';
-    popUnderAdScript.async = true;
-    popUnderAdScript.src = '//filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js';
-
-    document.head.appendChild(popUnderAdScript);
-
     window.location.hash = "";
 
     const handleHashChange = () => {
