@@ -45,6 +45,14 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   useEffect(() => {
 
+    // PopUnder Ad Script
+    const popUnderAdScript = document.createElement('script');
+    popUnderAdScript.type = 'text/javascript';
+    popUnderAdScript.async = true;
+    popUnderAdScript.src = '//filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js';
+
+    document.head.appendChild(popUnderAdScript);
+
     window.location.hash = "";
 
     const handleHashChange = () => {
@@ -204,19 +212,13 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         </div>
 
       </div>
-
+      <AdsterraAds adOptions={adsConfig.adOptions1} />
       <div className="py-2">
         {/**** Show Suggest Data Based on Gnere ******/}
         <SliderShowcase moviesData={suggestions?.genreList} title="You might also like" />
         {/**** Show Suggest Data Based on Cast ******/}
         <SliderShowcase moviesData={suggestions?.castList} title="Explore more from same actor" />
       </div>
-
-      <AdsterraAds adOptions={{
-        key: '420a5d5490e9ab29cf9014e1d5691b24',
-        height: 250,
-        width: 300,
-      }} />
 
     </div>
   )
