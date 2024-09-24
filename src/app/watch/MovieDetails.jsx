@@ -112,7 +112,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 allowFullScreen="allowfullscreen" />
             )}
 
-
           </div>
 
           <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility && videoSource ? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-500 bg-gray-800`}>

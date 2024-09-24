@@ -211,6 +211,10 @@ export default function SearchPage() {
 
             <div className="w-full min-h-screen overflow-x-hidden bg-gray-800">
 
+                {seatrchResult.length === 0 && (
+                    <AdsterraAds nativeBannerAd={false} adOptions={adsConfig.adOptions2} />
+                )}
+
                 {searchQuery !== "" ? (
 
                     <div className="w-full h-full">
@@ -257,10 +261,6 @@ export default function SearchPage() {
                     <div className="w-full h-full my-40">
                         <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">Search and watch movies and series</h2>
                     </div>
-                )}
-
-                {seatrchResult.length === 0 && (
-                    <AdsterraAds nativeBannerAd={false} adOptions={adsConfig.adOptions1} />
                 )}
 
             </div>

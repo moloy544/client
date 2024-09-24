@@ -9,6 +9,8 @@ import FilterModel from "./models/FilterModel";
 import BacktoTopButton from "./BacktoTopButton";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "./cards/Cards";
+import { adsConfig } from "@/config/ads.config";
+import AdsterraAds from "./ads/AdsterraAds";
 
 
 function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
@@ -121,6 +123,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
  
     return (
         <>
+          <AdsterraAds nativeBannerAd={false} adOptions={adsConfig.adOptions2} />
+
             <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
 
                 <div className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">

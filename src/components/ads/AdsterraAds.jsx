@@ -6,12 +6,11 @@ import { memo, useEffect } from 'react';
 const areEqual = (prevProps, nextProps) => {
   return (
     JSON.stringify(prevProps.adOptions) === JSON.stringify(nextProps.adOptions) &&
-    prevProps.bannerAd === nextProps.bannerAd &&
-    prevProps.nativeBannerAd === nextProps.nativeBannerAd
+    prevProps.bannerAd === nextProps.bannerAd
   );
 };
 
-const AdsterraAds = memo(({ adOptions, bannerAd = true, nativeBannerAd = true }) => {
+const AdsterraAds = memo(({ adOptions, bannerAd = true }) => {
 
     useEffect(() => {
         const loadAds = () => {
@@ -43,7 +42,7 @@ const AdsterraAds = memo(({ adOptions, bannerAd = true, nativeBannerAd = true })
             }
 
             // Load native ad
-            if (nativeBannerAd) {
+            /**if (nativeBannerAd) {
                 const nativeAdContainer = document.createElement('div');
                 nativeAdContainer.id = 'container-b10a3b8d85dad76c5089c6f7947c1bb2';
                 nativeAdContainer.className = 'flex flex-wrap justify-between overflow-x-auto';
@@ -55,9 +54,8 @@ const AdsterraAds = memo(({ adOptions, bannerAd = true, nativeBannerAd = true })
 
                 adContainer.appendChild(nativeAdContainer);
                 adContainer.appendChild(nativeAdScript);
-            }
+            }**/
         };
-
 
         if (document.readyState === 'complete') {
            loadAds(); // If page is already fully loaded
@@ -75,7 +73,7 @@ const AdsterraAds = memo(({ adOptions, bannerAd = true, nativeBannerAd = true })
                 }
             }
         };
-    }, [adOptions, bannerAd, nativeBannerAd]);
+    }, [adOptions, bannerAd]);
 
     return <div className="w-full h-auto flex justify-center items-center flex-wrap overflow-x-scroll scrollbar-hidden py-1" id="adsterra-ads"></div>;
 }, areEqual);
