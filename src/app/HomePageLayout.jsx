@@ -103,6 +103,9 @@ function HomePageLayout({ initialLayoutData }) {
 
             <BacktoTopButton />
 
+              {/**** For Load More Dinamic Dtaa *****/}
+              <AdsterraAds nativeBannerAd={false} adOptions={adsConfig.adOptions2} />
+
             {/**** For Initail Static Data ******/}
 
             {initialLayoutData && initialLayoutData.sliderMovies?.map((data) => (
@@ -113,9 +116,6 @@ function HomePageLayout({ initialLayoutData }) {
                     linkUrl={data.linkUrl}
                 />
             ))}
-
-            {/**** For Load More Dinamic Dtaa *****/}
-            <AdsterraAds adOptions={adsConfig.adOptions2} />
 
             {sliderActors?.length > 0 && sliderActors.map((data, index) => (
 

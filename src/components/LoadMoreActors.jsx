@@ -8,8 +8,6 @@ import { updateLoadActors } from "@/context/loadActorsState/loadActorsSlice";
 import BacktoTopButton from "./BacktoTopButton";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveActorCard } from "./cards/Cards";
-import AdsterraAds from "./ads/AdsterraAds";
-import { adsConfig } from "@/config/ads.config";
 
 export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActors, isDataEnd }) {
 
@@ -129,7 +127,7 @@ export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActo
 
                     <div className="w-full h-2" ref={bottomObserverElement}></div>
                 </main>
-                <AdsterraAds adOptions={adsConfig.adOptions1} />
+
             </div>
 
             <BacktoTopButton postion="mobile:top-20 top-24" />

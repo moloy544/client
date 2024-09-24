@@ -36,6 +36,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     // Set the video source as usual
     setVideoSource(source);
+    
+    window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
 
     // Ensure the video hash in the URL is updated to 'play'
     if (window.location.hash !== 'play') {
@@ -89,6 +91,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     <div className="w-full h-full bg-gray-800">
 
       <Breadcrumb data={breadcrumbData} />
+
+      <AdsterraAds nativeBannerAd={false} adOptions={adsConfig.adOptions2} />
 
       <div className="my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
@@ -204,7 +208,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         </div>
 
       </div>
-      <AdsterraAds adOptions={adsConfig.adOptions1} />
+
       <div className="py-2">
         {/**** Show Suggest Data Based on Gnere ******/}
         <SliderShowcase moviesData={suggestions?.genreList} title="You might also like" />
@@ -222,7 +226,6 @@ function PlayButton({ watchLinks, playHandler }) {
 
   const play = () => {
     if (watchLinks.length === 1) {
-      window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
       playHandler(watchLinks[0]);
     } else {
       setDropDown((prev) => !prev)
@@ -264,22 +267,17 @@ function PlayButton({ watchLinks, playHandler }) {
           <div className="text-sm text-gray-800 space-y-2.5 mt-2 mx-1">
             {watchLinks.map((data, index) => (
               <div key={index} className="mx-auto self-center">
-                <a
-                  href={adsConfig.direct_Link}
+                <button
+                  type="button"
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent the default action
                     playHandler(data.source); // Call the play handler
-                    window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
                   }}
                   className="flex items-center font-medium w-full h-auto"
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
                 >
-
                   <i className={`bi bi-dot ${index === 0 ? "text-cyan-500" : "text-yellow-500"} text-xl`}></i>
                   <span className="mr-1.5">{data.label}</span>
                   <span className="text-xs text-gray-700 font-normal">{data.labelTag}</span>
-                </a>
+                </button>
               </div>
             ))}
           </div>

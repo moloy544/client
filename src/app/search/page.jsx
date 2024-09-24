@@ -260,8 +260,8 @@ export default function SearchPage() {
                 )}
 
                 {seatrchResult.length === 0 && (
-                    <AdsterraAds adOptions={adsConfig.adOptions1} />
-                    )}
+                    <AdsterraAds nativeBannerAd={false} adOptions={adsConfig.adOptions1} />
+                )}
 
             </div>
 

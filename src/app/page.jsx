@@ -23,7 +23,7 @@ export default async function Page() {
         <HomePageLayout initialLayoutData={response.data} />
 
       </main>
-      <Script src={adsConfig.socialBarAdScriptSrc} type='text/javascript'  />
+      <Script src={adsConfig.socialBarAdScriptSrc} type='text/javascript' async={true} />
       <Footer />
     </>
   )
