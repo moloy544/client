@@ -169,9 +169,6 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
         setErrorAccept(true);
     };
 
-    useEffect(() => {
-
-    }, [errorAccept])
 
     useEffect(() => {
         const observer = new IntersectionObserver(handleObservers, {

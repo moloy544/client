@@ -137,7 +137,7 @@ export default async function Page({ params }) {
       <Script
         async
         src="https://js.wpadmngr.com/static/adManager.js"
-        data-admpid="235837"
+        data-admpid="236525"
       />
     </InspectPreventer>
   )

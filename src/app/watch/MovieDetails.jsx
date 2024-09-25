@@ -37,7 +37,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     // Set the video source as usual
     setVideoSource(source);
     
-    window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+    //window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
 
     // Ensure the video hash in the URL is updated to 'play'
     if (window.location.hash !== 'play') {
