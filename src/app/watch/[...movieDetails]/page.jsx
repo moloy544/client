@@ -8,6 +8,7 @@ import { InspectPreventer } from "@/lib/lib";
 import MovieDetails from "../MovieDetails";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
+import Script from "next/script";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
@@ -32,18 +33,23 @@ export async function generateMetadata({ params }) {
 
   const { movieData, status } = await getMovieDeatils('tt' + movieId, false);
 
-  if (status !== 200 || movieData.status === "coming soon") {
+
+  if (status !== 200 || movieData.status === "coming soon" || params.movieDetails.length !== 3) {
     return;
   };
 
   // movie all dara fields
   const { title, thambnail, releaseYear, type, genre, language, castDetails } = movieData || {}
 
-  const browserUrlath = `/watch/${type}/${title}/${movieId}`;
+  const paramsType = params.movieDetails[0];
+  const paramsTitle = params.movieDetails[1];
+  const browserUrlath = `/watch/${paramsType}/${paramsTitle}/${movieId}`;
   const createdUrlPath = `/watch/${type}/${creatUrlLink(title)}/${movieId}`;
-  if (browserUrlath !== createdUrlPath || params.movieDetails.length !== 3) {
+ 
+  if (browserUrlath !== createdUrlPath) {
     return;
   }
+
 
   // extract the movie genres
   const genres = genre?.join(' ');
@@ -52,8 +58,8 @@ export async function generateMetadata({ params }) {
   const movieCast = castDetails ? castDetails.join(', ') : null;
 
   // metadata related fields
-  const metaTitle = `${title + " (" + releaseYear + ") " + type}`
-  const metaDesc = `Watch ${title + " " + releaseYear + " " + type} featuring lead actress ${movieCast} online for free only on Movies Bazaar. Enjoy it in ${language} and this is ${genre?.join(' ')} genre based ${type}.`;
+  const metaTitle = `Watch ${title + " (" + releaseYear + ") " + type} online free`
+  const metaDesc = `${title + " " + releaseYear + " " + type} watch online free. featuring lead actress ${movieCast}. Enjoy it in ${language} and this is ${genre?.join(' ')} genre based ${type}.`;
   const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${movieId}`;
   const metaKeywords = [
     `${title} ${type}`,
@@ -128,6 +134,11 @@ export default async function Page({ params }) {
         userIp={ip}
       />
       <Footer />
+      <Script
+        async
+        src="https://js.wpadmngr.com/static/adManager.js"
+        data-admpid="235837"
+      />
     </InspectPreventer>
   )
 }
