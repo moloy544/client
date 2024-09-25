@@ -8,9 +8,9 @@ import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
 import { ModelsController } from "@/lib/EventsHandler";
-import VidStackPlayer from "@/components/HlsPlayer";
 import AdsterraAds from "@/components/ads/AdsterraAds";
 import { adsConfig } from "@/config/ads.config";
+import HlsPlayer from "@/components/HlsPlayer";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -102,11 +102,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
           <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
             {playerVisibility && videoSource && videoSource?.includes('.m3u8') && (
-              <VidStackPlayer
-                title={title}
-                source={videoSource}
-                userIp={userIp}
-              />
+              <HlsPlayer source={videoSource} userIp={userIp} />
             )}
             {videoSource && !videoSource?.includes('.m3u8') && (
               <iframe
