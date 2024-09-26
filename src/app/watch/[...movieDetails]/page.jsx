@@ -134,11 +134,15 @@ export default async function Page({ params }) {
         userIp={ip}
       />
       <Footer />
-      <Script
+      
+      {/**<Script
+        async
+        src="/js/hls/playerjs_player1.js"
+      /> <Script
         async
         src="https://js.wpadmngr.com/static/adManager.js"
         data-admpid="236525"
-      />
+      />**/}
     </InspectPreventer>
   )
 }

@@ -10,7 +10,8 @@ import SliderShowcase from "@/components/SliderShowcase";
 import { ModelsController } from "@/lib/EventsHandler";
 import AdsterraAds from "@/components/ads/AdsterraAds";
 import { adsConfig } from "@/config/ads.config";
-import HlsPlayer from "@/components/HlsPlayer";
+import VidStackPlayer from "@/components/HlsPlayer";
+//const HlsPlayer = dynamic(() => import("@/components/HlsPlayer"), { ssr: false });
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -36,7 +37,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     // Set the video source as usual
     setVideoSource(source);
-    
+
     //window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
 
     // Ensure the video hash in the URL is updated to 'play'
@@ -102,7 +103,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
           <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
             {playerVisibility && videoSource && videoSource?.includes('.m3u8') && (
-              <HlsPlayer source={videoSource} userIp={userIp} />
+              <VidStackPlayer title={title} source={videoSource} userIp={userIp} />
             )}
             {videoSource && !videoSource?.includes('.m3u8') && (
               <iframe
