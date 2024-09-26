@@ -1,4 +1,4 @@
-import VidStackPlayer from "@/components/HlsPlayer";
+import VidStackHlsPlayer from "@/components/VidstackHlsPlayer";
 import { headers } from "next/headers";
 
 function getIP() {
@@ -32,7 +32,7 @@ function EmbedPage({ searchParams }) {
 
     return (
         <div className="w-full h-screen flex justify-center items-center bg-[#111827] overflow-hidden fixed">
-            <VidStackPlayer
+            <VidStackHlsPlayer
                 visibility={true}
                 source={decodedUrl}
                 userIp={userIp}
