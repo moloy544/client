@@ -137,7 +137,11 @@ export default async function Page({ params }) {
       <Script
         async
         src="https://js.wpadmngr.com/static/adManager.js"
-        data-admpid="236769"
+        data-admpid="236525"
+      />
+      <Script
+        async
+        src="/js/hls/player2.js"
       />
       
     </InspectPreventer>
