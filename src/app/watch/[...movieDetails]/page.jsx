@@ -45,7 +45,7 @@ export async function generateMetadata({ params }) {
   const paramsTitle = params.movieDetails[1];
   const browserUrlath = `/watch/${paramsType}/${paramsTitle}/${movieId}`;
   const createdUrlPath = `/watch/${type}/${creatUrlLink(title)}/${movieId}`;
- 
+
   if (browserUrlath !== createdUrlPath) {
     return;
   }
@@ -134,16 +134,6 @@ export default async function Page({ params }) {
         userIp={ip}
       />
       <Footer />
-      <Script
-        async
-        src="https://js.wpadmngr.com/static/adManager.js"
-        data-admpid="236525"
-      />
-      <Script
-        async
-        src="/js/hls/player2.js"
-      />
-      
     </InspectPreventer>
   )
 }

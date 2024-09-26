@@ -31,7 +31,7 @@ const isMobileDevice = () => {
   }
 };
 
-const PlayerjsPlayer = memo(({ source, userIp }) => {
+const PlayerjsPlayer = memo(({ title, source, userIp }) => {
 
   const [playbackError, setPlaybackError] = useState(null);
   const [errorAccept, setErrorAccept] = useState(false);
@@ -49,18 +49,59 @@ const PlayerjsPlayer = memo(({ source, userIp }) => {
       setPlaybackError("You are not connected to the internet. Please connect and try again."),
   });
 
-  useEffect(() => {
-    if (source) {
-    
-      const newSource = generateSourceURL(source, userIp);
 
-      new Playerjs({
-        id: 'player',
-        file: newSource,
-        preroll: "id:vast10645 or id:vast10648",
+  useEffect(() => {
+    if (source && userIp) {
+      const newSource = generateSourceURL(source, userIp);
+      let isMounted = true; // Track if the component is mounted
+
+      const loadScript = (src, id, onLoadCallback) => {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.id = id;
+          script.src = src;
+          script.async = true;
+
+          script.onload = () => {
+            if (isMounted && onLoadCallback) onLoadCallback();
+            resolve();
+          };
+
+          script.onerror = () => reject(new Error(`Script load error for ${src}`));
+
+          document.body.appendChild(script);
+        });
+      };
+
+      // Load anti-adblock script with data-cfasync="true"
+      const antiAdBlockScript = document.createElement("script");
+      antiAdBlockScript.id = "anti-adblock-script";
+      antiAdBlockScript.src = "/static/js/anti-adblock.js";
+      antiAdBlockScript.setAttribute("data-cfasync", 'true'); // Set to "true"
+
+      document.body.appendChild(antiAdBlockScript);
+
+      // Load Player.js script and create instance
+      loadScript("/static/js/playerjs.js", "playerjs-script", () => {
+        new Playerjs({
+          id: 'player',
+          title,
+          file: newSource,
+          preroll: "id:vast10645 or id:vast10648",
+        });
       });
+
+      // Cleanup function
+      return () => {
+        isMounted = false; // Prevent setting state if the component is unmounted
+        const playerJsScript = document.querySelector("#playerjs-script");
+        const antiAdBlockScript = document.querySelector("#anti-adblock-script");
+        if (playerJsScript) document.body.removeChild(playerJsScript);
+        if (antiAdBlockScript) document.body.removeChild(antiAdBlockScript);
+      };
     }
-  }, [source, userIp]);
+  }, [source, userIp, title]); // Make sure to include 'title' in dependencies
+
 
 
   /**const handleError = useCallback(
@@ -211,6 +252,7 @@ const PlayerjsPlayer = memo(({ source, userIp }) => {
           </div>
         </div>
       )}
+
     </>
   );
 }, areEqual);
