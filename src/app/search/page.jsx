@@ -12,8 +12,6 @@ import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
-import AdsterraAds from "@/components/ads/AdsterraAds";
-import { adsConfig } from "@/config/ads.config";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -210,10 +208,6 @@ export default function SearchPage() {
             </header >
 
             <div className="w-full min-h-screen overflow-x-hidden bg-gray-800">
-
-                {seatrchResult.length === 0 && (
-                    <AdsterraAds nativeBannerAd={false} adOptions={adsConfig.adOptions2} />
-                )}
 
                 {searchQuery !== "" ? (
 

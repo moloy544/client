@@ -10,8 +10,6 @@ import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SliderShowcase from "@/components/SliderShowcase";
 import BacktoTopButton from "@/components/BacktoTopButton";
-import AdsterraAds from "@/components/ads/AdsterraAds";
-import { adsConfig } from "@/config/ads.config";
 
 
 function HomePageLayout({ initialLayoutData }) {
@@ -102,9 +100,6 @@ function HomePageLayout({ initialLayoutData }) {
             <FixedSearchIcon />
 
             <BacktoTopButton />
-
-              {/**** For Load More Dinamic Dtaa *****/}
-              <AdsterraAds nativeBannerAd={false} adOptions={adsConfig.adOptions2} />
 
             {/**** For Initail Static Data ******/}
 

@@ -8,8 +8,6 @@ import { updateLoadActors } from "@/context/loadActorsState/loadActorsSlice";
 import BacktoTopButton from "./BacktoTopButton";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveActorCard } from "./cards/Cards";
-import AdsterraAds from "./ads/AdsterraAds";
-import { adsConfig } from "@/config/ads.config";
 
 export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActors, isDataEnd }) {
 
@@ -97,8 +95,6 @@ export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActo
     return (
         <>
             <div className="w-full min-h-screen overflow-x-hidden bg-gray-800 pb-2">
-
-            <AdsterraAds nativeBannerAd={false} adOptions={adsConfig.adOptions2} />
 
                 <main className="w-full h-full pt-2">
 

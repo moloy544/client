@@ -30,7 +30,7 @@ const isMobileDevice = () => {
     }
 };
 
-function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
+export default function VidStackHlsPlayer({ title, source, userIp, playerType = "default" }) {
     const [modifiedSource, setModifiedSource] = useState(source);
     const [playbackError, setPlaybackError] = useState(null);
     const [errorAccept, setErrorAccept] = useState(false);
@@ -189,7 +189,7 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
                 ref={containerRef}
                 className="w-full h-full flex justify-center items-center bg-transparent transition-all duration-500"
             >
-                <div ref={playerRef} className="w-full h-full transition-all duration-500">
+                <div ref={playerRef} id="hls-player" className="w-full h-full transition-all duration-500">
                     <MediaPlayer ref={mediaPlayerRef} onError={handleError} aspectRatio="16/9" title={title} src={modifiedSource} autoPlay playsInline className="w-full h-full">
                         <MediaProvider />
                         {playerType === "default" ? (
@@ -227,6 +227,4 @@ function VidStackPlayer({ title, source, userIp, playerType = "default" }) {
             )}
         </>
     );
-}
-
-export default VidStackPlayer;
+};
