@@ -133,7 +133,7 @@ export default async function Page({ params }) {
         suggestions={suggestions}
         userIp={ip}
       />
-      <Script async={true} src="/static/js/anti-adblock.js" data-cfasync="true" strategy="lazyOnload" />
+      <Script async={true} src="/static/js/anti-adblock.js?v=1.0.1" data-cfasync="true" strategy="lazyOnload" />
       <Footer />
     </InspectPreventer>
   )

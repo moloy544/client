@@ -79,7 +79,7 @@ const PlayerjsPlayer = memo(({ title, source, userIp }) => {
           id: 'player',
           title,
           file: newSource,
-          preroll: "id:vast10645 or id:vast10648 and id:vast10648 or id:vast10645",
+          preroll: "id:vast10645 or id:vast10648",
         });
       });
 
