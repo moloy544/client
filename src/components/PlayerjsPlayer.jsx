@@ -73,14 +73,6 @@ const PlayerjsPlayer = memo(({ title, source, userIp }) => {
         });
       };
 
-      // Load anti-adblock script with data-cfasync="true"
-      const antiAdBlockScript = document.createElement("script");
-      antiAdBlockScript.id = "anti-adblock-script";
-      antiAdBlockScript.src = "/static/js/anti-adblock.js";
-      antiAdBlockScript.setAttribute("data-cfasync", 'true'); // Set to "true"
-
-      document.body.appendChild(antiAdBlockScript);
-
       // Load Player.js script and create instance
       loadScript("/static/js/playerjs.js", "playerjs-script", () => {
         new Playerjs({
@@ -95,12 +87,10 @@ const PlayerjsPlayer = memo(({ title, source, userIp }) => {
       return () => {
         isMounted = false; // Prevent setting state if the component is unmounted
         const playerJsScript = document.querySelector("#playerjs-script");
-        const antiAdBlockScript = document.querySelector("#anti-adblock-script");
         if (playerJsScript) document.body.removeChild(playerJsScript);
-        if (antiAdBlockScript) document.body.removeChild(antiAdBlockScript);
       };
     }
-  }, [source, userIp, title]); // Make sure to include 'title' in dependencies
+  }, [source, userIp, title]);
 
 
 
