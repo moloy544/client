@@ -8,7 +8,7 @@ import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
 import { ModelsController } from "@/lib/EventsHandler";
-import PlayerjsPlayer from "@/components/PlayerjsPlayer";
+import VideoPlayer from "@/components/VideoPlayer";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -34,7 +34,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     // Set the video source as usual
     setVideoSource(source);
-    
+
     //window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
 
     // Ensure the video hash in the URL is updated to 'play'
@@ -95,13 +95,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
           <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
-            {playerVisibility && videoSource && videoSource?.includes('.m3u8') && (
-            <PlayerjsPlayer title={title} source={videoSource} userIp={userIp} />
-            )}
-            {videoSource && !videoSource?.includes('.m3u8') && (
-              <iframe
-                src={videoSource}
-                allowFullScreen="allowfullscreen" />
+            {playerVisibility && videoSource && (
+              <VideoPlayer title={title} source={videoSource} userIp={userIp} />
             )}
 
           </div>

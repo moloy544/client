@@ -31,7 +31,7 @@ const isMobileDevice = () => {
   }
 };
 
-const PlayerjsPlayer = memo(({ title, source, userIp }) => {
+const VideoPlayer = memo(({ title, source, userIp }) => {
 
   const [playbackError, setPlaybackError] = useState(null);
   const [errorAccept, setErrorAccept] = useState(false);
@@ -52,47 +52,47 @@ const PlayerjsPlayer = memo(({ title, source, userIp }) => {
 
   useEffect(() => {
     if (source && userIp) {
-      const newSource = generateSourceURL(source, userIp);
-      let isMounted = true; // Track if the component is mounted
 
-      const loadScript = (src, id, onLoadCallback) => {
-        return new Promise((resolve, reject) => {
-          const script = document.createElement("script");
-          script.id = id;
-          script.src = src;
-          script.async = true;
+      if (source.includes('.m3u8')) {
+        const newSource = generateSourceURL(source, userIp);
+        const script = document.createElement("script");
+        script.id = "playerjs-script";
+        script.src = "/static/js/playerjs.js";
+        script.async = true;
+        script.onload = () => {
 
-          script.onload = () => {
-            if (isMounted && onLoadCallback) onLoadCallback();
-            resolve();
-          };
-
-          script.onerror = () => reject(new Error(`Script load error for ${src}`));
-
-          document.body.appendChild(script);
-        });
-      };
-
-      // Load Player.js script and create instance
-      loadScript("/static/js/playerjs.js", "playerjs-script", () => {
-        new Playerjs({
-          id: 'player',
-          title,
-          file: newSource,
-          preroll: "id:vast10645 or id:vast10648",
-        });
-      });
+          new Playerjs({
+            id: 'player',
+            title,
+            file: newSource,
+            preroll: "id:vast10645 or id:vast10648",
+          });
+        };
+        document.body.appendChild(script);
+      } else {
+        //load embed iframe if is not hls url
+        const iframe = document.createElement("iframe");
+        iframe.className = "w-full aspect-video my-auto";
+        iframe.id = "player-embedded-iframe";
+        iframe.allow = "autoplay";
+        iframe.src = source;
+        playerRef.current.appendChild(iframe);
+      }
 
       // Cleanup function
       return () => {
-        isMounted = false; // Prevent setting state if the component is unmounted
+
         const playerJsScript = document.querySelector("#playerjs-script");
+
+        if (playerRef.current) {
+          const iframe = playerRef.current.querySelector("#player-embedded-iframe");
+          if (iframe) playerRef.current.removeChild(iframe);
+        }
+
         if (playerJsScript) document.body.removeChild(playerJsScript);
       };
     }
   }, [source, userIp, title]);
-
-
 
   /**const handleError = useCallback(
     (error) => {
@@ -120,8 +120,8 @@ const PlayerjsPlayer = memo(({ title, source, userIp }) => {
     const player = playerRef.current;
 
     // player floating and default effect classes
-    const floatingClass = 'fixed top-0 left-1/2 transform -translate-x-1/2 sm:left-0 sm:translate-x-0 sm:w-[60%] w-[98%] max-w-sm h-auto z-50 rounded-md overflow-hidden opacity-40 transition-all duration-500';
-    const staticClass = 'relative w-full max-w-[800px] h-[450px] mx-auto transition-all duration-500'; // Adjust max width and height
+    const floatingClass = 'fixed top-0 left-1/2 transform -translate-x-1/2 sm:left-0 sm:translate-x-5 sm:w-[60%] w-[98%] max-w-sm h-auto z-50 rounded-md overflow-hidden opacity-40 transition-all duration-500';
+    const staticClass = 'relative w-full max-w-[800px] h-[450px] mx-auto transition-all duration-500'; // Adjust max width and height; // Adjust max width and height
 
     const playerContainerFloatingClass = "w-full h-full flex justify-center items-center transition-all duration-500 shadow-xl shadow-slate-700 p-5 bg-gray-950";
     const playerContainerStaticClass = "w-full h-full flex justify-center items-center transition-all duration-500";
@@ -148,7 +148,7 @@ const PlayerjsPlayer = memo(({ title, source, userIp }) => {
       replacingPlayer.id = 'replacing-hls-player'; // Assign a unique ID
       replacingPlayer.className = `w-[${playerWidth}px] h-[${playerHeight}px] bg-gray-950 rounded-md overflow-hidden flex justify-center items-center opacity-40 transition-all duration-500`;
       // Set inner text
-      replacingPlayer.innerHTML = '<p class="text-white text-sm text-center">Video in floating modee</p>';
+      replacingPlayer.innerHTML = '<p class="text-white text-sm text-center">Video in floating mode</p>';
 
       // Append the created element to the playerContainer
       if (playerContainer) {
@@ -185,7 +185,7 @@ const PlayerjsPlayer = memo(({ title, source, userIp }) => {
       }, 300);
     }
 
-  }, [isPortrait]);
+  }, [isPortrait, isMobile]);
 
   const dontShowErrorMessageAgain = () => {
     // Set the sessionStorage key to prevent showing the error message again
@@ -213,7 +213,7 @@ const PlayerjsPlayer = memo(({ title, source, userIp }) => {
         ref={containerRef}
         className="bg-transparent transition-all duration-500"
       >
-        <div id="player" ref={playerRef} className="transition-all duration-500">
+        <div id="player" ref={playerRef} className="w-full h-fit transition-all duration-500 ">
 
         </div>
       </div>
@@ -247,5 +247,5 @@ const PlayerjsPlayer = memo(({ title, source, userIp }) => {
   );
 }, areEqual);
 
-export default PlayerjsPlayer;
-PlayerjsPlayer.displayName = 'PlayerjsPlayer';
+export default VideoPlayer;
+VideoPlayer.displayName = 'VideoPlayer';
