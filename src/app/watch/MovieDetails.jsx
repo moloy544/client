@@ -89,7 +89,10 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     <div className="w-full h-full bg-gray-800">
 
       <Breadcrumb data={breadcrumbData} />
+      <div className="min-w-full h-auto-fit flex items-center justify-center">
 
+      <div data-banner-id="1416517"></div>
+      </div>
       <div className="my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
         <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
