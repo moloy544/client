@@ -57,16 +57,16 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
         const newSource = generateSourceURL(source, userIp);
         const script = document.createElement("script");
         script.id = "playerjs-script";
-        script.src = "/static/js/playerjs.js";
+        script.src = "/static/js/playerjs2.js";
         script.async = true;
         script.onload = () => {
 
           new Playerjs({
             id: 'player',
-            title,
             file: newSource,
             preroll: "id:vast10645 or id:vast10648",
           });
+
         };
         document.body.appendChild(script);
       } else {
@@ -213,7 +213,7 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
         ref={containerRef}
         className="bg-transparent transition-all duration-500"
       >
-        <div id="player" ref={playerRef} className="w-full h-fit transition-all duration-500 ">
+        <div id="player" ref={playerRef} className="w-full h-fit transition-all duration-500 rounded-md">
 
         </div>
       </div>
