@@ -63,8 +63,7 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
 
           new Playerjs({
             id: 'player',
-            file: newSource,
-            preroll: "id:vast10645 or id:vast10648",
+            file: newSource
           });
 
         };
