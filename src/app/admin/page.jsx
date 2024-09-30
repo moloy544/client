@@ -23,6 +23,7 @@ const videoSource = process.env.VIDEO_SERVER_URL;
 export default function AdminPage() {
 
     const [isAudioVideoTypeUpdate, setIsAudioVideoTypeUpdate] = useState("no");
+    const [isCreatedDateUpdate, setIsCreatedDateUpdate] = useState(null);
 
     const [state, setState] = useState({
         imdbId: '',
@@ -66,6 +67,10 @@ export default function AdminPage() {
                     imdbRating: data.imdbRating ? data.imdbRating : 0,
                     fullReleaseDate: formattedDate,
                 }));
+                setImagePreview(data.thambnail);
+                if (!isCreatedDateUpdate) {
+                    setIsCreatedDateUpdate("no");
+                }
             } else {
                 alert("No more movies found with audioType and video typ no exist");
             }
@@ -110,6 +115,7 @@ export default function AdminPage() {
                         fullReleaseDate: formattedDate,
                     }));
                     setImagePreview(movieData.thambnail)
+                    setIsCreatedDateUpdate("no");
                     return;
                 };
 
@@ -176,6 +182,9 @@ export default function AdminPage() {
             if (fileInput && fileInput.files[0]) {
                 formData.append('file', fileInput.files[0]);
             };
+            if (isCreatedDateUpdate) {
+                formData.append('createdDateUpdate', isCreatedDateUpdate)
+            };
 
             // send the form data to the backend API
             const addResponse = await axios.post(`${appConfig.backendUrl}/api/v1/admin/movie/add`, formData, {
@@ -208,6 +217,10 @@ export default function AdminPage() {
                 if (isAudioVideoTypeUpdate === 'yes') {
                     getMovieOneByOne()
                 }
+
+                if (!isCreatedDateUpdate) {
+                    setIsCreatedDateUpdate("no");
+                }
                 
             } else {
                 alert(responseMessage);
@@ -220,7 +233,7 @@ export default function AdminPage() {
             setProcessing(false);
         }
     };
-console.log(state)
+
     // all input fields handler
     const handleInputChange = (value, field) => {
 
@@ -702,6 +715,32 @@ console.log(state)
                                 <button type="button" onClick={() => creatInputValueToArrayHandler('tags-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                             </div>
 
+                            {isCreatedDateUpdate &&(
+                                <div className="flex flex-col space-y-2">
+                                <label className="font-bold text-gray-800">Can Update Created Date</label>
+                                <fieldset className="flex flex-wrap gap-3">
+                                    {["yes", "no"].map((data) => (
+                                        <div key={data}>
+                                            <label
+                                                htmlFor={`update-created-date-${data}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${isCreatedDateUpdate === data ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    id={`update-created-date-${data}`}
+                                                    value={data}
+                                                    className="sr-only"
+                                                    onChange={() => setIsCreatedDateUpdate(data)}
+                                                    checked={isCreatedDateUpdate === data}
+                                                />
+
+                                                <p className="text-xs font-medium capitalize">{data}</p>
+                                            </label>
+                                        </div>
+                                    ))}
+                                </fieldset>
+                            </div>
+                            )}
                             <button
                                 disabled={processing}
                                 type="submit"

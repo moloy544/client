@@ -57,7 +57,7 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
         const newSource = generateSourceURL(source, userIp);
         const script = document.createElement("script");
         script.id = "playerjs-script";
-        script.src = "/static/js/player2.js";
+        script.src = "/static/js/player.js";
         script.async = true;
         script.onload = () => {
 
