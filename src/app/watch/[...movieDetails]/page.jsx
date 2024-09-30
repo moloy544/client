@@ -8,7 +8,6 @@ import { InspectPreventer } from "@/lib/lib";
 import MovieDetails from "../MovieDetails";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
-import Script from "next/script";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
@@ -133,7 +132,6 @@ export default async function Page({ params }) {
         suggestions={suggestions}
         userIp={ip}
       />
-      <Script async={true} src="/static/js/anti-adblock-v2.js" data-cfasync="true" strategy="lazyOnload" />
       <Footer />
     </InspectPreventer>
   )

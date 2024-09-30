@@ -14,12 +14,15 @@ const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
 
 // all options arrays
 const typeOptions = ["movie", "series"];
+const videoType = ["hd", "cam"]
 const statusOptions = ['released', 'coming soon']
 const languageOptions = ['hindi', 'hindi dubbed', 'bengali', 'punjabi'];
 const industryOptions = ['bollywood', 'hollywood', 'south'];
 const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons'];
 const videoSource = process.env.VIDEO_SERVER_URL;
 export default function AdminPage() {
+
+    const [isAudioVideoTypeUpdate, setIsAudioVideoTypeUpdate] = useState("no");
 
     const [state, setState] = useState({
         imdbId: '',
@@ -33,6 +36,8 @@ export default function AdminPage() {
         language: 'hindi',
         genre: [],
         watchLink: [],
+        multiAudio: false,
+        videoType: "hd",
         castDetails: [],
         tags: [],
     });
@@ -40,6 +45,36 @@ export default function AdminPage() {
     const [imagePreview, setImagePreview] = useState(null);
     const [processing, setProcessing] = useState(false);
     const dateInputRef = useRef(null);
+
+    const getMovieOneByOne = async () => {
+        try {
+            const response = await axios.get(`${appConfig.backendUrl}/api/v1/admin/movies/one_by_one`);
+            if (response.status === 200) {
+                const data = response.data.movie;
+
+                const originalDate = new Date(data.fullReleaseDate);
+
+                const formattedDate = originalDate.toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                });
+
+                setState(prevState => ({
+                    ...prevState,
+                    ...data,
+                    imdbRating: data.imdbRating ? data.imdbRating : 0,
+                    fullReleaseDate: formattedDate,
+                }));
+            } else {
+                alert("No more movies found with audioType and video typ no exist");
+            }
+
+        } catch (error) {
+            console.log(error);
+            alert("Error while getting movies one by one");
+        }
+    }
 
     const getImbdResponse = async () => {
 
@@ -70,18 +105,9 @@ export default function AdminPage() {
 
                     setState(prevState => ({
                         ...prevState,
+                        ...movieData,
                         imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
-                        title: movieData.title,
-                        releaseYear: movieData.releaseYear,
                         fullReleaseDate: formattedDate,
-                        category: movieData.category,
-                        language: movieData.language,
-                        status: movieData.status,
-                        type: movieData.type,
-                        genre: movieData.genre,
-                        castDetails: movieData.castDetails,
-                        watchLink: movieData.watchLink,
-                        tags: movieData.tags
                     }));
                     setImagePreview(movieData.thambnail)
                     return;
@@ -173,10 +199,16 @@ export default function AdminPage() {
                     genre: [],
                     castDetails: [],
                     watchLink: [],
+                    multiAudio: false,
+                    videoType: "hd",
                     tags: []
                 }));
                 fileInput.value = '';
                 setImagePreview(null);
+                if (isAudioVideoTypeUpdate === 'yes') {
+                    getMovieOneByOne()
+                }
+                
             } else {
                 alert(responseMessage);
             }
@@ -188,11 +220,9 @@ export default function AdminPage() {
             setProcessing(false);
         }
     };
-
+console.log(state)
     // all input fields handler
-    const handleInputChange = (e, field) => {
-
-        let value = e.target?.value || null;
+    const handleInputChange = (value, field) => {
 
         if (field === "imdbRating") {
             value = Number(value);
@@ -337,7 +367,30 @@ export default function AdminPage() {
 
                 <form onSubmit={sendMoviesToBackend} className="bg-slate-50 md:mx-10 md:mt-4 border-blue-100 px-3 md:px-10 shadow-xl rounded-lg py-2 overflow-hidden">
                     <h1 className="text-xl text-gray-900 text-center font-bold my-3">Add Movie Section</h1>
+                    <div className="flex flex-col my-3 gap-2 space-y-2">
+                                <label className="font-bold text-gray-800">Audio Video Type Update</label>
+                                <fieldset className="flex flex-wrap gap-3">
+                                    {["yes", "no"].map((data) => (
+                                        <div key={data}>
+                                            <label
+                                                htmlFor={`audio-video-type-update-${data}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${isAudioVideoTypeUpdate === data ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    id={`audio-video-type-update-${data}`}
+                                                    value={data}
+                                                    className="sr-only"
+                                                    onChange={() => setIsAudioVideoTypeUpdate(data)}
+                                                    checked={isAudioVideoTypeUpdate === data}
+                                                />
 
+                                                <p className="text-xs font-medium capitalize">{data}</p>
+                                            </label>
+                                        </div>
+                                    ))}
+                                </fieldset>
+                            </div>
                     <div className="flex flex-wrap gap-5 md:gap-10">
                         {/** first row */}
                         <div className="w-full md:w-auto h-auto">
@@ -352,8 +405,8 @@ export default function AdminPage() {
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">IMDB ID</label>
                                 <div className="flex items-center gap-1">
-                                    <input className={inputStyle + ' w-40'} type="text" value={state.imdbId} onChange={(e) => handleInputChange(e, 'imdbId')} placeholder="Enter IMDB id" />
-                                    <button className="w-16 h-8 bg-green-700 text-sm text-white font-semibold text-center rounded-sm" type="button" onClick={getImbdResponse}>Get</button>
+                                    <input className={inputStyle + ' w-40'} type="text" value={state.imdbId} onChange={(e) => handleInputChange(e.target.value, 'imdbId')} placeholder="Enter IMDB id" />
+                                    <button className="w-16 h-8 bg-green-700 text-sm text-white font-semibold text-center rounded-sm" type="button" onClick={isAudioVideoTypeUpdate !== "yes" ? getImbdResponse : getMovieOneByOne}>Get</button>
                                 </div>
                             </div>
 
@@ -392,12 +445,12 @@ export default function AdminPage() {
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Title</label>
-                                <input className={inputStyle} type="text" value={state.title} onChange={(e) => handleInputChange(e, 'title')} placeholder="Enter title" />
+                                <input className={inputStyle} type="text" value={state.title} onChange={(e) => handleInputChange(e.target.value, 'title')} placeholder="Enter title" />
                             </div>
 
                             <div className="max-w-[200px] flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Imdb Rating</label>
-                                <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} min={0} />
+                                <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e.target.value, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} min={0} />
                             </div>
 
 
@@ -435,7 +488,7 @@ export default function AdminPage() {
                                                     id={status}
                                                     value={status}
                                                     className="sr-only"
-                                                    onChange={(e) => handleInputChange(e, 'status')}
+                                                    onChange={(e) => handleInputChange(e.target.value, 'status')}
                                                     checked={state.status === status}
                                                 />
 
@@ -452,15 +505,15 @@ export default function AdminPage() {
                                     {typeOptions.map((type) => (
                                         <div key={type}>
                                             <label
-                                                htmlFor={`Video-type-${type}`}
+                                                htmlFor={`Content-type-${type}`}
                                                 className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.type === type ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
                                             >
                                                 <input
                                                     type="radio"
-                                                    id={`Video-type-${type}`}
+                                                    id={`Content-type-${type}`}
                                                     value={type}
                                                     className="sr-only"
-                                                    onChange={(e) => handleInputChange(e, 'type')}
+                                                    onChange={(e) => handleInputChange(e.target.value, 'type')}
                                                     checked={state.type === type}
                                                 />
 
@@ -485,7 +538,7 @@ export default function AdminPage() {
                                                     id={industry}
                                                     value={industry}
                                                     className="sr-only"
-                                                    onChange={(e) => handleInputChange(e, 'category')}
+                                                    onChange={(e) => handleInputChange(e.target.value, 'category')}
                                                     checked={state.category === industry}
                                                 />
 
@@ -510,11 +563,77 @@ export default function AdminPage() {
                                                     id={lng}
                                                     value={lng}
                                                     className="sr-only"
-                                                    onChange={(e) => handleInputChange(e, 'language')}
+                                                    onChange={(e) => handleInputChange(e.target.value, 'language')}
                                                     checked={state.language === lng}
                                                 />
 
                                                 <p className="text-xs font-medium capitalize">{lng}</p>
+                                            </label>
+                                        </div>
+                                    ))}
+                                </fieldset>
+                            </div>
+
+                            <div className="flex flex-col my-3 gap-2 space-y-2">
+                                <label className="font-bold text-gray-800">Multi Audio</label>
+                                <fieldset className="flex flex-wrap gap-3">
+                                        <div>
+                                        <label
+                                                htmlFor="multiAudio-false"
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${!state.multiAudio ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    id="multiAudio-false"
+                                                    value="false"
+                                                    className="sr-only"
+                                                    onChange={() => handleInputChange(false, 'multiAudio')}
+                                                    checked={state.multiAudio === false}
+                                                />
+
+                                                <p className="text-xs font-medium capitalize">No</p>
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <label
+                                                htmlFor="multiAudio-true"
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.multiAudio ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    id="multiAudio-true"
+                                                    value="true"
+                                                    className="sr-only"
+                                                    onChange={() => handleInputChange(true, 'multiAudio')}
+                                                    checked={state.multiAudio === true}
+                                                />
+
+                                                <p className="text-xs font-medium capitalize">Yes</p>
+                                            </label>
+                                        </div>
+                                </fieldset>
+                            </div>
+
+
+                            <div className="flex flex-col space-y-2">
+                                <label className="font-bold text-gray-800">Video type</label>
+                                <fieldset className="flex flex-wrap gap-3">
+                                    {videoType.map((type) => (
+                                        <div key={type}>
+                                            <label
+                                                htmlFor={`Video-type-${type}`}
+                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.videoType === type ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    id={`Video-type-${type}`}
+                                                    value={type}
+                                                    className="sr-only"
+                                                    onChange={(e) => handleInputChange(e.target.value, 'videoType')}
+                                                    checked={state.videoType === type}
+                                                />
+
+                                                <p className="text-xs font-medium capitalize">{type}</p>
                                             </label>
                                         </div>
                                     ))}

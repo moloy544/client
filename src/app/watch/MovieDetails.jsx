@@ -9,6 +9,8 @@ import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
 import { ModelsController } from "@/lib/EventsHandler";
 import VideoPlayer from "@/components/VideoPlayer";
+import AdsterraAds from "@/components/ads/AdsterraAds";
+import { adsConfig } from "@/config/ads.config";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -35,7 +37,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     // Set the video source as usual
     setVideoSource(source);
 
-    //window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+    window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
 
     // Ensure the video hash in the URL is updated to 'play'
     if (window.location.hash !== 'play') {
@@ -89,10 +91,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     <div className="w-full h-full bg-gray-800">
 
       <Breadcrumb data={breadcrumbData} />
-      <div className="min-w-full h-auto-fit flex items-center justify-center">
 
-      <div data-banner-id="1416517"></div>
+      {/*** Banner Ad Show Container Size height 50, width 280  ****/}
+      <div className="min-w-full h-auto-fit flex items-center justify-center">
+        <AdsterraAds adOptions={adsConfig.adOptions1} />
       </div>
+
       <div className="my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
         <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
