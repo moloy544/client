@@ -20,28 +20,31 @@ const languageOptions = ['hindi', 'hindi dubbed', 'bengali', 'punjabi'];
 const industryOptions = ['bollywood', 'hollywood', 'south'];
 const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons'];
 const videoSource = process.env.VIDEO_SERVER_URL;
+
+const initialMoviesData = {
+    imdbId: '',
+    imdbRating: 1,
+    title: '',
+    releaseYear: 0,
+    fullReleaseDate: '',
+    status: 'released',
+    category: 'bollywood',
+    type: 'movie',
+    language: 'hindi',
+    genre: [],
+    watchLink: [],
+    multiAudio: false,
+    videoType: "hd",
+    castDetails: [],
+    tags: [],
+};
+
 export default function AdminPage() {
 
     const [isAudioVideoTypeUpdate, setIsAudioVideoTypeUpdate] = useState("no");
     const [isCreatedDateUpdate, setIsCreatedDateUpdate] = useState(null);
 
-    const [state, setState] = useState({
-        imdbId: '',
-        imdbRating: 1,
-        title: '',
-        releaseYear: 0,
-        fullReleaseDate: '',
-        status: 'released',
-        category: 'bollywood',
-        type: 'movie',
-        language: 'hindi',
-        genre: [],
-        watchLink: [],
-        multiAudio: false,
-        videoType: "hd",
-        castDetails: [],
-        tags: [],
-    });
+    const [state, setState] = useState(initialMoviesData);
 
     const [imagePreview, setImagePreview] = useState(null);
     const [processing, setProcessing] = useState(false);
@@ -114,8 +117,11 @@ export default function AdminPage() {
                         imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
                         fullReleaseDate: formattedDate,
                     }));
-                    setImagePreview(movieData.thambnail)
-                    setIsCreatedDateUpdate("no");
+                    setImagePreview(movieData.thambnail);
+                    if (!isCreatedDateUpdate) {
+                        setIsCreatedDateUpdate("yes");
+                    };
+                    
                     return;
                 };
 
@@ -198,28 +204,15 @@ export default function AdminPage() {
 
                 creatToastAlert({ message: responseMessage || "Movie added successfully" });
 
-                setState(prevState => ({
-                    ...prevState,
-                    imdbId: '',
-                    imdbRating: 1,
-                    title: '',
-                    releaseYear: 0,
-                    fullReleaseDate: '',
-                    genre: [],
-                    castDetails: [],
-                    watchLink: [],
-                    multiAudio: false,
-                    videoType: "hd",
-                    tags: []
-                }));
+                setState(initialMoviesData);
                 fileInput.value = '';
                 setImagePreview(null);
                 if (isAudioVideoTypeUpdate === 'yes') {
                     getMovieOneByOne()
                 }
 
-                if (!isCreatedDateUpdate) {
-                    setIsCreatedDateUpdate("no");
+                if (isCreatedDateUpdate) {
+                    setIsCreatedDateUpdate(null);
                 }
                 
             } else {

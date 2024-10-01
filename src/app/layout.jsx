@@ -13,19 +13,19 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata = {
 
   title: {
-    default: 'Movies Bazar',
+    default: 'Movies Bazar | Watch Latest Bollywood, Hollywood, and Hindi Dubbed Movies Online',
     template: '%s | Movies Bazar'
   },
-  description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazar',
+  description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online with multi audio and multi quality upto 1080P Movies Bazar',
   keywords: 'online movies, watch movies online, movie streaming, film, cinema, entertainment, Hollywood movies, Hollywood dubbed movies, South movies, South dubbed movies, Bollywood movies',
 
   openGraph: {
     images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
     title: {
-      default: 'Movies Bazar',
+      default: 'Movies Bazar | Watch Latest Bollywood, Hollywood, and Hindi Dubbed Movies Online',
       template: '%s | Movies Bazar',
     },
-    description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online Movies Bazar.',
+    description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online with multi audio and multi quality upto 1080P Movies Bazar',
     url: appConfig.appDomain
   },
 }
