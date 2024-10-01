@@ -1,5 +1,9 @@
 User-Agent: *
 Allow: /
-Disallow: /admin/
 
+# Disallow access to the admin section and all paths under it
+Disallow: /admin
+Disallow: /admin/*
+
+# Sitemap URL
 Sitemap: https://moviesbazar.online/sitemap.xml

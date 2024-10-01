@@ -57,9 +57,10 @@ export default async function Page({ params }) {
         <>
             <NavigateBackTopNav title={capitalizeGenre + " collection"} />
 
-            <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
+            <div className="w-full h-full min-h-[90vh]">
 
                 <LoadMoreMoviesGirdWarper
+                title={capitalizeGenre+ ' Genre Based Movies and Series Collection'}
                     apiUrl={apiUrl}
                     limitPerPage={40}
                     initialFilter={filterData}

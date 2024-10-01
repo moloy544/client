@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { creatUrlLink } from '@/utils';
 
-const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize = false, children }) => {
+const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false, thambnailImagePriority = true, children }) => {
 
     const sliderContainerRef = useRef(null);
     const movieCardRef = useRef(null);
@@ -112,7 +112,7 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize = 
                                 <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title + ' ' + data.releaseYear + ' ' + data.type} prefetch={false}>
                                     <div className="relative w-[155px] h-[210px] mobile:w-28 mobile:h-40 bg-white rounded-[3px]">
                                         <Image
-                                            priority
+                                            priority={thambnailImagePriority}
                                             className="select-none rounded-[3px]"
                                             src={!imageResize ? data.thambnail : data.thambnail?.replace('/upload/', '/upload/w_220,h_280/')}
                                             blurDataURL={data.thambnail}
@@ -180,7 +180,5 @@ const SliderShowcase = memo(({ title, moviesData, space, linkUrl, imageResize = 
 
         </section>
     );
-});
-
-SliderShowcase.displayName = 'SliderShowcase';
+}
 export default SliderShowcase;

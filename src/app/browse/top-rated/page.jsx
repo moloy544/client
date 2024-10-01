@@ -8,15 +8,19 @@ const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWro
 
 export const metadata = {
 
-  title: 'Top IMDB rated movies',
-  description: 'Watch top IMDB rated movies movies online Movies Bazaar',
-  keywords: 'imbd top ratings movies, watch top ratings movies online, Top rated Hollywood movies, Top Rated South movies, Top rated Bollywood movies',
+  title: {
+    absolute: 'Top IMDb Rated Movies | Watch the Best Films Online at Movies Bazar'
+  },
+  description: 'Stream the highest-rated IMDb movies online at Movies Bazar. Discover top-rated films from Hollywood, Bollywood, and South Cinema.',
+  keywords: 'IMDb top rated movies, watch top rated films online, best Hollywood movies, best Bollywood movies, best South Indian movies',
 
   openGraph: {
-    images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
-    title: 'Top IMDB rated movies',
+    images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
+    title: {
+      absolute: 'Top IMDb Rated Movies | Watch the Best Films Online at Movies Bazar'
+    },
     description: 'Watch top IMDB rated movies movies online Movies Bazaar',
-    url: appConfig.appDomain+'/browse/top-rated'
+    url: appConfig.appDomain + '/browse/top-rated'
   },
 }
 
@@ -38,7 +42,7 @@ export default async function Page() {
   });
 
   if (status === 500) {
-    return(
+    return (
       <SomthingWrongError />
     )
   };
@@ -47,11 +51,12 @@ export default async function Page() {
 
   return (
     <>
-      <NavigateBackTopNav title="Top imdb rated" />
+      <NavigateBackTopNav title="Top Rated" />
 
-      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
+      <div className="w-full h-full min-h-[90vh]">
 
         <LoadMoreMoviesGirdWarper
+          title="Top IMDB Rated Movies Collection"
           apiUrl={apiUrl}
           initialFilter={filterData}
           serverResponseExtraFilter={filterOptions || []}

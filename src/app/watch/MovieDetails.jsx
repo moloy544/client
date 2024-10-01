@@ -204,9 +204,17 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       <div className="py-2">
         {/**** Show Suggest Data Based on Gnere ******/}
-        <SliderShowcase moviesData={suggestions?.genreList} title="You might also like" />
+        <SliderShowcase
+         moviesData={suggestions?.genreList} 
+         title="You might also like" 
+         thambnailImagePriority={false}
+         />
         {/**** Show Suggest Data Based on Cast ******/}
-        <SliderShowcase moviesData={suggestions?.castList} title="Explore more from same actor" />
+        <SliderShowcase 
+        moviesData={suggestions?.castList} 
+        title="Explore more from same actor"
+        thambnailImagePriority={false}
+         />
       </div>
 
     </div>

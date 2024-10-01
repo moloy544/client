@@ -9,15 +9,19 @@ export async function generateMetadata({ params }) {
   const editParamsQuery = transformToCapitalize(params.category);
 
   const metaData = {
-    title: `${editParamsQuery} series collaction`,
-    description: `Watch ${editParamsQuery} series online Movies Bazaar`,
-    keywords: `${editParamsQuery} series, Watch ${editParamsQuery} series online, ${editParamsQuery} series watch free online, Where to watch ${editParamsQuery} series online`,
-
+    title: {
+      sbsolute:`${editParamsQuery} Series Collection | Stream Free Online at Movies Bazar`
+    },
+    description: `Watch a diverse collection of ${editParamsQuery} series online at Movies Bazar. Enjoy top-rated titles from various genres without any cost!`,
+    keywords: `${editParamsQuery} series, stream ${editParamsQuery} series online, watch ${editParamsQuery} series free, where to watch ${editParamsQuery} series, online ${editParamsQuery} series`,
+  
     openGraph: {
-      images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
-      title: `${editParamsQuery} series`,
-      description: `Watch ${editParamsQuery} series online Movies Bazaar`,
-      url: `${appConfig.appDomain}/series/${params.category}`
+      images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
+      title: {
+        sbsolute:`${editParamsQuery} Series Collection | Stream Free Online at Movies Bazar`
+      },
+      description: `Watch a diverse collection of ${editParamsQuery} series online at Movies Bazar. Enjoy top-rated titles from various genres without any cost!`,
+      url: `${appConfig.appDomain}/series/${params.category}`,
     },
   };
 

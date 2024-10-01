@@ -11,7 +11,7 @@ import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "./cards/Cards";
 
 
-function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
+function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
 
     const patname = usePathname();
 
@@ -118,21 +118,25 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
         };
 
     }, [isAllDataLoad, loadMoviesPathname, patname, page, filterData, initialMovies, limitPerPage, initialFilter, isDataEnd, apiUrl, apiBodyData]);
- 
+
     return (
         <>
-            <main className="w-full h-auto bg-transparent py-1 overflow-x-hidden">
-
-                <div className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
+            <main className="w-full h-auto bg-transparent overflow-x-hidden">
+                {title && (
+                    <div className="bg-gray-900 py-1.5 px-2">
+                    <h1 className="text-center font-bold text-[#dcdcde] text-base mobile:text-xs line-clamp-1">{title}</h1>
+                    </div>
+                    )}
+                <div className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-3 mobile:py-2">
 
                     {moviesData.length > 0 && (
                         moviesData.map((movie, index) => (
                             <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
                         )))}
 
-                        {loading && moviesData.length ===0&&(
-                            <MovieCardSkleaton limit={limitPerPage} />
-                        )}
+                    {loading && moviesData.length === 0 && (
+                        <MovieCardSkleaton limit={limitPerPage} />
+                    )}
 
                     {!loading && moviesData.length === 0 && (
                         <div className="my-40 text-gray-400 text-xl mobile:text-base text-center font-semibold">
@@ -141,7 +145,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                     )}
                 </div>
 
-                {loading && moviesData.length>0 && (
+                {loading && moviesData.length > 0 && (
                     <div className="w-full h-auto mobile:py-6 py-10 flex justify-center items-center">
                         <div className="text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                             role="status">
@@ -153,7 +157,7 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
 
                 <div className="w-full h-2" ref={bottomObserverElement}></div>
 
-            </main>
+            </main >
 
             {initialMovies && initialMovies.length >= 30 && initialFilter && (
                 <FilterModel
@@ -163,7 +167,8 @@ function LoadMoreMoviesGirdWarper({ apiUrl, apiBodyData, limitPerPage, initialFi
                     functions={{
                         setFilter
                     }} />
-            )}
+            )
+            }
 
             <BacktoTopButton postion="mobile:top-20 top-24" />
 

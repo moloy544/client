@@ -48,9 +48,10 @@ export default async function Page({ params }) {
 
       <NavigateBackTopNav title={`${title} latest`} />
 
-      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
+      <div className="w-full h-full min-h-[90vh]">
 
           <LoadMoreMoviesGirdWarper
+          title={title + ' Latest Released'}
             apiUrl={apiUrl}
             initialFilter={filterData}
             limitPerPage={40}

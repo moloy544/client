@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
-import { creatUrlLink, getMovieDeatils } from "@/utils";
+import { creatUrlLink, getMovieDeatils, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import { InspectPreventer } from "@/lib/lib";
 import MovieDetails from "../MovieDetails";
@@ -50,33 +50,26 @@ export async function generateMetadata({ params }) {
   }
 
 
-  // extract the movie genres
-  const genres = genre?.join(' ');
+  // extract the movie genres and sort them max 3 
+  const genres = genre?.slice(0, 3).join(', ')
 
   // extract the movie cast names
   const movieCast = castDetails ? castDetails.join(', ') : null;
 
-  // metadata related fields
-  const metaTitle = `Watch ${title + " (" + releaseYear + ") " + type} online free`
-  const metaDesc = `${title + " " + releaseYear + " " + type} watch online free. featuring lead actress ${movieCast}. Enjoy it in ${language} and this is ${genre?.join(' ')} genre based ${type}.`;
+  // metadata related fields 
+  const metaTitle = `Watch ${title} (${releaseYear}) ${transformToCapitalize(type)} Online Free!`;
+  const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} movie in ${language}.`;
   const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${movieId}`;
   const metaKeywords = [
-    `${title} ${type}`,
-    `Watch ${title} ${releaseYear} ${type}`,
-    `${title} ${releaseYear} ${type}`,
-    `Watch ${title} online`,
-    `Stream ${title} online`,
-    `Watch ${title} ${type} online`,
-    `${title} online streaming`,
-    `${title} ${type} watch free online`,
-    `${title} ${type} streaming`,
-    `Watch ${title} HD online`,
-    `${title} online watch free`,
-    `${title} ${type} stream HD`,
+    `${title}, ${type}`,
+    `Watch ${title} (${releaseYear}) ${type} online free`,
+    `${title} ${type} full movie`,
+    `${title} ${type} full movie watch online free`,
+    `Stream ${title} ${type} in HD`,
+    `Watch ${title} ${type} streaming free`,
+    `Watch ${title} ${type} online HD`,
     `Where to watch ${title} online`,
-    `Watch ${genres} ${type} online`,
-    `Watch ${language} ${type} online`,
-    ...castDetails.map(cast => `Watch ${cast} ${type}`)
+    ...castDetails.slice(0, 4).map(cast => `Watch movies featuring ${cast}`) // More engaging phrasing
   ].join(', ');
 
   // meta data for this movie or series page

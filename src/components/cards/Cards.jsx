@@ -1,13 +1,7 @@
-import { memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { creatUrlLink } from "@/utils";
 
-const areEqual = (prevProps, nextProps) => {
-    return (
-        JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data)
-    );
-};
 const MovieCardSkleaton = ({ limit = 20 }) => {
     return (
         <>
@@ -20,7 +14,7 @@ const MovieCardSkleaton = ({ limit = 20 }) => {
     )
 };
 
-const ResponsiveMovieCard = memo(({ data, onClickEvent }) => {
+const ResponsiveMovieCard = ({ data, onClickEvent }) => {
 
     return (
 
@@ -51,10 +45,9 @@ const ResponsiveMovieCard = memo(({ data, onClickEvent }) => {
             </Link>
         </div>
     )
-}, areEqual);
-ResponsiveMovieCard.displayName = "ResponsiveMovieCard";
+}
 
-const ResponsiveActorCard = memo(({ data }) => {
+const ResponsiveActorCard = ({ data }) => {
     return (
         <div className="w-auto max-w-[150px] h-auto flex justify-center cursor-pointer bg-gray-700 rounded-md px-3 py-3.5">
 
@@ -81,8 +74,7 @@ const ResponsiveActorCard = memo(({ data }) => {
             </Link>
         </div>
     )
-}, areEqual);
-ResponsiveActorCard.displayName = "RespsiveActorCard";
+};
 
 export {
     ResponsiveMovieCard,

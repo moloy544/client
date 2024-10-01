@@ -7,7 +7,7 @@ function NavigateBackTopNav({ title, titleImage = null }) {
     return (
         <header className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-gray-900 text-gray-300 px-3 border-b border-b-cyan-800">
 
-            <div className="w-auto h-auto flex gap-4 mobile:gap-2.5 items-center py-4 mobile:py-2">
+            <div className="w-auto h-auto flex gap-4 mobile:gap-2.5 items-center py-2.5 mobile:py-1.5">
                 <NavigateBack>
                     <button className=" bg-transparent px-1.5 py-1 text-3xl mobile:text-[25px]" type="button" title="Back">
                         <i className="bi bi-arrow-left"></i>

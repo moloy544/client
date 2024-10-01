@@ -7,18 +7,18 @@ import Footer from "@/components/Footer";
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export const metadata = {
-
-    title: 'Series collaction',
-    description: 'Explore a diverse collection of web series from Hollywood, Bollywood, and South Indian cinema. Enjoy top-rated series in each category with compelling stories and brilliant performances.',
-    keywords: 'web series, hollywood series, bollywood series, south indian series, south series, netflix series free, watch netflix series free, latest hindi series',
+    title: 'Top Web Series Collection',
+    description: 'Explore an extensive collection of top web series from Hollywood, Bollywood, South Indian cinema, and popular platforms like Netflix, Hotstar, and Amazon Prime at Movies Bazar.',
+    keywords: 'web series collection, Hollywood series, Bollywood series, South Indian series, watch Netflix series free, latest Hindi series, top-rated web series',
 
     openGraph: {
-        images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
-        title: `Series`,
-        description: `Watch bollywood hollywood south netflix series online Movies Bazaar`,
-        url: appConfig.appDomain + '/series'
+        images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
+        title: 'Top Web Series Collection',
+        description: 'Explore an extensive collection of top web series from Hollywood, Bollywood, South Indian cinema, and popular platforms like Netflix, Hotstar, and Amazon Prime at Movies Bazar.',
+        url: `${appConfig.appDomain}/series`,
     },
-}
+};
+
 
 const getSeriesLayoutData = async () => {
 

@@ -12,17 +12,21 @@ export async function generateMetadata({ params }) {
   const editParamsQuery = transformToCapitalize(params.categoryName);
 
   const metaData = {
-    title: `${editParamsQuery} collaction`,
-    description: `Watch ${editParamsQuery} movies, series free  of cost online Movies Bazaar have lot of ${editParamsQuery} movies and series collaction`,
-    keywords: `${editParamsQuery} movie, Watch ${editParamsQuery} movie online, ${editParamsQuery} movie watch free online, Where to watch ${editParamsQuery} movies online`,
+    title:{
+      absolute:`Watch ${editParamsQuery} ${editParamsQuery !== "Movies" ? "movies": ''} Collection | Stream Free Online at Movies Bazar`
+    },
+    description: `Explore a vast collection of ${editParamsQuery} ${editParamsQuery !== "Movies" ? "movies": ''} available for free streaming on Movies Bazar. Watch your favorite ${editParamsQuery !== "Movies" ? "movies": ''} online today!`,
 
     openGraph: {
-      images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
-      title: `${editParamsQuery} movies collaction`,
-      description: `Watch ${editParamsQuery} movies, series free of cost online Movies Bazaar have lot of ${editParamsQuery} movies and series collaction`,
-      url: `${appConfig.appDomain}/browse/category/${params.categoryName}`
+      images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
+      title:{
+        absolute:`Watch ${editParamsQuery} ${editParamsQuery !== "Movies" ? "movies": ''} Collection | Stream Free Online at Movies Bazar`
+      },
+      description: `Explore a vast collection of ${editParamsQuery} ${editParamsQuery !== "Movies" ? "movies": ''} available for free streaming on Movies Bazar. Watch your favorite ${editParamsQuery !== "Movies" ? "movies": ''} online today!`,
+      url: `${appConfig.appDomain}/browse/category/${params.categoryName}`,
     },
   };
+  
 
   return metaData;
 };
@@ -53,16 +57,17 @@ export default async function Page({ params }) {
   };
 
   const categoryName = transformToCapitalize(params.categoryName);
-  
+
   const { filterOptions, moviesData } = data;
 
   return (
     <>
       <NavigateBackTopNav title={categoryName} />
 
-      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
+      <div className="w-full h-full min-h-[90vh]">
 
         <LoadMoreMoviesGirdWarper
+          title={categoryName + ' Collection'}
           apiUrl={apiUrl}
           limitPerPage={40}
           serverResponseExtraFilter={filterOptions || []}

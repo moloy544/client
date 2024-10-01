@@ -9,7 +9,9 @@ const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWro
 export const revalidate = 3600 // revalidate at most every hour
 
 export const metadata = {
-  title: 'Recently Added',
+  title:{
+    absolute: 'Recently Added Movies | Explore the Latest Picks at Movies Bazar'
+  } 
 }
 
 export default async function Page() {
@@ -29,7 +31,7 @@ export default async function Page() {
   });
 
   if (status === 500) {
-    return(
+    return (
       <SomthingWrongError />
     )
   };
@@ -40,9 +42,10 @@ export default async function Page() {
     <>
       <NavigateBackTopNav title="Recently Added" />
 
-      <div className="w-full h-full min-h-[90vh] py-3 mobile:py-2">
+      <div className="w-full h-full min-h-[90vh]">
 
         <LoadMoreMoviesGirdWarper
+          title="Recently Added Or Updated Content"
           apiUrl={apiUrl}
           initialFilter={filterData}
           serverResponseExtraFilter={filterOptions || []}

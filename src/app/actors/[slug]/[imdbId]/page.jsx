@@ -45,17 +45,22 @@ export async function generateMetadata({ params }) {
     if (status === 200) {
 
       const metaData = {
-        title: name,
-        description: `Watch ${name} movies online free of cost Movies Bazaar`,
-        keywords: `${name} movie, Watch ${name} movie online, ${name} movie watch free online, Where to watch ${name} movies online`,
-
+        title:{
+          absolute:`${name} | Movies Bazaar - Watch Free Online`,
+        },
+        description: `Stream a collection of ${name} best movies online for free at Movies Bazaar. Enjoy classic and latest films featuring ${name} exceptional performances!`,
+        keywords: `${name} movies, watch ${name} movies online, ${name} movie collection, stream ${name} movies free, where to watch ${name} films online`,
+      
         openGraph: {
           images: avatar,
-          title: name,
-          description: `Watch ${name} movies online free of cost Movies Bazaar`,
-          url: `${appConfig.appDomain}/actress/${creatUrlLink(name)}/${imdbId}`
+          title:{
+            absolute:`${name} | Movies Bazaar - Watch Free Online`,
+          },
+          description: `Explore and watch ${name} movies online for free at Movies Bazaar. Discover a range of films showcasing ${name} incredible talent!`,
+          url: `${appConfig.appDomain}/actor/${creatUrlLink(name)}/${imdbId}`,
         },
       };
+      
 
       return metaData;
 
