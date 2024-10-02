@@ -211,8 +211,11 @@ export default function SearchPage() {
 
             <div className="w-full min-h-screen overflow-x-hidden bg-gray-800">
 
-                {/*** Banner Ad Show Container Size height 250, width 300  ****/}
-                <AdsterraAds adOptions={adsConfig.adOptions1} />
+                {/*** Banner Ad Show Container Size height 250, width 300  ****/ seatrchResult.length === 0 &&
+                    (<div className="my-2">
+                        <AdsterraAds adOptions={adsConfig.adOptions1} />
+                    </div>)
+                }
 
                 {searchQuery !== "" ? (
 

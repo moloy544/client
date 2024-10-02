@@ -1,12 +1,15 @@
 import './globals.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Inter } from 'next/font/google'
+import Script from 'next/script';
+import { cookies } from 'next/headers';
+import { Suspense } from 'react';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
-import { Suspense } from 'react';
+import AdsShowMessage from '@/components/models/AdsShowMessage';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -32,9 +35,11 @@ export const metadata = {
 
 export const viewport = {
   themeColor: 'rgb(29, 29, 29)',
-}
+};
+
 
 export default function RootLayout({ children }) {
+  const user = cookies().get('user');
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -51,7 +56,8 @@ export default function RootLayout({ children }) {
         />
 
         <ReduxStatePrivider>
-            {children}
+        <AdsShowMessage user={user} />
+          {children}
         </ReduxStatePrivider>
         {process.env.NODE_ENV === "production" && (
           <Suspense>
@@ -59,6 +65,19 @@ export default function RootLayout({ children }) {
             <Analytics />
           </Suspense>
         )}
+
+        <Script
+          type='text/javascript'
+          async={true}
+          src='//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js'
+          strategy="lazyOnload"
+        />
+         <Script
+          type='text/javascript'
+          async={true}
+          src=' //filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js'
+          strategy="lazyOnload"
+        />
 
       </body>
 

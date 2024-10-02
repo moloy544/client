@@ -95,6 +95,10 @@ export default function AdminPage() {
 
             if (state.imdbId.length >= 8) {
 
+                if (state._id) {
+                    setState(initialMoviesData)
+                }
+
                 const mongodbApiResponse = await axios.get(`${appConfig.backendUrl}/api/v1/admin/movie/get/${state.imdbId}`);
 
                 const { movieData } = mongodbApiResponse.data;

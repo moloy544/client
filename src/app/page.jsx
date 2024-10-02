@@ -15,9 +15,13 @@ export default async function Page() {
   return (
     <>
       <Navbar />
+
       <main className="w-full overflow-x-hidden h-full py-2 bg-gray-800">
+
         <HomePageLayout initialLayoutData={response.data} />
+
       </main>
+      
       <Footer />
     </>
   )
