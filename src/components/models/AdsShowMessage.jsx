@@ -7,12 +7,11 @@ function AdsShowMessage({ user }) {
     const [showMessage, setShowMessage] = useState(false);
 
     const setUserCookie = async () => {
-        if (!user) {
-            try {
-                await axios.post('/api/user');
-            } catch (error) {
-                console.log("Error setting user");
-            }
+        if (user) return;
+        try {
+            await axios.post('/api/user');
+        } catch (error) {
+            console.log("Error while setting user");
         }
     };
 
@@ -23,13 +22,13 @@ function AdsShowMessage({ user }) {
             const body = document.querySelector('body');
             body.setAttribute('class', 'scrollbar-hidden');
             body.style.overflow = 'hidden';
-        }
+        };
+        setUserCookie();
     }, []);
 
     const handleAccept = () => {
         localStorage.setItem('acceptAds', 'true');
         setShowMessage(false);
-        setUserCookie();
         const body = document.querySelector('body');
         body.removeAttribute('class', 'scrollbar-hidden');
         body.style.overflow = '';

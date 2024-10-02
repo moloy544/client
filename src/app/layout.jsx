@@ -39,7 +39,7 @@ export const viewport = {
 
 
 export default function RootLayout({ children }) {
-  const user = cookies().get('user');
+  const user = cookies().get('moviesbazar_user');
   return (
     <html lang="en">
       <body className={inter.className}>
