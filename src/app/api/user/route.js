@@ -10,7 +10,7 @@ export async function POST() {
         const isProduction = process.env.NODE_ENV === 'production';
 
         // Set the 'user' cookie with the random ID
-        cookies().set('user', randomUserId.toString(), {
+        cookies().set('moviesbazar_user', randomUserId.toString(), {
             path: '/', // The cookie is available throughout the site
             sameSite: isProduction ? 'none' : 'lax', // Cookie security
             secure: isProduction, // Secure cookie in production
