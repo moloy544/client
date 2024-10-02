@@ -7,7 +7,6 @@ function AdsShowMessage({ user }) {
     const [showMessage, setShowMessage] = useState(false);
 
     const setUserCookie = async () => {
-        console.log(user)
         if (user) return;
         try {
             await axios.post('/api/user');
