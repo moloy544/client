@@ -4,6 +4,10 @@ Allow: /
 # Disallow access to the admin section and all paths under it
 Disallow: /admin
 Disallow: /admin/*
+Disallow: /api
+Disallow: /api/*
+Disallow: /embed
+Disallow: /embed/*
 
 # Sitemap URL
 Sitemap: https://moviesbazar.online/sitemap.xml
