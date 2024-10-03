@@ -49,29 +49,72 @@ const moviesBazarPlayer = (source) => {
     }
 
     return `<html>
-        <body style="margin: 0; padding: 0; background-color: black; height: 100vh;">
-            <div style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative;">
+    <head>
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: black;
+                height: 100vh;
+                overflow: hidden;
+            }
+            .container {
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+            #banner {
+                margin-inline: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div style="width: 100%; height: 100%; display: flex; flex-direction: column;">
+                <div id="banner"></div>
                 <div id="player" style="width: 100%; height: 100%;"></div>
             </div>
+        </div>
 
-            <script type="text/javascript">
-                const script = document.createElement("script");
-                script.id = "playerjs-script";
-                script.src = "/static/js/moviesbazar_player2.0.js";
-                script.async = true;
-                script.onload = () => {
-                    new MoviesbazarPlayer({
-                        id: 'player',
-                        file: '${source}',
-                        width: '100%',
-                        height: '100%',
-                        stretching: 'fill' // Makes the player fit within the div without leaving space
-                    });
-                };
-                document.body.appendChild(script);
-            </script>
-        </body>
-    </html>`;
+        <script type="text/javascript">
+            atOptions = {
+                'key': '7cb32ff000cfd9e6c01a19c16bfead48',
+                'format': 'iframe',
+                'height': 50,
+                'width': 280,
+                'params': {}
+            };
+        </script>
+
+        <script type="text/javascript">
+            const script = document.createElement("script");
+            script.id = "playerjs-script";
+            script.src = "/static/js/moviesbazar_player2.0.js";
+            script.async = true;
+            script.onload = () => {
+                const player = new MoviesbazarPlayer({
+                    id: 'player',
+                    file: '${source}',
+                    width: '100%',
+                    height: '100%',
+                    stretching: 'fill'
+                });
+            };
+            document.body.appendChild(script);
+
+            const adContainer = document.getElementById('banner');
+            const adsterraScriptSrc = document.createElement('script');
+            adsterraScriptSrc.type = 'text/javascript';
+            adsterraScriptSrc.src = '//www.topcreativeformat.com/7cb32ff000cfd9e6c01a19c16bfead48/invoke.js';
+            adsterraScriptSrc.async = true;
+            adContainer.appendChild(adsterraScriptSrc);
+        </script>
+    </body>
+</html>
+`;
 };
 
 export async function GET(req) {
