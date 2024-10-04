@@ -73,7 +73,7 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
         const iframe = document.createElement("iframe");
         iframe.className = "w-full aspect-video my-auto";
         iframe.id = "player-embedded-iframe";
-        iframe.allow = "autoplay";
+        iframe.allow = "autoplay; fullscreen";
         iframe.src = source;
         playerRef.current.appendChild(iframe);
       }
