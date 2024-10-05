@@ -92,7 +92,7 @@ export default async function Page({ params }) {
 
   const { movieDetails } = params;
   const movieId = movieDetails ? movieDetails[2] : null;
-  const ip = getIP();
+  const ip = '76.76.21.123'//getIP();
 
   const { status, movieData, suggestions } = await getMovieDeatils('tt' + movieId, true);
   let isValidPath = true;
