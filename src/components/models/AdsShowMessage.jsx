@@ -1,5 +1,6 @@
 "use client"
 
+import { ModelsController } from '@/lib/EventsHandler';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -34,23 +35,28 @@ function AdsShowMessage({ user }) {
         body.style.overflow = '';
     };
 
-    if (!showMessage) return null;
-
+    // Check if running in the browser before accessing window
+    const isBrowser = typeof window !== 'undefined';
+    
     return (
-        <div className="bg-gray-950 bg-opacity-60 w-full h-full fixed left-0 top-0 z-50 flex justify-center items-center">
-            <div className="bg-white px-4 py-4 mobile:px-2.5 mobile:py-4 rounded-lg shadow-lg max-w-lg text-center mx-2 my-3">
-                <div className="text-2xl mobile:text-xl font-bold mb-4">Support Us to Keep the Site Running</div>
-                <p className="mb-6 text-base text-gray-700 font-medium">
-                    Our site maintenance costs are very high. By enabling ads, you help us maintain and improve the site. While exploring movies, some ads will show up just ignore them and enjoy your movies watching experience!
+        <ModelsController visibility={showMessage} transformEffect={isBrowser && window.innerWidth <= 769}>
+        <div className="bg-gray-950 bg-opacity-80 w-full h-full fixed left-0 top-0 z-50 flex justify-center items-center mobile:items-end">
+            <div className="bg-white rounded-lg mobile:rounded-t-xl shadow-lg h-fit w-full max-w-full md:max-w-lg mx-2.5 my-3 mobile:m-0 px-5 py-6 mobile:px-3 mobile:py-5 text-center">
+                <h2 className="text-2xl mobile:text-xl font-bold mb-4 text-gray-800">Support Us to Keep the Site Running</h2>
+                <p className="mb-6 text-base mobile:text-sm text-gray-700 font-medium">
+                    Our site has high maintenance costs. By allowing ads, you help us keep the site running and improve it.
+                    While watching movies, some ads may appear. Just ignore them and enjoy your movie experience!
                 </p>
                 <button
                     onClick={handleAccept}
-                    className="bg-blue-900 hover:bg-gray-900 text-white py-2 px-4 rounded-lg text-base my-2.5"
+                    className="bg-blue-900 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-base my-2.5 transition duration-200"
                 >
                     Understand
                 </button>
             </div>
         </div>
+    </ModelsController>
+
     );
 }
 
