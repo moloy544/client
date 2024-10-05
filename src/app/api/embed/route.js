@@ -22,7 +22,6 @@ function generateSourceURL(originalURL, userIp) {
     if (!originalURL.includes(parsedUrl.hostname)) return originalURL;
     if (!originalURL.includes('.m3u8')) return originalURL
 
-
     const EXPIRATION_TIME = Math.floor(Date.now() / 1000) + 10 * 60 * 60; // 10 hours
     return originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${EXPIRATION_TIME}:${userIp}:`);
 }
@@ -128,7 +127,7 @@ export async function GET(req) {
         }
 
         // Get the user's IP address
-        const ip = getIP(req);
+        const ip = "76.76.21.123";//getIP(req);
 
         // Fetch video source from backend
         const getSourceResponse = await axios.post(`${appConfig.backendUrl}/api/v1/subscriber/embed`, { contentId: imdbId });
