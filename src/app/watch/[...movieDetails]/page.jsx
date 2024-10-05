@@ -12,44 +12,26 @@ import Footer from "@/components/Footer";
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
 function getIP() {
-  const FALLBACK_IP_ADDRESS = '76.76.21.123'; // Fallback IP address
-  const forwardedFor = headers().get('x-forwarded-for');
 
-  // If in development mode, return the fallback IP
+  const FALLBACK_IP_ADDRESS = '76.76.21.123'
+  const forwardedFor = headers().get('x-forwarded-for');
   if (process.env.NODE_ENV === "development") {
     return FALLBACK_IP_ADDRESS;
   }
 
-  // If the x-forwarded-for header is present
   if (forwardedFor) {
-    // Split the forwardedFor value into an array of IPs
-    const ips = forwardedFor.split(',').map(ip => ip.trim());
-
-    // Function to validate if the IP is IPv4
-    const isIPv4 = (ip) => {
-      const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-      return ipv4Regex.test(ip);
-    };
-
-    // Iterate through the IPs and return the first valid IPv4 address
-    for (const ip of ips) {
-      if (isIPv4(ip)) {
-        return ip; // Return the first valid IPv4 address found
-      }
-    }
+    return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
   }
 
-  // If no valid IPv4 address is found, return the x-real-ip or fallback IP
-  const realIP = headers().get('x-real-ip');
-  return isIPv4(realIP) ? realIP : FALLBACK_IP_ADDRESS;
+  return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 }
-
 
 export async function generateMetadata({ params }) {
 
   const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
 
   const { movieData, status } = await getMovieDeatils('tt' + movieId, false);
+
 
   if (status !== 200 || movieData.status === "coming soon" || params.movieDetails.length !== 3) {
     return;
@@ -65,7 +47,8 @@ export async function generateMetadata({ params }) {
 
   if (browserUrlath !== createdUrlPath) {
     return;
-  };
+  }
+
 
   // extract the movie genres and sort them max 3 
   const genres = genre?.slice(0, 3).join(', ')
@@ -109,7 +92,7 @@ export default async function Page({ params }) {
 
   const { movieDetails } = params;
   const movieId = movieDetails ? movieDetails[2] : null;
-  const ip = getIP();
+  const ip = "76.76.21.123";//getIP();
 
   const { status, movieData, suggestions } = await getMovieDeatils('tt' + movieId, true);
   let isValidPath = true;
