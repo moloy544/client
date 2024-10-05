@@ -92,7 +92,7 @@ const moviesBazarPlayer = (source) => {
         <script type="text/javascript">
             const script = document.createElement("script");
             script.id = "playerjs-script";
-            script.src = "/static/js/moviesbazar_player2.0.js";
+            script.src = "/static/js/player.js";
             script.async = true;
             script.onload = () => {
                 const player = new MoviesbazarPlayer({
