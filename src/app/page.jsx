@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
 import Footer from "@/components/Footer";
 
-export const revalidate = 3600 // revalidate at most every hour
+export const revalidate = 21600 // revalidate at most every 6 hours
 
 export default async function Page() {
 
