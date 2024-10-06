@@ -10,4 +10,4 @@ Disallow: /embed
 Disallow: /embed/*
 
 # Sitemap URL
-Sitemap: https://moviesbazar.online/sitemap.xml
+Sitemap: https://www.moviesbazar.online/sitemap.xml

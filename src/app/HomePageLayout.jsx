@@ -120,7 +120,7 @@ function HomePageLayout({ initialLayoutData }) {
                             href={`/actors/${creatUrlLink(actor.name)}/${actor.imdbId?.replace('nm', '')}`}
                             key={actor.imdbId}
                             title={actor.name}
-                            className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-gray-700 rounded-md">
+                            className="w-auto h-auto px-3 py-1.5 cursor-pointer bg-gray-700 rounded-md" prefetch={false}>
 
                             <div className="w-28 h-28 mobile:w-20 mobile:h-20 rounded-full border-2 border-yellow-600">
 
