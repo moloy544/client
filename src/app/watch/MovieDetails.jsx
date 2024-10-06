@@ -160,7 +160,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
               <div className="flex flex-wrap items-center space-x-1">
                 <strong className="text-base text-gray-200 font-bold">Language:</strong>
-                <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-300 font-semibold mt-1">
+                <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-300 font-semibold mt-1" prefetch={false}>
                   {language?.charAt(0).toUpperCase() + language?.slice(1)}
                   {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)"}
                 </Link>

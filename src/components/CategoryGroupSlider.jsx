@@ -9,9 +9,9 @@ const LinkButton = ({ linkData, linkUrl }) => {
       {linkData?.map((data) =>
       (<div key={data.id} className="bg-[#1D263B] hover:bg-gray-700 w-auto h-auto py-2 px-3 rounded-[5px] font-medium flex-none text-xs text-gray-300">
         <Link
-        title={data.name}
+          title={data.name}
           href={data.linkUrl ? data.linkUrl.toLowerCase().replace(/[' ']/g, '-') :
-            linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')}>
+            linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')} prefetch={false}>
           {data.name}
         </Link>
       </div>

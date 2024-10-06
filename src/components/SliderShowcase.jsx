@@ -97,7 +97,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                 </div>
 
                 {linkUrl && (
-                    <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium">
+                    <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium" prefetch={false}>
                         <span>View All</span>
                         <i className="bi bi-chevron-right"></i>
                     </Link>

@@ -50,7 +50,7 @@ function Breadcrumb({ data }) {
                         </div>
 
                         {data.pathLink ? (
-                            <Link href={data.pathLink} className="line-clamp-1 hover:text-cyan-500">
+                            <Link href={data.pathLink} className="line-clamp-1 hover:text-cyan-500" prefetch={false}>
                                 {data.name}
                             </Link>
                         ) : (
