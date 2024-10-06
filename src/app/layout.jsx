@@ -3,9 +3,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Inter } from 'next/font/google'
 import Script from 'next/script';
 import { cookies } from 'next/headers';
-//import { Suspense } from 'react';
-//import { SpeedInsights } from "@vercel/speed-insights/next";
-//import { Analytics } from "@vercel/analytics/react"
+import { Suspense } from 'react';
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react"
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
@@ -61,12 +61,12 @@ export default function RootLayout({ children }) {
         <AdsShowMessage user={user} />
           {children}
         </ReduxStatePrivider>
-        {/**process.env.NODE_ENV === "production" && (
+        {process.env.NODE_ENV === "production" && (
           <Suspense>
             <SpeedInsights />
             <Analytics />
           </Suspense>
-        )**/}
+        )}
 
          <Script
           type='text/javascript'
