@@ -71,22 +71,10 @@ const moviesBazarPlayer = (source) => {
         </style>
     </head>
     <body>
-        <div class="container">
-            <div style="width: 100%; height: 100%; display: flex; flex-direction: column;">
-                <div id="banner"></div>
-                <div id="player" style="width: 100%; height: 100%;"></div>
-            </div>
-        </div>
 
-        <script type="text/javascript">
-            atOptions = {
-                'key': '7cb32ff000cfd9e6c01a19c16bfead48',
-                'format': 'iframe',
-                'height': 50,
-                'width': 280,
-                'params': {}
-            };
-        </script>
+        <div class="container">
+        <div id="player" style="width: 100%; height: 100%;"></div>
+        </div>
 
         <script type="text/javascript">
             const script = document.createElement("script");
@@ -103,14 +91,8 @@ const moviesBazarPlayer = (source) => {
                 });
             };
             document.body.appendChild(script);
-
-            const adContainer = document.getElementById('banner');
-            const adsterraScriptSrc = document.createElement('script');
-            adsterraScriptSrc.type = 'text/javascript';
-            adsterraScriptSrc.src = '//www.topcreativeformat.com/7cb32ff000cfd9e6c01a19c16bfead48/invoke.js';
-            adsterraScriptSrc.async = true;
-            adContainer.appendChild(adsterraScriptSrc);
         </script>
+        <script type="text/javascript" src="//filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js" async="true"></script>
     </body>
 </html>
 `;

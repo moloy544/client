@@ -9,7 +9,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
 import { ModelsController } from "@/lib/EventsHandler";
 import VideoPlayer from "@/components/VideoPlayer";
-import AdsterraAds from "@/components/ads/AdsterraAds";
+//import AdsterraAds from "@/components/ads/AdsterraAds";
 import { adsConfig } from "@/config/ads.config";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
@@ -92,10 +92,10 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       <Breadcrumb data={breadcrumbData} />
 
-      {/*** Banner Ad Show Container Size height 50, width 280  ****/}
-      <div className="min-w-full h-auto-fit flex items-center justify-center">
+      {/*** Banner Ad Show Container Size height 50, width 280 <div className="min-w-full h-auto-fit flex items-center justify-center">
         <AdsterraAds adOptions={adsConfig.adOptions1} />
       </div>
+  ****/}
 
       <div className="my-6 mobile:my-2.5 px-2 flex justify-center items-center">
 
@@ -205,16 +205,16 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       <div className="py-2">
         {/**** Show Suggest Data Based on Gnere ******/}
         <SliderShowcase
-         moviesData={suggestions?.genreList} 
-         title="You might also like" 
-         thambnailImagePriority={false}
-         />
+          moviesData={suggestions?.genreList}
+          title="You might also like"
+          thambnailImagePriority={false}
+        />
         {/**** Show Suggest Data Based on Cast ******/}
-        <SliderShowcase 
-        moviesData={suggestions?.castList} 
-        title="Explore more from same actor"
-        thambnailImagePriority={false}
-         />
+        <SliderShowcase
+          moviesData={suggestions?.castList}
+          title="Explore more from same actor"
+          thambnailImagePriority={false}
+        />
       </div>
 
     </div>

@@ -68,12 +68,6 @@ export default function RootLayout({ children }) {
           </Suspense>
         )**/}
 
-        <Script
-          type='text/javascript'
-          async={true}
-          src='//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js'
-          strategy="lazyOnload"
-        />
          <Script
           type='text/javascript'
           async={true}
