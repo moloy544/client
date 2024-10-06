@@ -97,10 +97,10 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       </div>
   ****/}
 
-      <div className="my-6 mobile:my-2.5 px-2 flex justify-center items-center">
+      <div className="my-6 mobile:my-2.5 flex justify-center items-center">
 
-        <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl">
-          <div className={`mobile:w-full md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto bg-gray-900 ${playerVisibility && videoSource ? "block" : "hidden"}`}>
+        <div className="w-fit h-fit mobile:w-full md:min-w-[700px] lg:min-w-[950px] p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md mobile:rounded-none shadow-xl">
+          <div className={`mobile:w-full mobile:mt-2.5 md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto bg-gray-900 ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
             {playerVisibility && videoSource && (
               <VideoPlayer title={title} source={videoSource} userIp={userIp} />

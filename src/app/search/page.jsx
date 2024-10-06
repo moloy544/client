@@ -277,49 +277,60 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
     const { handleSubmitForm } = functions;
 
     const [visibility, setVisibility] = useState(false);
+    const [filteredHistory, setFilteredHistory] = useState(searchHistory);
 
     const hideModel = () => {
         setVisibility(false);
-    }
+    };
 
-    // set search history in state after component mount
+    // Set search history in state after component mount
     useEffect(() => {
         const data = getLocalStorageSearchHistory();
         setSearchHistory(data);
-    }, [])
+        setFilteredHistory(data);
+    }, []);
 
-
-    const searchInputChage = (event) => {
+    const searchInputChange = (event) => {
         const userSearchText = event.target.value?.replace(/ +/g, ' ').trimStart();
-        if (userSearchText !== ' ' && userSearchText !== '') {
-            setVisibility(false)
+
+        // Show the model if the input has any value
+        if (userSearchText !== '' && userSearchText !== ' ') {
+            setVisibility(true);
+            // Filter search history based on user input
+            const filtered = searchHistory.filter(item => 
+                item.searchKeyword.toLowerCase().includes(userSearchText.toLowerCase())
+            );
+            setFilteredHistory(filtered);
         } else {
-            setVisibility(true)
+            // If input is empty, reset filtered history to original search history
+            setVisibility(false);
+            setFilteredHistory(searchHistory);
         }
     };
 
     const submit = (event) => {
-
         event.preventDefault();
-        // get form data or search text value from form data
+        // Get form data or search text value from form data
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         const searchValue = formJson.searchText?.trim();
 
         if (searchValue !== '' && searchValue !== " ") {
             handleSubmitForm(searchValue);
-        };
+        }
     };
 
     const deleteHistoryItem = (index) => {
         if (index === "Clear all") {
             setSearchHistory([]);
+            setFilteredHistory([]);
             localStorage.removeItem('searchHistory');
             return;
-        };
+        }
         const data = getLocalStorageSearchHistory();
         const updatedData = data.filter((_, i) => i !== index);
         setSearchHistory(updatedData);
+        setFilteredHistory(updatedData);
         localStorage.setItem('searchHistory', JSON.stringify(updatedData));
     };
 
@@ -329,45 +340,47 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         if (q !== '' && q !== " ") {
             handleSubmitForm(q);
             setVisibility(false);
-        };
+        }
     };
 
     return (
-
         <div className="w-[45%] mobile:w-full h-auto relative">
             <form onSubmit={submit} className="w-auto h-auto flex items-center">
                 <input
                     className="w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 border-r-transparent rounded-r-none rounded-md px-2 text-base caret-black mobile:text-sm placeholder:text-gray-800 mobile:placeholder:text-xs placeholder:text-sm shadow-2xl"
                     onClick={() => setVisibility(true)}
-                    onChange={searchInputChage}
+                    onChange={searchInputChange}
                     type="text"
                     name="searchText"
                     placeholder="Search by title, cast, genre and more..."
+                    autoComplete="off"
                     required
                 />
-                <button type="submit" className="w-20 mobile:h-10 h-11 bg-yellow-500 border-2 border-yellow-600 border-l-transparent rounded-l-none text-gray-800 font-serif text-center text-sm px-2 rounded-md">Search</button>
+                <button type="submit" className="w-20 mobile:h-10 h-11 bg-yellow-500 border-2 border-yellow-600 border-l-transparent rounded-l-none text-gray-800 font-semibold text-center text-sm px-2 rounded-md">Search</button>
             </form>
 
             <ModelsController visibility={visibility} closeEvent={hideModel}>
-
                 <div className="w-full h-auto bg-white absolute top-12 z-50 rounded-b-md shadow-lg">
-                    {searchHistory.length > 0 ? (
+                    {filteredHistory.length > 0 ? (
                         <>
                             <div className="flex flex-col sticky top-0 z-10 bg-white px-3 py-2">
                                 <div className="w-full flex items-center justify-between">
-                                    <div className="text-gray-700 text-sm font-bold">Recent serches</div>
+                                    <div className="text-gray-700 text-sm font-bold">Recent Searches</div>
                                     <button
                                         type="button"
                                         title="Clear all"
-                                        onClick={() => deleteHistoryItem('Clear all')} className="text-rose-600 text-xs hover:underline underline-offset-1 px-1.5 py-1">
+                                        onClick={() => deleteHistoryItem('Clear all')}
+                                        className="text-rose-600 text-xs hover:underline underline-offset-1 px-1.5 py-1">
                                         Clear
                                     </button>
                                 </div>
-                                <small className="text-xs text-gray-500 font-normal w-[80%]">This is your recent success search history results</small>
+                                <small className="text-xs text-gray-500 font-normal w-[80%]">
+                                    Showing recent search keywords based on your results.
+                                </small>
                             </div>
 
                             <div className="py-3 px-1.5 w-auto max-h-60 overflow-y-scroll scrollbar-hidden">
-                                {searchHistory.map((data, index) => (
+                                {filteredHistory.map((data, index) => (
                                     <div key={index} className="group flex justify-between items-center h-auto hover:bg-slate-200 hover:bg-opacity-50 p-2 rounded-md">
                                         <div onClick={() => handleSelectHistoryItem(data.searchKeyword)} className="w-full mobile:text-xs text-sm text-gray-600 font-medium cursor-pointer flex items-center gap-3">
                                             <i className="bi bi-clock-history"></i>
@@ -383,13 +396,13 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                                 ))}
                             </div>
                         </>
-                    ) : (<div className="w-full h-auto flex items-center justify-center py-3 px-2">
-                        <h2 className="text-gray-600 text-base mobile:text-base text-center font-medium">No recent searches</h2>
-                    </div>)}
+                    ) : (
+                        <div className="w-full h-auto flex items-center justify-center py-3 px-2">
+                            <h2 className="text-gray-600 text-base mobile:text-base text-center font-medium">No recent search keywords found</h2>
+                        </div>
+                    )}
                 </div>
             </ModelsController>
-
         </div>
-
     )
 }

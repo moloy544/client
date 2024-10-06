@@ -59,8 +59,15 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
 
     try {
       if (processedReports) return;
-    
-      if (selectedReports.length > 0 || writtenReportRef.current?.value.length >= 10) {
+      const writenReport = writtenReportRef.current?.value.trim();
+   
+      if (selectedReports.length === 0 && writenReport.length === 0) {
+          setMessage("Please select or describe your problem with at least 10 characters.");
+          return;
+      } else if (writenReport.length > 0 && writenReport.length < 10) {
+          setMessage("Your described report is too short. Please describe your problem with at least 10 characters.");
+          return;
+      } 
         setProcessedReports(true);
         const reportResponse = await axios.create({
           baseURL: appConfig.backendUrl,
@@ -87,15 +94,11 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
           setMessage(reportResponse.data.message);
         }
 
-      } else {
-        setMessage("Please select or describe your problem minimum 8 words");
-      };
-
     } catch (error) {
       //console.log(error);
       if (error.response && error.response.data && error.response.data.message) {
         setMessage(error.response.data.message);
-      }else{
+      } else {
         setMessage("An error occurred while reporting");
       }
     } finally {
@@ -190,7 +193,9 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
               </div>
 
               {message !== "Success" && message !== "Pending" && (
-                <p className="text-red-pure text-xs my-1 font-medium">{message}</p>
+                <div className="my-1 max-w-sm">
+                <p className="text-red-pure text-xs font-medium">{message}</p>
+                </div>
               )}
               <div className="py-3 flex gap-5 mobile:my-3">
                 <button
