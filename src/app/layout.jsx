@@ -2,7 +2,6 @@ import './globals.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Inter } from 'next/font/google'
 import Script from 'next/script';
-import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
@@ -40,8 +39,6 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
 
-  const user = cookies().get('moviesbazar_user');
-
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -58,7 +55,7 @@ export default function RootLayout({ children }) {
         />
 
         <ReduxStatePrivider>
-        <AdsShowMessage user={user} />
+        <AdsShowMessage />
           {children}
         </ReduxStatePrivider>
         {process.env.NODE_ENV === "production" && (

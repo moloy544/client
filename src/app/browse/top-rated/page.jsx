@@ -22,7 +22,9 @@ export const metadata = {
     description: 'Watch top IMDB rated movies movies online Movies Bazaar',
     url: appConfig.appDomain + '/browse/top-rated'
   },
-}
+};
+
+export const revalidate = 14400 * 2 // revalidate at most every 8 hours
 
 export default async function Page() {
 

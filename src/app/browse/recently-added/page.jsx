@@ -6,13 +6,13 @@ import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
-export const revalidate = 3600 // revalidate at most every hour
-
 export const metadata = {
   title:{
     absolute: 'Recently Added Movies | Explore the Latest Picks at Movies Bazar'
   } 
-}
+};
+
+export const revalidate = 7200 // revalidate at most every 2 hours
 
 export default async function Page() {
 

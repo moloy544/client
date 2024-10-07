@@ -4,11 +4,11 @@ import { ModelsController } from '@/lib/EventsHandler';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-function AdsShowMessage({ user }) {
+function AdsShowMessage() {
+
     const [showMessage, setShowMessage] = useState(false);
 
     const setUserCookie = async () => {
-        if (user) return;
         try {
             await axios.post('/api/user');
         } catch (error) {
@@ -23,8 +23,8 @@ function AdsShowMessage({ user }) {
             const body = document.querySelector('body');
             body.setAttribute('class', 'scrollbar-hidden');
             body.style.overflow = 'hidden';
+            setUserCookie();
         };
-        setUserCookie();
     }, []);
 
     const handleAccept = () => {
@@ -56,7 +56,6 @@ function AdsShowMessage({ user }) {
             </div>
         </div>
     </ModelsController>
-
     );
 }
 

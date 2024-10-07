@@ -41,6 +41,8 @@ const getSeriesLayoutData = async () => {
     return { pageData, status }
 }
 
+export const revalidate = 14400 * 3 // revalidate at most every 12 hours
+
 export default async function Page() {
 
     const { pageData, status } = await getSeriesLayoutData();

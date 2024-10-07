@@ -1,18 +1,23 @@
 import { appConfig } from "@/config/config";
 import axios from "axios";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 // Extract IP addresses from the request
-function getIP(req) {
-    const FALLBACK_IP_ADDRESS = '76.76.21.123';
-    const forwardedFor = req.headers.get('x-forwarded-for');
+function getIP() {
 
+    const FALLBACK_IP_ADDRESS = '76.76.21.123'
+    const forwardedFor = headers().get('x-forwarded-for');
     if (process.env.NODE_ENV === "development") {
-        return FALLBACK_IP_ADDRESS;
+      return FALLBACK_IP_ADDRESS;
     }
-
-    return forwardedFor ? forwardedFor.split(',')[0] : req.headers.get('x-real-ip') || FALLBACK_IP_ADDRESS;
-}
+  
+    if (forwardedFor) {
+      return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
+    }
+  
+    return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
+  }
 
 // Generate new source URL
 function generateSourceURL(originalURL, userIp) {
@@ -109,7 +114,7 @@ export async function GET(req) {
         }
 
         // Get the user's IP address
-        const ip = "76.76.21.123";//getIP(req);
+        const ip = getIP();
 
         // Fetch video source from backend
         const getSourceResponse = await axios.post(`${appConfig.backendUrl}/api/v1/subscriber/embed`, { contentId: imdbId });

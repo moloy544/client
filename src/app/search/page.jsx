@@ -13,7 +13,7 @@ import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 //import AdsterraAds from "@/components/ads/AdsterraAds";
-import { adsConfig } from "@/config/ads.config";
+//import { adsConfig } from "@/config/ads.config";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
