@@ -89,13 +89,11 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
     return (
         <section className="w-full h-auto relative space-y-2.5 py-1.5">
             <div className="w-full h-auto flex justify-between items-center px-2.5">
-
                 <div className="flex items-center border-l-[3px] rounded-sm border-yellow-500 pl-1">
                     <h2 className="text-gray-200 text-[18px] mobile:text-sm font-semibold line-clamp-1">
                         {title}
                     </h2>
                 </div>
-
                 {linkUrl && (
                     <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium" prefetch={false}>
                         <span>View All</span>
@@ -104,16 +102,28 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                 )}
             </div>
 
-            <div ref={sliderContainerRef} className={`w-full h-auto flex flex-row overflow-x-scroll ${!space ? 'space-x-2 mobile:space-x-1.5' : space} px-2 scrollbar-hidden relative scroll-smooth`}>
+            <div
+                ref={sliderContainerRef}
+                className={`w-full h-auto flex flex-row overflow-x-scroll ${!space ? 'space-x-2 mobile:space-x-1.5' : space} px-2 scrollbar-hidden relative scroll-smooth`}
+            >
                 {children ? children : (
                     <>
                         {moviesData?.map((data) => (
-                            <div ref={movieCardRef} key={data.imdbId} className="movie_card text-xs mobile:text-[10px]">
-                                <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title + ' ' + data.releaseYear + ' ' + data.type} prefetch={false}>
-                                    <div className="relative w-[155px] h-[210px] mobile:w-28 mobile:h-40 bg-white rounded-[3px]">
+                            <div
+                            ref={movieCardRef}
+                                key={data.imdbId}
+                                className="movie_card max-h-64 text-xs mobile:text-[10px] flex-shrink-0"
+                                style={{ width: 'calc(100% / 6)', maxWidth: '180px', minWidth: '110px', }}
+                            >
+                                <Link
+                                    href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}
+                                    title={`${data.title} ${data.releaseYear} ${data.type}`}
+                                    prefetch={false}
+                                >
+                                    <div className="relative w-full aspect-[2/3] h-full bg-white rounded-[3px]">
                                         <Image
                                             priority={thambnailImagePriority}
-                                            className="select-none rounded-[3px]"
+                                            className="select-none rounded-[3px] object-fill"
                                             src={!imageResize ? data.thambnail : data.thambnail?.replace('/upload/', '/upload/w_220,h_280/')}
                                             blurDataURL={data.thambnail}
                                             fill
@@ -121,19 +131,17 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                                         />
                                     </div>
                                     <div className="movie_name_container">
-                                        <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[14px] px-2 py-1">{data.title}</span>
+                                        <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[14px] px-2 mobile:py-1.5 py-2">{data.title}</span>
                                     </div>
 
                                     <div className="absolute top-0.5 left-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-950 bg-opacity-75 text-yellow-400 text-center font-sans font-semibold rounded-md">
                                         {data.releaseYear}
                                     </div>
-
                                 </Link>
                             </div>
                         ))}
                     </>
                 )}
-
             </div>
 
             <button
@@ -177,7 +185,6 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                     </svg>
                 </div>
             </button>
-
         </section>
     );
 }
