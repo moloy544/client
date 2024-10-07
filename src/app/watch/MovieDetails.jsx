@@ -182,7 +182,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 <strong className="text-base text-gray-200 font-bold flex-wrap">Genre:</strong>
                 {genre?.map((g, index) =>
                   g !== "N/A" && (
-                    <Link key={index} className="text-gray-300 text-xs font-semibold mt-1" href={`/browse/genre/${g?.toLowerCase().replace(/[' ']/g, '-')}`}>
+                    <Link key={index} className="text-gray-300 text-xs font-semibold mt-1" href={`/browse/genre/${g?.toLowerCase().replace(/[' ']/g, '-')}`} prefetch={false}>
                       {index !== genre.length - 1 ? `${g} ${'\u2022'} ` : g}
                     </Link>
 
@@ -207,13 +207,11 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         <SliderShowcase
           moviesData={suggestions?.genreList}
           title="You might also like"
-          thambnailImagePriority={false}
         />
         {/**** Show Suggest Data Based on Cast ******/}
         <SliderShowcase
           moviesData={suggestions?.castList}
           title="Explore more from same actor"
-          thambnailImagePriority={false}
         />
       </div>
 

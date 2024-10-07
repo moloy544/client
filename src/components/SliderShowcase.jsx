@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { creatUrlLink } from '@/utils';
 
-const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false, thambnailImagePriority = true, children }) => {
+const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false, thambnailImagePriority = false, children }) => {
 
     const sliderContainerRef = useRef(null);
     const movieCardRef = useRef(null);
