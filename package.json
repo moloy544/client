@@ -12,16 +12,13 @@
     "@reduxjs/toolkit": "^2.0.1",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.1",
-    "@vidstack/react": "^1.12.0",
     "axios": "^1.6.1",
     "bootstrap-icons": "^1.10.5",
-    "hls.js": "^1.5.13",
     "next": "^14.1.4",
     "nextjs-toploader": "^1.6.4",
     "react": "latest",
     "react-dom": "latest",
-    "react-redux": "^9.0.4",
-    "remotion": "^4.0.200"
+    "react-redux": "^9.0.4"
   },
   "devDependencies": {
     "autoprefixer": "latest",
