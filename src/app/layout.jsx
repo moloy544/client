@@ -71,7 +71,12 @@ export default function RootLayout({ children }) {
           src=' //filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js'
           strategy="lazyOnload"
         />
-
+         <Script
+          type='text/javascript'
+          async={true}
+          src='//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js'
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   )
