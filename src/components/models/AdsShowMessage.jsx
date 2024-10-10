@@ -1,20 +1,20 @@
 "use client"
 
 import { ModelsController } from '@/lib/EventsHandler';
-import axios from 'axios';
+//import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 function AdsShowMessage() {
 
     const [showMessage, setShowMessage] = useState(false);
 
-    const setUserCookie = async () => {
+    /**const setUserCookie = async () => {
         try {
             await axios.post('/api/user');
         } catch (error) {
             console.log("Error while setting user");
         }
-    };
+    };**/
 
     useEffect(() => {
         const acceptAds = localStorage.getItem('acceptAds');
@@ -23,7 +23,7 @@ function AdsShowMessage() {
             const body = document.querySelector('body');
             body.setAttribute('class', 'scrollbar-hidden');
             body.style.overflow = 'hidden';
-            setUserCookie();
+            //setUserCookie();
         };
     }, []);
 
