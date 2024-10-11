@@ -54,7 +54,7 @@ function AdsShowMessage() {
                             >
                                 Understand
                             </button>
-                            <p className="text-xs text-gray-500 font-semibold mt-1">This message may show again if you clear your browser or site data for {window.location.hostname}. Thank you for your support!</p>
+                            <p className="text-xs text-gray-500 font-semibold mt-1">This message may show again if you clear your browser or site data for www.moviesbazar.online. Thank you for your support!</p>
                         </>
                     ) : (
                         <>
