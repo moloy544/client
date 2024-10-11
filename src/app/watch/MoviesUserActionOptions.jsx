@@ -1,6 +1,7 @@
 'use client'
 
 import { creatToastAlert } from "@/utils";
+import { safeLocalStorage } from "@/utils/errorHandlers";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -25,7 +26,7 @@ export default function MoviesUserActionOptions({ movieData }) {
 
 
   const saveInLocalStorage = () => {
-    const localStorageData = localStorage.getItem('saved-movies-data');
+    const localStorageData = safeLocalStorage.get('saved-movies-data');
     const parseData = localStorageData ? JSON.parse(localStorageData) : [];
     const index = parseData?.findIndex((data) => data.imdbId === movieData.imdbId);
 
@@ -48,9 +49,9 @@ export default function MoviesUserActionOptions({ movieData }) {
     }
 
     if (parseData.length === 0) {
-      localStorage.removeItem('saved-movies-data');
+      safeLocalStorage.remove('saved-movies-data');
     } else {
-      localStorage.setItem('saved-movies-data', JSON.stringify(parseData));
+      safeLocalStorage.set('saved-movies-data', JSON.stringify(parseData));
     }
   };
 
@@ -64,7 +65,7 @@ export default function MoviesUserActionOptions({ movieData }) {
 
   useEffect(() => {
 
-    const localStorageData = localStorage.getItem('saved-movies-data');
+    const localStorageData = safeLocalStorage.get('saved-movies-data');
 
     const parseData = localStorageData ? JSON.parse(localStorageData) : [];
 

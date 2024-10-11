@@ -7,6 +7,7 @@ import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink } from "@/utils";
 import { InspectPreventer } from "@/lib/lib";
 import { useInfiniteScroll } from "@/hooks/observers";
+import { safeLocalStorage } from "@/utils/errorHandlers";
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -43,7 +44,7 @@ export default function WatchlaterModel({ visibility, functions }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const localStorageData = localStorage.getItem('saved-movies-data');
+                const localStorageData = safeLocalStorage.get('saved-movies-data');
                 const parseData = localStorageData ? JSON.parse(localStorageData) : [];
 
                 if (parseData.length > 0 && !isAllDataLoad) {
@@ -90,7 +91,7 @@ export default function WatchlaterModel({ visibility, functions }) {
     // Remove from watch list item by imdbId
     const removeWatchListItem = (event, imdbId) => {
 
-        const localStorageData = localStorage.getItem('saved-movies-data');
+        const localStorageData = safeLocalStorage.get('saved-movies-data');
         const parseData = localStorageData ? JSON.parse(localStorageData) : [];
         const index = parseData?.findIndex((data) => data.imdbId === imdbId);
 
@@ -123,11 +124,11 @@ export default function WatchlaterModel({ visibility, functions }) {
                     /* check after remove is watchlater localStorage length is zero so
                   remove localStorage key from browser and also empty watchlater state for show empty message */
                     if (parseData.length === 0) {
-                        localStorage.removeItem('saved-movies-data');
+                     safeLocalStorage.remove('saved-movies-data');
                         setWatchLaterData([]);
                     } else {
                         // update localStorage with new data
-                        localStorage.setItem('saved-movies-data', JSON.stringify(parseData));
+                        safeLocalStorage.set('saved-movies-data', JSON.stringify(parseData));
                     }
                 }, 500);
             }
@@ -166,8 +167,8 @@ export default function WatchlaterModel({ visibility, functions }) {
                 // Clear state after all animations and transitions
                 setTimeout(() => {
                     setWatchLaterData([]); // Clear the data state
-                    if (localStorage.getItem('saved-movies-data')) {
-                        localStorage.removeItem('saved-movies-data'); // Remove localStorage key from browser
+                    if (safeLocalStorage.get('saved-movies-data')) {
+                        safeLocalStorage.remove('saved-movies-data'); // Remove localStorage key from browser
                     }
                     creatToastAlert({
                         message: 'Cleared all movies and series from Watch later',
@@ -296,7 +297,7 @@ const Card = memo(({ data, remove }) => {
                     onClick={(event) => remove(event, imdbId)}
                     type="button"
                     title="Delete"
-                    className="w-8 h-8 text-sm hidden group-hover:block text-gray-500 hover:text-red-600 float-right">
+                    className="w-8 h-8 text-sm hidden mobile:block group-hover:block text-gray-500 hover:text-red-600 float-right">
                     <span className="sr-only">Delete</span>
                     <i className="bi bi-trash"></i>
                 </button>
