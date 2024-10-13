@@ -215,7 +215,7 @@ export default function AdminPage() {
 
                 setState(initialMoviesData);
                 fileInput.value = '';
-                setImagePreview(null);
+                setImagePreview("");
                 if (isAudioVideoTypeUpdate === 'yes') {
                     getMovieOneByOne()
                 }
