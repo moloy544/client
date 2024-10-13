@@ -47,7 +47,22 @@ const validateMovieDetailsInput = (data) => {
     return null;
 };
 
+const isValidImageUrl = (value) => {
+    // Check if value is not empty or just whitespace
+    if (value.trim() === "") {
+        return false; // Invalid if empty or just whitespace
+    }
+
+    // Regular expression to check for valid image URLs
+    const imageUrlPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg))$/i;
+
+    // Validate the URL
+    return imageUrlPattern.test(value);
+};
+
+
 export {
     getTodayDate,
     validateMovieDetailsInput,
+    isValidImageUrl
 }

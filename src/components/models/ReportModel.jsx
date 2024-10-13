@@ -10,6 +10,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
   const [processedReports, setProcessedReports] = useState(false);
+  const [vpnUseSuggestionModel, setVpnUseSuggestionModel] = useState(false);
 
   const writtenReportRef = useRef(null);
 
@@ -47,6 +48,9 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
 
     setSelectedReports((prevData) => {
       if (isChecked) {
+        if (reportValue === "Video not play") {
+          setVpnUseSuggestionModel(true);
+        }
         return [...prevData, reportValue];
       } else {
         return prevData.filter((report) => report !== reportValue);
@@ -60,39 +64,39 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
     try {
       if (processedReports) return;
       const writenReport = writtenReportRef.current?.value.trim();
-   
+
       if (selectedReports.length === 0 && writenReport.length === 0) {
-          setMessage("Please select or describe your problem with at least 10 characters.");
-          return;
+        setMessage("Please select or describe your problem with at least 10 characters.");
+        return;
       } else if (writenReport.length > 0 && writenReport.length < 10) {
-          setMessage("Your described report is too short. Please describe your problem with at least 10 characters.");
-          return;
-      } 
-        setProcessedReports(true);
-        const reportResponse = await axios.create({
-          baseURL: appConfig.backendUrl,
-          withCredentials: true
-        }).post('/api/v1/user/action/report', {
-          reportData: {
-            movie: movieData._id,
-            selectedReports,
-            writtenReport: writtenReportRef.current?.value,
-          }
-        });
-
-        if (reportResponse.status === 200) {
-
-          setSelectedReports([]);
-          writtenReportRef.current.value = "";
-          setMessage("Success");
-
-          setTimeout(() => {
-            setMessage("Pending");
-            closeModel();
-          }, 3000);
-        } else {
-          setMessage(reportResponse.data.message);
+        setMessage("Your described report is too short. Please describe your problem with at least 10 characters.");
+        return;
+      }
+      setProcessedReports(true);
+      const reportResponse = await axios.create({
+        baseURL: appConfig.backendUrl,
+        withCredentials: true
+      }).post('/api/v1/user/action/report', {
+        reportData: {
+          movie: movieData._id,
+          selectedReports,
+          writtenReport: writtenReportRef.current?.value,
         }
+      });
+
+      if (reportResponse.status === 200) {
+
+        setSelectedReports([]);
+        writtenReportRef.current.value = "";
+        setMessage("Success");
+
+        setTimeout(() => {
+          setMessage("Pending");
+          closeModel();
+        }, 3000);
+      } else {
+        setMessage(reportResponse.data.message);
+      }
 
     } catch (error) {
       //console.log(error);
@@ -194,7 +198,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
 
               {message !== "Success" && message !== "Pending" && (
                 <div className="my-1 max-w-sm">
-                <p className="text-red-pure text-xs font-medium">{message}</p>
+                  <p className="text-red-pure text-xs font-medium">{message}</p>
                 </div>
               )}
               <div className="py-3 flex gap-5 mobile:my-3">
@@ -221,9 +225,35 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
             <h2 className="w-60 h-auto text-green-600 text-center text-sm font-medium">Thanks for reporting us we are solve your issue soon as possible</h2>
           )}
         </div>
+        {/* VPN Suggestion Modal */}
+        {vpnUseSuggestionModel && (
+          <VpnUseSuggestionModal isOpen={vpnUseSuggestionModel} close={()=> setVpnUseSuggestionModel(false)} />
+        )}
       </div>
+
     </ModelsController>
   );
 
 };
+
+function VpnUseSuggestionModal({ isOpen, close }) {
+  if (!isOpen) {
+    return null; // Return early if modal is not open. This prevents unnecessary re-renders.
+  }
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-950 bg-opacity-50 z-[70] px-2 py-3">
+      <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm">
+        <h3 className="text-lg font-bold mb-4">VPN Suggestion</h3>
+        <p className="text-sm text-gray-700 font-medium">If you have problems watching videos, we suggest install a VPN and connect to any server. It can help you watch smoothly.</p>
+        <div className="flex justify-end mt-4">
+          <button className="bg-gray-950 text-white px-4 py-2 rounded" onClick={close}>
+            Got it!
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+
+}
 

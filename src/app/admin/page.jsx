@@ -7,7 +7,7 @@ import { appConfig } from "@/config/config";
 import ActressController from "./components/ActressController";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
 import { creatToastAlert } from "@/utils";
-import { getTodayDate, validateMovieDetailsInput } from "./utils/admin.utils";
+import { getTodayDate, isValidImageUrl, validateMovieDetailsInput } from "./utils/admin.utils";
 
 // text or number input style properties
 const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
@@ -46,7 +46,7 @@ export default function AdminPage() {
 
     const [state, setState] = useState(initialMoviesData);
 
-    const [imagePreview, setImagePreview] = useState(null);
+    const [imagePreview, setImagePreview] = useState("");
     const [processing, setProcessing] = useState(false);
     const dateInputRef = useRef(null);
 
@@ -182,14 +182,19 @@ export default function AdminPage() {
 
             // Create a FormData object to hold the form data
             const formData = new FormData();
+            const details = state;
+
+            if (imagePreview && isValidImageUrl(imagePreview)) {
+                details.extranalImage_uri = imagePreview;
+            }
 
             // add movie data sate in form data
-            formData.append('data', JSON.stringify(state));
+            formData.append('data', JSON.stringify(details));
 
             // add file in from data 
             const fileInput = document.getElementById('thambnail-file');
 
-            if (fileInput && fileInput.files[0]) {
+            if (fileInput && fileInput.files[0] && !details.extranalImage_uri) {
                 formData.append('file', fileInput.files[0]);
             };
             if (isCreatedDateUpdate) {
@@ -225,7 +230,13 @@ export default function AdminPage() {
 
         } catch (error) {
             console.error('Error sending movies to backend:', error);
-            alert("An error occurred while adding movies");
+            if (error.response && error.response.data) {
+                if (error.response.data.message) {
+                    creatToastAlert({ message: error.response.data.message });
+                }
+              }else{
+                creatToastAlert({ message: "An error occurred while adding movies" });
+              }
         } finally {
             setProcessing(false);
         }
@@ -430,8 +441,11 @@ export default function AdminPage() {
                                         src={imagePreview} alt="thambnail" />
 
                                 )}
-                                <label className="font-bold text-gray-800">Select image</label>
+                                <label className="font-bold text-gray-800">Select image OR Add image url</label>
                                 <input onChange={handleFileInputChnage} type="file" name="thambnail-file" id="thambnail-file" accept="image/*" />
+                                <input className={inputStyle+' my-1.5'} type="text" value={imagePreview} 
+                                onChange={(e) => setImagePreview(e.target.value)} 
+                                placeholder="Enter external image url" />
                             </div>
 
                             {state.watchLink?.length > 0 && (
@@ -703,8 +717,8 @@ export default function AdminPage() {
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Adition tags</label>
-                                <input type="text" list="tagOptions" id="tags-input" data-field="tags" className={inputStyle} placeholder="Enter tags" />
-                                <datalist id="tagOptions">
+                                <input type="text" list="tag-option" id="tags-input" data-field="tags" className={inputStyle} placeholder="Enter tags" defaultValue="" />
+                                <datalist id="tag-option">
                                     {tagOptions.map((tag) => (
                                         <option key={tag} value={tag} />
                                     ))}
