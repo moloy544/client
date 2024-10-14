@@ -1,8 +1,6 @@
 import './globals.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Inter } from 'next/font/google'
-import Script from 'next/script';
-import { Suspense } from 'react';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
 import NextTopLoader from 'nextjs-toploader';
@@ -60,7 +58,7 @@ export default function RootLayout({ children }) {
           <AdsShowMessage />
           {children}
         </ReduxStatePrivider>
-        
+
         {process.env.NODE_ENV === "production" && (
           <>
             <SpeedInsights />
