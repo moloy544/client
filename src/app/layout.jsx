@@ -10,6 +10,7 @@ import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
 import AdsShowMessage from '@/components/models/AdsShowMessage';
 import { adsConfig } from '@/config/ads.config';
+import CustomLoadingAds from '@/components/ads/CustomLoadingAds';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -59,28 +60,16 @@ export default function RootLayout({ children }) {
           <AdsShowMessage />
           {children}
         </ReduxStatePrivider>
+        
         {process.env.NODE_ENV === "production" && (
-          <Suspense>
+          <>
             <SpeedInsights />
             <Analytics />
-          </Suspense>
-        )}
-
-        {process.env.NODE_ENV !== 'development' && (
-          <>
-            <Script
-              type='text/javascript'
-              async={true}
-              src={adsConfig.popunderAdScriptSrc}
-              strategy="lazyOnload"
+            <CustomLoadingAds
+              popunderScriptSrc={adsConfig.popunderAdScriptSrc}
+              socialBarScriptSrc={adsConfig.socialBarAdScriptSrc}
             />
-            <Script
-              type='text/javascript'
-              async={true}
-              src={adsConfig.socialBarAdScriptSrc}
-              strategy="lazyOnload"
-            />
-            </>
+          </>
         )}
       </body>
     </html>
