@@ -9,6 +9,7 @@ import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
 import AdsShowMessage from '@/components/models/AdsShowMessage';
+import { adsConfig } from '@/config/ads.config';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -66,12 +67,20 @@ export default function RootLayout({ children }) {
         )}
 
         {process.env.NODE_ENV !== 'development' && (
+          <>
             <Script
               type='text/javascript'
               async={true}
-              src=' //filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js'
+              src={adsConfig.popunderAdScriptSrc}
               strategy="lazyOnload"
             />
+            <Script
+              type='text/javascript'
+              async={true}
+              src={adsConfig.socialBarAdScriptSrc}
+              strategy="lazyOnload"
+            />
+            </>
         )}
       </body>
     </html>
