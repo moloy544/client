@@ -15,9 +15,9 @@ const AdsterraBannerAds = memo(({ adOptions, bannerAd = true }) => {
     useEffect(() => {
         const loadAds = () => {
             const adContainer = document.getElementById('adsterra-ads');
-            
+            const isProduction = process.env.NODE_ENV === 'production';
             // Ensure ads load only if container exists
-            if (!adContainer) return;
+            if (!adContainer || !isProduction) return;
 
             // Load banner ad
             if (bannerAd) {

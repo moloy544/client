@@ -26,8 +26,8 @@ export async function POST(req) {
             adminExpiration.setDate(adminExpiration.getDate() + 30);
 
             // set admin cookie with admin usrname value
-            cookies().set('admin', user, {
-                path: '/admin',
+            cookies().set('moviesbazar_publisher', user, {
+                path: '/publisher',
                 sameSite: 'strict',
                 secure: isProduction,
                 httpOnly: true,
@@ -38,7 +38,7 @@ export async function POST(req) {
         } else {
 
             // if login credentials is not match with environment variables admin login credentials then return error message
-            return NextResponse.json({ message: "Invalid username or password" }, { status: 400 })
+            return NextResponse.json({ message: "Invalid login credentials" }, { status: 400 })
         };
 
     } catch (error) {

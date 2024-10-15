@@ -125,7 +125,7 @@ export default function AdminPage() {
                     if (!isCreatedDateUpdate) {
                         setIsCreatedDateUpdate("yes");
                     };
-                    
+
                     return;
                 };
 
@@ -223,7 +223,7 @@ export default function AdminPage() {
                 if (isCreatedDateUpdate) {
                     setIsCreatedDateUpdate(null);
                 }
-                
+
             } else {
                 alert(responseMessage);
             }
@@ -234,9 +234,9 @@ export default function AdminPage() {
                 if (error.response.data.message) {
                     creatToastAlert({ message: error.response.data.message });
                 }
-              }else{
+            } else {
                 creatToastAlert({ message: "An error occurred while adding movies" });
-              }
+            }
         } finally {
             setProcessing(false);
         }
@@ -373,7 +373,7 @@ export default function AdminPage() {
         // Update max date when the component mounts
         if (dateInputElement && state.status === 'released') {
             dateInputElement.setAttribute('max', getTodayDate());
-        }else{
+        } else {
             dateInputElement.removeAttribute('max');
         }
     }, [dateInputRef, state.status]);
@@ -389,29 +389,29 @@ export default function AdminPage() {
                 <form onSubmit={sendMoviesToBackend} className="bg-slate-50 md:mx-10 md:mt-4 border-blue-100 px-3 md:px-10 shadow-xl rounded-lg py-2 overflow-hidden">
                     <h1 className="text-xl text-gray-900 text-center font-bold my-3">Add Movie Section</h1>
                     <div className="flex flex-col my-3 gap-2 space-y-2">
-                                <label className="font-bold text-gray-800">Audio Video Type Update</label>
-                                <fieldset className="flex flex-wrap gap-3">
-                                    {["yes", "no"].map((data) => (
-                                        <div key={data}>
-                                            <label
-                                                htmlFor={`audio-video-type-update-${data}`}
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${isAudioVideoTypeUpdate === data ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
-                                            >
-                                                <input
-                                                    type="radio"
-                                                    id={`audio-video-type-update-${data}`}
-                                                    value={data}
-                                                    className="sr-only"
-                                                    onChange={() => setIsAudioVideoTypeUpdate(data)}
-                                                    checked={isAudioVideoTypeUpdate === data}
-                                                />
+                        <label className="font-bold text-gray-800">Audio Video Type Update</label>
+                        <fieldset className="flex flex-wrap gap-3">
+                            {["yes", "no"].map((data) => (
+                                <div key={data}>
+                                    <label
+                                        htmlFor={`audio-video-type-update-${data}`}
+                                        className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${isAudioVideoTypeUpdate === data ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                    >
+                                        <input
+                                            type="radio"
+                                            id={`audio-video-type-update-${data}`}
+                                            value={data}
+                                            className="sr-only"
+                                            onChange={() => setIsAudioVideoTypeUpdate(data)}
+                                            checked={isAudioVideoTypeUpdate === data}
+                                        />
 
-                                                <p className="text-xs font-medium capitalize">{data}</p>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </fieldset>
-                            </div>
+                                        <p className="text-xs font-medium capitalize">{data}</p>
+                                    </label>
+                                </div>
+                            ))}
+                        </fieldset>
+                    </div>
                     <div className="flex flex-wrap gap-5 md:gap-10">
                         {/** first row */}
                         <div className="w-full md:w-auto h-auto">
@@ -443,9 +443,9 @@ export default function AdminPage() {
                                 )}
                                 <label className="font-bold text-gray-800">Select image OR Add image url</label>
                                 <input onChange={handleFileInputChnage} type="file" name="thambnail-file" id="thambnail-file" accept="image/*" />
-                                <input className={inputStyle+' my-1.5'} type="text" value={imagePreview} 
-                                onChange={(e) => setImagePreview(e.target.value)} 
-                                placeholder="Enter external image url" />
+                                <input className={inputStyle + ' my-1.5'} type="text" value={imagePreview}
+                                    onChange={(e) => setImagePreview(e.target.value)}
+                                    placeholder="Enter external image url" />
                             </div>
 
                             {state.watchLink?.length > 0 && (
@@ -601,43 +601,42 @@ export default function AdminPage() {
                             <div className="flex flex-col my-3 gap-2 space-y-2">
                                 <label className="font-bold text-gray-800">Multi Audio</label>
                                 <fieldset className="flex flex-wrap gap-3">
-                                        <div>
+                                    <div>
                                         <label
-                                                htmlFor="multiAudio-false"
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${!state.multiAudio ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
-                                            >
-                                                <input
-                                                    type="radio"
-                                                    id="multiAudio-false"
-                                                    value="false"
-                                                    className="sr-only"
-                                                    onChange={() => handleInputChange(false, 'multiAudio')}
-                                                    checked={state.multiAudio === false}
-                                                />
+                                            htmlFor="multiAudio-false"
+                                            className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${!state.multiAudio ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                id="multiAudio-false"
+                                                value="false"
+                                                className="sr-only"
+                                                onChange={() => handleInputChange(false, 'multiAudio')}
+                                                checked={state.multiAudio === false}
+                                            />
 
-                                                <p className="text-xs font-medium capitalize">No</p>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <label
-                                                htmlFor="multiAudio-true"
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.multiAudio ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
-                                            >
-                                                <input
-                                                    type="radio"
-                                                    id="multiAudio-true"
-                                                    value="true"
-                                                    className="sr-only"
-                                                    onChange={() => handleInputChange(true, 'multiAudio')}
-                                                    checked={state.multiAudio === true}
-                                                />
+                                            <p className="text-xs font-medium capitalize">No</p>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label
+                                            htmlFor="multiAudio-true"
+                                            className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.multiAudio ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                id="multiAudio-true"
+                                                value="true"
+                                                className="sr-only"
+                                                onChange={() => handleInputChange(true, 'multiAudio')}
+                                                checked={state.multiAudio === true}
+                                            />
 
-                                                <p className="text-xs font-medium capitalize">Yes</p>
-                                            </label>
-                                        </div>
+                                            <p className="text-xs font-medium capitalize">Yes</p>
+                                        </label>
+                                    </div>
                                 </fieldset>
                             </div>
-
 
                             <div className="flex flex-col space-y-2">
                                 <label className="font-bold text-gray-800">Video type</label>
@@ -717,40 +716,61 @@ export default function AdminPage() {
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Adition tags</label>
-                                <input type="text" list="tag-option" id="tags-input" data-field="tags" className={inputStyle} placeholder="Enter tags" defaultValue="" />
-                                <datalist id="tag-option">
-                                    {tagOptions.map((tag) => (
-                                        <option key={tag} value={tag} />
+                                <div className="inline-flex">
+                                <input type="text" id="tags-input" data-field="tags" className={inputStyle} placeholder="Enter tags" defaultValue="" />
+                                <select
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (!value || value === '' || value === ' ') return
+
+                                        const isExist = state.tags.some(data => data?.toLowerCase() == value?.toLowerCase())
+
+                                        if (isExist) {
+                                            creatToastAlert({ message: `${value} in tags filed is already exists` });
+                                            return
+                                        }
+
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            tags: [...prevState.tags, value.toLowerCase()],
+                                        }));
+                                    }}
+                                    className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
+                                >
+                                    <option value="">Options</option>
+                                    {tagOptions.map((tag, i) => (
+                                        <option key={i} value={tag}>{tag}</option>
                                     ))}
-                                </datalist>
+                                </select>
+                                </div>
                                 <button type="button" onClick={() => creatInputValueToArrayHandler('tags-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                             </div>
 
-                            {isCreatedDateUpdate &&(
+                            {isCreatedDateUpdate && (
                                 <div className="flex flex-col space-y-2">
-                                <label className="font-bold text-gray-800">Can Update Created Date</label>
-                                <fieldset className="flex flex-wrap gap-3">
-                                    {["yes", "no"].map((data) => (
-                                        <div key={data}>
-                                            <label
-                                                htmlFor={`update-created-date-${data}`}
-                                                className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${isCreatedDateUpdate === data ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
-                                            >
-                                                <input
-                                                    type="radio"
-                                                    id={`update-created-date-${data}`}
-                                                    value={data}
-                                                    className="sr-only"
-                                                    onChange={() => setIsCreatedDateUpdate(data)}
-                                                    checked={isCreatedDateUpdate === data}
-                                                />
+                                    <label className="font-bold text-gray-800">Can Update Created Date</label>
+                                    <fieldset className="flex flex-wrap gap-3">
+                                        {["yes", "no"].map((data) => (
+                                            <div key={data}>
+                                                <label
+                                                    htmlFor={`update-created-date-${data}`}
+                                                    className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${isCreatedDateUpdate === data ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                                >
+                                                    <input
+                                                        type="radio"
+                                                        id={`update-created-date-${data}`}
+                                                        value={data}
+                                                        className="sr-only"
+                                                        onChange={() => setIsCreatedDateUpdate(data)}
+                                                        checked={isCreatedDateUpdate === data}
+                                                    />
 
-                                                <p className="text-xs font-medium capitalize">{data}</p>
-                                            </label>
-                                        </div>
-                                    ))}
-                                </fieldset>
-                            </div>
+                                                    <p className="text-xs font-medium capitalize">{data}</p>
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </fieldset>
+                                </div>
                             )}
                             <button
                                 disabled={processing}
