@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { creatUrlLink } from "@/utils";
+import { creatUrlLink, resizeImage } from "@/utils";
 
 const MovieCardSkleaton = ({ limit = 20 }) => {
     return (
@@ -25,11 +25,10 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
                     <Image
                         className="w-full h-full select-none rounded-[3px]"
                         fill
-                        src={data.thambnail}
+                        src={resizeImage(data.thambnail)}
                         alt={data.title || 'movie thumbnail'}
                         placeholder="blur"
-                        blurDataURL={data.thambnail}
-                        priority
+                        blurDataURL={resizeImage(data.thambnail)}
                     />
                 </div>
 
@@ -56,12 +55,14 @@ const ResponsiveActorCard = ({ data }) => {
                 <div className="w-auto h-auto rounded-full overflow-hidden border-2 border-yellow-600">
 
                     <Image
-                        priority
                         className="w-full object-fill pointer-events-none select-none rounded-full"
                         width={150}
                         height={150}
-                        src={data.avatar?.replace('/upload/', '/upload/w_250,h_250,c_scale/')}
-                        alt={data.name || 'Movies Bazar Actor avatar'} />
+                        src={data.avatar}
+                        placeholder="blur"
+                        blurDataURL={data.thambnail}
+                        alt={data.name || 'Movies Bazar Actor avatar'}
+                    />
 
                 </div>
 

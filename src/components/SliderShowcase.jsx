@@ -3,7 +3,7 @@
 import { useRef, useEffect, memo, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { creatUrlLink } from '@/utils';
+import { creatUrlLink, resizeImage } from '@/utils';
 
 const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false, thambnailImagePriority = false, children }) => {
 
@@ -110,7 +110,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                     <>
                         {moviesData?.map((data) => (
                             <div
-                            ref={movieCardRef}
+                                ref={movieCardRef}
                                 key={data.imdbId}
                                 className="movie_card max-h-64 text-xs mobile:text-[10px] flex-shrink-0"
                                 style={{ width: 'calc(100% / 6)', maxWidth: '180px', minWidth: '110px', }}
@@ -123,11 +123,12 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                                     <div className="relative w-full aspect-[2/3] h-full bg-white rounded-[3px]">
                                         <Image
                                             priority={thambnailImagePriority}
-                                            className="select-none rounded-[3px] object-fill"
-                                            src={!imageResize ? data.thambnail : data.thambnail?.replace('/upload/', '/upload/w_220,h_280/')}
-                                            blurDataURL={data.thambnail}
                                             fill
+                                            className="select-none rounded-[3px] object-fill"
+                                            src={resizeImage(data.thambnail, imageResize)}
                                             alt={data.title}
+                                            blurDataURL={resizeImage(data.thambnail)}
+                                            placeholder="blur"
                                         />
                                     </div>
                                     <div className="movie_name_container">

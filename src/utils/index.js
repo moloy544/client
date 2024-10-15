@@ -158,6 +158,18 @@ const creatToastAlert = ({ message, visiblityTime = 8000 }) => {
   currentTooltip = { element: toolTip, timerId };
 };
 
+function resizeImage(src, resize = false) {
+  const isTmtbImage = src.startsWith('https://image.tmdb.org');
+  const isCloudinaryImage = src.startsWith('https://res.cloudinary.com');
+  let img = src;
+  if (isTmtbImage) {
+    img = src.replace('w500', 'w300')
+  } else if (isCloudinaryImage && resize) {
+    img = src.replace('/upload/', '/upload/w_220,h_280/');
+  }
+  return img;
+}
+
 /**** Export all utilities *****/
 export {
   loadMoreFetch,
@@ -167,5 +179,6 @@ export {
   transformToCapitalize,
   formatNumberCounter,
   imageToBase64Url,
-  creatToastAlert
+  creatToastAlert,
+  resizeImage
 }
