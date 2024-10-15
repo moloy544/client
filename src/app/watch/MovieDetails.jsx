@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { transformToCapitalize } from "@/utils";
+import { adsConfig } from "@/config/ads.config";
+import { ModelsController } from "@/lib/EventsHandler";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
-import { ModelsController } from "@/lib/EventsHandler";
 import VideoPlayer from "@/components/VideoPlayer";
-//import AdsterraAds from "@/components/ads/AdsterraAds";
-import { adsConfig } from "@/config/ads.config";
+import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -92,10 +92,10 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       <Breadcrumb data={breadcrumbData} />
 
-      {/*** Banner Ad Show Container Size height 50, width 280 <div className="min-w-full h-auto-fit flex items-center justify-center">
-        <AdsterraAds adOptions={adsConfig.adOptions1} />
+      {/*** Banner Ad Show Container Size height 50, width 280  ****/}
+       <div className="min-w-full h-auto-fit flex items-center justify-center">
+        <AdsterraBannerAds adOptions={adsConfig.adOptions1} />
       </div>
-  ****/}
 
       <div className="my-6 mobile:my-2.5 flex justify-center items-center">
 

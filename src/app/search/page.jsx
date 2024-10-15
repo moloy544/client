@@ -12,8 +12,8 @@ import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
-//import AdsterraAds from "@/components/ads/AdsterraAds";
-//import { adsConfig } from "@/config/ads.config";
+import { adsConfig } from "@/config/ads.config";
+import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -211,11 +211,13 @@ export default function SearchPage() {
 
             <div className="w-full min-h-screen overflow-x-hidden bg-gray-800">
 
-                {/*** Banner Ad Show Container Size height 250, width 300 seatrchResult.length === 0 &&
+                {/*** Banner Ad Show Container Size height 250, width 300   }****/
+                    seatrchResult.length === 0 &&
                     (<div className="my-2">
-                        <AdsterraAds adOptions={adsConfig.adOptions1} />
-                    </div>)
-                }****/ }
+                        <AdsterraBannerAds adOptions={adsConfig.adOptions1} />
+                    </div>
+                    )}
+
 
                 {searchQuery !== "" ? (
 
@@ -297,7 +299,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         if (userSearchText !== '' && userSearchText !== ' ') {
             setVisibility(true);
             // Filter search history based on user input
-            const filtered = searchHistory.filter(item => 
+            const filtered = searchHistory.filter(item =>
                 item.searchKeyword.toLowerCase().includes(userSearchText.toLowerCase())
             );
             setFilteredHistory(filtered);

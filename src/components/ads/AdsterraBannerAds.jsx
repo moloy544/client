@@ -10,7 +10,7 @@ const areEqual = (prevProps, nextProps) => {
   );
 };
 
-const AdsterraAds = memo(({ adOptions, bannerAd = true }) => {
+const AdsterraBannerAds = memo(({ adOptions, bannerAd = true }) => {
 
     useEffect(() => {
         const loadAds = () => {
@@ -78,6 +78,6 @@ const AdsterraAds = memo(({ adOptions, bannerAd = true }) => {
     return <div className="w-full h-auto flex justify-center items-center flex-wrap overflow-x-scroll scrollbar-hidden py-1" id="adsterra-ads"></div>;
 }, areEqual);
 
-export default AdsterraAds;
+export default AdsterraBannerAds;
 
-AdsterraAds.displayName = "AdsterraAds";
+AdsterraBannerAds.displayName = "AdsterraBannerAds";
