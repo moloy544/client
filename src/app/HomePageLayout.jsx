@@ -10,8 +10,8 @@ import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SliderShowcase from "@/components/SliderShowcase";
 import BacktoTopButton from "@/components/BacktoTopButton";
-import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
-import { adsConfig } from "@/config/ads.config";
+//import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
+//import { adsConfig } from "@/config/ads.config";
 
 function HomePageLayout({ initialLayoutData }) {
 
@@ -102,10 +102,10 @@ function HomePageLayout({ initialLayoutData }) {
 
             <BacktoTopButton />
 
-            {/*** Banner Ad Show Container Size height 50, width 280  ****/}
-            <div className="min-w-full h-auto-fit flex items-center justify-center">
+            {/*** Banner Ad Show Container Size height 50, width 280
+             *  <div className="min-w-full h-auto-fit flex items-center justify-center">
                 <AdsterraBannerAds adOptions={adsConfig.adOptions1} />
-            </div>
+            </div>  ****/}
 
             {/**** For Initail Static Data ******/}
             {initialLayoutData && initialLayoutData.sliderMovies?.map((data) => (

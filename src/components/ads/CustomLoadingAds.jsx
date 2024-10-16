@@ -17,7 +17,7 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
       socialBarScript.src = socialBarScriptSrc;
       socialBarScript.async = true;
       document.body.appendChild(socialBarScript);
-    }, 60000); //1min delay
+    }, 50000); //1min delay
 
     //Clean up the timeout if the component unmounts
     return () => clearTimeout(loadAdScripts);
