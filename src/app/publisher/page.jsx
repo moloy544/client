@@ -114,6 +114,9 @@ export default function AdminPage() {
                     });
 
                     creatToastAlert({ message: "Movie is already exist" });
+                    if (movieData._id) {
+                        delete movieData._id;
+                    };
 
                     setState(prevState => ({
                         ...prevState,
@@ -153,6 +156,10 @@ export default function AdminPage() {
                     if (Poster && Poster !== "N/A") {
                         setImagePreview(Poster)
                     }
+                    if (isCreatedDateUpdate) {
+                        setIsCreatedDateUpdate(null);
+                    };
+
                 } else {
                     alert(omdbApiResponse.data.Error)
                 };;
@@ -218,10 +225,6 @@ export default function AdminPage() {
                 setImagePreview("");
                 if (isAudioVideoTypeUpdate === 'yes') {
                     getMovieOneByOne()
-                }
-
-                if (isCreatedDateUpdate) {
-                    setIsCreatedDateUpdate(null);
                 }
 
             } else {

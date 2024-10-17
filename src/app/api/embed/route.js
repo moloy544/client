@@ -114,7 +114,7 @@ export async function GET(req) {
         }
 
         // Get the user's IP address
-        const ip = getIP();
+        const ip = "76.76.21.123";//getIP();
 
         // Fetch video source from backend
         const getSourceResponse = await axios.post(`${appConfig.backendUrl}/api/v1/subscriber/embed`, { contentId: imdbId });
