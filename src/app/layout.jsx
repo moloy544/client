@@ -1,5 +1,6 @@
 import './globals.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Suspense } from 'react';
 import { Inter } from 'next/font/google'
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react"
@@ -60,14 +61,14 @@ export default function RootLayout({ children }) {
         </ReduxStatePrivider>
 
         {process.env.NODE_ENV === "production" && (
-          <>
+          <Suspense>
             <SpeedInsights />
             <Analytics />
             <CustomLoadingAds
               popunderScriptSrc={adsConfig.popunderAdScriptSrc}
               socialBarScriptSrc={adsConfig.socialBarAdScriptSrc}
             />
-          </>
+          </Suspense>
         )}
       </body>
     </html>
