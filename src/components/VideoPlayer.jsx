@@ -48,7 +48,6 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
     offlineCallback: () =>
       setPlaybackError("You are not connected to the internet. Please connect and try again."),
   });
-console.log(source)
 
   useEffect(() => {
     if (source && userIp) {

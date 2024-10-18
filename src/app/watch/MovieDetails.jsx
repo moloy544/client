@@ -37,7 +37,9 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     // Set the video source as usual
     setVideoSource(source);
 
-    window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+    if (process.env.NODE_ENV !== 'development') {
+      window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+    }
 
     // Ensure the video hash in the URL is updated to 'play'
     if (window.location.hash !== 'play') {
@@ -99,7 +101,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       <div className="my-6 mobile:my-2.5 flex justify-center items-center">
 
-        <div className={`h-fit w-full ${playerVisibility && videoSource ? "max-w-full mx-4" : "max-w-5xl mx-3"} mobile:mx-1 p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#2d3546] rounded-md shadow-xl`}>
+        <div className={`h-fit w-full ${playerVisibility && videoSource ? "max-w-full mx-4" : "max-w-5xl mx-3"} mobile:mx-1 p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[#242f42] rounded-md shadow-xl`}>
 
           <div className={`mobile:w-full mobile:mt-2.5 md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto bg-gray-900 ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 

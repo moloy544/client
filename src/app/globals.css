@@ -36,7 +36,10 @@
     scroll-behavior: smooth;
   }
 
-  .movie_card{
+  /************************ All Cards Related Styles ******************/
+
+/***** Responsive Movie Cards Styles ****************/
+  .responsive_movie_card{
     width: auto; 
     max-width: 200px;
     height: auto; 
@@ -46,7 +49,31 @@
     border: 1px solid rgb(137, 119, 1);
 }
 
-.movie_card .movie_name_container{
+.responsive_movie_card .movie_name_container{
+  width: 100%;
+  height: auto;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.60);
+  position: absolute;
+  bottom: 0;
+  z-index: 4;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+/********* Slider Showcase Movies Card Styles ****************/
+.slidershowcase_movie_card{
+    width: auto; 
+    max-width: 200px;
+    height: auto; 
+    max-height: 16rem /* 256px */;
+    border-radius: 4px; 
+    position: relative;
+    color: rgb(12, 15, 15);
+    border: 1px solid rgb(137, 119, 1);
+    flex-shrink: 0;
+}
+
+.slidershowcase_movie_card .movie_name_container{
   width: 100%;
   height: auto;
   font-weight: 500;
@@ -59,7 +86,7 @@
 }
 
 
-/* In your stylesheets or CSS file */
+/**** Movie Detais Page Movie Thumbnail Zoom In Out Effect Animation ****/
 @keyframes zoom {
   0% {
     transform: scale(1); /* Initial scale (no zoom) */

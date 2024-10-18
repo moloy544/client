@@ -18,10 +18,10 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
 
     return (
 
-        <div onClick={onClickEvent} className="movie_card mobile:max-w-[160px] border overflow-hidden">
+        <div onClick={onClickEvent} className="responsive_movie_card mobile:max-w-[160px] border overflow-hidden">
 
             <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title + ' ' + data.releaseYear + ' ' + data.type} prefetch={false}>
-                <div className="relative w-full mobile:max-w-[160px] aspect-[2/3] mobile:min-h-[160px] min-h-[200px] max-h-52">
+                <div className="relative w-full mobile:max-w-[160px] aspect-[4/5.6] mobile:min-h-[160px] min-h-[200px]">
                     <Image
                         className="w-full h-full select-none rounded-[3px]"
                         fill

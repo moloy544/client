@@ -127,7 +127,7 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
                     <h1 className="text-center font-bold text-[#dcdcde] text-base mobile:text-xs line-clamp-1">{title}</h1>
                     </div>
                     )}
-                <div className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2 py-3 mobile:py-2">
+                <div className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] px-2 py-3 mobile:py-2">
 
                     {moviesData.length > 0 && (
                         moviesData.map((movie, index) => (

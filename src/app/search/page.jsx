@@ -172,7 +172,7 @@ export default function SearchPage() {
 
     return (
         <>
-            <header className="sticky top-0 left-0 z-50 w-full h-auto bg-gray-900">
+            <header className="fixed top-0 left-0 z-50 w-full h-auto bg-gray-900">
 
                 <div className="w-auto h-auto flex gap-1 items-center">
 
@@ -209,7 +209,7 @@ export default function SearchPage() {
 
             </header >
 
-            <div className="w-full min-h-screen overflow-x-hidden bg-gray-800">
+            <div className="w-full min-h-screen overflow-x-hidden bg-gray-800 mobile:pt-28 pt-32">
 
                 {/*** Banner Ad Show Container Size height 250, width 300 seatrchResult.length === 0 &&
                     (<div className="my-2">

@@ -55,7 +55,7 @@ function SomthingWrongError({
                 </h1>
 
                 <p className="mt-4 text-gray-200">
-                    {`Please reload the page and try again or go back to ${isNavigateHistory ? "previews page page." : "home page."}`}
+                    {`Please reload the page and try again or go back to ${isNavigateHistory ? "previews page." : "home page."}`}
                 </p>
                 <div className="w-full h-auto flex justify-center flex-wrap space-x-3">
                     <button

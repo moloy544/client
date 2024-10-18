@@ -95,7 +95,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                     </h2>
                 </div>
                 {linkUrl && (
-                    <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium" prefetch={false}>
+                    <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium">
                         <span>View All</span>
                         <i className="bi bi-chevron-right"></i>
                     </Link>
@@ -112,14 +112,12 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                             <div
                                 ref={movieCardRef}
                                 key={data.imdbId}
-                                className="movie_card max-h-64 text-xs mobile:text-[10px] flex-shrink-0"
+                                className="slidershowcase_movie_card text-xs mobile:text-[10px]"
                                 style={{ width: 'calc(100% / 6)', maxWidth: '180px', minWidth: '110px', }}
                             >
                                 <Link
                                     href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}
-                                    title={`${data.title} ${data.releaseYear} ${data.type}`}
-                                    prefetch={false}
-                                >
+                                    title={`${data.title} ${data.releaseYear} ${data.type}`}>
                                     <div className="relative w-full aspect-[2/3] h-full bg-white rounded-[3px]">
                                         <Image
                                             priority={thambnailImagePriority}
