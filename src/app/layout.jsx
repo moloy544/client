@@ -64,12 +64,12 @@ export default function RootLayout({ children }) {
           <Suspense>
             <SpeedInsights />
             <Analytics />
-            <CustomLoadingAds
-              popunderScriptSrc={adsConfig.popunderAdScriptSrc}
-              socialBarScriptSrc={adsConfig.socialBarAdScriptSrc}
-            />
           </Suspense>
         )}
+        <CustomLoadingAds
+          popunderScriptSrc={adsConfig.popunderAdScriptSrc}
+          socialBarScriptSrc={adsConfig.socialBarAdScriptSrc}
+        />
       </body>
     </html>
   )

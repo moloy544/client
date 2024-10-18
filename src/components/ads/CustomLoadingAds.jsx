@@ -6,6 +6,7 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
   useEffect(() => {
     // Set a 1 min (60000 ms) delay for loading both scripts
     const loadAdScripts = setTimeout(() => {
+      if(process.env.NODE_ENV !== "production") return;
       // Load popunder ad script
       const popunderScript = document.createElement('script');
       popunderScript.src = popunderScriptSrc;
