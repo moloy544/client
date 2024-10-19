@@ -15,7 +15,7 @@ export async function POST(req) {
         if (!user || !password) return NextResponse.json({ message: "Please provide username and password" }, { status: 400 });
 
             //match request login credentials is match with environment variables admin login credentials or not
-         if (user===admin_userName && password===admin_password)) {
+         if (user===admin_userName && password===admin_password) {
 
             // Check if the environment is production
             const isProduction = process.env.NODE_ENV === 'production';
