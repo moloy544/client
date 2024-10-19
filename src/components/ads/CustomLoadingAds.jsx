@@ -8,10 +8,10 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
     const loadAdScripts = setTimeout(() => {
       if(process.env.NODE_ENV !== "production") return;
       // Load popunder ad script
-      const popunderScript = document.createElement('script');
+      /**const popunderScript = document.createElement('script');
       popunderScript.src = popunderScriptSrc;
       popunderScript.async = true;
-      document.body.appendChild(popunderScript);
+      document.body.appendChild(popunderScript);**/
 
       //Load social bar ad script
       const socialBarScript = document.createElement('script');
