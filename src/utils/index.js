@@ -166,7 +166,7 @@ function resizeImage(src, resize = 'f_auto,q_auto') {
   const isCloudinaryImage = src.startsWith('https://res.cloudinary.com');
   let img = src;
   if (isTmtbImage) {
-    const resizeValue = resizeParam !== "f_auto,q_auto" ? resizeParam : 'w500';
+    const resizeValue = resizeParam !== "f_auto,q_auto" ? resizeParam : 'w300';
     img = src.replace('w500', resizeValue)
   } else if (isCloudinaryImage) {
     const resizeValue = resizeParam.startsWith('w') ? 'f_auto,q_auto' : resizeParam;

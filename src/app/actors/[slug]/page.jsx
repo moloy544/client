@@ -70,7 +70,6 @@ export default async function Page({ params }) {
                 initialActors={actors}
                 isDataEnd={dataIsEnd}
             />
-
             <Footer />
         </>
     )

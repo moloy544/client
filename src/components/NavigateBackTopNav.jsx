@@ -6,7 +6,7 @@ import { resizeImage } from "@/utils"
 function NavigateBackTopNav({ title, titleImage = null }) {
 
     return (
-        <header className="sticky top-0 z-50 w-full h-auto flex justify-between items-center bg-gray-900 text-gray-300 px-3 border-b border-b-cyan-800">
+        <header className="sticky top-0 z-50 w-full h-auto flex justify-between items-center text-gray-300 bg-gray-900 px-3 border-b border-b-gray-700">
 
             <div className="w-auto h-auto flex gap-4 mobile:gap-2.5 items-center py-2.5 mobile:py-1.5">
                 <NavigateBack>
@@ -24,7 +24,7 @@ function NavigateBackTopNav({ title, titleImage = null }) {
                             src={resizeImage(titleImage.src)}
                             alt={titleImage.alt} />
                     )}
-                    <div className="text-xl mobile:text-base text-center justify-self-center truncate">
+                    <div className="text-xl mobile:text-base text-center justify-self-center truncate text-gray-200">
                         {title}
                     </div>
                 </div>

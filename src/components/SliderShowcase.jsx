@@ -123,7 +123,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                                             priority={thambnailImagePriority}
                                             fill
                                             className="select-none rounded-[3px] object-fill"
-                                            src={resizeImage(data.thambnail, imageResize)}
+                                            src={resizeImage(data.thambnail)}
                                             alt={data.title}
                                             blurDataURL={resizeImage(data.thambnail)}
                                             placeholder="blur"

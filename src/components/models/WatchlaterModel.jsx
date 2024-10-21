@@ -265,8 +265,8 @@ const Card = memo(({ data, remove }) => {
     return (
         <InspectPreventer forceToPrevent={isMobileDevice()}>
             <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
-                <Link className="w-full h-fit flex gap-3 items-center" title={title + ' ' + releaseYear + ' ' + type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
-                    <div className="w-16 h-20 border border-slate-200 rounded-sm flex-none">
+                <Link className="w-full h-fit inline-flex space-x-3" title={title + ' ' + releaseYear + ' ' + type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
+                    <div className="w-20 aspect-[4/5.6] border border-slate-200 rounded-sm flex-none">
                         <Image
                             priority
                             className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
@@ -278,13 +278,13 @@ const Card = memo(({ data, remove }) => {
                             blurDataURL={resizeImage(thambnail, 'w200')}
                         />
                     </div>
-                    <div className="flex flex-col gap-1">
-                        <div className="text-gray-800 font-medium text-[12px] leading-[14px] line-clamp-2">
+                    <div className="flex flex-col space-y-1.5 mt-3">
+                        <div className="text-gray-800 font-semibold text-[12px] leading-[14px] line-clamp-3">
                             {data.title}
                         </div>
-                        <span className="text-[10px] text-gray-500">
-                            {releaseYear}
-                        </span>
+                        <div className="text-[10px] text-gray-700 font-semibold">
+                            Year: {releaseYear}
+                        </div>
                         <div className="text-xs text-gray-600 font-semibold flex gap-0.5">
                             Add at:
                             <span className="text-[10px] text-gray-500 font-normal">
