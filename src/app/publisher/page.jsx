@@ -6,7 +6,7 @@ import axios from "axios";
 import { appConfig } from "@/config/config";
 import ActressController from "./components/ActressController";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
-import { creatToastAlert } from "@/utils";
+import { creatToastAlert, resizeImage } from "@/utils";
 import { getTodayDate, isValidImageUrl, validateMovieDetailsInput } from "./utils/admin.utils";
 
 // text or number input style properties
@@ -441,7 +441,7 @@ export default function AdminPage() {
                                         width={150}
                                         height={165}
                                         className="w-36 h-40 text-xs rounded-sm"
-                                        src={imagePreview} alt="thambnail" />
+                                        src={resizeImage(imagePreview)} alt="thambnail" />
 
                                 )}
                                 <label className="font-bold text-gray-800">Select image OR Add image url</label>

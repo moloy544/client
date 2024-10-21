@@ -4,7 +4,7 @@ import Image from "next/image";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
-import { creatToastAlert, creatUrlLink } from "@/utils";
+import { creatToastAlert, creatUrlLink, resizeImage } from "@/utils";
 import { InspectPreventer } from "@/lib/lib";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { safeLocalStorage } from "@/utils/errorHandlers";
@@ -272,10 +272,10 @@ const Card = memo(({ data, remove }) => {
                             className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
                             width={80}
                             height={80}
-                            src={thambnail}
+                            src={resizeImage(thambnail, 'w200')}
                             alt={title || 'movie poster image'}
                             placeholder="blur"
-                            blurDataURL={thambnail}
+                            blurDataURL={resizeImage(thambnail, 'w200')}
                         />
                     </div>
                     <div className="flex flex-col gap-1">
