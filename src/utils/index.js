@@ -169,7 +169,8 @@ function resizeImage(src, resize = 'f_auto,q_auto') {
     const resizeValue = resizeParam !== "f_auto,q_auto" ? resizeParam : 'w500';
     img = src.replace('w500', resizeValue)
   } else if (isCloudinaryImage) {
-    img = src.replace('/upload/', `/upload/${resizeParam}/`);
+    const resizeValue = resizeParam.startsWith('w') ? 'f_auto,q_auto' : resizeParam;
+    img = src.replace('/upload/', `/upload/${resizeValue}/`);
   }
   return img;
 }
