@@ -227,7 +227,10 @@ export default function WatchlaterModel({ visibility, functions }) {
                                     <div className="w-10 h-10 bg-blue-50 flex justify-center items-center rounded-full">
                                         <i className="bi bi-inbox text-xl text-blue-700"></i>
                                     </div>
-                                    <div className="text-sm text-gray-500 text-center px-5 my-1">You not save anything</div>
+                                    <div className="my-2">
+                                    <div className="text-sm font-bold text-center text-gray-800">Your Watch Later list is empty!</div>
+                                    <div className="text-xs text-gray-500 text-center px-5 mt-1.5 font-medium">Add your favorites now and come back anytime to watch them!</div>
+                                    </div>
                                 </div>
                             )}
                         </>
@@ -259,7 +262,7 @@ const Card = ({ data, remove }) => {
         <InspectPreventer forceToPrevent={isMobileDevice()}>
             <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
                 <Link className="w-full h-fit flex gap-3 items-center" title={title + ' ' + releaseYear + ' ' + type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
-                    <div className="w-16 h-20 border border-slate-200 rounded-sm flex-none">
+                    <div className="w-[70px] aspect-[4/5.5] border border-slate-200 rounded-sm flex-none">
                         <Image
                             priority
                             className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
