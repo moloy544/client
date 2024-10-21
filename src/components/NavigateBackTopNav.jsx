@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import NavigateBack from "./NavigateBack"
+import { resizeImage } from "@/utils"
 
 function NavigateBackTopNav({ title, titleImage = null }) {
 
@@ -20,7 +21,7 @@ function NavigateBackTopNav({ title, titleImage = null }) {
                             className="w-12 h-12 mobile:w-8 mobile:h-8 border border-gray-500 rounded-full"
                             width={30}
                             height={30}
-                            src={titleImage.src}
+                            src={resizeImage(titleImage.src)}
                             alt={titleImage.alt} />
                     )}
                     <div className="text-xl mobile:text-base text-center justify-self-center truncate">

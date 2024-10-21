@@ -48,7 +48,7 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
 
 const ResponsiveActorCard = ({ data }) => {
     return (
-        <div className="w-auto max-w-[150px] h-auto flex justify-center cursor-pointer bg-gray-700 rounded-md px-3 py-3.5">
+        <div className="w-auto max-w-[160px] h-auto flex justify-center bg-gray-700 rounded-md px-3 py-3.5">
 
             <Link href={`/actors/${creatUrlLink(data.name)}/${data.imdbId.replace('nm', '')}`} title={data.name} prefetch={false}>
 
@@ -58,9 +58,9 @@ const ResponsiveActorCard = ({ data }) => {
                         className="w-full object-fill pointer-events-none select-none rounded-full"
                         width={150}
                         height={150}
-                        src={data.avatar}
+                        src={resizeImage(data.avatar)}
                         placeholder="blur"
-                        blurDataURL={data.avatar}
+                        blurDataURL={resizeImage(data.avatar)}
                         alt={data.name || 'Movies Bazar Actor avatar'}
                     />
 

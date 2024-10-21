@@ -158,14 +158,17 @@ const creatToastAlert = ({ message, visiblityTime = 8000 }) => {
   currentTooltip = { element: toolTip, timerId };
 };
 
-function resizeImage(src, resize = false) {
+function resizeImage(src, resize = 'f_auto,q_auto') {
+  let resizeParam = resize || 'f_auto,q_auto';
+  if (!src) return src;
+
   const isTmtbImage = src.startsWith('https://image.tmdb.org');
   const isCloudinaryImage = src.startsWith('https://res.cloudinary.com');
   let img = src;
   if (isTmtbImage) {
     img = src.replace('w500', 'w300')
-  } else if (isCloudinaryImage && resize) {
-    img = src.replace('/upload/', '/upload/w_220,h_280/');
+  } else if (isCloudinaryImage) {
+    img = src.replace('/upload/', `/upload/${resizeParam}/`);
   }
   return img;
 }

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import { creatUrlLink } from "@/utils";
+import { creatUrlLink, resizeImage } from "@/utils";
 import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SliderShowcase from "@/components/SliderShowcase";
@@ -38,8 +38,8 @@ function HomePageLayout({ initialLayoutData }) {
 
         const observer = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "100px",
-            threshold: 1.0,
+            rootMargin: "150px",
+            threshold: 1,
         });
 
         if (observerRefElement.current && !loading && !isAllLoad) {
@@ -132,11 +132,11 @@ function HomePageLayout({ initialLayoutData }) {
                             <div className="rounded-full border-2 mx-auto border-yellow-600">
 
                                 <Image
-                                    className="w-full h-full object-fill select-none rounded-full"
-                                    src={actor.avatar?.replace('/upload/', '/upload/w_250,h_250,c_scale/')}
+                                    className="w-full object-fill aspect-square select-none rounded-full"
+                                    src={resizeImage(actor.avatar)}
                                     width={100}
                                     height={100}
-                                    alt={actor.name}
+                                    alt={data.name || 'Movies Bazar Actor avatar'}
                                 />
                             </div>
 
@@ -170,7 +170,7 @@ function HomePageLayout({ initialLayoutData }) {
                 </div>
             )}
 
-            <div className="w-full h-2" ref={observerRefElement}></div>
+            <div ref={observerRefElement}></div>
         </>
     )
 }
