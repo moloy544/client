@@ -12,8 +12,6 @@ const ModelsController = ({ children, visibility, closeEvent, transformEffect = 
     const elementRef = useRef(null);
     const [styleObj, setStyleObj] = useState(initialStyle);
 
-    const body = document.querySelector('body');
-
     useEffect(() => {
         const outsideClickHandler = ({ target }) => {
             if (!elementRef.current) return;
@@ -38,17 +36,19 @@ const ModelsController = ({ children, visibility, closeEvent, transformEffect = 
     }, [visibility, closeEvent]);
 
     useEffect(() => {
+        const body = document.querySelector('body');
+
         if (visibility) {
             setStyleObj(prevStyle => ({
                 ...prevStyle,
                 opacity: 1,
                 transform: transformEffect ? 'translateY(0)' : undefined, // Move to center if transformEffect is true
             }));
-            if (windowScroll===false) {
+            if (windowScroll === false) {
                 body.setAttribute('class', 'scrollbar-hidden');
-                body.style.overflow = 'hidden';   
+                body.style.overflow = 'hidden';
             }
-            
+
         } else {
             setStyleObj(prevStyle => ({
                 ...prevStyle,
