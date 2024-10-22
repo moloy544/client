@@ -109,7 +109,7 @@ export default function RequestContentModal({ onClose, isOpen = false }) {
 
                         {/* Note */}
                         <p className="text-sm text-gray-600 mb-4">
-                            <strong>Note:</strong> If the content you're requesting is available, our team will add it as soon as possible. Please check the recently added or updated listings section for updates.
+                            <strong>Note:</strong> If the content you&apos;re requesting is available, our team will add it as soon as possible. Please check the recently added or updated listings section for updates.
                         </p>
 
                         {/* Submit Button */}
