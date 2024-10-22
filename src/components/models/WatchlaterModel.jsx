@@ -5,7 +5,6 @@ import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink, resizeImage } from "@/utils";
-import { InspectPreventer } from "@/lib/lib";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 
@@ -246,20 +245,7 @@ const Card = ({ data, remove }) => {
 
     const { imdbId, type, title, thambnail, releaseYear, addAt } = data || {};
 
-    // check current device is mobile or not
-    const isMobileDevice = () => {
-
-        const isMobile = navigator.userAgentData.mobile;
-
-        if (isMobile) {
-            return true
-        }
-
-        return false
-    };
-
     return (
-        <InspectPreventer forceToPrevent={isMobileDevice()}>
             <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
                 <Link className="w-full h-fit flex gap-3 items-center" title={title + ' ' + releaseYear + ' ' + type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
                     <div className="w-[70px] aspect-[4/5.5] border border-slate-200 rounded-sm flex-none">
@@ -298,6 +284,5 @@ const Card = ({ data, remove }) => {
                     <i className="bi bi-trash"></i>
                 </button>
             </div>
-        </InspectPreventer>
     )
 };

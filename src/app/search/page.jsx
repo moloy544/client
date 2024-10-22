@@ -12,6 +12,7 @@ import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
+import RequestContentModal from "@/components/models/RequestContentModal";
 //import { adsConfig } from "@/config/ads.config";
 //import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
 
@@ -36,6 +37,7 @@ export default function SearchPage() {
     const [page, setPage] = useState(1);
     const [seatrchResult, setSearchResult] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
+    const [isRequestModelOpen, setIsRequestModelOpen] = useState(false);
 
     const loadMore = () => {
         setPage((prevPage) => prevPage + 1);
@@ -248,12 +250,21 @@ export default function SearchPage() {
                         )}
 
                         {!loading && seatrchResult.length < 1 && searchQuery !== " " && (
-                            <div className="flex flex-col justify-center my-40 space-y-2 px-4">
-                                <h2 className="text-gray-300 text-xl mobile:text-base text-center font-semibold">
-                                    We are not found anything
-                                </h2>
-                                <small className="text-xs text-gray-300 text-center font-medium">Please double check the search keyword spelling and try again for 100% best result try with same title</small>
-                            </div>
+                            <>
+                                <RequestContentModal
+                                    isOpen={isRequestModelOpen}
+                                    onClose={() => setIsRequestModelOpen(false)}
+                                />
+                                <div className="flex flex-col justify-center my-40 space-y-2 px-4">
+                                    <h2 className="text-gray-100 text-xl mobile:text-base text-center font-semibold">
+                                        We are not found anything
+                                    </h2>
+                                    <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again for 100% best result try with same title</small>
+                                    <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => setIsRequestModelOpen(true)}>
+                                        <i className="bi bi-send"></i> Request content
+                                    </button>
+                                </div>
+                            </>
                         )}
 
                         <div ref={bottomObserverElement}></div>

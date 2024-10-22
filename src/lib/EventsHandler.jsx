@@ -2,7 +2,7 @@
 
 import { cloneElement, useEffect, useRef, useState } from "react";
 
-const ModelsController = ({ children, visibility, closeEvent, transformEffect = false }) => {
+const ModelsController = ({ children, visibility, closeEvent, transformEffect = false, windowScroll = true }) => {
 
     const initialStyle = {
         transition: transformEffect ? 'opacity 0.3s ease, transform 0.3s ease' : 'opacity 0.5s ease',
@@ -11,6 +11,8 @@ const ModelsController = ({ children, visibility, closeEvent, transformEffect = 
 
     const elementRef = useRef(null);
     const [styleObj, setStyleObj] = useState(initialStyle);
+
+    const body = document.querySelector('body');
 
     useEffect(() => {
         const outsideClickHandler = ({ target }) => {
@@ -42,12 +44,19 @@ const ModelsController = ({ children, visibility, closeEvent, transformEffect = 
                 opacity: 1,
                 transform: transformEffect ? 'translateY(0)' : undefined, // Move to center if transformEffect is true
             }));
+            if (windowScroll===false) {
+                body.setAttribute('class', 'scrollbar-hidden');
+                body.style.overflow = 'hidden';   
+            }
+            
         } else {
             setStyleObj(prevStyle => ({
                 ...prevStyle,
                 opacity: 0,
                 transform: transformEffect ? 'translateY(100%)' : undefined, // Move to bottom if transformEffect is true
             }));
+            body.removeAttribute('class', 'scrollbar-hidden');
+            body.style.overflow = '';
         }
     }, [visibility, transformEffect]);
 

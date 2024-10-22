@@ -16,8 +16,6 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
 
   const closeModel = () => {
 
-    const body = document.querySelector('body');
-
     if (message !== "") {
       setMessage("Pending")
     };
@@ -28,12 +26,10 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
     if (writtenReportRef.current?.value !== "") {
       writtenReportRef.current?.value == "";
     }
-
     setIsModelOpen(false);
-
+    const body = document.querySelector('body');
     body.removeAttribute('class', 'scrollbar-hidden');
     body.style.overflow = '';
-
   }
 
   const handleSelectedReport = (e) => {
@@ -111,7 +107,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
   };
 
   return (
-    <ModelsController visibility={isOpen} transformEffect={window.innerWidth <= 769}>
+    <ModelsController visibility={isOpen} transformEffect={window.innerWidth <= 769} windowScroll={false}>
       <div className="w-full h-full fixed top-0 left-0 flex justify-center mobile:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
         style={{ transform: 'translateY(100%)' }}
       >
