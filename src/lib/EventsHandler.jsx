@@ -3,10 +3,9 @@
 import { cloneElement, useEffect, useRef, useState } from "react";
 
 const ModelsController = ({ children, visibility, closeEvent, transformEffect = false, windowScroll = true }) => {
-
     const initialStyle = {
         transition: transformEffect ? 'opacity 0.3s ease, transform 0.3s ease' : 'opacity 0.5s ease',
-        opacity: 0, // Start as fully transparent
+        opacity: 0,
     };
 
     const elementRef = useRef(null);
@@ -27,7 +26,7 @@ const ModelsController = ({ children, visibility, closeEvent, transformEffect = 
         };
 
         document.addEventListener('click', outsideClickHandler);
-        document.addEventListener('contextmenu', rightClickHandler); // Handle right-click events
+        document.addEventListener('contextmenu', rightClickHandler);
 
         return () => {
             document.removeEventListener('click', outsideClickHandler);
@@ -42,23 +41,32 @@ const ModelsController = ({ children, visibility, closeEvent, transformEffect = 
             setStyleObj(prevStyle => ({
                 ...prevStyle,
                 opacity: 1,
-                transform: transformEffect ? 'translateY(0)' : undefined, // Move to center if transformEffect is true
+                transform: transformEffect ? 'translateY(0)' : undefined,
             }));
-            if (windowScroll === false) {
-                body.setAttribute('class', 'scrollbar-hidden');
+            if (windowScroll === false && !body.classList.contains('scrollbar-hidden')) {
+                body.classList.add('scrollbar-hidden');
                 body.style.overflow = 'hidden';
             }
-
         } else {
             setStyleObj(prevStyle => ({
                 ...prevStyle,
                 opacity: 0,
-                transform: transformEffect ? 'translateY(100%)' : undefined, // Move to bottom if transformEffect is true
+                transform: transformEffect ? 'translateY(100%)' : undefined,
             }));
-            body.removeAttribute('class', 'scrollbar-hidden');
-            body.style.overflow = '';
+            if (body.classList.contains('scrollbar-hidden')) {
+                body.classList.remove('scrollbar-hidden');
+                body.style.overflow = '';
+            }
         }
-    }, [visibility, transformEffect]);
+
+        // Cleanup on unmount to ensure no hidden overflow persists on back navigation
+        return () => {
+            if (body.classList.contains('scrollbar-hidden')) {
+                body.classList.remove('scrollbar-hidden');
+                body.style.overflow = '';
+            }
+        };
+    }, [visibility, transformEffect, windowScroll]);
 
     const childWithProps = children && visibility ? cloneElement(children, {
         ref: elementRef,
