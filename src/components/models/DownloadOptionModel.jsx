@@ -26,8 +26,11 @@ const formatQualityType = (quality, qualityType) => {
     case '1080p':
       qualityLabel = 'Full HD';
       break;
+      case '2160p':
+      qualityLabel = 'Ultra HD';
+      break;
     default:
-      qualityLabel = 'Standard';
+      qualityLabel = 'HD';
       break;
   }
 
