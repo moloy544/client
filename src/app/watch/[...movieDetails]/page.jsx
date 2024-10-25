@@ -64,24 +64,23 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
 
 export async function generateMetadata({ params }) {
 
-  const movieId = params?.movieDetails ? params.movieDetails[2] : ' ';
+  const { movieDetails } = params;
+
+  const movieId = movieDetails[2];
 
   const { movieData, status } = await getMovieDeatils('tt' + movieId, false);
 
-
-  if (status !== 200 || movieData.status === "coming soon" || params.movieDetails.length !== 3) {
+  if (status !== 200 || movieData.status === "coming soon" || movieDetails.length !== 3) {
     return;
   };
 
   // movie all dara fields
-  const { title, thambnail, releaseYear, type, genre, language, castDetails } = movieData || {}
+  const { imdbId, title, thambnail, releaseYear, type, genre, language, castDetails } = movieData || {};
 
-  const paramsType = params.movieDetails[0];
-  const paramsTitle = params.movieDetails[1];
-  const browserUrlath = `/watch/${paramsType}/${paramsTitle}/${movieId}`;
-  const createdUrlPath = `/watch/${type}/${creatUrlLink(title)}/${movieId}`;
+  const paramsType = movieDetails[0];
+  const movieDataImdbId = imdbId?.replace('tt', '');
 
-  if (browserUrlath !== createdUrlPath) {
+  if (paramsType !== type || movieId !== movieDataImdbId) {
     return;
   }
 
@@ -135,11 +134,10 @@ export default async function Page({ params }) {
   // Verify if the browser url is expted url or not
   // If not math then show not found by set validapath false and call notFound.
   if (status === 200 && movieData) {
-    const type = movieDetails[0]
-    const title = movieDetails[1]
-    const browserUrlath = `/watch/${type}/${title}/${movieId}`;
-    const createdUrlPath = `/watch/${movieData.type}/${creatUrlLink(movieData.title)}/${movieId}`;
-    if (browserUrlath !== createdUrlPath || movieDetails.length !== 3) {
+    const paramsType = movieDetails[0];
+    const movieDataType = movieData.type;
+    const movieDataImdbId = movieData.imdbId?.replace('tt', '');
+    if (paramsType !== movieDataType || movieDetails.length !== 3 || movieId !== movieDataImdbId) {
       isValidPath = false;
     }
   }
