@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { transformToCapitalize } from "@/utils";
+import { creatToastAlert, transformToCapitalize } from "@/utils";
 import { adsConfig } from "@/config/ads.config";
 import { ModelsController } from "@/lib/EventsHandler";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
@@ -26,13 +26,23 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     category,
     type,
     status,
-    watchLink
+    watchLink,
+    multiAudio,
+    videoType
   } = movieDetails || {};
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
 
   const handleVideoSourcePlay = (source) => {
+    console.log(source);
+    // validate if no video source show  report message 
+    if (!source) {
+      creatToastAlert({
+        message: `Cant play this ${type} Please report us`
+      });
+      return;
+    }
 
     // Set the video source as usual
     setVideoSource(source);
@@ -121,7 +131,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               fill />
 
             {status === "released" ? (
-              <PlayButton watchLinks={watchLink} playHandler={handleVideoSourcePlay} />
+              <PlayButton
+                watchLinks={watchLink}
+                playHandler={handleVideoSourcePlay}
+                multiAudio={multiAudio}
+                videoType={videoType}
+              />
             ) : (
               <>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white text-sm">
@@ -222,13 +237,16 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   )
 };
 
-function PlayButton({ watchLinks, playHandler }) {
+function PlayButton({ watchLinks, playHandler, multiAudio, videoType }) {
 
   const [showDropdown, setDropDown] = useState(false);
 
+  const isMultiOption = (watchLinks.length > 1 && multiAudio && typeof videoType === 'string');
+
   const play = () => {
-    if (watchLinks.length === 1) {
-      playHandler(watchLinks[0]);
+    if (!isMultiOption) {
+      const source = watchLinks[0].source || watchLinks[0];
+      playHandler(source);
     } else {
       setDropDown((prev) => !prev)
     };
@@ -256,17 +274,17 @@ function PlayButton({ watchLinks, playHandler }) {
         </button>
       </div>
       <ModelsController visibility={showDropdown} closeEvent={() => setDropDown(false)}>
-        <div className={`w-56 h-auto py-3.5 px-2 bg-gray-100 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
+        <div className={`w-56 h-auto py-3.5 px-2 bg-gray-800 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
           <button
             onClick={() => setDropDown(false)}
-            className="font-medium text-gray-600 hover:text-gray-800 float-right outline-none"
+            className="font-medium text-gray-300 hover:text-gray-200 float-right outline-none"
             type="button"
           >
             <i className="bi bi-x-circle"></i>
             <span className="sr-only">Close</span>
           </button>
-          <div className="text-gray-900 font-semibold mx-1.5">Select server</div>
-          <div className="text-sm text-gray-800 space-y-2.5 mt-2 mx-1">
+          <div className="mx-1.5 font-bold text-base text-gray-100">Select Server</div>
+          <div className="text-sm text-gray-200 space-y-2.5 mt-2 mx-1 py-2">
             {watchLinks.map((data, index) => (
               <div key={index} className="mx-auto self-center">
                 <button
@@ -274,18 +292,17 @@ function PlayButton({ watchLinks, playHandler }) {
                   onClick={(e) => {
                     playHandler(data.source); // Call the play handler
                   }}
-                  className="flex items-center font-medium w-full h-auto"
+                  className="flex items-center w-full h-auto bg-[#283545] text-gray-300 font-semibold  rounded-sm"
                 >
                   <i className={`bi bi-dot ${index === 0 ? "text-cyan-500" : "text-yellow-500"} text-xl`}></i>
                   <span className="mr-1.5">{data.label}</span>
-                  <span className="text-xs text-gray-700 font-normal">{data.labelTag}</span>
+                  <span className="text-xs text-gray-200 font-medium">{data.labelTag}</span>
                 </button>
               </div>
             ))}
           </div>
         </div>
       </ModelsController>
-
     </>
   )
 }

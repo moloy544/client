@@ -211,7 +211,7 @@ export default function SearchPage() {
 
             </header >
 
-            <div className="w-full min-h-screen overflow-x-hidden bg-gray-800 mobile:pt-28 pt-32">
+            <div className="w-full h-full overflow-x-hidden bg-gray-800 mobile:pt-28 pt-32">
 
                 {/*** Banner Ad Show Container Size height 250, width 300 seatrchResult.length === 0 &&
                     (<div className="my-2">
@@ -228,8 +228,8 @@ export default function SearchPage() {
                                 Results for <span className=" text-cyan-500">{searchQuery}</span>
                             </h3>
                         )}
-                        <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(140px,1fr))] px-2">
-                            {seatrchResult.map((movie, index) => (
+                       <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] px-2 py-3 mobile:py-2">
+                       {seatrchResult.map((movie, index) => (
                                 <ResponsiveMovieCard
                                     key={movie.imdbId || index}
                                     data={movie}
@@ -358,7 +358,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         <div className="w-[45%] mobile:w-full h-auto relative">
             <form onSubmit={submit} className="w-auto h-auto flex items-center">
                 <input
-                    className="w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 border-r-transparent rounded-r-none rounded-md px-2 text-base caret-black mobile:text-sm placeholder:text-gray-800 mobile:placeholder:text-xs placeholder:text-sm shadow-2xl"
+                    className="w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 border-r-transparent rounded-r-none rounded-md px-2 text-base caret-black mobile:text-sm font-semibold placeholder:text-gray-800 mobile:placeholder:text-xs placeholder:text-sm shadow-2xl"
                     onClick={() => setVisibility(true)}
                     onChange={searchInputChange}
                     type="text"

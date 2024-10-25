@@ -5,38 +5,56 @@ import { safeLocalStorage } from "@/utils/errorHandlers";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-const ReportModel = dynamic(() => import('@/components/models/ReportModel'));
+// Report content model dinamic import
+const ReportModel = dynamic(() => import('@/components/models/ReportModel'), {
+  ssr: false,
+});
+// Download content videos model dinamic import
+const DownloadOptionModel = dynamic(() => import('@/components/models/DownloadOptionModel'), {
+  ssr: false,
+});
+
+const buttonsClass = "flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-gray-300 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-[#18212b]";
 
 export default function MoviesUserActionOptions({ movieData }) {
 
   const [isSaved, setIsSaved] = useState(false);
   const [isModelOpen, setIsModelOpen] = useState(false);
 
+  const {
+    _id,
+    imdbId,
+    status,
+    title,
+    releaseYear,
+    type,
+    downloadLinks,
+  } = movieData || {};
+
   //Share movie function
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
         title: document.title,
-        text: `Watch ${movieData.title + " " + '(' + movieData.releaseYear + ')' + " " + movieData.type} online free only on moviesbazaar`,
+        text: `Watch ${title + " " + '(' + releaseYear + ')' + " " + type} online free only on moviesbazar`,
         url: window.location.href,
       })
         .catch((error) => console.error('Error sharing movie:', error));
     };
   };
 
-
   const saveInLocalStorage = () => {
     const localStorageData = safeLocalStorage.get('saved-movies-data');
     const parseData = localStorageData ? JSON.parse(localStorageData) : [];
-    const index = parseData?.findIndex((data) => data.imdbId === movieData.imdbId);
+    const index = parseData?.findIndex((data) => data.imdbId === imdbId);
 
     if (index === -1) {
       // Movie not found, add it
       setIsSaved(true);
       const dateNow = new Date();
-      parseData.unshift({ imdbId: movieData.imdbId, addAt: dateNow });
+      parseData.unshift({ imdbId, addAt: dateNow });
       creatToastAlert({
-        message: `Add ${movieData.title+' ' + movieData.type} To Watch Later`
+        message: `Add ${title + ' ' + type} To Watch Later`
       });
 
     } else {
@@ -44,7 +62,7 @@ export default function MoviesUserActionOptions({ movieData }) {
       parseData.splice(index, 1);
       setIsSaved(false);
       creatToastAlert({
-        message: `Remove ${movieData.title + ' ' + movieData.type} From Watch Later`
+        message: `Remove ${title + ' ' + type} From Watch Later`
       })
     }
 
@@ -66,7 +84,7 @@ export default function MoviesUserActionOptions({ movieData }) {
 
     const parseData = localStorageData ? JSON.parse(localStorageData) : [];
 
-    const isAvailable = parseData?.some((data) => data.imdbId === movieData.imdbId);
+    const isAvailable = parseData?.some((data) => data.imdbId === imdbId);
 
     setIsSaved(isAvailable);
 
@@ -77,7 +95,7 @@ export default function MoviesUserActionOptions({ movieData }) {
 
       <div className="w-auto h-auto mt-3 flex gap-5 mobile:gap-2.5 justify-around mobile:justify-evenly overflow-x-scroll scrollbar-hidden">
 
-        <div onClick={saveInLocalStorage} role="button" title="Save" className="w-auto h-auto flex gap-1 justify-center items-center text-gray-300 bg-gray-900 lg:hover:bg-gray-800 py-1.5 px-3 rounded-2xl">
+        <div onClick={saveInLocalStorage} role="button" title="Save" className={buttonsClass}>
           {isSaved ? (
             <i className="bi bi-check-square-fill text-yellow-500"></i>
           ) : (
@@ -90,7 +108,11 @@ export default function MoviesUserActionOptions({ movieData }) {
 
         </div>
 
-        <div onClick={handleShare} role="button" title="Share" className="flex gap-1.5 items-center text-gray-300 bg-gray-900 lg:hover:bg-gray-800 px-3.5 py-1 rounded-2xl">
+        {downloadLinks && downloadLinks.length > 0 && (
+          <DownloadButton downloadLinks={downloadLinks} />
+        )}
+
+        <div onClick={handleShare} role="button" title="Share" className={buttonsClass}>
           <svg fill="#d1d5db" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false">
             <path d="M15 5.63L20.66 12 15 18.37V14h-1c-3.96 0-7.14 1-9.75 3.09 1.84-4.07 5.11-6.4 9.89-7.1l.86-.13V5.63M14 3v6C6.22 10.13 3.11 15.33 2 21c2.78-3.97 6.44-6 12-6v6l8-9-8-9z"></path>
           </svg>
@@ -101,7 +123,7 @@ export default function MoviesUserActionOptions({ movieData }) {
           onClick={openModel}
           role="button"
           title="Report"
-          className="flex gap-1.5 items-center text-gray-300 bg-gray-900 lg:hover:bg-gray-800 px-3 py-1.5 rounded-2xl"
+          className={buttonsClass}
         >
           <svg
             fill="#d1d5db"
@@ -121,7 +143,8 @@ export default function MoviesUserActionOptions({ movieData }) {
       </div>
       {isModelOpen && (
         <ReportModel
-          movieData={movieData}
+          id={_id}
+          status={status}
           setIsModelOpen={setIsModelOpen}
           isOpen={isModelOpen}
         />
@@ -131,4 +154,36 @@ export default function MoviesUserActionOptions({ movieData }) {
   )
 };
 
-
+function DownloadButton({ downloadLinks }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  return (
+    <>
+      <div
+        onClick={() => setIsModalOpen(true)}
+        role="button"
+        title="Download"
+        className={buttonsClass}
+      >
+        <svg
+          fill="#d1d5db"
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+          focusable="false"
+          aria-hidden="true"
+          className="w-5 h-5"
+        >
+          <path d="M17 18v1H6v-1h11zm-.5-6.6-.7-.7-3.8 3.7V4h-1v10.4l-3.8-3.8-.7.7 5 5 5-4.9z" />
+        </svg>
+        <div className="text-xs font-semibold">Download</div>
+      </div>
+      <DownloadOptionModel
+        linksData={downloadLinks[0]}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </>
+  )
+}

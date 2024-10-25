@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from 'react';
 
 const useOrientation = () => {
@@ -19,6 +21,30 @@ const useOrientation = () => {
     return isPortrait;
 };
 
+const useWindowWidth = () => {
+    const [windowWidth, setWindowWidth] = useState(window ? window.innerWidth : undefined);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        // Set initial value on mount
+        handleResize();
+
+        // Add event listener
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup event listener on component unmount
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    return windowWidth;
+};
+
 export {
     useOrientation,
+    useWindowWidth
 }

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc }) {
   useEffect(() => {
-    // Set a 1 min (60000 ms) delay for loading both scripts
+    // Set a 30 seconds (60000 ms) delay for loading both scripts
     const loadAdScripts = setTimeout(() => {
       if(process.env.NODE_ENV !== "production") return;
       // Load popunder ad script
@@ -18,7 +18,7 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
       socialBarScript.src = socialBarScriptSrc;
       socialBarScript.async = true;
       document.body.appendChild(socialBarScript);
-    }, 50000); //1min delay
+    }, 30000); //30 seconds delay
 
     //Clean up the timeout if the component unmounts
     return () => clearTimeout(loadAdScripts);

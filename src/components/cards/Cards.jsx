@@ -6,8 +6,10 @@ const MovieCardSkleaton = ({ limit = 20 }) => {
     return (
         <>
             {Array.from({ length: limit }, (_, index) => (
-                <div key={index} className="bg-gray-200 w-auto min-h-[11rem] max-h-64 mobile:max-h-44 rounded-[4px] animate-pulse relative">
+                <div key={index} className="bg-gray-200 w-autio aspect-[4/5.8] rounded-[4px] animate-pulse relative overflow-hidden px-2">
                     <div className="w-auto h-auto px-4 py-2 bg-gray-300 absolute right-1 top-1 rounded-md animate-pulse"></div>
+                    <div className="w-full h-2 bg-gray-300 absolute bottom-5 left-0 rounded-sm mx-1 animate-pulse"></div>
+                    <div className="w-[60%] h-2 bg-gray-300 absolute bottom-2 left-0 rounded-sm mx-1 animate-pulse"></div>
                 </div>
             ))}
         </>

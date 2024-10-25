@@ -1,4 +1,3 @@
-import { appConfig } from "@/config/config";
 import axios from "axios";
 
 /************** Load more movies data function for handle infinity loading ************/
@@ -36,39 +35,6 @@ const loadMoreFetch = async ({ methood = 'post', apiPath, limitPerPage = 20, pag
   }
 
   return { status, data, dataIsEnd };
-};
-
-/**************** Get movie serirs details from database ***************/
-async function getMovieDeatils(imdbId, suggestion = true) {
-
-  let status = 500; // Default status in case of an error
-  let movieData = null;
-  let suggestions = null
-
-  try {
-
-    if (!imdbId || imdbId === ' ' || imdbId === '' || imdbId.length <= 6) {
-      return { status, movieData, suggestions };
-    }
-    const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`, {
-      params: { suggestion }
-    });
-
-    if (response.status === 200) {
-      status = response.status;
-      movieData = response.data.movieData || null;
-      suggestions = response.data.suggestions || null;
-    } else {
-      status = response.status
-    }
-
-  } catch (error) {
-    if (error.response) {
-      status = error.response.status;
-    }
-  } finally {
-    return { status, movieData, suggestions };
-  }
 };
 
 /*************** Format movie title url ***************/
@@ -173,17 +139,27 @@ function resizeImage(src, resize = 'f_auto,q_auto') {
     img = src.replace('/upload/', `/upload/${resizeValue}/`);
   }
   return img;
-}
+};
+
+const isMobileDevice = () => {
+  if (navigator.userAgentData) {
+    return navigator.userAgentData.mobile;
+  } else {
+    // Fallback to older method
+    return /Mobi|Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+};
+
 
 /**** Export all utilities *****/
 export {
   loadMoreFetch,
-  getMovieDeatils,
   creatUrlLink,
   debounceDelay,
   transformToCapitalize,
   formatNumberCounter,
   imageToBase64Url,
   creatToastAlert,
-  resizeImage
+  resizeImage,
+  isMobileDevice
 }

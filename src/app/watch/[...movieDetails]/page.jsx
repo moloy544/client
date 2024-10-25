@@ -2,7 +2,8 @@
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
-import { creatUrlLink, getMovieDeatils, transformToCapitalize } from "@/utils";
+import axios from "axios";
+import { creatUrlLink, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import { InspectPreventer } from "@/lib/lib";
 import MovieDetails from "../MovieDetails";
@@ -11,7 +12,8 @@ import Footer from "@/components/Footer";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
-function getIP() {
+// get the user ip
+const getIP = () => {
 
   const FALLBACK_IP_ADDRESS = '76.76.21.123'
   const forwardedFor = headers().get('x-forwarded-for');
@@ -24,7 +26,41 @@ function getIP() {
   }
 
   return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
-}
+};
+
+// get movie detais form backend server
+const getMovieDeatils = async (imdbId, suggestion = true) => {
+
+  let status = 500; // Default status in case of an error
+  let movieData = null;
+  let suggestions = null
+
+  try {
+
+    if (!imdbId || imdbId === ' ' || imdbId === '' || imdbId.length <= 6) {
+      return { status, movieData, suggestions };
+    }
+    const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`, {
+      params: { suggestion }
+    });
+
+    if (response.status === 200) {
+      status = response.status;
+      movieData = response.data.movieData || null;
+      suggestions = response.data.suggestions || null;
+    } else {
+      status = response.status
+    }
+
+  } catch (error) {
+    if (error.response) {
+      status = error.response.status;
+    }
+  } finally {
+    return { status, movieData, suggestions };
+  }
+};
+
 
 export async function generateMetadata({ params }) {
 
@@ -48,7 +84,6 @@ export async function generateMetadata({ params }) {
   if (browserUrlath !== createdUrlPath) {
     return;
   }
-
 
   // extract the movie genres and sort them max 3 
   const genres = genre?.slice(0, 3).join(', ')

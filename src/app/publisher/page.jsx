@@ -95,7 +95,7 @@ export default function AdminPage() {
 
             if (state.imdbId.length >= 8) {
 
-                if (state._id) {
+                if (state._id || state.title !=="") {
                     setState(initialMoviesData)
                 }
 

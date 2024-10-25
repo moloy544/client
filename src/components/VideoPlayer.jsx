@@ -3,6 +3,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import useOnlineStatus from "@/lib/lib";
 import { useOrientation } from "@/hooks/hook";
+import { isMobileDevice } from "@/utils";
 
 //Memoization to avoid unnecessary re-renders
 const areEqual = (prevProps, nextProps) => {
@@ -20,15 +21,6 @@ function generateSourceURL(originalURL, userIp) {
   const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
   const modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
   return modifiedURL;
-};
-
-const isMobileDevice = () => {
-  if (navigator.userAgentData) {
-    return navigator.userAgentData.mobile;
-  } else {
-    // Fallback to older method
-    return /Mobi|Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  }
 };
 
 const VideoPlayer = memo(({ title, source, userIp }) => {

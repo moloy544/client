@@ -4,8 +4,9 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
+import { useWindowWidth } from "@/hooks/hook";
 
-export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
+export default function ReportModel({ id, status, setIsModelOpen, isOpen }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
@@ -74,7 +75,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
         withCredentials: true
       }).post('/api/v1/user/action/report', {
         reportData: {
-          movie: movieData._id,
+          movie: id,
           selectedReports,
           writtenReport: writtenReportRef.current?.value,
         }
@@ -106,13 +107,16 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
     };
   };
 
+  // get window live current width
+  const windowCurrentWidth = useWindowWidth();
+
   return (
-    <ModelsController visibility={isOpen} transformEffect={window.innerWidth <= 769} windowScroll={false}>
-      <div className="w-full h-full fixed top-0 left-0 flex justify-center mobile:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
+    <ModelsController visibility={isOpen} transformEffect={windowCurrentWidth <= 450} windowScroll={false}>
+      <div className="w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
         style={{ transform: 'translateY(100%)' }}
       >
 
-        <div className={`mobile:w-full w-auto mx-4 ${message !== "Success" ? "mobile:absolute z-20 mobile:bottom-0 mobile:rounded-b-none" : "max-w-[fit-content]"} mobile:m-auto w-auto h-fit rounded-lg bg-white p-4 shadow-2xl border border-gray-300`}>
+        <div className={`sm-screen:w-full w-auto mx-4 ${message !== "Success" ? "sm-screen:absolute z-20 sm-screen:bottom-0 sm-screen:rounded-b-none" : "max-w-[fit-content]"} sm-screen:m-auto w-auto h-fit rounded-lg bg-white p-4 shadow-2xl border border-gray-300`}>
 
           {message !== 'Success' ? (
             <>
@@ -125,7 +129,7 @@ export default function ReportModel({ movieData, setIsModelOpen, isOpen }) {
 
               <div className="flex flex-wrap gap-3 my-2">
 
-                {movieData.status === "released" && (
+                {status === "released" && (
                   <>
                     <div className="flex items-center">
                       <input

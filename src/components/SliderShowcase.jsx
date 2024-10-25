@@ -95,7 +95,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                     </h2>
                 </div>
                 {linkUrl && (
-                    <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium">
+                    <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium" prefetch={false}>
                         <span>View All</span>
                         <i className="bi bi-chevron-right"></i>
                     </Link>
@@ -117,7 +117,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                             >
                                 <Link
                                     href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}
-                                    title={`${data.title} ${data.releaseYear} ${data.type}`}>
+                                    title={`${data.title} ${data.releaseYear} ${data.type}`} prefetch={false}>
                                     <div className="relative w-full aspect-[2/3] h-full bg-white rounded-[3px]">
                                         <Image
                                             priority={thambnailImagePriority}
