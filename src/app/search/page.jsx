@@ -358,7 +358,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         <div className="w-[45%] mobile:w-full h-auto relative">
             <form onSubmit={submit} className="w-auto h-auto flex items-center">
                 <input
-                    className="w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 border-r-transparent rounded-r-none rounded-md px-2 text-base caret-black mobile:text-sm font-semibold placeholder:text-gray-800 mobile:placeholder:text-xs placeholder:text-sm shadow-2xl"
+                    className="w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 border-r-transparent rounded-r-none rounded-md px-2 text-base caret-black mobile:text-sm font-medium placeholder:text-gray-800 mobile:placeholder:text-xs placeholder:text-sm shadow-2xl"
                     onClick={() => setVisibility(true)}
                     onChange={searchInputChange}
                     type="text"

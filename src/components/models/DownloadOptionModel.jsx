@@ -59,15 +59,15 @@ export default function DownloadOptionModel({ linksData, isOpen, onClose }) {
     <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth <= 450}>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50">
 
-        <div className="bg-white rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[500px] shadow-lg py-2">
+        <div className="bg-white rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg py-2">
 
           <div className="text-lg font-bold my-3 mx-3 text-black">Download Options</div>
 
           <div className="px-5">
             {/* Title */}
-            <div className="text-sm text-gray-700 font-bold text-center my-2.5">{title}</div>
+            <div className="text-sm text-gray-700 font-bold text-center my-2.5 line-clamp-2">{title}</div>
             {/* Download Links */}
-            <div className="space-y-2">
+            <div className="space-y-2 max-w-sm mx-auto">
               {links.map(({ quality, size, url }, index) => (
                 <button
                   type="button"
