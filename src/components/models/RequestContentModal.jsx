@@ -108,13 +108,6 @@ export default function RequestContentModal({ onClose, isOpen = false }) {
                                     ></textarea>
                                 </div>
 
-                                <p className="text-sm text-gray-600 mb-4">
-                                    <strong>Read our Privacy Policy:</strong>
-                                    <Link onClick={onClose} href="/privacy-policy" className="text-blue-500 hover:underline ml-1">
-                                        View Details
-                                    </Link>
-                                </p>
-
                                 {/* Submit Button */}
                                 <div className="flex justify-end">
                                     <button
