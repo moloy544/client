@@ -35,7 +35,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   const [videoSource, setVideoSource] = useState(null);
 
   const handleVideoSourcePlay = (source) => {
-    console.log(source);
+ 
     // validate if no video source show  report message 
     if (!source) {
       creatToastAlert({
