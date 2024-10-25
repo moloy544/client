@@ -53,9 +53,9 @@ export default function DownloadOptionModel({ linksData, isOpen, onClose }) {
 
   return (
      <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth <= 450}>
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50 mx-1.5">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50">
 
-          <div className="bg-white rounded-lg sm-screen:w-full max-w-[500px] shadow-lg py-2">
+          <div className="bg-white rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[500px] shadow-lg py-2">
 
             <div className="text-lg font-bold my-3 mx-3 text-black">Download Options</div>
 
@@ -69,10 +69,10 @@ export default function DownloadOptionModel({ linksData, isOpen, onClose }) {
                     type="button"
                     key={index}
                     onClick={() => handleDownload(url)}
-                    className="block w-full text-sm text-cyan-900 hover:text-gray-700 font-semibold px-4 py-2 bg-slate-200 hover:bg-gray-300 rounded-md transition"
+                    className="block w-full text-sm text-cyan-900 hover:text-cyan-800 font-semibold px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md transition"
                   >
                     <span>{quality} - {size}</span>
-                    <span className="ml-1.5 capitalize">{formatQualityType(quality, qualityType)}</span>
+                    <span className="ml-1.5 capitalize text-gray-800">{formatQualityType(quality, qualityType)}</span>
                   </button>
                 ))}
               </div>

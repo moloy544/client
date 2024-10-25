@@ -116,7 +116,7 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen }) {
         style={{ transform: 'translateY(100%)' }}
       >
 
-        <div className={`sm-screen:w-full w-auto mx-4 ${message !== "Success" ? "sm-screen:absolute z-20 sm-screen:bottom-0 sm-screen:rounded-b-none" : "max-w-[fit-content]"} sm-screen:m-auto w-auto h-fit rounded-lg bg-white p-4 shadow-2xl border border-gray-300`}>
+        <div className={`sm-screen:w-full w-auto mx-4 ${message !== "Success" ? "sm-screen:absolute z-20 sm-screen:bottom-0 sm-screen:rounded-b-none" : "max-w-[fit-content]"} sm-screen:m-auto w-auto h-fit rounded-lg sm-screen:rounded-xl bg-white p-4 shadow-2xl border border-gray-300`}>
 
           {message !== 'Success' ? (
             <>
