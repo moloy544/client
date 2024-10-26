@@ -26,7 +26,7 @@ const formatQualityType = (quality, qualityType) => {
     case '1080p':
       qualityLabel = 'Full HD';
       break;
-      case '2160p':
+    case '2160p':
       qualityLabel = 'Ultra HD';
       break;
     default:
@@ -38,7 +38,7 @@ const formatQualityType = (quality, qualityType) => {
   return `(${qualityLabel})`;
 };
 
-export default function DownloadOptionModel({ linksData, isOpen, onClose }) {
+export default function DownloadOptionModel({ linksData, isOpen, onClose, onReportButtonClick }) {
 
   const { title, links, qualityType } = linksData || {};
 
@@ -47,7 +47,6 @@ export default function DownloadOptionModel({ linksData, isOpen, onClose }) {
 
   const handleDownload = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer'); // Open the download link
-    onClose()
   };
 
   // validate if false anything returns nothing
@@ -60,8 +59,14 @@ export default function DownloadOptionModel({ linksData, isOpen, onClose }) {
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50">
 
         <div className="bg-white rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg py-2">
-
-          <div className="text-lg font-bold my-3 mx-3 text-black">Download Options</div>
+          <div className="flex justify-around">
+            <div className="text-lg font-bold my-3 mx-3 text-black">Download Options</div>
+            <button type="button"
+              onClick={onReportButtonClick}
+              className="bg-transparent outline-none text-sm font-semibold text-gray-800 px-2">
+              Report
+            </button>
+          </div>
 
           <div className="px-5">
             {/* Title */}
@@ -81,11 +86,13 @@ export default function DownloadOptionModel({ linksData, isOpen, onClose }) {
               ))}
             </div>
 
-            <div className="mt-3 space-y-1">
-            <p className="text-center text-xs font-semibold text-gray-500">
-              After clicking download option, please wait in window; your download will start shortly and automatically.
-            </p>
-            <p className="text-center text-xs font-semibold text-gray-500">If download speed slow or not work then please stream online.</p>
+            <div className="mt-3 space-y-1 font-medium text-xs text-gray-500">
+              <p className="text-center">
+                After clicking the download option, please don&lsquot close the opend window; your download will start shortly and automatically.
+              </p>
+              <p className="text-center">
+                If the download not start after click, wait a few minutes and try again. You can also try a different download option or watch online if needed.
+              </p>
             </div>
 
             <button

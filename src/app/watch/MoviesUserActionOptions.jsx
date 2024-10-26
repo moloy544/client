@@ -19,7 +19,7 @@ const buttonsClass = "flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-gray-
 export default function MoviesUserActionOptions({ movieData }) {
 
   const [isSaved, setIsSaved] = useState(false);
-  const [isModelOpen, setIsModelOpen] = useState(false);
+  const [isReportModelOpen, setIsReportModelOpen] = useState(false);
 
   const {
     _id,
@@ -73,11 +73,6 @@ export default function MoviesUserActionOptions({ movieData }) {
     }
   };
 
-  const openModel = () => {
-    setIsModelOpen(true);
-  }
-
-
   useEffect(() => {
 
     const localStorageData = safeLocalStorage.get('saved-movies-data');
@@ -88,7 +83,7 @@ export default function MoviesUserActionOptions({ movieData }) {
 
     setIsSaved(isAvailable);
 
-  }, [])
+  }, []);
 
   return (
     <>
@@ -109,7 +104,10 @@ export default function MoviesUserActionOptions({ movieData }) {
         </div>
 
         {downloadLinks && downloadLinks.length > 0 && (
-          <DownloadButton downloadLinks={downloadLinks} />
+          <DownloadButton
+            handleReportModelOpen={setIsReportModelOpen}
+            downloadLinks={downloadLinks}
+          />
         )}
 
         <div onClick={handleShare} role="button" title="Share" className={buttonsClass}>
@@ -120,7 +118,7 @@ export default function MoviesUserActionOptions({ movieData }) {
         </div>
 
         <div
-          onClick={openModel}
+          onClick={() => setIsReportModelOpen(true)}
           role="button"
           title="Report"
           className={buttonsClass}
@@ -141,12 +139,13 @@ export default function MoviesUserActionOptions({ movieData }) {
         </div>
 
       </div>
-      {isModelOpen && (
+      {isReportModelOpen && (
         <ReportModel
           id={_id}
           status={status}
-          setIsModelOpen={setIsModelOpen}
-          isOpen={isModelOpen}
+          isDownloadOption={downloadLinks && downloadLinks.length > 0 ? true : false}
+          setIsModelOpen={setIsReportModelOpen}
+          isOpen={isReportModelOpen}
         />
       )}
 
@@ -154,9 +153,9 @@ export default function MoviesUserActionOptions({ movieData }) {
   )
 };
 
-function DownloadButton({ downloadLinks }) {
+function DownloadButton({ downloadLinks, handleReportModelOpen }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   return (
     <>
       <div
@@ -183,6 +182,10 @@ function DownloadButton({ downloadLinks }) {
         linksData={downloadLinks[0]}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onReportButtonClick={() => {
+          setIsModalOpen(false);
+          handleReportModelOpen(true)
+        }}
       />
     </>
   )

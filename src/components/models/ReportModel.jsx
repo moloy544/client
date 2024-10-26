@@ -6,7 +6,7 @@ import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { useWindowWidth } from "@/hooks/hook";
 
-export default function ReportModel({ id, status, setIsModelOpen, isOpen }) {
+export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDownloadOption }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
@@ -45,7 +45,7 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen }) {
 
     setSelectedReports((prevData) => {
       if (isChecked) {
-        if (reportValue === "Video not play") {
+        if (reportValue === "Video not playing") {
           setVpnUseSuggestionModel(true);
         }
         return [...prevData, reportValue];
@@ -110,13 +110,21 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen }) {
   // get window live current width
   const windowCurrentWidth = useWindowWidth();
 
+  const reportOptions = [
+    { value: "Video not playing", id: "video-option-checkbox", visible: status === "released" },
+    { value: "Audio not working", id: "audio-option-checkbox", visible: true },
+    { value: "Download not working", id: "download-option-checkbox", visible: isDownloadOption },
+    { value: "Image not showing", id: "image-option-checkbox", visible: true },
+    { value: "Share not working", id: "share-option-checkbox", visible: true },
+  ];
+
   return (
     <ModelsController visibility={isOpen} transformEffect={windowCurrentWidth <= 450} windowScroll={false}>
       <div className="w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
         style={{ transform: 'translateY(100%)' }}
       >
 
-        <div className={`sm-screen:w-full w-auto mx-4 ${message !== "Success" ? "sm-screen:absolute z-20 sm-screen:bottom-0 sm-screen:rounded-b-none" : "max-w-[fit-content]"} sm-screen:m-auto w-auto h-fit rounded-lg sm-screen:rounded-xl bg-white p-4 shadow-2xl border border-gray-300`}>
+        <div className={`sm-screen:w-full w-auto max-w-md mx-4 ${message !== "Success" ? "sm-screen:absolute z-20 sm-screen:bottom-0 sm-screen:rounded-b-none" : "max-w-[fit-content]"} sm-screen:m-auto w-auto h-fit rounded-lg sm-screen:rounded-xl bg-white p-4 shadow-2xl border border-gray-300`}>
 
           {message !== 'Success' ? (
             <>
@@ -128,59 +136,25 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen }) {
               </div>
 
               <div className="flex flex-wrap gap-3 my-2">
-
-                {status === "released" && (
-                  <>
-                    <div className="flex items-center">
+                {reportOptions.map(({ value, id, visible }) =>
+                  visible ? (
+                    <div key={id} className="flex items-center space-x-2 p-2 rounded-lg border border-gray-200 shadow-sm">
                       <input
-                        id="video"
+                        id={id}
                         type="checkbox"
-                        value="Video not play"
+                        value={value}
                         onChange={handleSelectedReport}
                         className="w-4 h-4 cursor-pointer text-blue-600 bg-blue-600 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 rounded-lg"
                       />
                       <label
-                        htmlFor="video"
-                        className="ms-2 text-sm font-medium text-gray-900 cursor-pointer"
+                        htmlFor={id}
+                        className="text-xs font-medium text-gray-900 cursor-pointer"
                       >
-                        Video not play
+                        {value}
                       </label>
                     </div>
-
-                    <div className="flex items-center">
-                      <input
-                        id="audio"
-                        type="checkbox"
-                        value="Audio not work"
-                        onChange={handleSelectedReport}
-                        className="w-4 h-4 cursor-pointer text-blue-600 bg-blue-600 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 rounded-lg"
-                      />
-                      <label
-                        htmlFor="audio"
-                        className="ms-2 text-sm font-medium text-gray-900 cursor-pointer"
-                      >
-                        Audio not work
-                      </label>
-                    </div>
-                  </>
+                  ) : null
                 )}
-
-                <div className="flex items-center">
-                  <input
-                    id="share"
-                    type="checkbox"
-                    value="Share not work"
-                    onChange={handleSelectedReport}
-                    className="w-4 h-4 cursor-pointer text-blue-600 bg-blue-600 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 rounded-lg"
-                  />
-                  <label
-                    htmlFor="share"
-                    className="ms-2 text-sm font-medium text-gray-900 cursor-pointer"
-                  >
-                    Share not work
-                  </label>
-                </div>
-
               </div>
 
               <div className="my-3">
@@ -227,7 +201,7 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen }) {
         </div>
         {/* VPN Suggestion Modal */}
         {vpnUseSuggestionModel && (
-          <VpnUseSuggestionModal isOpen={vpnUseSuggestionModel} close={()=> setVpnUseSuggestionModel(false)} />
+          <VpnUseSuggestionModal isOpen={vpnUseSuggestionModel} close={() => setVpnUseSuggestionModel(false)} />
         )}
       </div>
 
