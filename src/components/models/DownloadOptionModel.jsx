@@ -88,7 +88,7 @@ export default function DownloadOptionModel({ linksData, isOpen, onClose, onRepo
 
             <div className="mt-3 space-y-1 font-medium text-xs text-gray-500">
               <p className="text-center">
-                After clicking the download option, please don&lsquot close the opend window; your download will start shortly and automatically.
+                After clicking the download option, please don&lsquo;t close the opend window; your download will start shortly and automatically.
               </p>
               <p className="text-center">
                 If the download not start after click, wait a few minutes and try again. You can also try a different download option or watch online if needed.
