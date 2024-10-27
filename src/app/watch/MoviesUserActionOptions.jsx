@@ -159,7 +159,7 @@ function DownloadButton({ downloadLinks, handleReportModelOpen }) {
 
   const openDownloadOptionModel = ()=>{
     setIsModalOpen(true);
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'development') {
       setTimeout(() => {
         window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
       }, 1000);
