@@ -10,7 +10,7 @@ import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
 import VideoPlayer from "@/components/VideoPlayer";
-import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
+//import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -104,10 +104,11 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       <Breadcrumb data={breadcrumbData} />
 
-      {/*** Banner Ad Show Container Size height 50, width 280 ****/}
+      {/*** Banner Ad Show Container Size height 50, width 280 
        <div className="min-w-full h-auto-fit flex items-center justify-center">
         <AdsterraBannerAds adOptions={adsConfig.adOptions1} />
       </div>
+      ****/}
 
       <div className="my-6 mobile:my-2.5 flex justify-center items-center">
 
