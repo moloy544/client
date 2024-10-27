@@ -1,5 +1,6 @@
 'use client'
 
+import { adsConfig } from "@/config/ads.config";
 import { creatToastAlert } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import dynamic from "next/dynamic";
@@ -156,10 +157,20 @@ export default function MoviesUserActionOptions({ movieData }) {
 function DownloadButton({ downloadLinks, handleReportModelOpen }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const openDownloadOptionModel = ()=>{
+    setIsModalOpen(true);
+    if (process.env.NODE_ENV === 'development') {
+      setTimeout(() => {
+        window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+      }, 1000);
+     
+    };
+  };
+
   return (
     <>
       <div
-        onClick={() => setIsModalOpen(true)}
+        onClick={openDownloadOptionModel}
         role="button"
         title="Download"
         className={buttonsClass}
