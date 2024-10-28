@@ -59,7 +59,7 @@ export default function RequestContentModal({ onClose, isOpen = false }) {
     return (
         <ModelsController visibility={isOpen} windowScroll={false}>
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-white p-6 rounded-lg shadow-lg w-full h-auto max-w-md mx-2">
+                <div className="bg-white p-4 rounded-lg shadow-lg w-full h-auto max-w-md mx-2">
                     {!successMessage ? (
                         <div>
                             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Request a content</h2>
@@ -93,6 +93,21 @@ export default function RequestContentModal({ onClose, isOpen = false }) {
                                         placeholder="e.g., Bollywood, Hollywood"
                                     />
                                 </div>
+                                {/* Release Year */}
+                                <div className="mb-4">
+                                    <label htmlFor="release-year" className="block text-sm font-medium text-gray-700">
+                                        {"Release Year (Optional)"}
+                                    </label>
+                                    <input
+                                        type="number"
+                                        id="release-year"
+                                        name="contentYear"
+                                        minLength={4}
+                                        maxLength={4}
+                                        className="mt-1 block w-full max-w-xs p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Enter Release Year if you know"
+                                    />
+                                </div>
 
                                 {/* Optional Message */}
                                 <div className="mb-4">
@@ -107,6 +122,12 @@ export default function RequestContentModal({ onClose, isOpen = false }) {
                                         rows={3}
                                     ></textarea>
                                 </div>
+                                <p className="text-xs font-medium text-gray-600 my-4">
+                                    For any queries, feel free to email us at:
+                                    <span className="cursor-pointer text-blue-600 hover:underline" onClick={() => window.location.href = "mailto:moviesbazarorg@gmail.com"}>
+                                        moviesbazarorg@gmail.com
+                                    </span>
+                                </p>
 
                                 {/* Submit Button */}
                                 <div className="flex justify-end">

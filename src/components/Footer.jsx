@@ -141,7 +141,7 @@ function Footer() {
                 </p>
                 <p>
                     <strong>Privacy policy:</strong>  We have some privacy policies to keep you informed about how we manage data. Please take a moment to read them by clicking the link.
-                    <Link href="/privacy-policy/" className="text-cyan-300 font-medium ml-1.5">
+                    <Link href="/privacy-policy/" className="text-blue-200 font-medium ml-1.5">
                         See privery policy
                     </Link>
                 </p>

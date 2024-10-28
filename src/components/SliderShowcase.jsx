@@ -89,7 +89,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
     return (
         <section className="w-full h-auto relative space-y-2.5 py-1.5">
             <div className="w-full h-auto flex justify-between items-center px-2.5">
-                <div className="flex items-center border-l-[3px] rounded-sm border-yellow-500 pl-1">
+                <div className="flex items-center border-l-[3px] rounded-sm border-teal-600 pl-1">
                     <h2 className="text-gray-200 text-[18px] mobile:text-sm font-semibold line-clamp-1">
                         {title}
                     </h2>

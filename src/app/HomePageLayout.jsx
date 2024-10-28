@@ -140,7 +140,7 @@ function HomePageLayout({ initialLayoutData }) {
                                 />
                             </div>
 
-                            <div className="w-auto h-auto mobile:w-20 text-gray-300 overflow-hidden py-1.5">
+                            <div className="w-auto h-auto mobile:w-20 text-gray-200 overflow-hidden py-1.5">
                                 <p className="whitespace-normal text-xs font-semibold text-center leading-[15px] line-clamp-2 capitalize">
                                     {actor.name}
                                 </p>
@@ -205,9 +205,9 @@ function FixedSearchIcon() {
     };
 
     return (
-        <div className="fixed right-14 bottom-16 mobile:bottom-10 mobile:right-8 w-12 h-12 md:w-14 md:h-14 bg-yellow-500 rounded-full z-20 flex items-center justify-center" style={{ boxShadow: 'rgb(212, 206, 7) 0px 0px 6px' }}>
+        <div className="fixed right-14 bottom-16 mobile:bottom-10 mobile:right-8 w-12 h-12 md:w-14 md:h-14 bg-teal-600 rounded-full z-20 flex items-center justify-center" style={{ boxShadow: '#0d9488 0px 0px 6px' }}>
             <Link aria-label="Search" title="Search" href="/search">
-                <i className="bi bi-search md:text-2xl text-[20px] text-gray-900 font-bold"></i>
+                <i className="bi bi-search md:text-2xl text-[20px] text-gray-300 font-bold"></i>
             </Link>
         </div>
     );

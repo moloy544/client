@@ -228,8 +228,8 @@ export default function SearchPage() {
                                 Results for <span className=" text-cyan-500">{searchQuery}</span>
                             </h3>
                         )}
-                       <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] px-2 pt-3 pb-10 mobile:pt-2">
-                       {seatrchResult.map((movie, index) => (
+                        <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] px-2 pt-3 pb-10 mobile:pt-2">
+                            {seatrchResult.map((movie, index) => (
                                 <ResponsiveMovieCard
                                     key={movie.imdbId || index}
                                     data={movie}
@@ -356,19 +356,33 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
 
     return (
         <div className="w-[45%] mobile:w-full h-auto relative">
-            <form onSubmit={submit} className="w-auto h-auto flex items-center">
+            <form onSubmit={submit} className="flex items-center w-auto h-auto relative">
+                <NavigateBack>
+                <button
+                    type="button"
+                    className="absolute left-0 flex items-center justify-center w-10 h-12 mobile:h-10 bg-gray-900 bg-opacity-75 border-2 border-r-0 border-gray-800 rounded-md rounded-r-none text-gray-300 hover:bg-opacity-80 transition-colors duration-200"
+                >
+                    <i className="bi bi-arrow-left"></i>
+                </button>
+                </NavigateBack>
                 <input
-                    className="w-full mobile:h-10 h-11 bg-gray-50 border-2 border-yellow-600 border-r-transparent rounded-r-none rounded-md px-2 text-base caret-black mobile:text-sm font-medium placeholder:text-gray-800 mobile:placeholder:text-xs placeholder:text-sm shadow-2xl"
+                    className="w-full h-12 mobile:h-10 bg-transparent border-2 border-gray-800 rounded-l-md px-3 text-base font-medium mobile:text-sm mobile:placeholder:text-xs text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-teal-600 caret-teal-600 shadow-md transition-colors duration-200 pl-10" // Added padding-left for the icon
                     onClick={() => setVisibility(true)}
                     onChange={searchInputChange}
                     type="text"
                     name="searchText"
-                    placeholder="Search by title, cast, genre and more..."
+                    placeholder="Search by title, cast, year and more..."
                     autoComplete="off"
                     required
                 />
-                <button type="submit" className="w-20 mobile:h-10 h-11 bg-yellow-500 border-2 border-yellow-600 border-l-transparent rounded-l-none text-gray-800 font-semibold text-center text-sm px-2 rounded-md">Search</button>
+                <button
+                    type="submit"
+                    className="w-24 h-12 mobile:h-10 bg-teal-700 border-2 border-teal-800 text-gray-100 font-medium text-sm hover:bg-teal-600 rounded-md rounded-l-none transition-colors duration-200"
+                >
+                    Search
+                </button>
             </form>
+
 
             <ModelsController visibility={visibility} closeEvent={hideModel}>
                 <div className="w-full h-auto bg-white absolute top-12 z-50 rounded-b-md shadow-lg">
