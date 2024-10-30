@@ -3,7 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { appConfig } from "@/config/config";
+import { adsConfig } from "@/config/ads.config";
 import { loadMoreFetch } from "@/utils";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { ModelsController } from "@/lib/EventsHandler";
@@ -12,8 +14,7 @@ import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
-import RequestContentModal from "@/components/models/RequestContentModal";
-import { adsConfig } from "@/config/ads.config";
+
 //import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
 
 // this is return user search history data
@@ -28,6 +29,8 @@ export default function SearchPage() {
     const backendServer = appConfig.backendUrl;
 
     const limitPerPage = 30;
+
+    const router = useRouter();
 
     // Set all state
     const [searchHistory, setSearchHistory] = useState([]);
@@ -250,21 +253,15 @@ export default function SearchPage() {
                         )}
 
                         {!loading && seatrchResult.length < 1 && searchQuery !== " " && (
-                            <>
-                                <RequestContentModal
-                                    isOpen={isRequestModelOpen}
-                                    onClose={() => setIsRequestModelOpen(false)}
-                                />
                                 <div className="flex flex-col justify-center my-40 space-y-2 px-4">
                                     <h2 className="text-gray-100 text-xl mobile:text-base text-center font-semibold">
                                         We are not found anything
                                     </h2>
                                     <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again for 100% best result try with same title</small>
-                                    <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => setIsRequestModelOpen(true)}>
+                                    <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => router.push('/request-form')}>
                                         <i className="bi bi-send"></i> Request content
                                     </button>
                                 </div>
-                            </>
                         )}
 
                         <div ref={bottomObserverElement}></div>
@@ -322,7 +319,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
 
     const handleInputClick = () => {
         setVisibility(true);
-        if (!isAdClick) {
+        if (!isAdClick && process.env.NODE_ENV === "production") {
             window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
             setIsAdClick(true);
         }
