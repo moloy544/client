@@ -140,7 +140,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               />
             ) : (
               <>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white text-sm">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white font-semibold text-sm">
                   {transformToCapitalize(status)}
                 </div>
               </>
@@ -181,7 +181,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 <strong className="text-base text-gray-200 font-bold">Language:</strong>
                 <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-300 font-semibold mt-1" prefetch={false}>
                   {language?.charAt(0).toUpperCase() + language?.slice(1)}
-                  {status === "Coming Soon" && language === "hindi dubbed" && " (coming soon)"}
                 </Link>
               </div>
 
@@ -275,7 +274,7 @@ function PlayButton({ watchLinks, playHandler, multiAudio, videoType }) {
         </button>
       </div>
       <ModelsController visibility={showDropdown} closeEvent={() => setDropDown(false)}>
-        <div className={`w-56 h-auto py-3.5 px-2 bg-gray-800 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
+        <div className={`w-60 h-auto py-3.5 px-2 bg-gray-800 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
           <button
             onClick={() => setDropDown(false)}
             className="font-medium text-gray-300 hover:text-gray-200 float-right outline-none"
@@ -287,17 +286,17 @@ function PlayButton({ watchLinks, playHandler, multiAudio, videoType }) {
           <div className="mx-1.5 font-bold text-base text-gray-100">Select Server</div>
           <div className="text-sm text-gray-200 space-y-2.5 mt-2 mx-1 py-2">
             {watchLinks.map((data, index) => (
-              <div key={index} className="mx-auto self-center">
+              <div key={data.data || index} className="mx-auto self-center">
                 <button
                   type="button"
                   onClick={(e) => {
                     playHandler(data.source); // Call the play handler
                   }}
-                  className="flex items-center w-full h-auto bg-[#283545] text-gray-300 font-semibold  rounded-sm"
+                  className="flex items-center w-full h-auto bg-[#283545] font-semibold text-xs capitalize rounded-sm"
                 >
                   <i className={`bi bi-dot ${index === 0 ? "text-cyan-500" : "text-yellow-500"} text-xl`}></i>
                   <span className="mr-1.5">{data.label}</span>
-                  <span className="text-xs text-gray-200 font-medium">{data.labelTag}</span>
+                  <span className="font-medium text-gray-300">- {data.labelTag}</span>
                 </button>
               </div>
             ))}

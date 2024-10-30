@@ -112,7 +112,7 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
 
   const reportOptions = [
     { value: "Video not playing", id: "video-option-checkbox", visible: status === "released" },
-    { value: "Audio not working", id: "audio-option-checkbox", visible: true },
+    { value: "Audio not working", id: "audio-option-checkbox", visible: status === "released" },
     { value: "Download not working", id: "download-option-checkbox", visible: isDownloadOption },
     { value: "Image not showing", id: "image-option-checkbox", visible: true },
     { value: "Share not working", id: "share-option-checkbox", visible: true },

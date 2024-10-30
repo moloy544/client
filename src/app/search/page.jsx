@@ -13,7 +13,7 @@ import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import RequestContentModal from "@/components/models/RequestContentModal";
-//import { adsConfig } from "@/config/ads.config";
+import { adsConfig } from "@/config/ads.config";
 //import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
 
 // this is return user search history data
@@ -289,6 +289,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
 
     const [visibility, setVisibility] = useState(false);
     const [filteredHistory, setFilteredHistory] = useState(searchHistory);
+    const [isAdClick, setIsAdClick] = useState(false);
 
     const hideModel = () => {
         setVisibility(false);
@@ -316,6 +317,14 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
             // If input is empty, reset filtered history to original search history
             setVisibility(false);
             setFilteredHistory(searchHistory);
+        }
+    };
+
+    const handleInputClick = () => {
+        setVisibility(true);
+        if (!isAdClick) {
+            window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+            setIsAdClick(true);
         }
     };
 
@@ -358,16 +367,16 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         <div className="w-[45%] mobile:w-full h-auto relative">
             <form onSubmit={submit} className="flex items-center w-auto h-auto relative">
                 <NavigateBack>
-                <button
-                    type="button"
-                    className="absolute left-0 flex items-center justify-center w-10 h-12 mobile:h-10 bg-gray-900 bg-opacity-75 border-2 border-r-0 border-gray-800 rounded-md rounded-r-none text-gray-300 hover:bg-opacity-80 transition-colors duration-200"
-                >
-                    <i className="bi bi-arrow-left"></i>
-                </button>
+                    <button
+                        type="button"
+                        className="absolute left-0 flex items-center justify-center w-10 h-12 mobile:h-10 bg-gray-900 bg-opacity-75 border-2 border-r-0 border-gray-800 rounded-md rounded-r-none text-gray-300 hover:bg-opacity-80 transition-colors duration-200"
+                    >
+                        <i className="bi bi-arrow-left"></i>
+                    </button>
                 </NavigateBack>
                 <input
-                    className="w-full h-12 mobile:h-10 bg-transparent border-2 border-gray-800 rounded-l-md px-3 text-base font-medium mobile:text-sm mobile:placeholder:text-xs text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-teal-600 caret-teal-600 shadow-md transition-colors duration-200 pl-10" // Added padding-left for the icon
-                    onClick={() => setVisibility(true)}
+                    className="w-full h-12 mobile:h-10 bg-transparent border-2 border-gray-800 rounded-l-md px-3 text-base font-medium mobile:text-sm mobile:placeholder:text-xs text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-600 caret-teal-600 shadow-md transition-colors duration-200 pl-10" // Added padding-left for the icon
+                    onClick={handleInputClick}
                     onChange={searchInputChange}
                     type="text"
                     name="searchText"
@@ -399,8 +408,8 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                                         Clear
                                     </button>
                                 </div>
-                                <small className="text-xs text-gray-500 font-normal w-[80%]">
-                                    Showing recent search keywords based on your results.
+                                <small className="text-xs text-gray-500 font-medium w-[80%]">
+                                    Showing recent search keywords based on your search results with clcik.
                                 </small>
                             </div>
 

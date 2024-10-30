@@ -70,7 +70,7 @@ export async function generateMetadata({ params }) {
 
   const { movieData, status } = await getMovieDeatils('tt' + movieId, false);
 
-  if (status !== 200 || movieData.status === "coming soon" || movieDetails.length !== 3) {
+  if (status !== 200 || movieDetails.length !== 3) {
     return;
   };
 

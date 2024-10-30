@@ -2,7 +2,6 @@ import { appConfig } from '@/config/config';
 import { ModelsController } from '@/lib/EventsHandler';
 import { creatToastAlert } from '@/utils';
 import axios from 'axios';
-import Link from 'next/link';
 import { useState } from 'react';
 
 export default function RequestContentModal({ onClose, isOpen = false }) {

@@ -9,6 +9,7 @@ import FilterModel from "./models/FilterModel";
 import BacktoTopButton from "./BacktoTopButton";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "./cards/Cards";
+import { adsConfig } from "@/config/ads.config";
 
 
 function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
@@ -131,7 +132,7 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
 
                     {moviesData.length > 0 && (
                         moviesData.map((movie, index) => (
-                            <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
+                            <ResponsiveMovieCard onClickEvent={()=> window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer') } key={movie.imdbId || index} data={movie} />
                         )))}
 
                     {loading && moviesData.length === 0 && (
