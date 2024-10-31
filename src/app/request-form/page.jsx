@@ -187,7 +187,7 @@ export default function RequestContentPage() {
                                         placeholder="Enter your email"
                                         required
                                     />
-                                    <p className="text-xs my-1 font-medium text-gray-400">We will notify you by email with the content link if it is available. Invalid email addresses will be rejected.</p>
+                                    <p className="text-xs my-1 font-medium text-gray-400">We will notify you by email with the content link if it is available. <span className="text-yellow-500">Invalid email address will be rejected.</span></p>
                                 </div>
                                 <p className="text-xs font-medium text-gray-300 my-4">
                                     For any queries, feel free to email us at:
