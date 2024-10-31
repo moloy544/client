@@ -9,6 +9,7 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
     const documentBody = document.body;
 
     const handleClick = () => {
+      if (process.env.NODE_ENV !== "production") return;
       window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
       documentBody.removeEventListener("click", handleClick); // Remove the click event after it's triggered once
     };
