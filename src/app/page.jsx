@@ -30,7 +30,7 @@ export default async function Page() {
       ) : (
         <div className="w-full min-h-[70vh] bg-gray-800 flex justify-center items-center">
           <div className="">
-          <div className="text-center text-lg font-bold text-gray-100">Error while load movies</div>
+            <div className="text-center text-lg font-bold text-gray-100">Error while load movies</div>
           </div>
         </div>
       )}

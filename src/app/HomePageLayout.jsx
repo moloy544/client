@@ -96,6 +96,10 @@ function HomePageLayout({ initialLayoutData }) {
 
     }, [offset]);
 
+    const hideHeaderMessage = () => {
+        setIsHeaderMessageShow(false);
+    }
+
     return (
         <>
             <FixedSearchIcon />

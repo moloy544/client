@@ -7,15 +7,6 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
  
   useEffect(() => {
     const documentBody = document.body;
-    
-    // Check if the app version has changed, if so, reload the page to load the new version of all assets
-    const currentAppVersion = process.env.APP_VERSION;
-    const localStorageSaveAppVersion = localStorage.getItem("app-version");
-    if (!localStorageSaveAppVersion || localStorageSaveAppVersion !== currentAppVersion) {
-      localStorage.setItem("app-version", currentAppVersion); // Save the current app version to localStorage
-      window.location.reload();
-      return;
-    };
 
     const handleClick = () => {
       window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
