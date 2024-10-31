@@ -34,11 +34,24 @@ export default function RequestContentPage() {
             const contentTitle = requestData.contentTitle?.trim();
             const industry = requestData.industery?.trim();
             const languageNeed = requestData.languageNeed?.trim();
+            const userEmail = requestData.userEmail?.trim();
+
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
 
             // Form validation
-            if (!contentTitle || !industry || !languageNeed) {
+            if (!contentTitle || !industry || !languageNeed || !userEmail) {
                 creatToastAlert({
-                    message: "Please enter both content title, industry, and your preferred language."
+                    message: "Please enter title, industry, your preferred language and your email."
+                });
+                return;
+            };
+
+            if (!isValidEmail(userEmail)) {
+                creatToastAlert({
+                    message: "Please enter valid email."
                 });
                 return;
             }
@@ -164,16 +177,17 @@ export default function RequestContentPage() {
                                 {/* Release Year */}
                                 <div className="mb-4">
                                     <label htmlFor="release-year" className="block text-sm font-medium text-gray-300">
-                                        Your Email (Optional)
+                                        Your Email (Required)
                                     </label>
                                     <input
                                         type="email"
                                         id="user-email"
                                         name="userEmail"
                                         className="mt-1 block w-full p-2 border border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm bg-gray-700 text-white"
-                                        placeholder="Enter your email (Optional)"
+                                        placeholder="Enter your email"
+                                        required
                                     />
-                                    <p className="text-xs my-1 font-medium text-gray-400">We will notify you by email with the content link if it is available.</p>
+                                    <p className="text-xs my-1 font-medium text-gray-400">We will notify you by email with the content link if it is available. Invalid email addresses will be rejected.</p>
                                 </div>
                                 <p className="text-xs font-medium text-gray-300 my-4">
                                     For any queries, feel free to email us at:
