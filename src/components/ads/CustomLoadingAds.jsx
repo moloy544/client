@@ -4,7 +4,7 @@ import { adsConfig } from '@/config/ads.config';
 import { useEffect } from 'react';
 
 export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc }) {
- 
+
   useEffect(() => {
     const documentBody = document.body;
 
@@ -18,7 +18,8 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
 
     // Set a 30 seconds (30000 ms) delay for loading both scripts
     const loadAdScripts = setTimeout(() => {
-      if (process.env.NODE_ENV !== "production") return;
+      //if (process.env.NODE_ENV !== "production") return;
+      if (10 > 2) return;
 
       // Load social bar ad script
       const socialBarScript = document.createElement('script');
