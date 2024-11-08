@@ -40,9 +40,10 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
                     </span>
                 </div>
 
-                <div className="absolute top-0.5 right-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-800 text-yellow-400 text-[10px] text-center font-sans font-semibold rounded-md">
+                <div className="absolute mobile:text-[10px] text-xs top-0.5 left-0.5 w-auto h-auto px-1 py-[1px] bg-gray-950 bg-opacity-70 text-yellow-400 text-center font-sans font-bold rounded-sm">
                     {data.releaseYear}
                 </div>
+
             </Link>
         </div>
     )

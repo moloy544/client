@@ -112,7 +112,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                             <div
                                 ref={movieCardRef}
                                 key={data.imdbId}
-                                className="slidershowcase_movie_card text-xs mobile:text-[10px]"
+                                className="slidershowcase_movie_card"
                                 style={{ width: 'calc(100% / 6)', maxWidth: '180px', minWidth: '110px', }}
                             >
                                 <Link
@@ -129,13 +129,14 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
                                             placeholder="blur"
                                         />
                                     </div>
-                                    <div className="movie_name_container">
-                                        <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[14px] px-2 mobile:py-1.5 py-2">{data.title}</span>
+                                    <div className="movie_name_container px-2 py-1.5">
+                                        <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[13px]">{data.title}</span>
                                     </div>
 
-                                    <div className="absolute top-0.5 left-0.5 w-auto h-auto px-1.5 py-0.5 bg-gray-950 bg-opacity-75 text-yellow-400 text-center font-sans font-semibold rounded-md">
+                                    <div className="absolute mobile:text-[10px] text-xs top-0.5 left-0.5 w-auto h-auto px-1 py-[1px] bg-gray-950 bg-opacity-70 text-yellow-400 text-center font-sans font-bold rounded-sm">
                                         {data.releaseYear}
                                     </div>
+
                                 </Link>
                             </div>
                         ))}

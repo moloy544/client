@@ -194,6 +194,10 @@ export default function AdminPage() {
             if (imagePreview && isValidImageUrl(imagePreview)) {
                 details.extranalImage_uri = imagePreview;
             }
+            if (details.status === "coming soon") {
+                delete details.videoType;
+                delete details.multiAudio;
+            };
 
             // add movie data sate in form data
             formData.append('data', JSON.stringify(details));
