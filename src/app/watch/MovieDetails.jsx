@@ -35,7 +35,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   const [videoSource, setVideoSource] = useState(null);
 
   const handleVideoSourcePlay = (source) => {
- 
+
     // validate if no video source show  report message 
     if (!source) {
       creatToastAlert({
@@ -244,6 +244,13 @@ function PlayButton({ watchLinks, playHandler, multiAudio, videoType }) {
   const isMultiOption = (watchLinks.length > 1 && multiAudio && typeof videoType === 'string');
 
   const play = () => {
+    if (!watchLinks || watchLinks.length === 0) {
+      creatToastAlert({
+        message: "Playback is disabled by mistake please report us",
+        visiblityTime: 6000
+      });
+      return
+    };
     if (!isMultiOption) {
       const source = watchLinks[0].source || watchLinks[0];
       playHandler(source);
@@ -285,7 +292,7 @@ function PlayButton({ watchLinks, playHandler, multiAudio, videoType }) {
           </button>
           <div className="mx-1.5 font-bold text-base text-gray-100">Select Server</div>
           <div className="text-sm text-gray-200 space-y-2.5 mt-2 mx-1 py-2">
-            {watchLinks.map((data, index) => (
+            {watchLinks?.map((data, index) => (
               <div key={data.data || index} className="mx-auto self-center">
                 <button
                   type="button"
