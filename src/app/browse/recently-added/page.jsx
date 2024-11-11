@@ -20,7 +20,7 @@ export default async function Page() {
 
   const filterData = {
     genre: "all",
-    dateSort: 'recent added'
+    createdAt: -1
   };
 
   const { status, data, dataIsEnd } = await loadMoreFetch({

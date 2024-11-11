@@ -47,7 +47,7 @@ const FilterModel = memo(({ initialFilterData, filterData, functions, filterOpti
         {
 
             filterLabel: 'Recent added',
-            sort: { dateSort: 'recent added' },
+            sort: { createdAt: -1 },
         },
         {
             filterLabel: 'Rating high to low',
