@@ -7,9 +7,11 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
 
   useEffect(() => {
     const documentBody = document.body;
+    const pathname = document.location.pathname;
 
+    // If the current path is search, no need to load the ads
     const handleClick = () => {
-      if (process.env.NODE_ENV !== "production") return;
+      if (process.env.NODE_ENV !== "production" || pathname.includes('search')) return;
       window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
       documentBody.removeEventListener("click", handleClick); // Remove the click event after it's triggered once
     };

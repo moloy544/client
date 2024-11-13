@@ -18,30 +18,31 @@ const MovieCardSkleaton = ({ limit = 20 }) => {
 
 const ResponsiveMovieCard = ({ data, onClickEvent }) => {
 
+    const { imdbId, title, thambnail, type, releaseYear, language, category } = data;
+
     return (
 
         <div onClick={onClickEvent} className="responsive_movie_card mobile:max-w-[160px] border overflow-hidden">
 
-            <Link href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`} title={data.title + ' ' + data.releaseYear + ' ' + data.type} prefetch={false}>
-                <div className="relative w-full mobile:max-w-[160px] aspect-[4/5.6] mobile:min-h-[160px] min-h-[200px]">
+            <Link href={`/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`} title={title + ' ' + releaseYear + ' ' + type} prefetch={false}>
+
+                <div className="relative w-full mobile:max-w-[160px] aspect-[4/5.7] mobile:min-h-[160px] min-h-[200px]">
                     <Image
                         className="w-full h-full select-none rounded-[3px]"
                         fill
-                        src={resizeImage(data.thambnail)}
-                        alt={data.title || 'movie thumbnail'}
+                        src={resizeImage(thambnail)}
+                        alt={title || 'movie thumbnail'}
                         placeholder="blur"
-                        blurDataURL={resizeImage(data.thambnail)}
+                        blurDataURL={resizeImage(thambnail)}
                     />
                 </div>
 
-                <div className="movie_name_container px-1.5 mobile:py-0.5 py-1">
-                    <span className="text-white text-xs mobile:text-[10px] font-sans line-clamp-3 leading-[14px]">
-                        {data.title}
-                    </span>
+                <div className="movie_name_container px-2 py-1.5">
+                    <span className="w-auto text-white font-semibold line-clamp-3 mobile:text-[10px] text-xs leading-[13px] capitalize">{category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}</span>
                 </div>
 
                 <div className="absolute mobile:text-[10px] text-xs top-0.5 left-0.5 w-auto h-auto px-1 py-[1px] bg-gray-950 bg-opacity-70 text-yellow-400 text-center font-sans font-bold rounded-sm">
-                    {data.releaseYear}
+                    {releaseYear}
                 </div>
 
             </Link>

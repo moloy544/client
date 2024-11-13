@@ -1,11 +1,11 @@
 'use client';
 
-import { useRef, useEffect, memo, useCallback } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { creatUrlLink, resizeImage } from '@/utils';
 
-const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false, thambnailImagePriority = false, children }) => {
+const SliderShowcase = ({ title, moviesData, space, linkUrl, thambnailImagePriority = false, children }) => {
 
     const sliderContainerRef = useRef(null);
     const movieCardRef = useRef(null);
@@ -108,33 +108,32 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, imageResize = false
             >
                 {children ? children : (
                     <>
-                        {moviesData?.map((data) => (
+                        {moviesData?.map(({ imdbId, title, type, releaseYear, thambnail, category, language }, index) => (
                             <div
                                 ref={movieCardRef}
-                                key={data.imdbId}
-                                className="slidershowcase_movie_card"
-                                style={{ width: 'calc(100% / 6)', maxWidth: '180px', minWidth: '110px', }}
-                            >
+                                key={imdbId || index}
+                                className="slidershowcase_movie_card w-[calc(100%/6)] max-w-[180px] min-w-[110px]"
+                                >
                                 <Link
-                                    href={`/watch/${data.type}/${creatUrlLink(data.title)}/${data.imdbId?.replace('tt', '')}`}
-                                    title={`${data.title} ${data.releaseYear} ${data.type}`} prefetch={false}>
+                                    href={`/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`}
+                                    title={`${title + " " + releaseYear + " " + type}`} prefetch={false}>
                                     <div className="relative w-full aspect-[2/3] h-full bg-white rounded-[3px]">
                                         <Image
                                             priority={thambnailImagePriority}
                                             fill
                                             className="select-none rounded-[3px] object-fill"
-                                            src={resizeImage(data.thambnail)}
-                                            alt={data.title}
-                                            blurDataURL={resizeImage(data.thambnail)}
+                                            src={resizeImage(thambnail)}
+                                            alt={title}
+                                            blurDataURL={resizeImage(thambnail)}
                                             placeholder="blur"
                                         />
                                     </div>
-                                    <div className="movie_name_container px-2 py-1.5">
-                                        <span className="w-auto text-white font-sans line-clamp-3 mobile:text-[10px] text-xs leading-[13px]">{data.title}</span>
-                                    </div>
 
+                                    <div className="movie_name_container px-2 py-1.5">
+                                        <span className="w-auto text-white font-semibold line-clamp-3 mobile:text-[10px] text-xs leading-[13px] capitalize">{category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}</span>
+                                    </div>
                                     <div className="absolute mobile:text-[10px] text-xs top-0.5 left-0.5 w-auto h-auto px-1 py-[1px] bg-gray-950 bg-opacity-70 text-yellow-400 text-center font-sans font-bold rounded-sm">
-                                        {data.releaseYear}
+                                        {releaseYear}
                                     </div>
 
                                 </Link>

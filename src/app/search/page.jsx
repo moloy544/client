@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { appConfig } from "@/config/config";
 import { adsConfig } from "@/config/ads.config";
-import { loadMoreFetch } from "@/utils";
+import { creatToastAlert, loadMoreFetch } from "@/utils";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { ModelsController } from "@/lib/EventsHandler";
 import NavigateBack from "@/components/NavigateBack";
@@ -287,6 +287,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
     const [visibility, setVisibility] = useState(false);
     const [filteredHistory, setFilteredHistory] = useState(searchHistory);
     const [isAdClick, setIsAdClick] = useState(false);
+    const [tryCount, setTryCount] = useState(0);
 
     const hideModel = () => {
         setVisibility(false);
@@ -314,6 +315,9 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
             // If input is empty, reset filtered history to original search history
             setVisibility(false);
             setFilteredHistory(searchHistory);
+        };
+        if (tryCount!==0) {
+            setTryCount(0);
         }
     };
 
@@ -332,8 +336,16 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         const formJson = Object.fromEntries(formData.entries());
         const searchValue = formJson.searchText?.trim();
 
+        if (tryCount >=3) {
+            creatToastAlert({
+                message: 'You have reached the maximum number of attempts',
+            });
+            return;
+        };
+
         if (searchValue !== '' && searchValue !== " ") {
             handleSubmitForm(searchValue);
+            setTryCount((prevCount)=> prevCount+1);
         }
     };
 
