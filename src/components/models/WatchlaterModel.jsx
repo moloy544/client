@@ -279,7 +279,7 @@ const Card = ({ data, remove }) => {
                     onClick={(event) => remove(event, imdbId)}
                     type="button"
                     title="Delete"
-                    className="w-8 h-8 text-sm hidden mobile:block group-hover:block text-gray-500 hover:text-red-600 float-right">
+                    className="w-8 h-8 text-sm block md:hidden group-hover:block text-gray-500 hover:text-red-600 float-right">
                     <span className="sr-only">Delete</span>
                     <i className="bi bi-trash"></i>
                 </button>

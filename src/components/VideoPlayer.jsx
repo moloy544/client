@@ -48,13 +48,13 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
         const newSource = generateSourceURL(source, userIp);
         const script = document.createElement("script");
         script.id = "playerjs-script";
-        script.src = "/static/js/player.js";
+        script.src = "/static/js/player_v2.js";
         script.async = true;
         script.onload = () => {
 
           new MoviesbazarPlayer({
             id: 'player',
-            file: newSource
+            file: newSource,
           });
 
         };
