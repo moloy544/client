@@ -51,7 +51,7 @@ export default function Navbar() {
                 <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3">
 
                     <Link href="/search" title="Search bar" className="cursor-text mobile:hidden">
-                        <div className="flex items-center gap-3 w-96 h-11 mobile:w-full mobile:h-9 rounded-[10px] text-sm py-1 bg-gray-800 text-gray-300 border-2 border-gray-700">
+                        <div className="flex items-center gap-3 w-96 h-11 mobile:w-full mobile:h-9 rounded-[10px] text-sm py-1 bg-custom-dark-bg text-gray-300 border-2 border-gray-700">
                             <i className="bi bi-search pl-3 text-base"></i>
                             <span>Search by title, cast, genre and more...</span>
                         </div>

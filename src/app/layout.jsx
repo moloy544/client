@@ -44,22 +44,21 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <NextTopLoader
-          color="rgb(218, 8, 95)"
-          initialPosition={0.08}
+          color="#08D5BB"
+          initialPosition={0.2}
           crawlSpeed={200}
           height={3}
           crawl={true}
           showSpinner={false}
           easing="ease"
-          speed={300}
-          shadow="0 0 10px rgb(218, 8, 95),0 0 5px rgb(218, 8, 95)"
+          speed={400}
+          shadow="0 0 10px #08D5BB,0 0 5px #08D5BB"
         />
 
         <ReduxStatePrivider>
           <AdsShowMessage />
           {children}
         </ReduxStatePrivider>
-
         {process.env.NODE_ENV === "production" && (
           <Suspense>
             <SpeedInsights />

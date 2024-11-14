@@ -87,7 +87,7 @@ export default function RequestContentPage() {
     return (
         <>
             <NavigateBackTopNav title="Request Content" />
-            <div className="flex items-center justify-center min-h-screen bg-gray-900 py-4 px-2.5 border-b border-b-gray-700">
+            <div className="flex items-center justify-center min-h-screen bg-custom-dark-bg py-4 px-2.5 border-b border-b-gray-700">
                 <div className="bg-gray-800 p-6 rounded-lg w-full max-w-lg shadow-2xl">
                     {!successMessage ? (
                         <div>

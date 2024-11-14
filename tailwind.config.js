@@ -13,8 +13,7 @@ module.exports = {
         },
       },
       backgroundColor:{
-        'grocerit-green': 'rgb(12, 131, 31)',
-        'custome-blue-bg': 'rgb(245, 247, 253)',
+        'custom-dark-bg': '#1D2433',
       },
       fontFamily:{
         'okara-helvetica': ['Okra', 'Helvetica', 'sans'],

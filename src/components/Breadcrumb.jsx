@@ -4,7 +4,7 @@ function Breadcrumb({ data }) {
 
     return (
 
-        <div aria-label="Breadcrumb" className="bg-gray-800 px-3 pt-2">
+        <div aria-label="Breadcrumb" className="px-3 pt-2">
 
             <div className="flex items-center text-base mobile:text-sm text-gray-300">
 

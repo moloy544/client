@@ -24,11 +24,11 @@ export default async function Page() {
     <>
       <Navbar />
       {status === 200 ? (
-        <main className="w-full overflow-x-hidden h-full py-2 bg-gray-800">
+        <main className="w-full overflow-x-hidden h-full py-2 bg-custom-dark-bg">
           <HomePageLayout initialLayoutData={data} />
         </main>
       ) : (
-        <div className="w-full min-h-[70vh] bg-gray-800 flex justify-center items-center">
+        <div className="w-full min-h-[70vh] bg-custom-dark-bg flex justify-center items-center">
           <div className="">
             <div className="text-center text-lg font-bold text-gray-100">Error while load movies</div>
           </div>

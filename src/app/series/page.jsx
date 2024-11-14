@@ -59,7 +59,7 @@ export default async function Page() {
         <>
             <NavigateBackTopNav title="Series" />
 
-            <main className="w-full overflow-x-hidden h-full py-2 bg-gray-800">
+            <main className="w-full h-full overflow-x-hidden py-2 bg-custom-dark-bg">
 
                 {sliderSeries?.map((data) => (
 

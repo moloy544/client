@@ -54,7 +54,7 @@ export default async function Page({ params }) {
     <>
       <NavigateBackTopNav title={title} />
 
-      <div className="w-full h-full min-h-[90vh] bg-gray-800 py-3 mobile:py-2">
+      <div className="w-full h-full min-h-[90vh] bg-custom-dark-bg py-3 mobile:py-2">
 
         <LoadMoreMoviesGirdWarper
           apiUrl={apiUrl}

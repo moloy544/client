@@ -94,7 +94,7 @@ export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActo
 
     return (
         <>
-            <div className="w-full min-h-screen overflow-x-hidden bg-gray-800 pb-2">
+            <div className="w-full min-h-screen overflow-x-hidden bg-custom-dark-bg pb-2">
 
                 <main className="w-full h-full pt-2">
 

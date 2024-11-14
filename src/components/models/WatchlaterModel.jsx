@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import { motion } from "framer-motion";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink, resizeImage } from "@/utils";
@@ -123,7 +124,7 @@ export default function WatchlaterModel({ visibility, functions }) {
                     /* check after remove is watchlater localStorage length is zero so
                   remove localStorage key from browser and also empty watchlater state for show empty message */
                     if (parseData.length === 0) {
-                     safeLocalStorage.remove('saved-movies-data');
+                        safeLocalStorage.remove('saved-movies-data');
                         setWatchLaterData([]);
                     } else {
                         // update localStorage with new data
@@ -209,8 +210,18 @@ export default function WatchlaterModel({ visibility, functions }) {
                         <>
                             {watchLaterData.length > 0 ? (
                                 <div ref={moviesCardContauner}>
-                                    {watchLaterData.map((data) => (
-                                        <Card key={data.imdbId} data={data} remove={removeWatchListItem} />
+                                    {watchLaterData.map((data, index) => (
+                                        <motion.div
+                                            key={data.imdbId}
+                                            initial="hidden"
+                                            animate="visible"
+                                            transition={{ duration: 0.2, delay: index * 0.20 }}
+                                            variants={{
+                                                hidden: { opacity: 0, translateX: -100 },
+                                                visible: { opacity: 1, translateX: 0 },
+                                            }}>
+                                            <Card data={data} remove={removeWatchListItem} />
+                                        </motion.div>
                                     ))}
                                     {loading && (
                                         <div className="w-full h-auto py-10 flex justify-center items-center">
@@ -227,8 +238,8 @@ export default function WatchlaterModel({ visibility, functions }) {
                                         <i className="bi bi-inbox text-xl text-blue-700"></i>
                                     </div>
                                     <div className="my-2">
-                                    <div className="text-sm font-bold text-center text-gray-800">Your Watch Later list is empty!</div>
-                                    <div className="text-xs text-gray-500 text-center px-5 mt-1.5 font-medium">Add your favorites now and come back anytime to watch them!</div>
+                                        <div className="text-sm font-bold text-center text-gray-800">Your Watch Later list is empty!</div>
+                                        <div className="text-xs text-gray-500 text-center px-5 mt-1.5 font-medium">Add your favorites now and come back anytime to watch them!</div>
                                     </div>
                                 </div>
                             )}
@@ -246,43 +257,43 @@ const Card = ({ data, remove }) => {
     const { imdbId, type, title, thambnail, releaseYear, addAt, language, category } = data || {};
 
     return (
-            <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
-                <Link className="w-full h-fit flex gap-3 items-center" title={title + ' ' + releaseYear + ' ' + type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
-                    <div className="w-[70px] aspect-[4/5.5] border border-slate-200 rounded-sm flex-none">
-                        <Image
-                            priority
-                            className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
-                            width={80}
-                            height={80}
-                            src={resizeImage(thambnail, 'w200')}
-                            alt={title || 'movie poster image'}
-                            placeholder="blur"
-                            blurDataURL={resizeImage(thambnail, 'w200')}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <div className="text-gray-800 font-medium text-[12px] leading-[14px] line-clamp-2 capitalize">
+        <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
+            <Link className="w-full h-fit flex gap-3 items-center" title={title + ' ' + releaseYear + ' ' + type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
+                <div className="w-[70px] aspect-[4/5.5] border border-slate-200 rounded-sm flex-none">
+                    <Image
+                        priority
+                        className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
+                        width={80}
+                        height={80}
+                        src={resizeImage(thambnail, 'w200')}
+                        alt={title || 'movie poster image'}
+                        placeholder="blur"
+                        blurDataURL={resizeImage(thambnail, 'w200')}
+                    />
+                </div>
+                <div className="flex flex-col gap-1">
+                    <div className="text-gray-800 font-medium text-[12px] leading-[14px] line-clamp-2 capitalize">
                         {category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}
-                        </div>
-                        <span className="text-[10px] text-gray-500">
-                            {releaseYear}
-                        </span>
-                        <div className="text-xs text-gray-600 font-semibold flex gap-0.5">
-                            Add at:
-                            <span className="text-[10px] text-gray-500 font-normal">
-                                {formatDate(addAt)}
-                            </span>
-                        </div>
                     </div>
-                </Link>
-                <button
-                    onClick={(event) => remove(event, imdbId)}
-                    type="button"
-                    title="Delete"
-                    className="w-8 h-8 text-sm block md:hidden group-hover:block text-gray-500 hover:text-red-600 float-right">
-                    <span className="sr-only">Delete</span>
-                    <i className="bi bi-trash"></i>
-                </button>
-            </div>
+                    <span className="text-[10px] text-gray-500">
+                        {releaseYear}
+                    </span>
+                    <div className="text-xs text-gray-600 font-semibold flex gap-0.5">
+                        Add at:
+                        <span className="text-[10px] text-gray-500 font-normal">
+                            {formatDate(addAt)}
+                        </span>
+                    </div>
+                </div>
+            </Link>
+            <button
+                onClick={(event) => remove(event, imdbId)}
+                type="button"
+                title="Delete"
+                className="w-8 h-8 text-sm block md:hidden group-hover:block text-gray-500 hover:text-red-600 float-right">
+                <span className="sr-only">Delete</span>
+                <i className="bi bi-trash"></i>
+            </button>
+        </div>
     )
 };

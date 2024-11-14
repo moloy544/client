@@ -5,7 +5,7 @@ export default function PrivacyPractices() {
     return (
         <>
         <NavigateBackTopNav title="Privacy policy" />
-        <main className="w-full px-12 mobile:px-3 py-8 mobile:py-5 bg-gray-800">
+        <main className="w-full px-12 mobile:px-3 py-8 mobile:py-5 bg-custom-dark-bg">
             <h1 className="text-3xl font-bold text-gray-100 mb-6">Privacy Practices</h1>
 
             <section className="mb-8">

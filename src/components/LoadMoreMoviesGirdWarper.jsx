@@ -123,7 +123,7 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
         <>
             <main className="w-full h-auto bg-transparent overflow-x-hidden">
                 {title && (
-                    <div className="bg-gray-900 py-1.5 px-2">
+                    <div className="bg-gray-900 py-1.5 px-2 border-t border-t-gray-800">
                         <h1 className="text-center font-bold text-[#dcdcde] text-base mobile:text-xs line-clamp-1">{title}</h1>
                     </div>
                 )}
@@ -171,7 +171,6 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
             }
 
             <BacktoTopButton postion="mobile:top-20 top-24" />
-
         </>
     );
 };

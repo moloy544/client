@@ -65,7 +65,7 @@
     border-radius: 4px; 
     position: relative;
     color: rgb(12, 15, 15);
-    border: 1px solid rgb(137, 119, 1);
+    border: 1px solid #01433c;
     flex-shrink: 0;
 }
 
