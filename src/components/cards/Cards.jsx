@@ -7,7 +7,7 @@ const MovieCardSkleaton = ({ limit = 20 }) => {
         <>
             {Array.from({ length: limit }, (_, index) => (
                 <div key={index} className="bg-gray-200 w-autio aspect-[4/5.8] rounded-[4px] animate-pulse relative overflow-hidden px-2">
-                    <div className="w-auto h-auto px-4 py-2 bg-gray-300 absolute right-1 top-1 rounded-md animate-pulse"></div>
+                    <div className="w-auto h-auto px-4 py-2 bg-gray-300 absolute left-1 top-1 rounded-md animate-pulse"></div>
                     <div className="w-full h-2 bg-gray-300 absolute bottom-5 left-0 rounded-sm mx-1 animate-pulse"></div>
                     <div className="w-[60%] h-2 bg-gray-300 absolute bottom-2 left-0 rounded-sm mx-1 animate-pulse"></div>
                 </div>
@@ -22,7 +22,7 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
 
     return (
 
-        <div onClick={onClickEvent} className="responsive_movie_card mobile:max-w-[160px] border overflow-hidden">
+        <div onClick={onClickEvent} className="responsive_movie_card mobile:max-w-[160px] max-w-[180px] border overflow-hidden">
 
             <Link href={`/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`} title={title + ' ' + releaseYear + ' ' + type} prefetch={false}>
 

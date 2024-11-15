@@ -117,7 +117,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, thambnailImagePrior
                                 <Link
                                     href={`/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`}
                                     title={`${title + " " + releaseYear + " " + type}`} prefetch={false}>
-                                    <div className="relative w-full aspect-[2/3] h-full bg-white rounded-[3px]">
+                                    <div className="relative w-full aspect-[4/6] h-full bg-white rounded-[3px]">
                                         <Image
                                             priority={thambnailImagePriority}
                                             fill
