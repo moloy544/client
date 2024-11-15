@@ -151,6 +151,7 @@ export default async function Page({ params }) {
   };
 
   return (
+    <div className="min-w-full min-h-screen bg-custom-dark-bg">
     <InspectPreventer>
       <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
       <MovieDetails
@@ -160,5 +161,6 @@ export default async function Page({ params }) {
       />
       <Footer />
     </InspectPreventer>
+    </div>
   )
 }
