@@ -254,10 +254,10 @@ export default function WatchlaterModel({ visibility, functions }) {
 
 const Card = ({ data, remove }) => {
 
-    const { imdbId, type, title, thambnail, releaseYear, addAt, language, category } = data || {};
+    const { imdbId, type, title, thambnail, releaseYear, addAt, language, category, videoType } = data || {};
 
     return (
-        <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center">
+        <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center relative">
             <Link className="w-full h-fit flex gap-3 items-center" title={title + ' ' + releaseYear + ' ' + type} href={`/watch/${type}/${creatUrlLink(title)}/${imdbId.replace('tt', '')}`}>
                 <div className="w-[70px] aspect-[4/5.5] border border-slate-200 rounded-sm flex-none">
                     <Image
@@ -271,19 +271,24 @@ const Card = ({ data, remove }) => {
                         blurDataURL={resizeImage(thambnail, 'w200')}
                     />
                 </div>
-                <div className="flex flex-col gap-1">
-                    <div className="text-gray-800 font-medium text-[12px] leading-[14px] line-clamp-2 capitalize">
+                <div className="flex flex-col gap-1 space-y-0.5">
+                    <div className="text-gray-700 font-semibold text-[12px] leading-[14px] line-clamp-2 capitalize">
                         {category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}
                     </div>
-                    <span className="text-[10px] text-gray-500">
+                    <span className="text-[10px] text-gray-500 font-semibold">
                         {releaseYear}
                     </span>
                     <div className="text-xs text-gray-600 font-semibold flex gap-0.5">
                         Add at:
-                        <span className="text-[10px] text-gray-500 font-normal">
+                        <span className="text-[10px] text-gray-500 font-medium">
                             {formatDate(addAt)}
                         </span>
                     </div>
+                    {videoType && (
+                        <div className={`absolute text-[10px] top-2 right-3 w-auto h-auto px-[3px] ${videoType === 'hd' ? "bg-rose-600" : "bg-gray-900"} bg-opacity-70 text-gray-100 text-cente font-semibold rounded-sm uppercase z-10`}>
+                            {videoType}
+                        </div>
+                    )}
                 </div>
             </Link>
             <button
