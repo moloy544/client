@@ -13,8 +13,6 @@ const getHomePageData = async () => {
   }
 }
 
-export const revalidate = 7200 // revalidate at most every 2 hours
-
 export default async function Page() {
 
   const homePageResponse = await getHomePageData();
