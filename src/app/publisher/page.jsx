@@ -25,6 +25,7 @@ const initialMoviesData = {
     imdbId: '',
     imdbRating: 1,
     title: '',
+    dispayTitle: '',
     releaseYear: 0,
     fullReleaseDate: '',
     status: 'released',
@@ -198,6 +199,9 @@ export default function AdminPage() {
                 delete details.videoType;
                 delete details.multiAudio;
             };
+            if(details.dispayTitle.trim() === ""){
+                delete details.dispayTitle;
+            }
 
             // add movie data sate in form data
             formData.append('data', JSON.stringify(details));
@@ -271,6 +275,19 @@ export default function AdminPage() {
                 }));
             };
         };
+
+        // validate video source
+        if (field === "watchLink") {
+            
+            const urlRegex = /^(https?:\/\/)?([a-z0-9.-]+\.[a-z]{2,}\/)?([a-z0-9.-]+\.[a-z]{2,}\/)?([a-z0-9.-]+\.[a-z]{2,})\/?([^\/#?]+)(\#?([^\/#]*))?$/;
+            const match = urlRegex.exec(value);
+            if (!match) {
+                creatToastAlert({ message: "Invalid video source URL format" });
+                return
+            };
+            // remove extra spaces form video source
+            value = value.trim();
+        }
 
         setState(prevState => ({
             ...prevState,
@@ -477,6 +494,10 @@ export default function AdminPage() {
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Title</label>
                                 <input className={inputStyle} type="text" value={state.title} onChange={(e) => handleInputChange(e.target.value, 'title')} placeholder="Enter title" />
+                            </div>
+                            <div className="flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Display Title</label>
+                                <input className={inputStyle} type="text" value={state.dispayTitle} onChange={(e) => handleInputChange(e.target.value, 'dispayTitle')} placeholder="Enter dispay title (Optional)" />
                             </div>
 
                             <div className="max-w-[200px] flex flex-col my-3">

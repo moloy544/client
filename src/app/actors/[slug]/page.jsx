@@ -59,7 +59,7 @@ export default async function Page({ params }) {
     ];
 
     return (
-        <>
+        <div className="w-full h-full min-h-screen bg-custom-dark-bg">
             <NavigateBackTopNav title={title} />
 
             <Breadcrumb data={breadcrumbData} />
@@ -71,7 +71,7 @@ export default async function Page({ params }) {
                 isDataEnd={dataIsEnd}
             />
             <Footer />
-        </>
+        </div>
     )
 }
 

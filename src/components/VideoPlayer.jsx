@@ -54,7 +54,7 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
 
           new MoviesbazarPlayer({
             id: 'player',
-            file: newSource,
+            file: newSource
           });
 
         };

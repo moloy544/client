@@ -7,7 +7,6 @@ import { Analytics } from "@vercel/analytics/react"
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
-import AdsShowMessage from '@/components/models/AdsShowMessage';
 import { adsConfig } from '@/config/ads.config';
 import CustomLoadingAds from '@/components/ads/CustomLoadingAds';
 
@@ -56,7 +55,6 @@ export default function RootLayout({ children }) {
         />
 
         <ReduxStatePrivider>
-          <AdsShowMessage />
           {children}
         </ReduxStatePrivider>
         {process.env.NODE_ENV === "production" && (

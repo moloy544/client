@@ -18,7 +18,7 @@ const MovieCardSkleaton = ({ limit = 20 }) => {
 
 const ResponsiveMovieCard = ({ data, onClickEvent }) => {
 
-    const { imdbId, title, thambnail, type, releaseYear, language, category, videoType } = data;
+    const { imdbId, title, dispayTitle, thambnail, type, releaseYear, language, category, videoType } = data;
 
     return (
 
@@ -38,7 +38,7 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
                 </div>
 
                 <div className="movie_name_container px-2 py-1.5">
-                    <span className="w-auto text-white font-semibold line-clamp-3 mobile:text-[10px] text-xs leading-[13px] capitalize">{category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}</span>
+                <span className="w-auto text-white font-semibold line-clamp-3 mobile:text-[10px] text-xs leading-[14px] mobile:leading-3 capitalize">{dispayTitle ? dispayTitle :category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}</span>
                 </div>
 
                 <div className="absolute mobile:text-[9px] text-xs top-0.5 left-0.5 w-auto h-auto px-[3px] py-[1px] bg-gray-950 bg-opacity-70 text-yellow-400 text-center font-semibold rounded-sm">

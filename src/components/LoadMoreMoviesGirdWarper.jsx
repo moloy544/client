@@ -131,7 +131,10 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
 
                     {moviesData.length > 0 && (
                         moviesData.map((movie, index) => (
-                            <ResponsiveMovieCard key={movie.imdbId || index} data={movie} />
+                            <ResponsiveMovieCard
+                                key={movie.imdbId || index}
+                                data={movie}
+                            />
                         )))}
 
                     {loading && moviesData.length === 0 && (

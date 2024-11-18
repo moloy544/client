@@ -2,7 +2,7 @@
 
 import { cloneElement, useEffect, useRef, useState } from "react";
 
-const ModelsController = ({ children, visibility, closeEvent, transformEffect = false, windowScroll = true }) => {
+export const ModelsController = ({ children, visibility, closeEvent, transformEffect = false, windowScroll = true }) => {
     const initialStyle = {
         transition: transformEffect ? 'opacity 0.3s ease, transform 0.3s ease' : 'opacity 0.5s ease',
         opacity: 0,
@@ -76,4 +76,44 @@ const ModelsController = ({ children, visibility, closeEvent, transformEffect = 
     return childWithProps;
 };
 
-export { ModelsController };
+
+export const VirtualizedComponent = ({ children, rootMargin = '200px' }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);  // Start rendering when the element is near or in the viewport
+          } else {
+            setIsVisible(false); // Stop rendering when it's far from the viewport
+          }
+        });
+      },
+      {
+        root: null, // Relative to the viewport
+        rootMargin, // Start observing earlier (200px outside the viewport)
+        threshold: 0.1, // Trigger when 10% of the element is visible
+      }
+    );
+
+    const element = elementRef.current;
+
+    if (element) {
+      observer.observe(element);
+    }
+
+    return () => {
+      if (element) {
+        observer.unobserve(element);
+      }
+    };
+  }, [rootMargin]);
+
+  // Clone the child element and attach the ref to it
+  const childWithRef = cloneElement(children, { ref: elementRef });
+
+  return isVisible ? childWithRef : null;
+};
