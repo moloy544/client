@@ -44,7 +44,7 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
   useEffect(() => {
     if (source && userIp) {
 
-      if (source.includes('.m3u8')) {
+      if (source.includes('.m3u8') || source.includes('.mkv')) {
         const newSource = generateSourceURL(source, userIp);
         const script = document.createElement("script");
         script.id = "playerjs-script";

@@ -1,6 +1,12 @@
-import Navbar from "@/components/Navbar";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 
+export const metadata = {
+    title: {
+        absolute: 'Privacy Policy - Movies Bazar',
+    },
+    description: 'Learn about the privacy practices at Movies Bazar. Discover how we protect your data, ensure user safety, and enhance your movie streaming experience across Hollywood, Bollywood, and South Cinema.',
+};
+  
 export default function PrivacyPractices() {
     return (
         <>

@@ -211,17 +211,18 @@ export default function WatchlaterModel({ visibility, functions }) {
                             {watchLaterData.length > 0 ? (
                                 <div ref={moviesCardContauner}>
                                     {watchLaterData.map((data, index) => (
-                                        <motion.div
-                                            key={data.imdbId}
-                                            initial="hidden"
-                                            animate="visible"
-                                            transition={{ duration: 0.2, delay: index * 0.20 }}
-                                            variants={{
-                                                hidden: { opacity: 0, translateX: -100 },
-                                                visible: { opacity: 1, translateX: 0 },
-                                            }}>
-                                            <Card data={data} remove={removeWatchListItem} />
-                                        </motion.div>
+                                        <div key={data.imdbId}>
+                                            <motion.div
+                                                initial="hidden"
+                                                animate="visible"
+                                                transition={{ duration: 0.3, delay: index * 0.20 }}
+                                                variants={{
+                                                    hidden: { opacity: 0, translateX: -100 },
+                                                    visible: { opacity: 1, translateX: 0 },
+                                                }}>
+                                                <Card data={data} remove={removeWatchListItem} />
+                                            </motion.div>
+                                        </div>
                                     ))}
                                     {loading && (
                                         <div className="w-full h-auto py-10 flex justify-center items-center">
@@ -254,7 +255,7 @@ export default function WatchlaterModel({ visibility, functions }) {
 
 const Card = ({ data, remove }) => {
 
-    const { imdbId, type, title, dispayTitle, thambnail, releaseYear, addAt, language, category, videoType } = data || {};
+    const { imdbId, type, title, dispayTitle, thambnail, releaseYear, addAt, language, category, videoType, status } = data || {};
 
     return (
         <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center relative">
@@ -272,8 +273,8 @@ const Card = ({ data, remove }) => {
                     />
                 </div>
                 <div className="flex flex-col gap-1 space-y-0.5">
-                    <div className="text-gray-700 font-semibold text-[12px] leading-[14px] line-clamp-2 capitalize">
-                        {dispayTitle? dispayTitle: category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}
+                    <div className="text-gray-700 font-semibold text-[12px] leading-[14px] line-clamp-2 capitalize max-w-[150px]">
+                        {dispayTitle ? dispayTitle : category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}
                     </div>
                     <span className="text-[10px] text-gray-500 font-semibold">
                         {releaseYear}
@@ -284,9 +285,13 @@ const Card = ({ data, remove }) => {
                             {formatDate(addAt)}
                         </span>
                     </div>
-                    {videoType && (
+                    {videoType ? (
                         <div className={`absolute text-[10px] top-2 right-3 w-auto h-auto px-[3px] ${videoType === 'hd' ? "bg-rose-600" : "bg-gray-900"} bg-opacity-70 text-gray-100 text-cente font-semibold rounded-sm uppercase z-10`}>
                             {videoType}
+                        </div>
+                    ) : status === "coming soon" && (
+                        <div className="absolute text-[10px] top-2 right-3 w-auto h-auto px-[3px] bg-orange-600 bg-opacity-70 text-gray-100 text-cente font-semibold rounded-sm uppercase z-10">
+                            Upcoming
                         </div>
                     )}
                 </div>

@@ -131,7 +131,7 @@ function HomePageLayout({ initialLayoutData }) {
                             href={`/actors/${creatUrlLink(actor.name)}/${actor.imdbId?.replace('nm', '')}`}
                             key={actor.imdbId}
                             title={actor.name}
-                            className="w-[calc(100%/6)] aspect-[4/5] max-w-[160px] min-w-[110px] h-auto px-3 py-2.5 cursor-pointer bg-gray-700 rounded-md flex-shrink-0"
+                            className="w-[calc(100%/6)] aspect-[4/5] max-w-[160px] min-w-[110px] h-auto px-3 py-2.5 cursor-pointer bg-[#293445] rounded-md flex-shrink-0"
                             prefetch={false}
                         >
 
@@ -146,7 +146,7 @@ function HomePageLayout({ initialLayoutData }) {
                                 />
                             </div>
 
-                            <div className="w-auto h-auto mobile:w-20 text-gray-200 overflow-hidden py-1.5">
+                            <div className="w-auto h-auto mobile:w-20 text-gray-100 overflow-hidden py-1.5">
                                 <p className="whitespace-normal text-xs font-semibold text-center leading-[15px] line-clamp-2 capitalize">
                                     {actor.name}
                                 </p>

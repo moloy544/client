@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
+import brandLogoIcon from "../assets/images/brand_logo.png"
 
 const WatchlaterModel = dynamic(() => import('./models/WatchlaterModel'), { ssr: false });
 
@@ -34,7 +35,7 @@ export default function Navbar() {
             <header className="w-auto h-auto bg-gray-900 pt-2 px-2.5 mobile:px-2 flex items-center justify-between">
                 <div className="flex items-center space-x-0.5">
                     <Image
-                        src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1720111766/moviesbazaar/brand_logo.png"
+                        src={brandLogoIcon}
                         width={35}
                         height={35}
                         alt="Mobies bazar logo"

@@ -11,8 +11,12 @@ const getHomePageData = async () => {
   } catch (error) {
     return new Error("Failed to fetch home page data");
   }
-}
+};
 
+// revalidate at most every 2 hours to avoid unnecessary API calls and improve performance
+export const revalidate = 7200;
+
+// Fetch home page data and render HomePageLayout component
 export default async function Page() {
 
   const homePageResponse = await getHomePageData();

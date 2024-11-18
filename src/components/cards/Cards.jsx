@@ -56,7 +56,7 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
 
 const ResponsiveActorCard = ({ data }) => {
     return (
-        <div className="w-auto max-w-[160px] h-auto flex justify-center bg-gray-700 rounded-md px-3 py-3.5">
+        <div className="w-auto max-w-[160px] h-auto flex justify-center bg-[#293445] rounded-md px-3 py-3.5">
 
             <Link href={`/actors/${creatUrlLink(data.name)}/${data.imdbId.replace('nm', '')}`} title={data.name} prefetch={false}>
 
