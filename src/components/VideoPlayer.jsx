@@ -15,8 +15,10 @@ const areEqual = (prevProps, nextProps) => {
 
 function generateSourceURL(originalURL, userIp) {
   if (!originalURL) return "";
+  const videoSourceHLSUrl = new URL(process.env.VIDEO_SERVER_URL);
+  const domain = videoSourceHLSUrl.hostname;
 
-  if (!originalURL.includes("ooat310wind.com")) return originalURL;
+  if (!originalURL.includes(domain)) return originalURL;
 
   const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
   const modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
