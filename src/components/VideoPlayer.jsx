@@ -8,24 +8,25 @@ import { isMobileDevice } from "@/utils";
 //Memoization to avoid unnecessary re-renders
 const areEqual = (prevProps, nextProps) => {
   return (
+    prevProps.hlsSourceDomain === nextProps.hlsSourceDomain &&
     prevProps.source === nextProps.source &&
     prevProps.userIp === nextProps.userIp
   )
 };
 
-function generateSourceURL(originalURL, userIp) {
-  if (!originalURL) return "";
-  const videoSourceHLSUrl = new URL(process.env.VIDEO_SERVER_URL);
-  const domain = videoSourceHLSUrl.hostname;
+function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
 
-  if (!originalURL.includes(domain)) return originalURL;
+  if (!originalURL) return null;
+
+  const hlsProviderDomain = new URL(hlsSourceDomain || process.env.VIDEO_SERVER_URL).hostname;
+  if (!originalURL.includes(hlsProviderDomain)) return originalURL;
 
   const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
   const modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
   return modifiedURL;
 };
 
-const VideoPlayer = memo(({ title, source, userIp }) => {
+const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
 
   const [playbackError, setPlaybackError] = useState(null);
   const [errorAccept, setErrorAccept] = useState(false);
@@ -47,7 +48,7 @@ const VideoPlayer = memo(({ title, source, userIp }) => {
     if (source && userIp) {
 
       if (source.includes('.m3u8') || source.includes('.mkv')) {
-        const newSource = generateSourceURL(source, userIp);
+        const newSource = generateSourceURL(hlsSourceDomain, source, userIp);
         const script = document.createElement("script");
         script.id = "playerjs-script";
         script.src = "/static/js/player_v2.js";

@@ -28,7 +28,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     status,
     watchLink,
     multiAudio,
-    videoType
+    videoType,
+    hlsSourceDomain
   } = movieDetails || {};
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
@@ -116,7 +117,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
           <div className={`mobile:w-full mobile:mt-2.5 md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto bg-gray-900 ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
             {playerVisibility && videoSource && (
-              <VideoPlayer title={title} source={videoSource} userIp={userIp} />
+              <VideoPlayer
+                title={title}
+                hlsSourceDomain={hlsSourceDomain}
+                source={videoSource}
+                userIp={userIp}
+              />
             )}
 
           </div>
