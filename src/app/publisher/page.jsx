@@ -303,11 +303,12 @@ export default function AdminPage() {
         if (element) {
 
             // get input value from provided id present element
-            const inputText = element.value || "";
+            const inputText = element.value?.trim().trimEnd() || "";
 
             if (!inputText || inputText === "") {
 
                 creatToastAlert({ message: "Input value is required" });
+                return;
             };
 
             // get filed name from provided id present element data attribute
@@ -319,11 +320,6 @@ export default function AdminPage() {
                 creatToastAlert({ message: `${inputText} in ${arrayFiled} filed is already exists` });
                 return
             };
-
-            if (inputText.length < 2) {
-                creatToastAlert({ message: "Value is very short" });
-                return
-            }
 
             setState(prevState => ({
                 ...prevState,

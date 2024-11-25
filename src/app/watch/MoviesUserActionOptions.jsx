@@ -91,7 +91,7 @@ export default function MoviesUserActionOptions({ movieData }) {
 
       <div className="w-auto h-auto mt-3 flex gap-5 mobile:gap-2.5 justify-around mobile:justify-evenly overflow-x-scroll scrollbar-hidden">
 
-        <div onClick={saveInLocalStorage} role="button" title="Save" className={buttonsClass}>
+        <div onClick={saveInLocalStorage} role="button" title={isSaved ? "Save" : "Unsave"} className={buttonsClass}>
           {isSaved ? (
             <i className="bi bi-check-square-fill text-yellow-500"></i>
           ) : (
