@@ -64,6 +64,7 @@ export default function SearchPage() {
         setSearchQuery(searchText);
         setPage(1);
         setEndOfData(false);
+        setSearchResult([]);
         getMovies(searchText);
     };
 
@@ -382,7 +383,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
             return;
         };
 
-
         if (searchValue !== '' && searchValue !== " ") {
             handleSubmitForm(searchValue);
             handleSearch(searchValue)
@@ -410,6 +410,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         if (q !== '' && q !== " ") {
             handleSubmitForm(q);
             setVisibility(false);
+            handleSearch(q)
         }
     };
 
