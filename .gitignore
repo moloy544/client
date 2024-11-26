@@ -22,11 +22,12 @@ node_modules/
 *.sw??
 .DS_Store
 
-# Logs backup and testing directories
+# Logs, backup, testing directories, and development directories
 logs/
 coverage/
 test/
 backup/
+dev/
 
 # Build-specific output directories
 *.log

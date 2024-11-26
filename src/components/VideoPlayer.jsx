@@ -51,7 +51,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
         const newSource = generateSourceURL(hlsSourceDomain, source, userIp);
         const script = document.createElement("script");
         script.id = "playerjs-script";
-        script.src = "/static/js/player_v2.js";
+        script.src = "/static/js/player_v2.1.js";
         script.async = true;
         script.onload = () => {
 

@@ -4,7 +4,7 @@ import Image from 'next/image'
 export default function NotFound() {
 
     return (
-        <div className="grid h-screen place-content-center bg-gray-800 px-4">
+        <div className="grid h-screen place-content-center bg-gray-800 px-4 overflow-hidden">
             <div className="text-center max-w-2xl">
 
                 <div className="w-full h-auto flex justify-center">
@@ -25,7 +25,7 @@ export default function NotFound() {
                <NavigateBack>
                 <button 
                     type="button"
-                    className="mt-6 inline-block rounded bg-rose-600 px-4 py-3 text-sm font-medium text-gray-100 hover:bg-rose-700 focus:outline-none focus:ring"
+                    className="mt-6 inline-block rounded bg-teal-700 hover:bg-teal-600 px-4 py-3 text-sm font-medium text-gray-100 hover:bg-rose-700 focus:outline-none focus:ring"
                 >
                    Back and explore
                 </button>

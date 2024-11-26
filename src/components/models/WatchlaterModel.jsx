@@ -279,9 +279,8 @@ const Card = ({ data, remove }) => {
                     <span className="text-[10px] text-gray-500 font-semibold">
                         {releaseYear}
                     </span>
-                    <div className="text-xs text-gray-600 font-semibold flex gap-0.5">
-                        Add at:
-                        <span className="text-[10px] text-gray-500 font-medium">
+                    <div className="text-xs text-gray-600 font-semibold flex gap-0.5 whitespace-nowrap">
+                        Added on:<span className="text-[10px] text-gray-500 font-medium">
                             {formatDate(addAt)}
                         </span>
                     </div>

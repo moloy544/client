@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { appConfig } from "@/config/config";
 import { adsConfig } from "@/config/ads.config";
 import { creatToastAlert, loadMoreFetch } from "@/utils";
@@ -32,6 +32,8 @@ export default function SearchPage() {
 
     const router = useRouter();
 
+    const searchParams = useSearchParams();
+
     // Set all state
     const [searchHistory, setSearchHistory] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -40,7 +42,6 @@ export default function SearchPage() {
     const [page, setPage] = useState(1);
     const [seatrchResult, setSearchResult] = useState([]);
     const [endOfData, setEndOfData] = useState(false);
-    const [isRequestModelOpen, setIsRequestModelOpen] = useState(false);
 
     const loadMore = () => {
         setPage((prevPage) => prevPage + 1);
@@ -64,7 +65,6 @@ export default function SearchPage() {
         })
         setSearchQuery(searchText);
         setPage(1);
-        setSearchResult([]);
         setEndOfData(false);
         getMovies(searchText);
     };
@@ -108,7 +108,7 @@ export default function SearchPage() {
     const getMovies = useCallback(async (q) => {
         try {
 
-            if (q === " " || q === "" || loading) {
+            if (q === " " || q === "") {
                 return
             };
 
@@ -134,10 +134,16 @@ export default function SearchPage() {
 
             const { moviesData } = data || {};
 
-            if (status === 200 && moviesData && moviesData.length > 0) {
+            if (status === 200 && moviesData) {
 
-                // set search result
-                setSearchResult(prevData => [...prevData, ...moviesData]);
+                if (page === 1) {
+                    // Add single array search results 
+                    setSearchResult(moviesData);
+
+                } else {
+                    // Add new array search results to existing array 
+                    setSearchResult(prevData => [...prevData, ...moviesData]);
+                }
             };
 
             if (dataIsEnd) {
@@ -153,7 +159,22 @@ export default function SearchPage() {
     }, [page, loading]);
 
     useEffect(() => {
-        if (page !== 1) {
+        const paramsQuery = searchParams.get('query');
+
+        // Handle the initial search when query parameter is present
+        if (paramsQuery && paramsQuery !== searchQuery) {
+            handleSubmitForm(paramsQuery);  // This updates searchQuery
+            const inputSearchBar = document.querySelector("#search-bar-input");
+            if (inputSearchBar) {
+                inputSearchBar.value = paramsQuery;
+            }
+        }
+
+    }, [searchParams]);
+
+    useEffect(() => {
+
+        if (page !== 1 || searchQuery !== "") {
             getMovies(searchQuery);
         }
 
@@ -243,7 +264,7 @@ export default function SearchPage() {
                         </main>
 
                         {loading && (
-                            <div className="w-full h-full flex justify-center items-center my-14 mobile:my-12">
+                            <div className={`w-full h-full flex justify-center items-center ${seatrchResult.length > 0 ? "my-14 mobile:my-12" : "my-36 mobile:my-32"}`}>
                                 <div className="text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                                     role="status">
                                     <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
@@ -253,15 +274,15 @@ export default function SearchPage() {
                         )}
 
                         {!loading && seatrchResult.length < 1 && searchQuery !== " " && (
-                                <div className="flex flex-col justify-center my-40 space-y-2 px-4">
-                                    <h2 className="text-gray-100 text-xl mobile:text-base text-center font-semibold">
-                                        We are not found anything
-                                    </h2>
-                                    <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again for 100% best result try with same title</small>
-                                    <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => router.push('/request-form')}>
-                                        <i className="bi bi-send"></i> Request content
-                                    </button>
-                                </div>
+                            <div className="flex flex-col justify-center my-40 space-y-2 px-4">
+                                <h2 className="text-gray-100 text-xl mobile:text-base text-center font-semibold">
+                                    We are not found anything
+                                </h2>
+                                <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again for 100% best result try with same title</small>
+                                <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => router.push('/request-form')}>
+                                    <i className="bi bi-send"></i> Request content
+                                </button>
+                            </div>
                         )}
 
                         <div ref={bottomObserverElement}></div>
@@ -283,6 +304,9 @@ export default function SearchPage() {
 function SearchBar({ functions, searchHistory, setSearchHistory }) {
 
     const { handleSubmitForm } = functions;
+
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
 
     const [visibility, setVisibility] = useState(false);
     const [filteredHistory, setFilteredHistory] = useState(searchHistory);
@@ -316,7 +340,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
             setVisibility(false);
             setFilteredHistory(searchHistory);
         };
-        if (tryCount!==0) {
+        if (tryCount !== 0) {
             setTryCount(0);
         }
     };
@@ -329,6 +353,22 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         }
     };
 
+    function handleSearch(term) {
+        const params = new URLSearchParams(searchParams);
+
+        // If the term is provided, set the 'query' param, otherwise remove it
+        if (term) {
+            params.set('query', term);
+        } else {
+            params.delete('query');
+        }
+
+        // Use history.pushState() to update the URL without reloading the page
+        const newUrl = `${pathname}?${params.toString()}`;
+        window.history.replaceState({}, '', newUrl);
+    }
+
+
     const submit = (event) => {
         event.preventDefault();
         // Get form data or search text value from form data
@@ -336,16 +376,18 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         const formJson = Object.fromEntries(formData.entries());
         const searchValue = formJson.searchText?.trim();
 
-        if (tryCount >=3) {
+        if (tryCount >= 3) {
             creatToastAlert({
                 message: 'You have reached the maximum number of attempts',
             });
             return;
         };
 
+
         if (searchValue !== '' && searchValue !== " ") {
             handleSubmitForm(searchValue);
-            setTryCount((prevCount)=> prevCount+1);
+            handleSearch(searchValue)
+            setTryCount((prevCount) => prevCount + 1);
         }
     };
 
@@ -389,6 +431,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                     onChange={searchInputChange}
                     type="text"
                     name="searchText"
+                    id="search-bar-input"
                     placeholder="Search by title, cast, year and more..."
                     autoComplete="off"
                     required

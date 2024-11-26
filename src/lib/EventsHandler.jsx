@@ -1,8 +1,18 @@
 "use client";
 
-import { cloneElement, useEffect, useRef, useState } from "react";
+import { cloneElement, useEffect, useRef, useState, Children } from "react";
 
-export const ModelsController = ({ children, visibility, closeEvent, transformEffect = false, windowScroll = true }) => {
+export const ModelsController = ({
+    children,
+    visibility,
+    closeEvent,
+    transformEffect = false,
+    windowScroll = true
+}) => {
+    if (Children.count(children) !== 1) {
+        throw new Error("ModelsController expects exactly one child element.");
+    }
+
     const initialStyle = {
         transition: transformEffect ? 'opacity 0.3s ease, transform 0.3s ease' : 'opacity 0.5s ease',
         opacity: 0,
@@ -10,6 +20,31 @@ export const ModelsController = ({ children, visibility, closeEvent, transformEf
 
     const elementRef = useRef(null);
     const [styleObj, setStyleObj] = useState(initialStyle);
+
+    // Intersection Observer to auto-close modal if less than 50% visible
+    useEffect(() => {
+        const observerCallback = (entries) => {
+            entries.forEach((entry) => {
+                if (entry.intersectionRatio < 0.5 && visibility && (closeEvent && typeof closeEvent === "function")) {
+                    closeEvent();
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, {
+            threshold: [0.5]
+        });
+
+        if (elementRef.current) {
+            observer.observe(elementRef.current);
+        }
+
+        return () => {
+            if (elementRef.current) {
+                observer.unobserve(elementRef.current);
+            }
+        };
+    }, [visibility, closeEvent]);
 
     useEffect(() => {
         const outsideClickHandler = ({ target }) => {

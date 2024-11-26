@@ -141,11 +141,34 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
                         <MovieCardSkleaton limit={limitPerPage} />
                     )}
 
-                    {!loading && moviesData.length === 0 && (
-                        <div className="my-40 text-gray-400 text-xl mobile:text-base text-center font-semibold">
-                            We are not found anything
+                    {!loading && initialMovies.length === 0 ? (
+                        <div className="my-40 flex flex-col items-center">
+                            <span className="text-gray-400 text-xl mobile:text-base text-center font-semibold">
+                                No results found. Please reload the page or explore another section.
+                            </span>
+                            <button
+                                onClick={() => window.location.reload()}
+                                type="button"
+                                className="mt-4 px-6 py-2 rounded-lg bg-cyan-600 text-white font-semibold text-sm shadow-md hover:bg-cyan-500 transition-all duration-200 ease-in-out focus:ring-2 focus:ring-cyan-400 focus:ring-offset-1"
+                            >
+                                Reload
+                            </button>
+                        </div>
+                    ) : !loading && moviesData.length === 0 && (
+                        <div className="my-40 flex flex-col items-center">
+                            <span className="text-gray-400 text-xl mobile:text-base text-center font-semibold">
+                                No results found for the applied filter.
+                            </span>
+                            <button
+                                onClick={() => setFilter(initialFilter)}
+                                type="button"
+                                className="mt-4 px-3 py-1.5 bg-rose-700 hover:bg-rose-600 text-white font-medium text-sm rounded transition-all duration-200"
+                            >
+                                Clear Filter
+                            </button>
                         </div>
                     )}
+
                 </div>
 
                 {loading && moviesData.length > 0 && (

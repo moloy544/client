@@ -11,7 +11,7 @@ const LinkButton = ({ linkData, linkUrl }) => {
         <Link
           title={data.name}
           href={data.linkUrl ? data.linkUrl.toLowerCase().replace(/[' ']/g, '-') :
-            linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')} prefetch={false}>
+            linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')}>
           {data.name}
         </Link>
       </div>

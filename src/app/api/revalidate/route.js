@@ -4,7 +4,7 @@ export async function GET(request) {
   const path = request.nextUrl.searchParams.get('path')
  
   if (path) {
- 
+ console.log(path)
     revalidatePath(path)
     return Response.json({ 
         revalidated: true,
