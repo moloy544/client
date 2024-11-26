@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { appConfig } from "@/config/config";
 import { adsConfig } from "@/config/ads.config";
 import { creatToastAlert, loadMoreFetch } from "@/utils";
@@ -31,8 +31,6 @@ export default function SearchPage() {
     const limitPerPage = 30;
 
     const router = useRouter();
-
-    const searchParams = useSearchParams();
 
     // Set all state
     const [searchHistory, setSearchHistory] = useState([]);
@@ -159,7 +157,9 @@ export default function SearchPage() {
     }, [page, loading]);
 
     useEffect(() => {
-        const paramsQuery = searchParams.get('query');
+
+        const params = new URLSearchParams(window.location.search);
+        const paramsQuery = params.get("query");
 
         // Handle the initial search when query parameter is present
         if (paramsQuery && paramsQuery !== searchQuery) {
@@ -170,7 +170,7 @@ export default function SearchPage() {
             }
         }
 
-    }, [searchParams]);
+    }, []);
 
     useEffect(() => {
 
@@ -305,7 +305,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
 
     const { handleSubmitForm } = functions;
 
-    const searchParams = useSearchParams();
     const pathname = usePathname();
 
     const [visibility, setVisibility] = useState(false);
@@ -354,7 +353,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
     };
 
     function handleSearch(term) {
-        const params = new URLSearchParams(searchParams);
+        const params = new URLSearchParams(window.location.search);
 
         // If the term is provided, set the 'query' param, otherwise remove it
         if (term) {
