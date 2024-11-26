@@ -175,7 +175,7 @@ export default function SearchPage() {
 
     useEffect(() => {
 
-        if (page !== 1 || searchQuery !== "") {
+        if (page !== 1) {
             getMovies(searchQuery);
         }
 
