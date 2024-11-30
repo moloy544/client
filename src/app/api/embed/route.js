@@ -44,7 +44,7 @@ const createErrorMessage = (message) => {
 
 // Create response for movies player
 const moviesBazarPlayer = (source) => {
-    if (!source.includes('.m3u8')) {
+    if (!source.includes('.m3u8') && !source.includes('.mkv')) {
         return `<iframe 
                 src="${source}" 
                 style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 300;" 
@@ -137,7 +137,7 @@ export async function GET(req) {
         }
 
         // Extract .m3u8 source or fallback to the first entry
-        const m3u8Sources = watchLink.filter(link => link.endsWith('.m3u8'));
+        const m3u8Sources = watchLink.filter(link => link.includes('.m3u8') || link.includes('.mkv'));
         const source = m3u8Sources.length > 0 ? m3u8Sources[0] : watchLink[0];
 
         // Generate the modified URL with user IP expiration timestamp

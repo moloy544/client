@@ -14,6 +14,7 @@ import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
+import brandLogoIcon from "../../assets/images/brand_logo.png"
 
 //import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
 
@@ -209,7 +210,7 @@ export default function SearchPage() {
 
                         <div className="flex items-center space-x-0.5 mobile:hidden">
                             <Image
-                                src="https://res.cloudinary.com/dxhafwrgs/image/upload/v1720111766/moviesbazaar/brand_logo.png"
+                                src={brandLogoIcon}
                                 width={35}
                                 height={35}
                                 alt="Mobies bazar logo"

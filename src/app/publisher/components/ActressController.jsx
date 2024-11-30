@@ -42,7 +42,11 @@ function ActressController() {
                 alert(response.data.message || "Somthing went wrong!")
             };
             const { actor } = response.data;
-            setActorState(actor)
+            setActorState(actor);
+            const { avatar } = actor;
+            if (avatar){
+                setImagePreview(avatar);
+            }
 
         } catch (error) {
             console.log(error);
