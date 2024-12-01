@@ -3,6 +3,7 @@ import { loadMoreFetch } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
@@ -15,7 +16,7 @@ export const metadata = {
   keywords: 'IMDb top rated movies, watch top rated films online, best Hollywood movies, best Bollywood movies, best South Indian movies',
 
   openGraph: {
-    images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
+    images: BASE_OG_IMAGE_URL,
     title: {
       absolute: 'Top IMDb Rated Movies | Watch the Best Films Online at Movies Bazar'
     },

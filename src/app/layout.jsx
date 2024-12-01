@@ -9,6 +9,7 @@ import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
 import { adsConfig } from '@/config/ads.config';
 import CustomLoadingAds from '@/components/ads/CustomLoadingAds';
+import { BASE_OG_IMAGE_URL } from '@/constant/assets_links';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +23,7 @@ export const metadata = {
   keywords: 'online movies, watch movies online, movie streaming, film, cinema, entertainment, Hollywood movies, Hollywood dubbed movies, South movies, South dubbed movies, Bollywood movies',
 
   openGraph: {
-    images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
+    images: BASE_OG_IMAGE_URL,
     title: {
       default: 'Movies Bazar | Watch Latest Bollywood, Hollywood, and Hindi Dubbed Movies Online',
       template: '%s | Movies Bazar',

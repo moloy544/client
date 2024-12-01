@@ -7,8 +7,8 @@ import Breadcrumb from "@/components/Breadcrumb";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
 import LoadMoreActorsGirdWarper from "@/components/LoadMoreActors";
-
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
+
 const apiUrl = `${appConfig.backendUrl}/api/v1/actress/industry`;
 
 const getData = async (industry) => {

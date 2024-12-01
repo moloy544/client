@@ -2,6 +2,7 @@ import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 
 export async function generateMetadata({ params }) {
 
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }) {
     keywords: `latest release ${editParamsQuery} movie, Watch latest release ${editParamsQuery} movie online, latest release ${editParamsQuery} movie watch free online, Where to watch latest release ${editParamsQuery} movies online`,
 
     openGraph: {
-      images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
+      images: BASE_OG_IMAGE_URL,
       title: `Latest release ${editParamsQuery} movies`,
       description: `Watch resently release ${editParamsQuery} movies online Movies Bazaar`,
       url: `${appConfig.appDomain}/browse/latest/${params.slug}`

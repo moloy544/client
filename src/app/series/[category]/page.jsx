@@ -3,6 +3,7 @@ import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
+import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 
 export async function generateMetadata({ params }) {
 
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }) {
     keywords: `${editParamsQuery} series, stream ${editParamsQuery} series online, watch ${editParamsQuery} series free, where to watch ${editParamsQuery} series, online ${editParamsQuery} series`,
   
     openGraph: {
-      images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
+      images: BASE_OG_IMAGE_URL,
       title: {
         sbsolute:`${editParamsQuery} Series Collection | Stream Free Online at Movies Bazar`
       },

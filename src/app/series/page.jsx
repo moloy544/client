@@ -4,6 +4,7 @@ import { appConfig } from "@/config/config";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import SliderShowcase from "@/components/SliderShowcase";
 import Footer from "@/components/Footer";
+import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export const metadata = {
@@ -12,7 +13,7 @@ export const metadata = {
     keywords: 'web series collection, Hollywood series, Bollywood series, South Indian series, watch Netflix series free, latest Hindi series, top-rated web series',
 
     openGraph: {
-        images: 'https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg',
+        images: BASE_OG_IMAGE_URL,
         title: 'Top Web Series Collection',
         description: 'Explore an extensive collection of top web series from Hollywood, Bollywood, South Indian cinema, and popular platforms like Netflix, Hotstar, and Amazon Prime at Movies Bazar.',
         url: `${appConfig.appDomain}/series`,

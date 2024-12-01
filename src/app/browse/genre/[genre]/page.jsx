@@ -3,6 +3,7 @@ import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
+import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }) {
         keywords: `${editParamsQuery} movie, Watch ${editParamsQuery} movie online, ${editParamsQuery} movie watch free online, Where to watch ${editParamsQuery} movies online`,
 
         openGraph: {
-            images: 'https://res.cloudinary.com/dxhafwrgs/image/upload/v1705866104/moviesbazaar/moviesbazaar_brand_logo.jpg',
+            images: BASE_OG_IMAGE_URL,
             title: `${editParamsQuery} movies collaction`,
             description: `Watch ${editParamsQuery} movies, series online free of cost Movies Bazaar have lot of ${editParamsQuery} movies and series collaction`,
             url: `${appConfig.appDomain}/browse/genre/${params.genre}`

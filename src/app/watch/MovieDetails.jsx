@@ -245,7 +245,7 @@ function PlayButton({ watchLinks, playHandler, multiAudio, videoType }) {
 
   const [showDropdown, setDropDown] = useState(false);
 
-  const isMultiOption = (watchLinks.length > 1 && multiAudio && typeof videoType === 'string');
+  const isMultiOption = (watchLinks?.length > 1 && multiAudio && typeof videoType === 'string');
 
   const play = () => {
     if (!watchLinks || watchLinks.length === 0) {

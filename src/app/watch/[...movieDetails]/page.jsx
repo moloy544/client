@@ -9,6 +9,7 @@ import { InspectPreventer } from "@/lib/lib";
 import MovieDetails from "../MovieDetails";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
+import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
@@ -115,7 +116,7 @@ export async function generateMetadata({ params }) {
       title: metaTitle,
       description: metaDesc,
       url: metaOgUrl,
-      images: thambnail,
+      images: thambnail || BASE_OG_IMAGE_URL,
     },
   }
 

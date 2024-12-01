@@ -6,6 +6,7 @@ import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
+import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }) {
         keywords: `${name} movies, watch ${name} movies online, ${name} movie collection, stream ${name} movies free, where to watch ${name} films online`,
       
         openGraph: {
-          images: avatar,
+          images: avatar || BASE_OG_IMAGE_URL,
           title:{
             absolute:`${name} | Movies Bazaar - Watch Free Online`,
           },
