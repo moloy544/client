@@ -29,6 +29,9 @@ const getIP = () => {
   return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 };
 
+// imdbId validating  using regex pattern
+const imdbIdPattern = /^tt\d{7,}$/;
+
 // get movie detais form backend server
 const getMovieDeatils = async (imdbId, suggestion = true) => {
 
@@ -38,9 +41,12 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
 
   try {
 
-    if (!imdbId || imdbId === ' ' || imdbId === '' || imdbId.length <= 6) {
+    if (!imdbId || !imdbIdPattern.test(imdbId.trim())) {
+      status = 400;
       return { status, movieData, suggestions };
-    }
+    };
+    
+    // get contet details form backend database
     const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`, {
       params: { suggestion }
     });
@@ -62,28 +68,38 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
   }
 };
 
-
+// Generate metadata for content
 export async function generateMetadata({ params }) {
 
   const { movieDetails } = params;
 
-  const movieId = movieDetails[2];
+  // Construct IMDb ID from params, ensuring it has the 'tt' prefix
+  const paramsImdbId = movieDetails[2] ? `tt${movieDetails[2]}` : null;
 
-  const { movieData, status } = await getMovieDeatils('tt' + movieId, false);
+  // Fetch movie data based on the IMDb ID
+  const { movieData, status } = await getMovieDeatils(paramsImdbId, false);
 
-  if (status !== 200 || movieDetails.length !== 3) {
-    return;
-  };
-
-  // movie all dara fields
-  const { imdbId, title, thambnail, releaseYear, type, genre, language, castDetails } = movieData || {};
-
-  const paramsType = movieDetails[0];
-  const movieDataImdbId = imdbId?.replace('tt', '');
-
-  if (paramsType !== type || movieId !== movieDataImdbId) {
+  // Early return if the API response is not valid, movie details are missing, or there's no movie data
+  if (status !== 200 || movieDetails.length !== 3 || !movieData) {
     return;
   }
+
+  // Destructure necessary fields from the movie data
+  const { imdbId, title, thambnail, releaseYear, type, genre, language, castDetails } = movieData || {};
+
+  // Convert type from params and movie data to lowercase for comparison
+  const paramsType = movieDetails[0]?.toLowerCase();
+  const movieType = type?.toLowerCase();
+
+   // Validate URL path components
+   const isTypeValid = paramsType && paramsType === movieType;
+   const isImdbIdValid = paramsImdbId && imdbIdPattern.test(paramsImdbId) && paramsImdbId === imdbId;
+   const isPathLengthValid = movieDetails.length === 3;
+
+   // If any of the checks fail, mark the path as invalid
+   if (!isPathLengthValid || !isTypeValid || !isImdbIdValid) {
+     return;
+   };
 
   // extract the movie genres and sort them max 3 
   const genres = genre?.slice(0, 3).join(', ')
@@ -94,7 +110,7 @@ export async function generateMetadata({ params }) {
   // metadata related fields 
   const metaTitle = `Watch ${title} (${releaseYear}) ${transformToCapitalize(type)} Online Free!`;
   const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} movie in ${language}.`;
-  const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${movieId}`;
+  const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${paramsImdbId}`;
   const metaKeywords = [
     `${title}, ${type}`,
     `Watch ${title} (${releaseYear}) ${type} online free`,
@@ -126,42 +142,55 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
 
   const { movieDetails } = params;
-  const movieId = movieDetails ? movieDetails[2] : null;
+
+  const paramsImdbId = movieDetails[2] ? `tt${movieDetails[2]}` : null;
+
   const ip = getIP();
 
-  const { status, movieData, suggestions } = await getMovieDeatils('tt' + movieId, true);
+  const { status, movieData, suggestions } = await getMovieDeatils(paramsImdbId, true);
   let isValidPath = true;
 
-  // Verify if the browser url is expted url or not
-  // If not math then show not found by set validapath false and call notFound.
+  // Verify if the browser URL is the expected URL or not
+  // If not, set isValidPath to false and call notFound.
   if (status === 200 && movieData) {
-    const paramsType = movieDetails[0];
-    const movieDataType = movieData.type;
-    const movieDataImdbId = movieData.imdbId?.replace('tt', '');
-    if (paramsType !== movieDataType || movieDetails.length !== 3 || movieId !== movieDataImdbId) {
+    // Extract params and movie data types, converting them to lowercase
+    const paramsType = movieDetails[0]?.toLowerCase() || null;
+    const movieDataType = movieData.type?.toLowerCase() || null;
+
+    const movieDataImdbId = movieData.imdbId || null;
+
+    // Validate URL path components
+    const isTypeValid = paramsType && paramsType === movieDataType;
+    const isImdbIdValid = paramsImdbId && imdbIdPattern.test(paramsImdbId) && paramsImdbId === movieDataImdbId;
+    const isPathLengthValid = movieDetails.length === 3;
+
+    // If any of the checks fail, mark the path as invalid
+    if (!isPathLengthValid || !isTypeValid || !isImdbIdValid) {
       isValidPath = false;
     }
-  }
+  };
 
-  if (status === 404 || !isValidPath) {
+  // show not found if path is invalid or content is not found
+  if (!isValidPath || status === 404) {
     notFound();
-  } else if (status === 400 || status === 500) {
+    // If sts is not 200 ok show error message
+  } else if (status !== 200) {
     return (
-      <SomthingWrongError reportMessage={`Hello MoviesBazar Team,\n\nI am experiencing an error while exploring the content. The error occurred on the following content id: ${movieId}.\n\nThank you for your assistance!`} />
+      <SomthingWrongError reportMessage={`Hello MoviesBazar Team,\n\nI am experiencing an error while exploring the content. The error occurred on the following content id: ${paramsImdbId}.\n\nThank you for your assistance!`} />
     )
   };
 
   return (
     <div className="min-w-full min-h-screen bg-custom-dark-bg">
-    <InspectPreventer>
-      <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
-      <MovieDetails
-        movieDetails={movieData}
-        suggestions={suggestions}
-        userIp={ip}
-      />
-      <Footer />
-    </InspectPreventer>
+      <InspectPreventer>
+        <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
+        <MovieDetails
+          movieDetails={movieData}
+          suggestions={suggestions}
+          userIp={ip}
+        />
+        <Footer />
+      </InspectPreventer>
     </div>
   )
 }

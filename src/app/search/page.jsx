@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { appConfig } from "@/config/config";
-import { adsConfig } from "@/config/ads.config";
 import { creatToastAlert, loadMoreFetch } from "@/utils";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { ModelsController } from "@/lib/EventsHandler";
@@ -15,8 +14,6 @@ import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import brandLogoIcon from "../../assets/images/brand_logo.png"
-
-//import AdsterraBannerAds from "@/components/ads/AdsterraBannerAds";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -188,10 +185,9 @@ export default function SearchPage() {
             const altData = tragetElement.alt || null;
             if (altData) {
                 addToSearchHistory({ text: searchQuery });
-            }
-        }
-
-    }
+            };
+        };
+    };
 
     // check is error encountered show error message
     if (error) {
@@ -311,7 +307,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
 
     const [visibility, setVisibility] = useState(false);
     const [filteredHistory, setFilteredHistory] = useState(searchHistory);
-    const [isAdClick, setIsAdClick] = useState(false);
     const [tryCount, setTryCount] = useState(0);
 
     const hideModel = () => {
@@ -346,14 +341,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         }
     };
 
-    const handleInputClick = () => {
-        setVisibility(true);
-        if (!isAdClick && process.env.NODE_ENV === "production") {
-            window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
-            setIsAdClick(true);
-        }
-    };
-
     function handleSearch(term) {
         const params = new URLSearchParams(window.location.search);
 
@@ -367,8 +354,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         // Use history.pushState() to update the URL without reloading the page
         const newUrl = `${pathname}?${params.toString()}`;
         window.history.replaceState({}, '', newUrl);
-    }
-
+    };
 
     const submit = (event) => {
         event.preventDefault();
@@ -428,7 +414,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                 </NavigateBack>
                 <input
                     className="w-full h-12 mobile:h-10 bg-transparent border-2 border-gray-800 rounded-l-md px-3 text-base font-medium mobile:text-sm mobile:placeholder:text-xs text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-600 caret-teal-600 shadow-md transition-colors duration-200 pl-10" // Added padding-left for the icon
-                    onClick={handleInputClick}
                     onChange={searchInputChange}
                     type="text"
                     name="searchText"
@@ -444,7 +429,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                     Search
                 </button>
             </form>
-
 
             <ModelsController visibility={visibility} closeEvent={hideModel}>
                 <div className="w-full h-auto bg-white absolute top-12 z-50 rounded-b-md shadow-lg">

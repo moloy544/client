@@ -18,14 +18,14 @@ export default function NotFound() {
                     />
                 </div>
 
-                <h1 className="text-xl font-bold tracking-tight text-gray-200 sm:text-3xl">Uh-oh page not found!</h1>
+                <h1 className="text-xl font-bold tracking-tight text-gray-200 sm:text-3xl">Uh-oh! Page Not Found</h1>
 
-                <p className="mt-4 text-gray-300 text-base mobile:text-sm">{"We can't find that page maybe its removed from our site plese go back and explore your favorite movies and series."}</p>
+                <p className="mt-4 text-gray-300 text-base mobile:text-sm">{"We can't find that page. It may have been removed from our site. Please go back and explore your favorite movies and series."}</p>
                
                <NavigateBack>
                 <button 
                     type="button"
-                    className="mt-6 inline-block rounded bg-teal-700 hover:bg-teal-600 px-4 py-3 text-sm font-medium text-gray-100 hover:bg-rose-700 focus:outline-none focus:ring"
+                    className="mt-6 inline-block rounded bg-teal-700 hover:bg-teal-600 px-4 py-3 text-sm font-medium text-gray-100 focus:outline-none focus:ring focus:ring-teal-500"
                 >
                    Back and explore
                 </button>
