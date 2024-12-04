@@ -19,7 +19,7 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
     documentBody.addEventListener("click", handleClick);
 
     // Set a 30 seconds (30000 ms) delay for loading both scripts
-    const loadAdScripts = setTimeout(() => {
+    /**const loadAdScripts = setTimeout(() => {
       if (process.env.NODE_ENV !== "production" || pathname.includes('publisher')) return;
 
       // Load social bar ad script
@@ -27,11 +27,11 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
       socialBarScript.src = socialBarScriptSrc;
       socialBarScript.async = true;
       document.body.appendChild(socialBarScript);
-    }, 30000); // 30 seconds delay
+    }, 30000); // 30 seconds delay **/
 
     // Clean up the timeout and event listener if the component unmounts
     return () => {
-      clearTimeout(loadAdScripts);
+      //clearTimeout(loadAdScripts);
       documentBody.removeEventListener("click", handleClick);
     };
   }, [popunderScriptSrc, socialBarScriptSrc]);
