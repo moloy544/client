@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { appConfig } from "@/config/config";
+import { adsConfig } from "@/config/ads.config";
 import { creatToastAlert, loadMoreFetch } from "@/utils";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { ModelsController } from "@/lib/EventsHandler";
@@ -14,6 +15,7 @@ import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import brandLogoIcon from "../../assets/images/brand_logo.png"
+
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -155,6 +157,7 @@ export default function SearchPage() {
         };
     }, [page, loading]);
 
+    // get user searh query form url and add to search bar
     useEffect(() => {
 
         const params = new URLSearchParams(window.location.search);
@@ -162,15 +165,15 @@ export default function SearchPage() {
 
         // Handle the initial search when query parameter is present
         if (paramsQuery && paramsQuery !== searchQuery) {
-            handleSubmitForm(paramsQuery);  // This updates searchQuery
             const inputSearchBar = document.querySelector("#search-bar-input");
             if (inputSearchBar) {
                 inputSearchBar.value = paramsQuery;
             }
-        }
+        };
 
     }, []);
-
+   
+    // for load more content by chnagging pages
     useEffect(() => {
 
         if (page !== 1) {
@@ -308,6 +311,15 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
     const [visibility, setVisibility] = useState(false);
     const [filteredHistory, setFilteredHistory] = useState(searchHistory);
     const [tryCount, setTryCount] = useState(0);
+    const [isAdClick, setIsAdClick] = useState(false);
+
+    const handleInputClick = () => {
+        setVisibility(true);
+        if (!isAdClick && process.env.NODE_ENV === "production") {
+            window.open(adsConfig.hiltopAds.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+            setIsAdClick(true);
+        }
+    };
 
     const hideModel = () => {
         setVisibility(false);
@@ -415,6 +427,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                 <input
                     className="w-full h-12 mobile:h-10 bg-transparent border-2 border-gray-800 rounded-l-md px-3 text-base font-medium mobile:text-sm mobile:placeholder:text-xs text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-600 caret-teal-600 shadow-md transition-colors duration-200 pl-10" // Added padding-left for the icon
                     onChange={searchInputChange}
+                    onClick={handleInputClick}
                     type="text"
                     name="searchText"
                     id="search-bar-input"
