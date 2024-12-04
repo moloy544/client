@@ -61,7 +61,7 @@ const ResponsiveActorCard = ({ data }) => {
 
             <Link href={`/actors/${creatUrlLink(data.name)}/${data.imdbId.replace('nm', '')}`} title={data.name} prefetch={false}>
 
-                <div className="w-auto h-auto aspect-square rounded-full overflow-hidden border-2 border-yellow-600">
+                <div className="w-auto h-auto aspect-square rounded-full overflow-hidden border-2 border-gray-600">
 
                     <Image
                         className="w-full object-fill pointer-events-none select-none rounded-full"

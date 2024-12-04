@@ -1,8 +1,16 @@
+'use client'
+
 import Image from 'next/image';
 import authorImage from '../assets/images/india_flag.jpg';
 import Link from 'next/link';
 
+const handleEmail = () => {
+    const email = 'moviesbazarorg@gmail.com';
+    window.location.href = `mailto:${email}`;
+};
+
 function Footer() {
+
     return (
         <footer className="w-full h-auto bg-gray-900 py-4 lg:py-6 px-2 flex flex-col justify-center items-center gap-4 pb-6">
             <div className="text-center">
@@ -123,7 +131,7 @@ function Footer() {
             </div>
 
             <div className="text-base text-gray-200 font-semibold flex items-center">
-                <div className="text-xl">❤️</div>
+                <div className="text-base">❤️</div>
                 <div>
                     <span className="text-orange-500">Love</span> from <Image src={authorImage} alt="Indian flag" width={11} height={11} className="rounded-full inline-block" /> <span className=" text-green-500">India</span>
                 </div>
@@ -134,7 +142,7 @@ function Footer() {
                     <strong>User Safety:</strong> While we strive to ensure safe viewing experiences, users should be aware that some uploaded content may contain copyrighted material. It&lsquo;s our responsibility to monitor content, but we advise users to watch at their discretion.
                 </p>
                 <p>
-                    <strong>Content Safty:</strong> Requests for adult content will be rejected and removed from our site. If you see any content that may be pornographic material, please report it to us via email at <span className="text-gray-400 font-semibold">moviesbazarorg@gmail.com</span>.
+                    <strong>Content Safty:</strong> Requests for adult content will be rejected and removed from our site. If you see any content that may be pornographic material, please report it to us via email at <span onClick={handleEmail} className="text-gray-400 font-semibold cursor-pointer">moviesbazarorg@gmail.com</span>.
                 </p>
                 <p>
                     <strong>Advertisement:</strong> We show some ads, which are important for managing our site. Please ignore them and enjoy your favorite content.
@@ -145,6 +153,27 @@ function Footer() {
                         See privery policy
                     </Link>
                 </p>
+            </div>
+
+            {/* API Contact Section */}
+            <div className="bg-[#161f31] text-gray-300 w-full py-3 mt-6">
+                <div className="max-w-screen-xl mx-auto px-6">
+                    <div className="text-2xl mobile:text-xl font-semibold text-gray-200 mb-2">API Contact</div>
+                    <p className="text-sm mb-6 text-gray-300">
+                        <span className="font-semibold text-gray-100">Introducing</span> our new <span className="font-semibold text-green-400">Video Embedding API</span>, designed for easy integration of high-quality video streaming into your projects. If you have any questions or need assistance, feel free to reach out to us through the options below:
+                    </p>
+
+                    {/* Email Contact */}
+                    <p onClick={handleEmail} className="text-sm font-medium cursor-pointer hover:text-white transition-all mb-4">
+                        <i className="bi bi-envelope-at-fill text-base"></i> moviesbazarorg@gmail.com
+                    </p>
+
+                    {/* Telegram Contact */}
+                    <p className="text-sm font-medium cursor-pointer hover:text-white transition-all">
+                        <i className="bi bi-telegram mr-2 text-base"></i>
+                        <a href="https://t.me/sanjoyrakshit504" target="_blank" rel="noopener noreferrer">Contact us on Telegram</a>
+                    </p>
+                </div>
             </div>
         </footer>
     );

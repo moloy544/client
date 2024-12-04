@@ -120,11 +120,11 @@ function HomePageLayout({ initialLayoutData }) {
                             href={`/actors/${creatUrlLink(actor.name)}/${actor.imdbId?.replace('nm', '')}`}
                             key={actor.imdbId}
                             title={actor.name}
-                            className="w-[calc(100%/6)] aspect-[4/5] max-w-[160px] min-w-[110px] h-auto px-3 py-2.5 cursor-pointer bg-[#293445] rounded-md flex-shrink-0"
+                            className="w-[calc(100%/6)] aspect-[4/5] max-w-[160px] min-w-[110px] h-auto px-3 py-2.5 cursor-pointer bg-[#283345] rounded-md flex-shrink-0"
                             prefetch={false}
                         >
 
-                            <div className="rounded-full border-2 mx-auto border-yellow-600">
+                            <div className="rounded-full border-2 mx-auto border-gray-600">
 
                                 <Image
                                     className="w-full object-fill aspect-square select-none rounded-full"
@@ -183,7 +183,7 @@ function FixedSearchIcon() {
         const scrollY = window.scrollY;
 
         // For Search icon visibility
-        setSearchIconVisibility(window.innerWidth <= 767 ? scrollY > 48 : scrollY > 72);
+        setSearchIconVisibility(window.innerWidth <= 767 ? scrollY > 45 : scrollY > 65);
 
         prevScrollY.current = scrollY;
     };

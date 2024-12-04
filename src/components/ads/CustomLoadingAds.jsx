@@ -11,7 +11,7 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
 
     // If the current path is search, no need to load the ads
     const handleClick = () => {
-      if (process.env.NODE_ENV !== "production" || pathname.includes('search')) return;
+      if (process.env.NODE_ENV !== "production" || pathname.includes('publisher')) return;
       window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
       documentBody.removeEventListener("click", handleClick); // Remove the click event after it's triggered once
     };
@@ -20,8 +20,7 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
 
     // Set a 30 seconds (30000 ms) delay for loading both scripts
     const loadAdScripts = setTimeout(() => {
-      //if (process.env.NODE_ENV !== "production") return;
-      if (10 > 2) return;
+      if (process.env.NODE_ENV !== "production" || pathname.includes('publisher')) return;
 
       // Load social bar ad script
       const socialBarScript = document.createElement('script');
