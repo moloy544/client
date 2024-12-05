@@ -316,7 +316,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
     const handleInputClick = () => {
         setVisibility(true);
         if (!isAdClick && process.env.NODE_ENV === "production") {
-            window.open(adsConfig.hiltopAds.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+            window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
             setIsAdClick(true);
         }
     };
