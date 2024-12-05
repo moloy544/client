@@ -12,7 +12,9 @@ export const metadata = {
   } 
 };
 
-export const revalidate = 7200 // revalidate at most every 2 hours
+//export const revalidate = 7200 // revalidate at most every 2 hours
+/// force to dinamic 
+export const dynamic = "force-dynamic";
 
 export default async function Page() {
 
