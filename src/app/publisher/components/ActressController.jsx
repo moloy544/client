@@ -168,7 +168,9 @@ function ActressController() {
                 <div className="flex flex-col my-3">
                     <label className="font-bold text-gray-800">Select image</label>
                     <input onChange={handleFileInputChnage} type="file" id="actor-avatar-file" accept="image/*" />
-
+                    <input className={inputStyle + ' my-1.5'} type="text" value={imagePreview}
+                                    onChange={(e) => setImagePreview(e.target.value)}
+                                    placeholder="Enter external image url" />
                 </div>
 
                 <div className="flex flex-col my-3">

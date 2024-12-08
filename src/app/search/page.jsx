@@ -120,9 +120,6 @@ export default function SearchPage() {
                 apiPath: `${backendServer}/api/v1/movies/search?q=${q}`,
                 limitPerPage,
                 skip: page === 1 ? 0 : page * limitPerPage,
-                bodyData: {
-                    dateSort: -1,
-                }
             });
 
             if (status !== 200) {
@@ -161,10 +158,10 @@ export default function SearchPage() {
     useEffect(() => {
 
         const params = new URLSearchParams(window.location.search);
-        const paramsQuery = params.get("query");
+        const paramsQuery = params.get("query")?.replace(/ +/g, ' ').trim();
 
         // Handle the initial search when query parameter is present
-        if (paramsQuery && paramsQuery !== searchQuery) {
+        if (paramsQuery && paramsQuery !== '') {
             const inputSearchBar = document.querySelector("#search-bar-input");
             if (inputSearchBar) {
                 inputSearchBar.value = paramsQuery;
@@ -386,7 +383,11 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
             handleSubmitForm(searchValue);
             handleSearch(searchValue)
             setTryCount((prevCount) => prevCount + 1);
-        }
+        }else{
+        creatToastAlert({
+            message: 'Please enter a search term',
+        });
+        };
     };
 
     const deleteHistoryItem = (index) => {
