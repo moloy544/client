@@ -161,11 +161,11 @@ export default function SearchPage() {
         const paramsQuery = params.get("query")?.replace(/ +/g, ' ').trim();
 
         // Handle the initial search when query parameter is present
-        if (paramsQuery && paramsQuery !== '') {
+        if (paramsQuery && paramsQuery !== '' && paramsQuery !== ' ') {
             const inputSearchBar = document.querySelector("#search-bar-input");
             if (inputSearchBar) {
-                inputSearchBar.value = paramsQuery;
-            }
+                inputSearchBar.value = paramsQuery || "";
+            };
         };
 
     }, []);
