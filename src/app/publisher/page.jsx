@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import ActressController from "./components/ActressController";
-import UpdateMoviesPage from "./components/UpdateMoviesPage";
 import { creatToastAlert, resizeImage } from "@/utils";
 import { getTodayDate, isValidImageUrl, validateMovieDetailsInput } from "./utils/admin.utils";
+import UpdateMoviesPage from "./components/UpdateMoviesPage";
+import ActorControllerSection from "./components/ActorControllerSection";
 
 // text or number input style properties
 const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
@@ -807,7 +807,7 @@ export default function AdminPage() {
                 </form>
 
                 {/** Other Update or Add Data Section **/}
-                <ActressController />
+                <ActorControllerSection />
                 <UpdateMoviesPage />
             </main>
         </>

@@ -8,7 +8,7 @@ import { creatToastAlert } from "@/utils";
 const inputStyle = "border-2 border-blue-700 rounded-md p-1";
 const industryOptions = ['bollywood', 'hollywood', 'south'];
 
-function ActressController() {
+export default function ActorControllerSection() {
 
     const [actorState, setActorState] = useState({
         imdbId: '',
@@ -168,7 +168,7 @@ function ActressController() {
                 <div className="flex flex-col my-3">
                     <label className="font-bold text-gray-800">Select image</label>
                     <input onChange={handleFileInputChnage} type="file" id="actor-avatar-file" accept="image/*" />
-                    <input className={inputStyle + ' my-1.5'} type="text" value={imagePreview}
+                    <input className={inputStyle + ' my-1.5'} type="text" value={imagePreview || ""}
                                     onChange={(e) => setImagePreview(e.target.value)}
                                     placeholder="Enter external image url" />
                 </div>
@@ -208,6 +208,4 @@ function ActressController() {
             </form>
         </section>
     )
-}
-
-export default ActressController
+};
