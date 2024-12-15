@@ -22,23 +22,26 @@ const useOrientation = () => {
 };
 
 const useWindowWidth = () => {
-    const [windowWidth, setWindowWidth] = useState(window ? window.innerWidth : undefined);
+    const [windowWidth, setWindowWidth] = useState(undefined);
 
     useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
+        // Check if window is defined (i.e., the code is running on the client-side)
+        if (typeof window !== 'undefined') {
+            const handleResize = () => {
+                setWindowWidth(window.innerWidth);
+            };
 
-        // Set initial value on mount
-        handleResize();
+            // Set initial value
+            handleResize();
 
-        // Add event listener
-        window.addEventListener('resize', handleResize);
+            // Add event listener for window resize
+            window.addEventListener('resize', handleResize);
 
-        // Cleanup event listener on component unmount
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
+            // Cleanup event listener on component unmount
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }
     }, []);
 
     return windowWidth;

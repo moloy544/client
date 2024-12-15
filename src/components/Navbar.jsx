@@ -6,6 +6,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
 import brandLogoIcon from "../assets/images/brand_logo.png"
+import santaCap from "../assets/images/santa-cap.png"
 
 const WatchlaterModel = dynamic(() => import('./models/WatchlaterModel'), { ssr: false });
 
@@ -42,11 +43,17 @@ export default function Navbar() {
                         className="w-11 h-11 mobile:w-9 mobile:h-9"
                     />
                     <div className="flex flex-col mt-1">
-                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[15px] leading-[14px]">
-                            Movies Bazar
+                        <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[15px] leading-[14px] relative">
+                            <span className="relative inline-block">
+                                <span className="absolute top-[-14px] left-[-1px]">
+                                    <Image src={santaCap} alt="Santa Cap" width={20} height={20} />
+                                </span>
+                                Movies Bazar
+                            </span>
                         </Link>
                         <small className="text-yellow-500 mt-1 mobile:mt-0.5 text-xs mobile:text-[10px] font-medium pl-0.5">Made with love</small>
                     </div>
+
                 </div>
 
                 <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3">

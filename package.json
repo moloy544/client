@@ -20,6 +20,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-redux": "^9.0.4",
+    "react-snowfall": "^2.2.0",
     "sharp": "^0.33.5"
   },
   "devDependencies": {

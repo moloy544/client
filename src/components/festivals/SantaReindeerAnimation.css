@@ -1,0 +1,40 @@
+@keyframes move-left-right {
+    0% {
+        left: -200px; /* Start off-screen to the left */
+        top: 20%; /* Start position */
+        transform: scale(1); /* No scaling */
+        opacity: 1; /* Fully visible */
+    }
+    15% {
+        top: 32%; /* Slightly jump up (first bounce) */
+    }
+    30% {
+        top: 18%; /* Slightly jump down (first bounce) */
+    }
+    45% {
+        top: 25%; /* Return to the original position */
+    }
+    60% {
+        top: 14%; /* Jump up again (second bounce) */
+    }
+    75% {
+        top: 33%; /* Jump down again (second bounce) */
+    }
+    90% {
+        top: 30%; /* Return to the original position */
+    }
+    100% {
+        left: 100vw; /* Move off-screen to the right completely */
+        top: 0%; /* End at the same position */
+        transform: scale(1); /* No scaling */
+        opacity: 1; /* Keep visible */
+    }
+}
+
+.reindeer-animation {
+    position: absolute;
+    top: 20%; /* Start 20% from the top */
+    left: -200px; /* Start off-screen to the left */
+    z-index: 9999; /* Ensure it's on top of other content */
+    animation: move-left-right 10s ease-in-out forwards; /* Slow down the animation */
+}

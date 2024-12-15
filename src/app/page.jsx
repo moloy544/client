@@ -3,6 +3,7 @@ import { appConfig } from "@/config/config";
 import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
 import Footer from "@/components/Footer";
+import SnowFalls from "@/components/festivals/SnowFalls";
 
 const getHomePageData = async () => {
   try {
@@ -28,6 +29,9 @@ export default async function Page() {
   return (
     <>
       <Navbar />
+   
+      <SnowFalls />
+
       {status === 200 ? (
         <main className="w-full overflow-x-hidden h-full py-2 bg-custom-dark-bg">
           <HomePageLayout initialLayoutData={data} />
