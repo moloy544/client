@@ -15,6 +15,7 @@ import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import brandLogoIcon from "../../assets/images/brand_logo.png"
+import santaCap from "../../assets/images/santa-cap.png"
 
 
 // this is return user search history data
@@ -169,7 +170,7 @@ export default function SearchPage() {
         };
 
     }, []);
-   
+
     // for load more content by chnagging pages
     useEffect(() => {
 
@@ -213,11 +214,17 @@ export default function SearchPage() {
                                 className="w-11 h-11 mobile:w-9 mobile:h-9"
                             />
                             <div className="flex flex-col mt-1">
-                                <Link href="/" className="font-semibold text-yellow-600 text-xl mobile:text-[15px] leading-[14px]">
-                                    Movies Bazar
+                                <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[15px] leading-[14px] relative">
+                                    <span className="relative inline-block">
+                                        <span className="absolute top-[-14px] left-[-1px]">
+                                            <Image src={santaCap} alt="Santa Cap" width={20} height={20} />
+                                        </span>
+                                        Movies Bazar
+                                    </span>
                                 </Link>
-                                <small className="text-yellow-600 mt-1 mobile:mt-0.5 text-xs mobile:text-[10px] font-medium pl-0.5">Made with love</small>
+                                <small className="text-yellow-500 mt-1 mobile:mt-0.5 text-xs mobile:text-[10px] font-medium pl-0.5">Made with love</small>
                             </div>
+
                         </div>
 
                         <SearchBar
@@ -383,10 +390,10 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
             handleSubmitForm(searchValue);
             handleSearch(searchValue)
             setTryCount((prevCount) => prevCount + 1);
-        }else{
-        creatToastAlert({
-            message: 'Please enter a search term',
-        });
+        } else {
+            creatToastAlert({
+                message: 'Please enter a search term',
+            });
         };
     };
 
