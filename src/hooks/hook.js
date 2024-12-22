@@ -22,11 +22,14 @@ const useOrientation = () => {
 };
 
 const useWindowWidth = () => {
-    const [windowWidth, setWindowWidth] = useState(window ? window.innerWidth : undefined);
+    const [windowWidth, setWindowWidth] = useState(undefined);
 
     useEffect(() => {
         const handleResize = () => {
-            setWindowWidth(window.innerWidth);
+            if (window !== 'undefined') {
+                setWindowWidth(window.innerWidth);
+            }
+            
         };
 
         // Set initial value on mount
