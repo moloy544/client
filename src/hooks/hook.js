@@ -21,13 +21,19 @@ const useOrientation = () => {
     return isPortrait;
 };
 
-const useWindowWidth = () => {
-    const [windowWidth, setWindowWidth] = useState(undefined);
+const useCurrentWindowSize = () => {
+    const [windowWidth, setWindowWidth] = useState({
+        width: 0,
+        height: 0
+    });
 
     useEffect(() => {
         const handleResize = () => {
             if (window !== 'undefined') {
-                setWindowWidth(window.innerWidth);
+                setWindowWidth({
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                });
             }
             
         };
@@ -49,5 +55,5 @@ const useWindowWidth = () => {
 
 export {
     useOrientation,
-    useWindowWidth
+    useCurrentWindowSize
 }

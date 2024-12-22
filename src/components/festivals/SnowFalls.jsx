@@ -1,11 +1,11 @@
 "use client"
 
-import { useWindowWidth } from '@/hooks/hook';
+import { useCurrentWindowSize } from '@/hooks/hook';
 import Snowfall from 'react-snowfall';
 
 export default function SnowFalls() {
 
-    const windowWidth = useWindowWidth();
+    const windowWidth = useCurrentWindowSize().width;
 
     const snowflakeCount = windowWidth < 768
         ? 40  // Fewer snowflakes for small screens

@@ -1,4 +1,4 @@
-import { Fragment, memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { formatNumberCounter, transformToCapitalize } from '@/utils';
 
 const areEqual = (prevProps, nextProps) => {

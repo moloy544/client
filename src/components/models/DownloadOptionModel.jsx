@@ -1,6 +1,6 @@
 "use client"
 
-import { useWindowWidth } from "@/hooks/hook";
+import { useCurrentWindowSize } from "@/hooks/hook";
 import { ModelsController } from "@/lib/EventsHandler"
 
 const formatQualityType = (quality, qualityType) => {
@@ -43,7 +43,7 @@ export default function DownloadOptionModel({ linksData, isOpen, onClose, onRepo
   const { title, links, qualityType } = linksData || {};
 
   // get window live current width 
-  const windowCurrentWidth = useWindowWidth();
+  const windowCurrentWidth = useCurrentWindowSize().width;
 
   const handleDownload = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer'); // Open the download link

@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
-import { useWindowWidth } from "@/hooks/hook";
+import { useCurrentWindowSize } from "@/hooks/hook";
 
 export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDownloadOption }) {
 
@@ -108,7 +108,7 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
   };
 
   // get window live current width
-  const windowCurrentWidth = useWindowWidth();
+  const windowCurrentWidth = useCurrentWindowSize().width;
 
   const reportOptions = [
     { value: "Video not playing", id: "video-option-checkbox", visible: status === "released" },
