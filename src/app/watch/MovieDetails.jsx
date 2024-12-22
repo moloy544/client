@@ -215,9 +215,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
             </div>
             <div className="px-1.5 mobile:pb-3 space-x-1.5 md:my-6 max-w-lg">
               <p className="text-xs text-yellow-500 font-semibold leading-[18px]">
-                <strong className="text-sm text-gray-200 mr-0.5">Note: </strong>
-                If this {type} isn't playing, please click the "Report" button to notify us.
-                Your feedback helps us enhance the experience. Thank you for using our site!
+                <span className="text-sm text-gray-200 mr-0.5">Note:</span> If this {type} isn&quot;t playing, please click the "Report" button to notify us. Your feedback is appreciated. Thanks for using our site!
               </p>
             </div>
 
