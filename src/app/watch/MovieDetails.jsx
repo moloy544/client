@@ -214,10 +214,13 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
             </div>
             <div className="px-1.5 mobile:pb-3 space-x-1.5 md:my-6 max-w-lg">
-              <p className="text-xs text-yellow-500 font-semibold leading-[18px]"><strong className="text-sm text-gray-200 mr-0.5">Note: </strong>
-                If this {type} does not play, then please connect to any VPN and enjoy. <span className="font-bold text-gray-200">Our suggestion:</span> This problem occurs mostly at night so try to watch before night. thanks for using our site.
+              <p className="text-xs text-yellow-500 font-semibold leading-[18px]">
+                <strong className="text-sm text-gray-200 mr-0.5">Note: </strong>
+                If this {type} isn't playing, please click the "Report" button to notify us.
+                Your feedback helps us enhance the experience. Thank you for using our site!
               </p>
             </div>
+
             <MoviesUserActionOptions movieData={movieDetails} />
           </div>
 

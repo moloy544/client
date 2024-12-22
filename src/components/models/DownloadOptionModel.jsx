@@ -5,8 +5,6 @@ import { ModelsController } from "@/lib/EventsHandler"
 
 const formatQualityType = (quality, qualityType) => {
 
-  if (qualityType.toLowerCase() === "cam") return `(${qualityType})`
-
   // Determine label based on specific quality values
   let qualityLabel;
 
@@ -32,7 +30,9 @@ const formatQualityType = (quality, qualityType) => {
     default:
       qualityLabel = 'HD';
       break;
-  }
+  };
+
+  if (qualityType.toLowerCase() === "cam") return `(${qualityLabel} - CAM)`
 
   // Format as "quality (Label)"
   return `(${qualityLabel})`;
@@ -52,7 +52,7 @@ export default function DownloadOptionModel({ linksData, isOpen, onClose, onRepo
   // validate if false anything returns nothing
   if (!links || !Array.isArray(links) || links.length === 0) {
     return null
-  }
+  }; 
 
   return (
     <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth <= 450}>
