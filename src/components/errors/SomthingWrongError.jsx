@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import NavigateBack from "../NavigateBack";
+import errorImage from "../../assets/images/somthing_went_wrong_error.png"
 
 function SomthingWrongError({
     onclickEvent,
@@ -43,10 +44,10 @@ function SomthingWrongError({
 
                 <Image
                     priority
-                    className="w-96 h-auto mobile:w-72 block ml-auto mr-auto"
-                    src="https://res.cloudinary.com/moviesbazar/image/upload/v1726848109/status500_error_message.png"
-                    width={280}
-                    height={250}
+                    className="w-96 h-auto mobile:w-72 xl:w-[500px] block ml-auto mr-auto"
+                    src={errorImage}
+                    width={300}
+                    height={280}
                     alt="Somthing went wrong picture"
                 />
 

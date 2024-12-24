@@ -1,3 +1,4 @@
+import notFoundImage from "../assets/images/error-404-not-found.png"
 import NavigateBack from '@/components/NavigateBack';
 import Image from 'next/image'
 
@@ -11,7 +12,7 @@ export default function NotFound() {
                     <Image
                         priority
                         className="w-80 h-80 mobile:w-52 mobile:h-52"
-                        src="https://res.cloudinary.com/moviesbazar/image/upload/v1726942506/404-notfound-picture.png"
+                        src={notFoundImage}
                         width={280}
                         height={250}
                         alt="404 content not found"
