@@ -145,8 +145,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               />
             ) : (
               <>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white font-semibold text-sm">
-                  {transformToCapitalize(status)}
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white font-semibold text-sm capitalize">
+                  {status?.toLowerCase() === "copyright remove" ? "Not Available Due To Copyright" : status}
                 </div>
               </>
             )}
@@ -215,11 +215,18 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
             </div>
             <div className="px-1.5 mobile:pb-3 space-x-1.5 md:my-6 max-w-lg">
               <p className="text-xs text-yellow-500 font-semibold leading-[18px]">
-                <span className="text-sm text-gray-200 mr-0.5">Note:</span> If this {type} isn&lsquo;t playing, please click the &quot;Report&quot; button to notify us. Your feedback is appreciated. Thanks for using our site!
+                <span className="text-sm text-gray-200 mr-0.5">Note:</span>
+                {status?.toLowerCase() === "copyright remove"
+                  ? "Unfortunately, this content is currently unavailable due to copyright restrictions. We apologize for the inconvenience."
+                  : `If this ${type} isn't playing as expected, please let us know by clicking the "Report" button. We value your feedback and appreciate your support!`
+                }
               </p>
             </div>
 
-            <MoviesUserActionOptions movieData={movieDetails} />
+            <MoviesUserActionOptions
+              movieData={movieDetails}
+              reportButton={status?.toLowerCase() === "copyright remove" ? false : true}
+            />
           </div>
 
         </div>

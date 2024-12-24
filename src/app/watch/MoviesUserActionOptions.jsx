@@ -17,7 +17,7 @@ const DownloadOptionModel = dynamic(() => import('@/components/models/DownloadOp
 
 const buttonsClass = "flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-gray-300 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-[#18212b]";
 
-export default function MoviesUserActionOptions({ movieData }) {
+export default function MoviesUserActionOptions({ movieData, reportButton = true }) {
 
   const [isSaved, setIsSaved] = useState(false);
   const [isReportModelOpen, setIsReportModelOpen] = useState(false);
@@ -118,26 +118,29 @@ export default function MoviesUserActionOptions({ movieData }) {
           <div className="text-xs font-semibold">Share</div>
         </div>
 
-        <div
-          onClick={() => setIsReportModelOpen(true)}
-          role="button"
-          title="Report"
-          className={buttonsClass}
-        >
-          <svg
-            fill="#d1d5db"
-            xmlns="http://www.w3.org/2000/svg"
-            enableBackground="new 0 0 24 24"
-            height="22"
-            viewBox="0 0 24 24"
-            width="22"
-            focusable="false"
-          >
-            <path d="m13.18 4 .24 1.2.16.8H19v7h-5.18l-.24-1.2-.16-.8H6V4h7.18M14 3H5v18h1v-9h6.6l.4 2h7V5h-5.6L14 3z"></path>
-          </svg>
+        {reportButton && (
 
-          <div className="text-xs font-semibold">Report</div>
-        </div>
+          <div
+            onClick={() => setIsReportModelOpen(true)}
+            role="button"
+            title="Report"
+            className={buttonsClass}
+          >
+            <svg
+              fill="#d1d5db"
+              xmlns="http://www.w3.org/2000/svg"
+              enableBackground="new 0 0 24 24"
+              height="22"
+              viewBox="0 0 24 24"
+              width="22"
+              focusable="false"
+            >
+              <path d="m13.18 4 .24 1.2.16.8H19v7h-5.18l-.24-1.2-.16-.8H6V4h7.18M14 3H5v18h1v-9h6.6l.4 2h7V5h-5.6L14 3z"></path>
+            </svg>
+
+            <div className="text-xs font-semibold">Report</div>
+          </div>
+        )}
 
       </div>
       {isReportModelOpen && (
@@ -157,13 +160,13 @@ export default function MoviesUserActionOptions({ movieData }) {
 function DownloadButton({ downloadLinks, handleReportModelOpen }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openDownloadOptionModel = ()=>{
+  const openDownloadOptionModel = () => {
     setIsModalOpen(true);
     if (process.env.NODE_ENV !== 'development') {
       setTimeout(() => {
         window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
       }, 1000);
-     
+
     };
   };
 
