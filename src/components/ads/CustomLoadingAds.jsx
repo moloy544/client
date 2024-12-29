@@ -1,40 +1,41 @@
 "use client";
 
-import { adsConfig } from '@/config/ads.config';
-import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 
 export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc }) {
+  const [adClicked, setAdClicked] = useState(false);
+  const location = usePathname();
 
   useEffect(() => {
     const documentBody = document.body;
-    const pathname = document.location.pathname;
 
-    // If the current path is search, no need to load the ads
+    const noAdsPaths = ["publisher", "search", "watch"];
+    const currentPath = location.split('/')[1];
+
+    // If the current path is in noAdsPaths, prevent ad click functionality
+    if (noAdsPaths.includes(currentPath)) return;
+
     const handleClick = () => {
-      if (process.env.NODE_ENV !== "production" || pathname.includes('publisher') || pathname.includes('search')) return;
-      window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
-      documentBody.removeEventListener("click", handleClick); // Remove the click event after it's triggered once
+      // Prevent multiple ad clicks
+      if (adClicked) return;
+
+      // Open the ad link in a new tab with security measures
+      window.open("https://domain.com", '_blank', 'noopener,noreferrer');
+
+      // Set adClicked to true to prevent further ad clicks
+      setAdClicked(true);
     };
 
+    // Add the click event listener to the document body
     documentBody.addEventListener("click", handleClick);
 
-    // Set a 30 seconds (30000 ms) delay for loading both scripts
-    /**const loadAdScripts = setTimeout(() => {
-      if (process.env.NODE_ENV !== "production" || pathname.includes('publisher')) return;
-
-      // Load social bar ad script
-      const socialBarScript = document.createElement('script');
-      socialBarScript.src = socialBarScriptSrc;
-      socialBarScript.async = true;
-      document.body.appendChild(socialBarScript);
-    }, 30000); // 30 seconds delay **/
-
-    // Clean up the timeout and event listener if the component unmounts
+    // Clean up the event listener on component unmount or location change
     return () => {
-      //clearTimeout(loadAdScripts);
       documentBody.removeEventListener("click", handleClick);
     };
-  }, [popunderScriptSrc, socialBarScriptSrc]);
+  }, [adClicked, location]);
 
-  return null; // No visual output just loads the scripts
+  return null; // No visual output; just manages the ad click functionality
 }
