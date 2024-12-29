@@ -1,5 +1,6 @@
 "use client";
 
+import { adsConfig } from '@/config/ads.config';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -22,7 +23,7 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
       if (adClicked) return;
 
       // Open the ad link in a new tab with security measures
-      window.open("https://domain.com", '_blank', 'noopener,noreferrer');
+      window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer');
 
       // Set adClicked to true to prevent further ad clicks
       setAdClicked(true);
