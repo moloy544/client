@@ -38,6 +38,7 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
   let status = 500; // Default status in case of an error
   let movieData = null;
   let suggestions = null
+  let userIp = '76.76.21.123';
 
   try {
 
@@ -45,7 +46,7 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
       status = 400;
       return { status, movieData, suggestions };
     };
-    
+
     // get contet details form backend database
     const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`, {
       params: { suggestion }
@@ -55,6 +56,7 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
       status = response.status;
       movieData = response.data.movieData || null;
       suggestions = response.data.suggestions || null;
+      userIp = response.data.userIp;
     } else {
       status = response.status
     }
@@ -64,7 +66,7 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
       status = error.response.status;
     }
   } finally {
-    return { status, movieData, suggestions };
+    return { status, userIp , movieData, suggestions };
   }
 };
 
@@ -91,15 +93,15 @@ export async function generateMetadata({ params }) {
   const paramsType = movieDetails[0]?.toLowerCase();
   const movieType = type?.toLowerCase();
 
-   // Validate URL path components
-   const isTypeValid = paramsType && paramsType === movieType;
-   const isImdbIdValid = paramsImdbId && imdbIdPattern.test(paramsImdbId) && paramsImdbId === imdbId;
-   const isPathLengthValid = movieDetails.length === 3;
+  // Validate URL path components
+  const isTypeValid = paramsType && paramsType === movieType;
+  const isImdbIdValid = paramsImdbId && imdbIdPattern.test(paramsImdbId) && paramsImdbId === imdbId;
+  const isPathLengthValid = movieDetails.length === 3;
 
-   // If any of the checks fail, mark the path as invalid
-   if (!isPathLengthValid || !isTypeValid || !isImdbIdValid) {
-     return;
-   };
+  // If any of the checks fail, mark the path as invalid
+  if (!isPathLengthValid || !isTypeValid || !isImdbIdValid) {
+    return;
+  };
 
   // extract the movie genres and sort them max 3 
   const genres = genre?.slice(0, 3).join(', ')
@@ -145,9 +147,8 @@ export default async function Page({ params }) {
 
   const paramsImdbId = movieDetails[2] ? `tt${movieDetails[2]}` : null;
 
-  const ip = "76.76.21.22" //getIP();
+  const { status, userIp, movieData, suggestions } = await getMovieDeatils(paramsImdbId, true);
 
-  const { status, movieData, suggestions } = await getMovieDeatils(paramsImdbId, true);
   let isValidPath = true;
 
   // Verify if the browser URL is the expected URL or not
@@ -187,7 +188,7 @@ export default async function Page({ params }) {
         <MovieDetails
           movieDetails={movieData}
           suggestions={suggestions}
-          userIp={ip}
+          userIp={userIp}
         />
         <Footer />
       </InspectPreventer>

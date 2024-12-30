@@ -9,15 +9,15 @@ function getIP() {
     const FALLBACK_IP_ADDRESS = '76.76.21.123'
     const forwardedFor = headers().get('x-forwarded-for');
     if (process.env.NODE_ENV === "development") {
-      return FALLBACK_IP_ADDRESS;
+        return FALLBACK_IP_ADDRESS;
     }
-  
+
     if (forwardedFor) {
-      return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
+        return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
     }
-  
+
     return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
-  }
+}
 
 // Generate new source URL
 function generateSourceURL(originalURL, userIp) {
@@ -113,8 +113,8 @@ export async function GET(req) {
             return new NextResponse(createErrorMessage('Invalid IMDB ID or its too short'), { status: 400 });
         }
 
-        // Get the user's IP address
-        const ip = "76.76.21.22" //getIP();
+        // initialize ip address
+        let ip = "76.76.21.22" //getIP();
 
         // Fetch video source from backend
         const getSourceResponse = await axios.post(`${appConfig.backendUrl}/api/v1/subscriber/embed`, { contentId: imdbId });
@@ -127,6 +127,8 @@ export async function GET(req) {
 
         const watchLink = getSourceResponse.data.source;
         const status = getSourceResponse.data.status;
+        ip = getSourceResponse.data.userIp;
+
         if (status && status === "coming soon") {
             return new NextResponse(createErrorMessage('Content is coming soon. Please check back later.'), { status: 404 });
         };
