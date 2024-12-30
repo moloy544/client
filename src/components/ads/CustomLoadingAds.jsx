@@ -16,7 +16,7 @@ export default function CustomLoadingAds({ popunderScriptSrc, socialBarScriptSrc
     const currentPath = location.split('/')[1];
 
     // If the current path is in noAdsPaths, prevent ad click functionality
-    if (noAdsPaths.includes(currentPath)) return;
+    if (noAdsPaths.includes(currentPath) || process.env.NODE_ENV === 'development') return;
 
     const handleClick = () => {
       // Prevent multiple ad clicks

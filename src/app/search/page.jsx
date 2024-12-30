@@ -242,12 +242,6 @@ export default function SearchPage() {
 
             <div className="w-full h-full bg-custom-dark-bg overflow-x-hidden mobile:pt-28 pt-32">
 
-                {/*** Banner Ad Show Container Size height 250, width 300 seatrchResult.length === 0 &&
-                    (<div className="my-2">
-                        <AdsterraBannerAds adOptions={adsConfig.adOptions1} />
-                    </div>
-                    )}****/}
-
                 {searchQuery !== "" ? (
 
                     <div className="w-full h-full">
