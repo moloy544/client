@@ -19,6 +19,7 @@ function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
   if (!originalURL) return null;
 
   const hlsProviderDomain = new URL(hlsSourceDomain || process.env.VIDEO_SERVER_URL).hostname;
+  console.log(hlsProviderDomain)
   if (!originalURL.includes(hlsProviderDomain)) return originalURL;
 
   const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
