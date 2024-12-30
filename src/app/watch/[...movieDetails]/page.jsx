@@ -145,7 +145,7 @@ export default async function Page({ params }) {
 
   const paramsImdbId = movieDetails[2] ? `tt${movieDetails[2]}` : null;
 
-  const ip = getIP();
+  const ip = "76.76.21.22" //getIP();
 
   const { status, movieData, suggestions } = await getMovieDeatils(paramsImdbId, true);
   let isValidPath = true;
