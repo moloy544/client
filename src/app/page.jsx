@@ -1,9 +1,18 @@
 import axios from "axios";
+import dinamc from "next/dynamic"
 import { appConfig } from "@/config/config";
 import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
 import Footer from "@/components/Footer";
-import SnowFalls from "@/components/festivals/SnowFalls";
+
+// Dynamically import festival components
+const NewYearCelebration = dinamc(()=> import("@/components/festivals/NewYearCelebration", {
+  ssr: false,
+}));
+
+const SnowFalls = dinamc(()=> import("@/components/festivals/SnowFalls", {
+  ssr: false,
+}));
 
 const getHomePageData = async () => {
   try {
@@ -30,6 +39,8 @@ export default async function Page() {
     <>
       <Navbar />
    
+      <NewYearCelebration />
+      
       <SnowFalls />
 
       {status === 200 ? (
