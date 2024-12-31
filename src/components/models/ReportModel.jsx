@@ -11,7 +11,6 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
   const [processedReports, setProcessedReports] = useState(false);
-  const [vpnUseSuggestionModel, setVpnUseSuggestionModel] = useState(false);
 
   const writtenReportRef = useRef(null);
 
@@ -45,9 +44,6 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
 
     setSelectedReports((prevData) => {
       if (isChecked) {
-        if (reportValue === "Video not playing") {
-          setVpnUseSuggestionModel(true);
-        }
         return [...prevData, reportValue];
       } else {
         return prevData.filter((report) => report !== reportValue);
@@ -199,35 +195,10 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
             <h2 className="w-60 h-auto text-green-600 text-center text-sm font-medium">Thanks for reporting us we are solve your issue soon as possible</h2>
           )}
         </div>
-        {/* VPN Suggestion Modal */}
-        {vpnUseSuggestionModel && (
-          <VpnUseSuggestionModal isOpen={vpnUseSuggestionModel} close={() => setVpnUseSuggestionModel(false)} />
-        )}
+       
       </div>
 
     </ModelsController>
   );
 
 };
-
-function VpnUseSuggestionModal({ isOpen, close }) {
-  if (!isOpen) {
-    return null; // Return early if modal is not open. This prevents unnecessary re-renders.
-  }
-
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-950 bg-opacity-50 z-[70] px-2 py-3">
-      <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm">
-        <h3 className="text-lg font-bold mb-4">VPN Suggestion</h3>
-        <p className="text-sm text-gray-700 font-medium">If you have problems watching videos, we suggest install a VPN and connect to any server. It can help you watch smoothly.</p>
-        <div className="flex justify-end mt-4">
-          <button className="bg-gray-950 text-white px-4 py-2 rounded" onClick={close}>
-            Got it!
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-
-}
-
