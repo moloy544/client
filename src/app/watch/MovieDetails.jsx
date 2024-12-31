@@ -16,7 +16,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   const {
     imdbRating,
     title,
-    thambnail,
+    thumbnail,
     releaseYear,
     fullReleaseDate,
     genre,
@@ -125,7 +125,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
             <Image
               priority
               className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
-              src={thambnail}
+              src={thumbnail}
               alt={title}
               fill />
 

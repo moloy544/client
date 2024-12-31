@@ -87,7 +87,7 @@ export async function generateMetadata({ params }) {
   }
 
   // Destructure necessary fields from the movie data
-  const { imdbId, title, thambnail, releaseYear, type, genre, language, castDetails } = movieData || {};
+  const { imdbId, title, thumbnail, releaseYear, type, genre, language, castDetails } = movieData || {};
 
   // Convert type from params and movie data to lowercase for comparison
   const paramsType = movieDetails[0]?.toLowerCase();
@@ -134,7 +134,7 @@ export async function generateMetadata({ params }) {
       title: metaTitle,
       description: metaDesc,
       url: metaOgUrl,
-      images: thambnail || BASE_OG_IMAGE_URL,
+      images: thumbnail || BASE_OG_IMAGE_URL,
     },
   }
 

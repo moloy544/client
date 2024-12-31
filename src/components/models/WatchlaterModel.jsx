@@ -255,7 +255,7 @@ export default function WatchlaterModel({ visibility, functions }) {
 
 const Card = ({ data, remove }) => {
 
-    const { imdbId, type, title, dispayTitle, thambnail, releaseYear, addAt, language, category, videoType, status } = data || {};
+    const { imdbId, type, title, dispayTitle, thumbnail, releaseYear, addAt, language, category, videoType, status } = data || {};
 
     return (
         <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center relative">
@@ -266,10 +266,10 @@ const Card = ({ data, remove }) => {
                         className="w-full h-full object-fill select-none pointer-events-none rounded-sm"
                         width={80}
                         height={80}
-                        src={resizeImage(thambnail, 'w200')}
+                        src={resizeImage(thumbnail, 'w200')}
                         alt={title || 'movie poster image'}
                         placeholder="blur"
-                        blurDataURL={resizeImage(thambnail, 'w200')}
+                        blurDataURL={resizeImage(thumbnail, 'w200')}
                     />
                 </div>
                 <div className="flex flex-col gap-1 space-y-0.5">

@@ -19,7 +19,7 @@ const MovieCardSkleaton = ({ limit = 20 }) => {
 
 const ResponsiveMovieCard = ({ data, onClickEvent }) => {
 
-    const { imdbId, title, dispayTitle, thambnail, type, releaseYear, language, category, videoType } = data;
+    const { imdbId, title, dispayTitle, thumbnail, type, releaseYear, language, category, videoType } = data;
 
     return (
 
@@ -31,10 +31,10 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
                     <Image
                         className="w-full h-full select-none rounded-[3px]"
                         fill
-                        src={resizeImage(thambnail)}
+                        src={resizeImage(thumbnail)}
                         alt={title || 'movie thumbnail'}
                         placeholder="blur"
-                        blurDataURL={resizeImage(thambnail)}
+                        blurDataURL={resizeImage(thumbnail)}
                     />
                 </div>
 

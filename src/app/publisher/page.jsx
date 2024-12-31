@@ -71,7 +71,7 @@ export default function AdminPage() {
                     imdbRating: data.imdbRating ? data.imdbRating : 0,
                     fullReleaseDate: formattedDate,
                 }));
-                setImagePreview(data.thambnail);
+                setImagePreview(data.thumbnail);
                 if (!isCreatedDateUpdate) {
                     setIsCreatedDateUpdate("no");
                 }
@@ -125,7 +125,7 @@ export default function AdminPage() {
                         imdbRating: movieData.imdbRating ? movieData.imdbRating : 0,
                         fullReleaseDate: formattedDate,
                     }));
-                    setImagePreview(movieData.thambnail);
+                    setImagePreview(movieData.thumbnail);
                     if (!isCreatedDateUpdate) {
                         setIsCreatedDateUpdate("yes");
                     };
@@ -207,7 +207,7 @@ export default function AdminPage() {
             formData.append('data', JSON.stringify(details));
 
             // add file in from data 
-            const fileInput = document.getElementById('thambnail-file');
+            const fileInput = document.getElementById('thumbnail-file');
 
             if (fileInput && fileInput.files[0] && !details.extranalImage_uri) {
                 formData.append('file', fileInput.files[0]);
@@ -458,11 +458,11 @@ export default function AdminPage() {
                                         width={150}
                                         height={165}
                                         className="w-36 h-40 text-xs rounded-sm"
-                                        src={resizeImage(imagePreview)} alt="thambnail" />
+                                        src={resizeImage(imagePreview)} alt="thumbnail" />
 
                                 )}
                                 <label className="font-bold text-gray-800">Select image OR Add image url</label>
-                                <input onChange={handleFileInputChnage} type="file" name="thambnail-file" id="thambnail-file" accept="image/*" />
+                                <input onChange={handleFileInputChnage} type="file" name="thumbnail-file" id="thumbnail-file" accept="image/*" />
                                 <input className={inputStyle + ' my-1.5'} type="text" value={imagePreview}
                                     onChange={(e) => setImagePreview(e.target.value)}
                                     placeholder="Enter external image url" />

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { creatUrlLink, resizeImage } from '@/utils';
 
-const SliderShowcase = ({ title, moviesData, space, linkUrl, thambnailImagePriority = false, children }) => {
+const SliderShowcase = ({ title, moviesData, space, linkUrl, thumbnailImagePriority = false, children }) => {
 
     const sliderContainerRef = useRef(null);
     const movieCardRef = useRef(null);
@@ -108,7 +108,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, thambnailImagePrior
             >
                 {children ? children : (
                     <>
-                        {moviesData?.map(({ imdbId, title, dispayTitle, type, releaseYear, thambnail, category, language, videoType }, index) => (
+                        {moviesData?.map(({ imdbId, title, dispayTitle, type, releaseYear, thumbnail, category, language, videoType }, index) => (
                             <div
                                 ref={movieCardRef}
                                 key={imdbId || index}
@@ -119,12 +119,12 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, thambnailImagePrior
                                     title={`${title + " " + releaseYear + " " + type}`} prefetch={false}>
                                     <div className="relative w-full aspect-[4/6] h-full bg-white rounded-[3px]">
                                         <Image
-                                            priority={thambnailImagePriority}
+                                            priority={thumbnailImagePriority}
                                             fill
                                             className="select-none rounded-[3px] object-fill"
-                                            src={resizeImage(thambnail)}
+                                            src={resizeImage(thumbnail)}
                                             alt={title}
-                                            blurDataURL={resizeImage(thambnail)}
+                                            blurDataURL={resizeImage(thumbnail)}
                                             placeholder="blur"
                                         />
                                     </div>
