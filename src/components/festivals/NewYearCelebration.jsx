@@ -51,7 +51,7 @@ export default function NewYearCelebration() {
             return;
         }
 
-        if (storedNewYearData) {
+        if (!storedNewYearData) {
             // If the key is not in local storage, show fireworks and the message
             launchFireworks();
 
