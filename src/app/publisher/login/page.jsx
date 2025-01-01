@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { creatToastAlert } from "@/utils";
 import Image from "next/image";
+import brandLogoIcon from "../../../assets/images/brand_logo.png"
 
 export default function AdminLoginPage() {
 
@@ -55,11 +56,11 @@ export default function AdminLoginPage() {
             <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 mobile:p-6">
                 <div className="text-center mb-6">
                     <Image
-                        src="https://res.cloudinary.com/moviesbazar/image/upload/v1722170830/logos/brand_log.jpg"
+                        src={brandLogoIcon}
                         width={50}
                         height={50}
                         alt="Movies Bazar Logo"
-                        className="mx-auto mb-4 rounded-md"
+                        className="mx-auto mb-4 rounded-md w-20 h-20"
                     />
                     <h2 className="text-2xl mobile:text-xl font-bold text-gray-800">Publisher Login</h2>
                     <p className="text-gray-600 text-base mobile:text-sm font-medium">Sign in to moviesbazar publisher account</p>

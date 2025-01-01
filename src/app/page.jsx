@@ -4,13 +4,10 @@ import { appConfig } from "@/config/config";
 import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
 import Footer from "@/components/Footer";
+import SnowFalls from "@/components/festivals/SnowFalls";
 
 // Dynamically import festival components
 const NewYearCelebration = dinamc(()=> import("@/components/festivals/NewYearCelebration", {
-  ssr: false,
-}));
-
-const SnowFalls = dinamc(()=> import("@/components/festivals/SnowFalls", {
   ssr: false,
 }));
 
