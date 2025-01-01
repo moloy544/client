@@ -4,7 +4,6 @@ import { appConfig } from "@/config/config";
 import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
 import Footer from "@/components/Footer";
-import SnowFalls from "@/components/festivals/SnowFalls";
 
 // Dynamically import festival components
 const NewYearCelebration = dinamc(()=> import("@/components/festivals/NewYearCelebration", {
@@ -34,8 +33,6 @@ export default async function Page() {
       <Navbar />
    
       <NewYearCelebration />
-      
-      <SnowFalls />
 
       {status === 200 ? (
         <main className="w-full overflow-x-hidden h-full py-2 bg-custom-dark-bg">
