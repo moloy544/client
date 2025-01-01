@@ -20,11 +20,8 @@ const getHomePageData = async () => {
   }
 };
 
-// revalidate at most every 2 hours to avoid unnecessary API calls and improve performance
-//export const revalidate = 7200;
-
-/// force to dinamic 
-export const dynamic = "force-dynamic";
+// revalidate at most every 1 hours to avoid unnecessary API calls and improve performance
+export const revalidate = 3600;
 
 // Fetch home page data and render HomePageLayout component
 export default async function Page() {
