@@ -124,10 +124,10 @@ function HomePageLayout({ initialLayoutData }) {
                             prefetch={false}
                         >
 
-                            <div className="rounded-full border-2 mx-auto border-gray-600">
+                            <div className="rounded-md border-2 mx-auto border-gray-600">
 
                                 <Image
-                                    className="w-full object-fill aspect-square select-none rounded-full"
+                                    className="w-full object-fill aspect-square select-none rounded-md"
                                     src={resizeImage(actor.avatar)}
                                     width={100}
                                     height={100}
