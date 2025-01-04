@@ -255,7 +255,7 @@ export default function WatchlaterModel({ visibility, functions }) {
 
 const Card = ({ data, remove }) => {
 
-    const { imdbId, type, title, dispayTitle, thumbnail, releaseYear, addAt, language, category, videoType, status } = data || {};
+    const { imdbId, type, title, displayTitle, thumbnail, releaseYear, addAt, language, category, videoType, status } = data || {};
 
     return (
         <div className="w-auto h-auto px-2.5 py-2 border-b border-gray-300 hover:bg-slate-50 group flex items-center relative">
@@ -274,7 +274,7 @@ const Card = ({ data, remove }) => {
                 </div>
                 <div className="flex flex-col gap-1 space-y-0.5">
                     <div className="text-gray-700 font-semibold text-[12px] leading-[14px] line-clamp-2 capitalize max-w-[150px]">
-                        {dispayTitle ? dispayTitle : category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}
+                        {displayTitle ? displayTitle : category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}
                     </div>
                     <span className="text-[10px] text-gray-500 font-semibold">
                         {releaseYear}

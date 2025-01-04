@@ -108,7 +108,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, thumbnailImagePrior
             >
                 {children ? children : (
                     <>
-                        {moviesData?.map(({ imdbId, title, dispayTitle, type, releaseYear, thumbnail, category, language, videoType }, index) => (
+                        {moviesData?.map(({ imdbId, title, displayTitle, type, releaseYear, thumbnail, category, language, videoType }, index) => (
                             <div
                                 ref={movieCardRef}
                                 key={imdbId || index}
@@ -130,7 +130,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, thumbnailImagePrior
                                     </div>
 
                                     <div className="movie_name_container px-2 py-1.5">
-                                        <span className="w-auto text-white font-semibold line-clamp-3 mobile:text-[10px] text-xs leading-[14px] mobile:leading-3 capitalize break-words">{dispayTitle ? dispayTitle :category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}</span>
+                                        <span className="w-auto text-white font-semibold line-clamp-3 mobile:text-[10px] text-xs leading-[14px] mobile:leading-3 capitalize break-words">{displayTitle ? displayTitle :category !== "bollywood" && language !== "hindi dubbed" ? title.concat(' (' + language + ')') : title}</span>
                                     </div>
                                     <div className="absolute mobile:text-[9px] text-xs top-0.5 left-0.5 w-auto h-auto px-[3px] py-[1px] bg-gray-950 bg-opacity-70 text-yellow-400 text-center font-semibold rounded-sm">
                                         {releaseYear}

@@ -25,7 +25,7 @@ const initialMoviesData = {
     imdbId: '',
     imdbRating: 1,
     title: '',
-    dispayTitle: '',
+    displayTitle: '',
     releaseYear: 0,
     fullReleaseDate: '',
     status: 'released',
@@ -199,8 +199,8 @@ export default function AdminPage() {
                 delete details.videoType;
                 delete details.multiAudio;
             };
-            if(details.dispayTitle.trim() === ""){
-                delete details.dispayTitle;
+            if(details.displayTitle.trim() === ""){
+                delete details.displayTitle;
             }
 
             // add movie data sate in form data
@@ -493,7 +493,7 @@ export default function AdminPage() {
                             </div>
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Display Title</label>
-                                <input className={inputStyle} type="text" value={state.dispayTitle} onChange={(e) => handleInputChange(e.target.value, 'dispayTitle')} placeholder="Enter dispay title (Optional)" />
+                                <input className={inputStyle} type="text" value={state.displayTitle} onChange={(e) => handleInputChange(e.target.value, 'displayTitle')} placeholder="Enter dispay title (Optional)" />
                             </div>
 
                             <div className="max-w-[200px] flex flex-col my-3">
