@@ -1,12 +1,12 @@
 import axios from "axios";
-import dinamc from "next/dynamic"
+import dinamicImport from "next/dynamic"
 import { appConfig } from "@/config/config";
 import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
 import Footer from "@/components/Footer";
 
 // Dynamically import festival components
-const NewYearCelebration = dinamc(()=> import("@/components/festivals/NewYearCelebration", {
+const NewYearCelebration = dinamicImport(()=> import("@/components/festivals/NewYearCelebration", {
   ssr: false,
 }));
 
@@ -20,7 +20,9 @@ const getHomePageData = async () => {
 };
 
 // revalidate at most every 1 hours to avoid unnecessary API calls and improve performance
-export const revalidate = 3600;
+//export const revalidate = 3600;
+/// force to dinamic 
+export const dynamic = "force-dynamic";
 
 // Fetch home page data and render HomePageLayout component
 export default async function Page() {
