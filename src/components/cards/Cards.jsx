@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { creatUrlLink, resizeImage } from "@/utils";
+import { creatUrlLink, editActorsImageUrl, resizeImage } from "@/utils";
 
 const MovieCardSkleaton = ({ limit = 20 }) => {
     return (
@@ -61,16 +61,16 @@ const ResponsiveActorCard = ({ data }) => {
 
             <Link href={`/actors/${creatUrlLink(data.name)}/${data.imdbId.replace('nm', '')}`} title={data.name} prefetch={false}>
 
-                <div className="w-auto h-auto aspect-[4/4] rounded-md overflow-hidden border-2 border-gray-600">
+                <div className="w-auto h-auto aspect-[4/4] rounded-full overflow-hidden border-2 border-gray-600">
 
                     <Image
-                        className="w-full h-full object-fill pointer-events-none select-none rounded-md"
+                        className="w-full h-full object-fill pointer-events-none select-none rounded-full"
                         width={150}
                         height={150}
-                        src={resizeImage(data.avatar)}
+                        src={editActorsImageUrl(data.avatar, "w300_and_h300_face")}
                         placeholder="blur"
-                        blurDataURL={resizeImage(data.avatar)}
-                        alt={data.name || 'Movies Bazar Actor avatar'}
+                        blurDataURL={editActorsImageUrl(data.avatar, "w300_and_h300_face")}
+                        alt={data.name || 'Actor avatar'}
                     />
 
                 </div>

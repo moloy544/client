@@ -141,6 +141,24 @@ function resizeImage(src, resize = 'f_auto,q_auto') {
   return img;
 };
 
+// Transfrom and edit actors avatar images function utiliti
+function editActorsImageUrl(imageUrl, transformValue) {
+
+ const tmdbBaseUrl = "https://image.tmdb.org/t/p/";
+
+ if (imageUrl.startsWith(tmdbBaseUrl)) {
+     // Find the part after '/t/' and ensure it doesn't have extra size transformations
+     const regex = /https:\/\/image\.tmdb\.org\/t\/p\/([^\/]+)\/(.*)/;
+
+     // Replace the existing size transformation with the new transformation value
+     const updatedUrl = imageUrl.replace(regex, `https://image.tmdb.org/t/p/${transformValue}/$2`);
+
+     return updatedUrl;
+ }
+ 
+ return imageUrl; // Return the original URL if it's not a TMDb image
+}
+
 const isMobileDevice = () => {
   if (navigator.userAgentData) {
     return navigator.userAgentData.mobile;
@@ -161,5 +179,6 @@ export {
   imageToBase64Url,
   creatToastAlert,
   resizeImage,
+  editActorsImageUrl,
   isMobileDevice
 }

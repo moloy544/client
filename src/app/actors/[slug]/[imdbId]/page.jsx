@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import dynamic from "next/dynamic";
 import axios from "axios";
-import { creatUrlLink, loadMoreFetch, transformToCapitalize } from "@/utils";
+import { creatUrlLink, editActorsImageUrl, loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
@@ -109,7 +109,7 @@ export default async function Page({ params }) {
 
   return (
     <>
-      <NavigateBackTopNav title={name} titleImage={{ src: avatar, alt: name }} />
+      <NavigateBackTopNav title={name} titleImage={{ src: editActorsImageUrl(avatar, "w180_and_h180_face"), alt: name }} />
 
       <div className="w-full h-full min-h-[80vh] bg-custom-dark-bg py-3 mobile:py-2 relative">
 

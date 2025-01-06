@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import { creatUrlLink, resizeImage } from "@/utils";
+import { creatUrlLink, editActorsImageUrl, resizeImage } from "@/utils";
 import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SliderShowcase from "@/components/SliderShowcase";
@@ -124,14 +124,16 @@ function HomePageLayout({ initialLayoutData }) {
                             prefetch={false}
                         >
 
-                            <div className="rounded-md border-2 mx-auto border-gray-600">
+                            <div className="rounded-full border-2 mx-auto border-gray-600">
 
                                 <Image
-                                    className="w-full object-fill aspect-square select-none rounded-md"
-                                    src={resizeImage(actor.avatar)}
-                                    width={100}
-                                    height={100}
-                                    alt={data.name || 'Movies Bazar Actor avatar'}
+                                    className="w-full object-fill aspect-square select-none rounded-full"
+                                    width={150}
+                                    height={150}
+                                    src={editActorsImageUrl(actor.avatar, "w300_and_h300_face")}
+                                    placeholder="blur"
+                                    blurDataURL={editActorsImageUrl(actor.avatar, "w300_and_h300_face")}
+                                    alt={actor.name || 'Actor avatar'}
                                 />
                             </div>
 
