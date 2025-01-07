@@ -5,7 +5,7 @@ const nextConfig = {
   // this env set for client side access
   env: {
     APP_VERSION: '6.4.0',
-    APP_DOMAIN: 'https://moviesbazar.online',
+    APP_DOMAIN: 'https://www.moviesbazar.online',
     BACKEND_SERVER_URL: process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://moviesbazar-v3.vercel.app',
     VIDEO_SERVER_URL: 'https://snowant327arh.com/play/'
   },
