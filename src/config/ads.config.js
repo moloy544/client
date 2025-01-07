@@ -12,7 +12,7 @@ export const adsConfig = {
     direct_Link: 'https://filthygracefulspinach.com/mi8cmzmk9?key=fbe88493e05091a1c48f844397c022f6',
     socialBarAdScriptSrc : '//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js',
     popunderAdScriptSrc : '//filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js',
-    hiltopAds:{
-      direct_Link : "https://handmadetip.com/bA3xVL0vP.3-p/vNbRmNV-JUZ/D/0b1ANrjLAu2SM/jHI/0zLCTVU/2EMxD-Ydy/McjOUY"
+    seconderyAccount:{
+      direct_Link : "https://filthygracefulspinach.com/n5rhe6tpiv?key=66e89f5e470676d22a40fb559f808b95"
     }
 }

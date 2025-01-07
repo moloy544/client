@@ -7,7 +7,6 @@ import { Analytics } from "@vercel/analytics/react"
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
-import { adsConfig } from '@/config/ads.config';
 import CustomLoadingAds from '@/components/ads/CustomLoadingAds';
 import { BASE_OG_IMAGE_URL } from '@/constant/assets_links';
 
@@ -62,12 +61,9 @@ export default function RootLayout({ children }) {
           <Suspense>
             <SpeedInsights />
             <Analytics />
+            <CustomLoadingAds />
           </Suspense>
         )}
-        <CustomLoadingAds
-          popunderScriptSrc={adsConfig.popunderAdScriptSrc}
-          socialBarScriptSrc={adsConfig.socialBarAdScriptSrc}
-        />
       </body>
     </html>
   )

@@ -1,7 +1,6 @@
 
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import { headers } from "next/headers";
 import axios from "axios";
 import { creatUrlLink, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
@@ -12,22 +11,6 @@ import Footer from "@/components/Footer";
 import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
-
-// get the user ip
-const getIP = () => {
-
-  const FALLBACK_IP_ADDRESS = '76.76.21.123'
-  const forwardedFor = headers().get('x-forwarded-for');
-  if (process.env.NODE_ENV === "development") {
-    return FALLBACK_IP_ADDRESS;
-  }
-
-  if (forwardedFor) {
-    return forwardedFor.split(',')[0] ?? FALLBACK_IP_ADDRESS
-  }
-
-  return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
-};
 
 // imdbId validating  using regex pattern
 const imdbIdPattern = /^tt\d{7,}$/;

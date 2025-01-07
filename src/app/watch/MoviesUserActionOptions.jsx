@@ -1,7 +1,8 @@
 'use client'
 
 import { adsConfig } from "@/config/ads.config";
-import { creatToastAlert } from "@/utils";
+import { appConfig } from "@/config/config";
+import { creatToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
@@ -38,7 +39,7 @@ export default function MoviesUserActionOptions({ movieData, reportButton = true
       navigator.share({
         title: document.title,
         text: `Watch ${title + " " + '(' + releaseYear + ')' + " " + type} online free only on moviesbazar`,
-        url: window.location.href,
+        url: `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`,
       })
         .catch((error) => console.error('Error sharing movie:', error));
     };

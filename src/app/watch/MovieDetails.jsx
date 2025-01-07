@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { creatToastAlert, transformToCapitalize } from "@/utils";
+import { creatToastAlert } from "@/utils";
 import { adsConfig } from "@/config/ads.config";
 import { ModelsController } from "@/lib/EventsHandler";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
 import VideoPlayer from "@/components/VideoPlayer";
+import { usePathname } from "next/navigation";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -33,13 +34,13 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
+  const pathname = usePathname();
 
-  const handleVideoSourcePlay = (source) => {
-
-    // validate if no video source show  report message 
+  const handleVideoSourcePlay = (source, type) => {
+    // Validate if no video source and show report message
     if (!source) {
       creatToastAlert({
-        message: `Cant play this ${type} Please report us`
+        message: `Can't play this ${type}. Please report to us.`,
       });
       return;
     }
@@ -47,38 +48,57 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     // Set the video source as usual
     setVideoSource(source);
 
+    // Open ad link in production environment
     if (process.env.NODE_ENV !== 'development') {
-      window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+      window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link in a new tab
     }
 
-    // Ensure the video hash in the URL is updated to 'play'
-    if (window.location.hash !== 'play') {
-      window.location.hash = 'play';
-    }
+    // Update the URL to include 'play=true' without reloading the page
+    const params = new URLSearchParams(window.location.search);
+    params.set('play', 'true'); // Add play=true to the query parameters
+
+    // Use history.pushState() to update the URL without causing a page reload
+    const newUrl = `${pathname}?${params.toString()}`;
+    window.history.pushState({}, '', newUrl);
+
+    // Set player visibility to true to show the player
+    setPlayerVisibility(true);
   };
 
   useEffect(() => {
+    // Check for 'play' query on initial load or URL change (popstate triggered)
+    const checkPlayQuery = () => {
+      const params = new URLSearchParams(window.location.search);
+      const playQuery = params.get("play");
 
-    window.location.hash = "";
-
-    const handleHashChange = () => {
-
-      if (window.location.hash === "#play") {
-
+      // If 'play=true' is in the URL and video source exists, show the player
+      if (playQuery === 'true' && videoSource) {
         setPlayerVisibility(true);
-
-      } else {
+      } else if (!playQuery && playerVisibility) {
+        // If 'play' is removed from the URL and player is visible, hide the player
         setPlayerVisibility(false);
+      }
+
+      // If the page was opened directly with 'play=true' but no video source is set, remove 'play=true' from the URL
+      if (playQuery === 'true' && !videoSource) {
+        params.delete('play');
+        const newUrl = `${pathname}?${params.toString()}`;
+        window.history.replaceState({}, '', newUrl); // Replace URL without reloading the page
       }
     };
 
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
+    // Call checkPlayQuery to handle initial load (e.g., if user refreshes with 'play' in URL)
+    checkPlayQuery();
 
+    // Attach event listener for back/forward navigation
+    window.addEventListener("popstate", checkPlayQuery);
+
+    // Cleanup the event listener when the component unmounts
     return () => {
-      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener("popstate", checkPlayQuery);
     };
-  }, []);
+  }, [playerVisibility, videoSource]);
+
 
   const originalDate = new Date(fullReleaseDate);
 
