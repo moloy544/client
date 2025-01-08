@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
 
   const metaData = {
     title: {
-      sbsolute:`${editParamsQuery} Series Collection | Stream Free Online at Movies Bazar`
+      absolute:`${editParamsQuery} Series Collection | Stream Free Online at Movies Bazar`
     },
     description: `Watch a diverse collection of ${editParamsQuery} series online at Movies Bazar. Enjoy top-rated titles from various genres without any cost!`,
     keywords: `${editParamsQuery} series, stream ${editParamsQuery} series online, watch ${editParamsQuery} series free, where to watch ${editParamsQuery} series, online ${editParamsQuery} series`,
