@@ -95,7 +95,7 @@ export async function generateMetadata({ params }) {
   // metadata related fields 
   const metaTitle = `Watch ${title} (${releaseYear}) ${transformToCapitalize(type)} Online Free!`;
   const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} movie in ${language}.`;
-  const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${paramsImdbId}`;
+  const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${paramsImdbId?.replace('tt', '')}`;
   const metaKeywords = [
     `${title}, ${type}`,
     `Watch ${title} (${releaseYear}) ${type} online free`,
