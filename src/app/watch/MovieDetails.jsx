@@ -80,11 +80,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       }
 
       // If the page was opened directly with 'play=true' but no video source is set, remove 'play=true' from the URL
-      if (playQuery === 'true' && !videoSource) {
+      if (playQuery && !videoSource) {
         params.delete('play');
-        const newUrl = `${pathname}?${params.toString()}`;
+        const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname; // Check if there are other query params
         window.history.replaceState({}, '', newUrl); // Replace URL without reloading the page
       }
+
     };
 
     // Call checkPlayQuery to handle initial load (e.g., if user refreshes with 'play' in URL)
