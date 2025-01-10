@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import NavigateBack from "../NavigateBack";
-import errorImage from "../../assets/images/somthing_went_wrong_error.png"
+import errorImage from "../../assets/images/status500_error_message.png"
 
 function SomthingWrongError({
     onclickEvent,

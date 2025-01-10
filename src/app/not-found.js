@@ -1,4 +1,4 @@
-import notFoundImage from "../assets/images/error-404-not-found.png"
+import notFoundImage from "../assets/images/404-notfound-picture.png"
 import NavigateBack from '@/components/NavigateBack';
 import Image from 'next/image'
 
