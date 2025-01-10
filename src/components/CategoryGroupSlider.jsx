@@ -1,21 +1,27 @@
 
 import Link from "next/link"
 import { categoryArray, moviesGenreArray } from "@/constant/constsnt"
+import { creatUrlLink } from "@/utils"
 
 const LinkButton = ({ linkData, linkUrl }) => {
 
   return (
     <>
-      {linkData?.map((data) =>
-      (<div key={data.id} className="bg-[#1D263B] hover:bg-gray-700 w-auto h-auto py-2 px-3 rounded-[5px] font-medium flex-none text-xs text-gray-300">
+      {linkData?.map((data) => (
         <Link
-          title={data.name}
-          href={data.linkUrl ? data.linkUrl.toLowerCase().replace(/[' ']/g, '-') :
-            linkUrl + "/" + data.name.toLowerCase().replace(/[' ']/g, '-')}>
-          {data.name}
+          key={data.id}
+          title={data.name} // Tooltip for user
+          href={data.linkUrl
+            ? creatUrlLink(data.linkUrl)
+            : linkUrl + "/" + creatUrlLink(data.name)}
+        >
+          <div className="bg-[#1D263B] hover:bg-gray-700 w-auto h-auto py-2 px-3 rounded-[5px] font-medium text-xs text-gray-300 whitespace-nowrap">
+            {data.name}
+          </div>
+
         </Link>
-      </div>
       ))}
+
     </>
   )
 }
@@ -27,9 +33,13 @@ export default function CategoryGroupSlider() {
 
       <div className="w-auto h-auto-fit flex items-center flex-row overflow-y-scroll space-x-3 mobile:space-x-2 px-2 pt-3.5 scroll-smooth scrollbar-hidden">
 
-        <LinkButton linkData={categoryArray} linkUrl="/browse/category" />
+        <LinkButton 
+        linkData={categoryArray} 
+        linkUrl="/browse/category" />
 
-        <LinkButton linkData={moviesGenreArray} linkUrl="/browse/genre" />
+        <LinkButton 
+        linkData={moviesGenreArray} 
+        linkUrl="/browse/genre" />
 
       </div>
     </div>
