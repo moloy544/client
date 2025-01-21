@@ -155,26 +155,6 @@ function Footer() {
                 </p>
             </div>
 
-            {/* API Contact Section */}
-            <div className="bg-[#161f31] text-gray-300 w-full py-3 mt-6">
-                <div className="max-w-screen-xl mx-auto px-6">
-                    <div className="text-2xl mobile:text-xl font-semibold text-gray-200 mb-2">API Contact</div>
-                    <p className="text-sm mb-6 text-gray-300">
-                        <span className="font-semibold text-gray-100">Introducing</span> our new <span className="font-semibold text-green-400">Video Embedding API</span>, designed for easy integration of high-quality video streaming into your projects. If you have any questions or need assistance, feel free to reach out to us through the options below:
-                    </p>
-
-                    {/* Email Contact */}
-                    <p onClick={handleEmail} className="text-sm font-medium cursor-pointer hover:text-white transition-all mb-4">
-                        <i className="bi bi-envelope-at-fill text-base"></i> moviesbazarorg@gmail.com
-                    </p>
-
-                    {/* Telegram Contact */}
-                    <p className="text-sm font-medium cursor-pointer hover:text-white transition-all">
-                        <i className="bi bi-telegram mr-2 text-base"></i>
-                        <a href="https://t.me/sanjoyrakshit504" target="_blank" rel="noopener noreferrer">Contact us on Telegram</a>
-                    </p>
-                </div>
-            </div>
         </footer>
     );
 }
