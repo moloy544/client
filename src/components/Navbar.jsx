@@ -6,7 +6,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
 import brandLogoIcon from "../assets/images/brand_logo.png"
-import santaCap from "../assets/images/santa-cap.png"
+import valentinesLoveChocolateBox from "../assets/images/valentines-love-chocolate-box.png"
 
 const WatchlaterModel = dynamic(() => import('./models/WatchlaterModel'), { ssr: false });
 
@@ -35,6 +35,7 @@ export default function Navbar() {
         <>
             <header className="w-auto h-auto bg-gray-900 pt-2 px-2.5 mobile:px-2 flex items-center justify-between">
                 <div className="flex items-center space-x-0.5">
+
                     <Image
                         src={brandLogoIcon}
                         width={35}
@@ -44,16 +45,22 @@ export default function Navbar() {
                     />
                     <div className="flex flex-col mt-1">
                         <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[15px] leading-[14px] relative">
-                            <span className="relative inline-block">
-                                <span className="absolute top-[-14px] left-[-1px]">
-                                    <Image src={santaCap} alt="Santa Cap" width={20} height={20} />
-                                </span>
-                                Movies Bazar
+                            <span className="inline-flex">
+                                <span>Movies </span>
+                                <Image
+                                    src={valentinesLoveChocolateBox}
+                                    alt="Valentine's Day love chocolate box"
+                                    width={22}
+                                    height={22}
+                                    className="animate-bounce"
+                                />
+                                <span>Bazar</span>
                             </span>
                         </Link>
-                        <small className="text-yellow-500 mt-1 mobile:mt-0.5 text-xs mobile:text-[10px] font-medium pl-0.5">Made with love</small>
+                        <small className="text-yellow-500 mt-0 text-xs mobile:text-[10px] font-medium pl-0.5">
+                            Made with love
+                        </small>
                     </div>
-
                 </div>
 
                 <div className="w-fit h-auto flex items-center gap-8 mobile:gap-3">

@@ -735,11 +735,11 @@ export default function AdminPage() {
                                             <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('tags', tag)}></i>
                                         </div>
                                     ))}
-                                </div>
+                                </div> 
                             )}
 
                             <div className="flex flex-col my-3">
-                                <label className="font-bold text-gray-800">Adition tags</label>
+                                <label className="font-bold text-gray-800">Tags/Keywords</label>
                                 <div className="inline-flex">
                                 <input type="text" id="tags-input" data-field="tags" className={inputStyle} placeholder="Enter tags" defaultValue="" />
                                 <select

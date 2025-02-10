@@ -15,8 +15,7 @@ import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import brandLogoIcon from "../../assets/images/brand_logo.png"
-import santaCap from "../../assets/images/santa-cap.png"
-
+import valentinesLoveChocolateBox from "../../assets/images/valentines-love-chocolate-box.png"
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -215,14 +214,21 @@ export default function SearchPage() {
                             />
                             <div className="flex flex-col mt-1">
                                 <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[15px] leading-[14px] relative">
-                                    <span className="relative inline-block">
-                                        <span className="absolute top-[-14px] left-[-1px]">
-                                            <Image src={santaCap} alt="Santa Cap" width={20} height={20} />
-                                        </span>
-                                        Movies Bazar
+                                    <span className="inline-flex">
+                                        <span>Movies </span>
+                                        <Image
+                                            src={valentinesLoveChocolateBox}
+                                            alt="Valentine's Day love chocolate box"
+                                            width={22}
+                                            height={22}
+                                            className="animate-bounce"
+                                        />
+                                        <span>Bazar</span>
                                     </span>
                                 </Link>
-                                <small className="text-yellow-500 mt-1 mobile:mt-0.5 text-xs mobile:text-[10px] font-medium pl-0.5">Made with love</small>
+                                <small className="text-yellow-500 mt-0 text-xs mobile:text-[10px] font-medium pl-0.5">
+                                    Made with love
+                                </small>
                             </div>
 
                         </div>

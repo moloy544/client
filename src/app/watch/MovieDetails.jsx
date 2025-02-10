@@ -27,7 +27,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     type,
     status,
     watchLink,
-    multiAudio,
     videoType,
     hlsSourceDomain
   } = movieDetails || {};
@@ -154,7 +153,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               <PlayButton
                 watchLinks={watchLink}
                 playHandler={handleVideoSourcePlay}
-                multiAudio={multiAudio}
+                contentType={type}
                 videoType={videoType}
               />
             ) : (
@@ -232,7 +231,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 <span className="text-sm text-gray-200 mr-0.5">Note:</span>
                 {status?.toLowerCase() === "copyright remove"
                   ? "Unfortunately, this content is currently unavailable due to copyright restrictions. We apologize for the inconvenience."
-                  : `If this ${type} isn't playing as expected, please let us know by clicking the "Report" button. We value your feedback and appreciate your support!`
+                  : `If this ${type} isn't playing correctly, ${watchLink?.length > 1 ? 'you can try the "Server 2" option, or let us know by clicking the "Report" button.' : 'please let us know by clicking the "Report" button.'} We highly value your feedback and appreciate your continued support!`
                 }
               </p>
             </div>
@@ -263,11 +262,9 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   )
 };
 
-function PlayButton({ watchLinks, playHandler, multiAudio, videoType }) {
+function PlayButton({ watchLinks, playHandler, contentType }) {
 
   const [showDropdown, setDropDown] = useState(false);
-
-  const isMultiOption = (watchLinks?.length > 1 && multiAudio && typeof videoType === 'string');
 
   const play = () => {
     if (!watchLinks || watchLinks.length === 0) {
@@ -277,12 +274,13 @@ function PlayButton({ watchLinks, playHandler, multiAudio, videoType }) {
       });
       return
     };
-    if (!isMultiOption) {
-      const source = watchLinks[0].source || watchLinks[0];
-      playHandler(source);
+
+    if (contentType === "series") {
+      playHandler(watchLinks[0].source);
     } else {
       setDropDown((prev) => !prev)
-    };
+    }
+
   };
 
   return (

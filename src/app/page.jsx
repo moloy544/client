@@ -1,14 +1,8 @@
 import axios from "axios";
-import dinamicImport from "next/dynamic"
 import { appConfig } from "@/config/config";
 import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
 import Footer from "@/components/Footer";
-
-// Dynamically import festival components
-const NewYearCelebration = dinamicImport(()=> import("@/components/festivals/NewYearCelebration", {
-  ssr: false,
-}));
 
 const getHomePageData = async () => {
   try {
@@ -33,8 +27,6 @@ export default async function Page() {
   return (
     <>
       <Navbar />
-   
-      <NewYearCelebration />
 
       {status === 200 ? (
         <main className="w-full overflow-x-hidden h-full py-2 bg-custom-dark-bg">
