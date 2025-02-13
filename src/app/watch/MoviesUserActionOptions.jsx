@@ -1,11 +1,12 @@
 'use client'
 
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { adsConfig } from "@/config/ads.config";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+
 
 // Report content model dinamic import
 const ReportModel = dynamic(() => import('@/components/models/ReportModel'), {
@@ -107,6 +108,7 @@ export default function MoviesUserActionOptions({ movieData, reportButton = true
 
         {downloadLinks && downloadLinks.length > 0 && (
           <DownloadButton
+            imdbId={imdbId}
             handleReportModelOpen={setIsReportModelOpen}
             downloadLinks={downloadLinks}
           />
@@ -158,7 +160,8 @@ export default function MoviesUserActionOptions({ movieData, reportButton = true
   )
 };
 
-function DownloadButton({ downloadLinks, handleReportModelOpen }) {
+function DownloadButton({ imdbId, downloadLinks, handleReportModelOpen }) {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openDownloadOptionModel = () => {
@@ -171,6 +174,7 @@ function DownloadButton({ downloadLinks, handleReportModelOpen }) {
     };
   };
 
+  
   return (
     <>
       <div
@@ -194,6 +198,7 @@ function DownloadButton({ downloadLinks, handleReportModelOpen }) {
         <div className="text-xs font-semibold">Download</div>
       </div>
       <DownloadOptionModel
+        imdbId={imdbId}
         linksData={downloadLinks[0]}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -201,7 +206,8 @@ function DownloadButton({ downloadLinks, handleReportModelOpen }) {
           setIsModalOpen(false);
           handleReportModelOpen(true)
         }}
+
       />
     </>
   )
-}
+};
