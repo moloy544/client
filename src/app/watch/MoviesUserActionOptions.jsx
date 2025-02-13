@@ -19,7 +19,7 @@ const DownloadOptionModel = dynamic(() => import('@/components/models/DownloadOp
 
 const buttonsClass = "flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-gray-300 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-[#18212b]";
 
-export default function MoviesUserActionOptions({ movieData, reportButton = true }) {
+export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true }) {
 
   const [isSaved, setIsSaved] = useState(false);
   const [isReportModelOpen, setIsReportModelOpen] = useState(false);
@@ -108,6 +108,7 @@ export default function MoviesUserActionOptions({ movieData, reportButton = true
 
         {downloadLinks && downloadLinks.length > 0 && (
           <DownloadButton
+            isOnline={isOnline}
             imdbId={imdbId}
             handleReportModelOpen={setIsReportModelOpen}
             downloadLinks={downloadLinks}
@@ -160,7 +161,7 @@ export default function MoviesUserActionOptions({ movieData, reportButton = true
   )
 };
 
-function DownloadButton({ imdbId, downloadLinks, handleReportModelOpen }) {
+function DownloadButton({ isOnline, imdbId, downloadLinks, handleReportModelOpen }) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -174,7 +175,7 @@ function DownloadButton({ imdbId, downloadLinks, handleReportModelOpen }) {
     };
   };
 
-  
+
   return (
     <>
       <div
@@ -198,6 +199,7 @@ function DownloadButton({ imdbId, downloadLinks, handleReportModelOpen }) {
         <div className="text-xs font-semibold">Download</div>
       </div>
       <DownloadOptionModel
+        isOnline={isOnline}
         imdbId={imdbId}
         linksData={downloadLinks[0]}
         isOpen={isModalOpen}

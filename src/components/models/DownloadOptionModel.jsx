@@ -3,7 +3,6 @@
 import { appConfig } from "@/config/config";
 import { useCurrentWindowSize } from "@/hooks/hook";
 import { ModelsController } from "@/lib/EventsHandler"
-import useOnlineStatus from "@/lib/lib";
 import { creatToastAlert } from "@/utils";
 import axios from "axios";
 import { useState } from "react";
@@ -44,7 +43,7 @@ const formatQualityType = (quality, qualityType) => {
   return `(${qualityLabel})`;
 };
 
-export default function DownloadOptionModel({ imdbId, linksData, isOpen, onClose, onReportButtonClick }) {
+export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpen, onClose, onReportButtonClick }) {
 
   const { title, links, qualityType } = linksData || {};
 
@@ -54,23 +53,13 @@ export default function DownloadOptionModel({ imdbId, linksData, isOpen, onClose
   //const [downloadOptionUrlData, setDownloadOptionUrlData] = useState([]);
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
 
-  const isOnline = useOnlineStatus({
-    onlineCallback: ()=>{
-      creatToastAlert({
-        message: 'Back to online. Please restart download.'
-      });
-    },
-    offlineCallback: ()=>{
-      creatToastAlert({
-        message: 'No internet connection. Please try again later.'
-      });
-    }
-  });
-
   const handleDownload = async (sourceIndex) => {
     try {
 
       if (!isOnline) {
+        creatToastAlert({
+          message: 'You are offline. Please check your internet connection.',
+        });
         return;
       };
       // Set the loading state
@@ -79,10 +68,11 @@ export default function DownloadOptionModel({ imdbId, linksData, isOpen, onClose
       // Fetch the HTML content from the URL
       const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_urls/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
 
-      if (response.status !== 200) {
+      if (response.status === 200) {
         creatToastAlert({
-          message: 'Failed to fetch download option URLs. Please try again later.'
-        });
+          message: 'Download failed. Please try again later, or report the issue to us.',
+          visiblityTime: 12000
+        });             
         return;
       };
 
@@ -90,8 +80,10 @@ export default function DownloadOptionModel({ imdbId, linksData, isOpen, onClose
 
       if (!downloadUrl) {
         creatToastAlert({
-          message: 'Failed to fetch download option URLs. Please try again later.'
-        });
+          message: 'Download failed. Please try again later, or report the issue to us.',
+          visiblityTime: 12000
+        });        
+        
         return;
       };
 
@@ -100,6 +92,10 @@ export default function DownloadOptionModel({ imdbId, linksData, isOpen, onClose
 
     } catch (error) {
       console.error('Error fetching download option URLs:', error);
+      creatToastAlert({
+        message: 'Download failed. Please try again later, or report the issue to us.',
+        visiblityTime: 12000
+      });      
     } finally {
       setDownloadStartProgress(false);
     }

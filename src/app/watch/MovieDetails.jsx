@@ -11,6 +11,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import SliderShowcase from "@/components/SliderShowcase";
 import VideoPlayer from "@/components/VideoPlayer";
 import { usePathname } from "next/navigation";
+import { useOnlineStatus } from "@/lib/lib";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -35,7 +36,29 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   const [videoSource, setVideoSource] = useState(null);
   const pathname = usePathname();
 
+  const isOnline = useOnlineStatus({
+    onlineCallback: () => {
+      creatToastAlert({
+        message: 'Connection restored. You are back online.',
+      });
+    },
+    offlineCallback: () => {
+      creatToastAlert({
+        message: 'You are offline. Please check your internet connection.',
+      });
+    }
+  });
+
   const handleVideoSourcePlay = (source, type) => {
+    
+    // Internet connection check 
+    if(!isOnline){
+      creatToastAlert({
+        message: "You are offline. Please check your internet connection.",
+        visiblityTime: 6000
+      });
+      return;
+    }
     // Validate if no video source and show report message
     if (!source) {
       creatToastAlert({
@@ -151,6 +174,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
             {status === "released" ? (
               <PlayButton
+              isOnline={isOnline}
                 watchLinks={watchLink}
                 playHandler={handleVideoSourcePlay}
                 contentType={type}
@@ -237,6 +261,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
             </div>
 
             <MoviesUserActionOptions
+            isOnline={isOnline}
               movieData={movieDetails}
               reportButton={status?.toLowerCase() === "copyright remove" ? false : true}
             />
@@ -267,6 +292,7 @@ function PlayButton({ watchLinks, playHandler, contentType }) {
   const [showDropdown, setDropDown] = useState(false);
 
   const play = () => {
+
     if (!watchLinks || watchLinks.length === 0) {
       creatToastAlert({
         message: "Playback is disabled by mistake please report us",

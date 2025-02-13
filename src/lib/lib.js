@@ -26,7 +26,7 @@ export function InspectPreventer({ children, forceToPrevent = true }) {
     return children
 };
 
-const useOnlineStatus = ({ onlineCallback, offlineCallback }) => {
+export const useOnlineStatus = ({ onlineCallback, offlineCallback }) => {
     const [isOnline, setIsOnline] = useState(true); // Default to true assuming server-side rendering
 
     useEffect(() => {
@@ -60,5 +60,3 @@ const useOnlineStatus = ({ onlineCallback, offlineCallback }) => {
 
     return isOnline;
 };
-
-export default useOnlineStatus;

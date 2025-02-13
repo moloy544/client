@@ -1,7 +1,6 @@
 "use client";
 
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import useOnlineStatus from "@/lib/lib";
 import { useOrientation } from "@/hooks/hook";
 import { isMobileDevice } from "@/utils";
 
@@ -38,12 +37,6 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
   const isPortrait = useOrientation();
 
   const isMobile = isMobileDevice();
-
-  const isOnline = useOnlineStatus({
-    onlineCallback: () => setPlaybackError(null),
-    offlineCallback: () =>
-      setPlaybackError("You are not connected to the internet. Please connect and try again."),
-  });
 
   useEffect(() => {
     if (source && userIp) {
