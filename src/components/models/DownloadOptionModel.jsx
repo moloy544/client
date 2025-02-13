@@ -68,7 +68,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
       // Fetch the HTML content from the URL
       const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_urls/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
 
-      if (response.status === 200) {
+      if (response.status !== 200) {
         creatToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
           visiblityTime: 12000
