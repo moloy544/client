@@ -43,7 +43,11 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
     const isChecked = e.target.checked;
 
     const isHalsSource = currentPlaySource?.includes('.m3u8') || currentPlaySource?.includes('.mkv');
-    if (isChecked && reportValue === "Video not playing" && !serverSuggestion.want_report && watchLinks && watchLinks.length > 1 && (!currentPlaySource || isHalsSource)) {
+
+    const params = new URLSearchParams(window.location.search);
+    const playQuery = params.get("play");
+
+    if (isChecked && reportValue === "Video not playing" && !serverSuggestion.want_report && watchLinks && watchLinks.length > 1 && (!playQuery || isHalsSource)) {
       setServerSuggestion((prevData) => ({
         ...prevData,
         isModelOpen: true
@@ -230,20 +234,20 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
 
       </ModelsController>
 
-      {serverSuggestion.isModelOpen && (
+      <ModelsController visibility={serverSuggestion.isModelOpen} windowScroll={false}>
         <div className="fixed inset-0 z-[62] bg-black bg-opacity-50 flex justify-center items-center">
           <div className="w-full max-w-sm bg-white px-6 py-5 space-y-6 border border-gray-300 shadow-xl rounded-lg mx-4">
             <div className="flex items-center gap-3">
               <i className="bi bi-exclamation-triangle-fill text-red-600 text-3xl"></i>
               <div className="text-lg font-semibold text-gray-900">Please Confirm</div>
             </div>
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 font-medium">
               Before reporting a video issue, we suggest you try playing the content using Server 2. If none of the options work, please proceed to report the problem.
             </div>
             <div className="flex justify-between flex-wrap gap-3">
               <button
                 onClick={playSecondServer}
-                className="bg-cyan-600 hover:bg-cyan-500 transition text-white px-5 py-3 rounded-lg w-full sm:w-auto text-base font-medium"
+                className="bg-teal-600 hover:bg-teal-500 transition text-white text-sm px-5 py-3 rounded-lg w-full sm:w-auto font-medium"
               >
                 Play Server 2
               </button>
@@ -254,15 +258,14 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
                     want_report: false,
                   });
                 }}
-                className="bg-gray-800 hover:bg-gray-700 transition text-white px-5 py-3 rounded-lg w-full sm:w-auto text-base font-medium"
+                className="bg-gray-800 hover:bg-gray-700 transition text-white px-5 py-3 rounded-lg w-full sm:w-auto text-sm font-medium"
               >
-                No, I'll report
+                No, I&lsquo;ll report
               </button>
             </div>
           </div>
         </div>
-      )}
-
+      </ModelsController>
     </>
   );
 

@@ -76,14 +76,19 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     // Update the URL to include 'play=true' without reloading the page
     const params = new URLSearchParams(window.location.search);
-    params.set('play', 'true'); // Add play=true to the query parameters
+    const playQuery = params.get("play");
+    if (!playQuery) {
+      params.set('play', 'true'); // Add play=true to the query parameters
+      // Use history.pushState() to update the URL without causing a page reload
+      const newUrl = `${pathname}?${params.toString()}`;
+      window.history.pushState({}, '', newUrl);
+      // Set player visibility to true to show the player
+      setPlayerVisibility(true);
+    } else {
+      setPlayerVisibility(false);
+    };
 
-    // Use history.pushState() to update the URL without causing a page reload
-    const newUrl = `${pathname}?${params.toString()}`;
-    window.history.pushState({}, '', newUrl);
 
-    // Set player visibility to true to show the player
-    setPlayerVisibility(true);
   };
 
   useEffect(() => {
