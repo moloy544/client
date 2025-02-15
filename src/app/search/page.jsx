@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { appConfig } from "@/config/config";
-import { adsConfig } from "@/config/ads.config";
 import { creatToastAlert, loadMoreFetch } from "@/utils";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { ModelsController } from "@/lib/EventsHandler";
@@ -16,6 +15,7 @@ import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import brandLogoIcon from "../../assets/images/brand_logo.png"
 import valentinesLoveChocolateBox from "../../assets/images/valentines-love-chocolate-box.png"
+import { openDirectLinkAd } from "@/utils/ads.utility";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -318,9 +318,11 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
     const [isAdClick, setIsAdClick] = useState(false);
 
     const handleInputClick = () => {
+
         setVisibility(true);
-        if (!isAdClick && process.env.NODE_ENV === "production") {
-            window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+        if (!isAdClick) {
+
+            openDirectLinkAd();
             setIsAdClick(true);
         }
     };

@@ -1,6 +1,6 @@
 "use client";
 
-import { adsConfig } from '@/config/ads.config';
+import { openDirectLinkAd } from '@/utils/ads.utility';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -21,15 +21,15 @@ export default function CustomLoadingAds() {
       // Prevent multiple ad clicks
       if (adClicked) return;
 
-      // Open the ad link in a new tab with security measures
-      window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer');
+      // Run the direct ad link function, tied directly to the first user click
+      openDirectLinkAd();
 
       // Set adClicked to true to prevent further ad clicks
       setAdClicked(true);
     };
 
-    // Add the click event listener to the document body
-    documentBody.addEventListener("click", handleClick);
+    // Add the click event listener to the document body (user's first click anywhere on the page)
+    documentBody.addEventListener("click", handleClick, { once: true });
 
     // Clean up the event listener on component unmount or location change
     return () => {

@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { adsConfig } from "@/config/ads.config";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
+import { openDirectLinkAd } from "@/utils/ads.utility";
 
 
 // Report content model dinamic import
@@ -19,7 +19,7 @@ const DownloadOptionModel = dynamic(() => import('@/components/models/DownloadOp
 
 const buttonsClass = "flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-gray-300 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-[#18212b]";
 
-export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true }) {
+export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true, playHandler, currentPlaySource }) {
 
   const [isSaved, setIsSaved] = useState(false);
   const [isReportModelOpen, setIsReportModelOpen] = useState(false);
@@ -32,6 +32,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
     releaseYear,
     type,
     downloadLinks,
+    watchLink
   } = movieData || {};
 
   //Share movie function
@@ -151,6 +152,9 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
         <ReportModel
           id={_id}
           status={status}
+          watchLinks={watchLink}
+          playHandler={playHandler}
+          currentPlaySource={currentPlaySource}
           isDownloadOption={downloadLinks && downloadLinks.length > 0 ? true : false}
           setIsModelOpen={setIsReportModelOpen}
           isOpen={isReportModelOpen}
@@ -167,12 +171,11 @@ function DownloadButton({ isOnline, imdbId, downloadLinks, handleReportModelOpen
 
   const openDownloadOptionModel = () => {
     setIsModalOpen(true);
-    if (process.env.NODE_ENV !== 'development') {
+
       setTimeout(() => {
-        window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link
+       openDirectLinkAd();
       }, 1000);
 
-    };
   };
 
 

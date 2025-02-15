@@ -61,9 +61,9 @@ export default function RootLayout({ children }) {
           <Suspense>
             <SpeedInsights />
             <Analytics />
-            <CustomLoadingAds />
           </Suspense>
         )}
+         <CustomLoadingAds />
       </body>
     </html>
   )

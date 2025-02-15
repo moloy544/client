@@ -27,10 +27,7 @@ function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
 };
 
 const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
-
-  const [playbackError, setPlaybackError] = useState(null);
-  const [errorAccept, setErrorAccept] = useState(false);
-
+  
   const playerRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -80,23 +77,6 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
       };
     }
   }, [source, userIp, title]);
-
-  /**const handleError = useCallback(
-    (error) => {
-      const sessionStorageDontShowHlsErrorMessage = sessionStorage.getItem('dontShowHlsErrorMessage');
-
-      if (error && error.code === 1 && isOnline && !errorAccept && (!sessionStorageDontShowHlsErrorMessage || sessionStorageDontShowHlsErrorMessage !== 'true')) {
-        const videoServerDomain = new URL(process.env.VIDEO_SERVER_URL)?.hostname;
-        const isVideoServerDomain = videoServerDomain ? source.includes(videoServerDomain) : null;
-        setPlaybackError(
-          isVideoServerDomain
-            ? "Playback stopped. Please hold for 30 seconds if video not started please connect to a any VPN."
-            : "Please wait while the video loads its take few seconds. Report us if it fails to load."
-        );
-      }
-    },
-    [source, isOnline, errorAccept]
-  );**/
 
   const handleObservers = useCallback(async (entries) => {
 
@@ -204,31 +184,6 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
 
         </div>
       </div>
-
-      {playbackError && !errorAccept && (
-        <div className="fixed left-0 top-0 w-full h-full z-[100] bg-gray-900 bg-opacity-60 flex justify-center items-center">
-          <div className="w-full max-w-sm bg-white px-3 py-4 space-y-5 border border-gray-500 shadow-2xl rounded-sm mx-2">
-            <div className="flex items-center gap-2">
-              <i className="bi bi-exclamation-triangle-fill text-red-600 text-2xl"></i>
-              <div className="text-sm mobile:text-xs text-gray-800 font-bold">{playbackError || "Playback not work please try again later or watch another content"}</div>
-            </div>
-            <div className="flex justify-around flex-wrap gap-2">
-              <button
-                onClick={() => setErrorAccept(true)}
-                className="bg-cyan-700 text-white px-4 py-2 rounded-md mx-auto text-sm mobile:text-xs"
-              >
-                Understood
-              </button>
-              <button
-                onClick={dontShowErrorMessageAgain}
-                className="bg-gray-800 text-white px-4 py-2 rounded-md mx-auto text-sm mobile:text-xs"
-              >
-                Dont show again
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </>
   );

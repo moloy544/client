@@ -55,51 +55,63 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
 
   const handleDownload = async (sourceIndex) => {
     try {
-
       if (!isOnline) {
         creatToastAlert({
           message: 'You are offline. Please check your internet connection.',
         });
         return;
-      };
+      }
+  
       // Set the loading state
       setDownloadStartProgress(true);
-
+  
       // Fetch the HTML content from the URL
       const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_urls/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
-
+  
       if (response.status !== 200) {
         creatToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
           visiblityTime: 12000
-        });             
+        });
         return;
-      };
-
+      }
+  
       const { downloadUrl } = response.data || {};
-
+  
       if (!downloadUrl) {
         creatToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
           visiblityTime: 12000
-        });        
-        
+        });
         return;
-      };
-
-      // Start the download
-      window.open(downloadUrl, '_blank', 'noopener,noreferrer'); // Open the ad link
-
+      }
+  
+      // Create a new anchor element
+      const link = document.createElement('a');
+      link.href = downloadUrl;           // Set the href to the download URL
+      link.target = '_blank';            // Open the link in a new tab
+      link.rel = 'noopener noreferrer';  // Ensure security with 'noopener noreferrer'
+  
+      // Append the anchor to the body (this step is required for Safari)
+      document.body.appendChild(link);
+  
+      // Trigger a click on the anchor
+      link.click();
+  
+      // Remove the anchor after clicking
+      document.body.removeChild(link);
+  
     } catch (error) {
       console.error('Error fetching download option URLs:', error);
       creatToastAlert({
         message: 'Download failed. Please try again later, or report the issue to us.',
         visiblityTime: 12000
-      });      
+      });
     } finally {
       setDownloadStartProgress(false);
     }
   };
+  
 
   // validate if false anything returns nothing
   if (!links || !Array.isArray(links) || links.length === 0) {

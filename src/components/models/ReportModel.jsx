@@ -6,11 +6,15 @@ import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { useCurrentWindowSize } from "@/hooks/hook";
 
-export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDownloadOption }) {
+export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDownloadOption, watchLinks = null, playHandler, currentPlaySource }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
   const [processedReports, setProcessedReports] = useState(false);
+  const [serverSuggestion, setServerSuggestion] = useState({
+    isModelOpen: false,
+    want_report: false
+  });
 
   const writtenReportRef = useRef(null);
 
@@ -38,6 +42,14 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
 
     const isChecked = e.target.checked;
 
+    const isHalsSource = currentPlaySource?.includes('.m3u8') || currentPlaySource?.includes('.mkv');
+    if (isChecked && reportValue === "Video not playing" && !serverSuggestion.want_report && watchLinks && watchLinks.length > 1 && (!currentPlaySource || isHalsSource)) {
+      setServerSuggestion((prevData) => ({
+        ...prevData,
+        isModelOpen: true
+      }));
+    };
+
     if (message !== "Pending") {
       setMessage("Pending");
     };
@@ -51,6 +63,23 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
     });
   };
 
+  const playSecondServer = () => {
+
+    // get the embed url form the watch links 
+    const embedUrlData = watchLinks.filter(({ source }) => !source.includes('.m3u8') || source.includes('.mkv'));
+    const embedUrl = embedUrlData[0]?.source;
+    if (embedUrl) {
+      playHandler(embedUrl);
+      setServerSuggestion({
+        isModelOpen: false,
+        want_report: false
+      });
+      setIsModelOpen(false);
+    } else {
+      console.error("No embed URL found in watch links");
+    }
+
+  };
 
   const handleReportSubmit = async () => {
 
@@ -115,90 +144,126 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
   ];
 
   return (
-    <ModelsController visibility={isOpen} transformEffect={windowCurrentWidth <= 450} windowScroll={false}>
-      <div className="w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
-        style={{ transform: 'translateY(100%)' }}
-      >
+    <>
+      <ModelsController visibility={isOpen} transformEffect={windowCurrentWidth <= 450} windowScroll={false}>
+        <div className="w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
+          style={{ transform: 'translateY(100%)' }}
+        >
 
-        <div className={`sm-screen:w-full w-auto max-w-md mx-4 ${message !== "Success" ? "sm-screen:absolute z-20 sm-screen:bottom-0 sm-screen:rounded-b-none" : "max-w-[fit-content]"} sm-screen:m-auto w-auto h-fit rounded-lg sm-screen:rounded-xl bg-white p-4 shadow-2xl border border-gray-300`}>
+          <div className={`sm-screen:w-full w-auto max-w-md mx-4 ${message !== "Success" ? "sm-screen:absolute z-20 sm-screen:bottom-0 sm-screen:rounded-b-none" : "max-w-[fit-content]"} sm-screen:m-auto w-auto h-fit rounded-lg sm-screen:rounded-xl bg-white p-4 shadow-2xl border border-gray-300`}>
 
-          {message !== 'Success' ? (
-            <>
-              <div className="space-y-2 mb-4 max-w-sm">
-                <h2 className="text-base font-bold leading-4">Are you sure you want to report?</h2>
-                <p className="mt-2 text-xs text-gray-600 font-medium">
-                  Please select the issue or describe the problem. We are solve your problem within 6 hours.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-3 my-2">
-                {reportOptions.map(({ value, id, visible }) =>
-                  visible ? (
-                    <div key={id} className="flex items-center space-x-2 p-2 rounded-lg border border-gray-200 shadow-sm">
-                      <input
-                        id={id}
-                        type="checkbox"
-                        value={value}
-                        onChange={handleSelectedReport}
-                        className="w-4 h-4 cursor-pointer text-blue-600 bg-blue-600 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 rounded-lg"
-                      />
-                      <label
-                        htmlFor={id}
-                        className="text-xs font-medium text-gray-900 cursor-pointer"
-                      >
-                        {value}
-                      </label>
-                    </div>
-                  ) : null
-                )}
-              </div>
-
-              <div className="my-3">
-                <label htmlFor="message" className="block mb-2 text-sm font-semibold text-gray-900">
-                  Write other problem (Optional)
-                </label>
-                <textarea
-                  id="message"
-                  rows="2"
-                  ref={writtenReportRef}
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300 outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Write your problem here..."
-                />
-              </div>
-
-              {message !== "Success" && message !== "Pending" && (
-                <div className="my-1 max-w-sm">
-                  <p className="text-red-pure text-xs font-medium">{message}</p>
+            {message !== 'Success' ? (
+              <>
+                <div className="space-y-2 mb-4 max-w-sm">
+                  <h2 className="text-base font-bold leading-4">Are you sure you want to report?</h2>
+                  <p className="mt-2 text-xs text-gray-600 font-medium">
+                    Please select the issue or describe the problem. We are solve your problem within 6 hours.
+                  </p>
                 </div>
-              )}
-              <div className="py-3 flex gap-5 mobile:my-3">
-                <button
-                  type="button"
-                  onClick={handleReportSubmit}
-                  className="rounded bg-rose-600 w-20 h-10 flex justify-center items-center text-xs font-medium text-gray-100"
-                >
-                  {!processedReports ? "Report" : <div className="three_dots_loading w-2 h-2"></div>}
-                </button>
 
-                <button
-                  onClick={closeModel}
-                  type="button"
-                  className="rounded bg-gray-900 px-5 py-2 text-xs font-medium text-gray-100"
-                >
-                  No, close
-                </button>
-              </div>
+                <div className="flex flex-wrap gap-3 my-2">
+                  {reportOptions.map(({ value, id, visible }) =>
+                    visible ? (
+                      <div key={id} className="flex items-center space-x-2 p-2 rounded-lg border border-gray-200 shadow-sm">
+                        <input
+                          id={id}
+                          type="checkbox"
+                          value={value}
+                          onChange={handleSelectedReport}
+                          className="w-4 h-4 cursor-pointer text-blue-600 bg-blue-600 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 rounded-lg"
+                        />
+                        <label
+                          htmlFor={id}
+                          className="text-xs font-medium text-gray-900 cursor-pointer"
+                        >
+                          {value}
+                        </label>
+                      </div>
+                    ) : null
+                  )}
+                </div>
 
-            </>
+                <div className="my-3">
+                  <label htmlFor="message" className="block mb-2 text-sm font-semibold text-gray-900">
+                    Write other problem (Optional)
+                  </label>
+                  <textarea
+                    id="message"
+                    rows="2"
+                    ref={writtenReportRef}
+                    className="block p-2.5 w-full text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300 outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Write your problem here..."
+                  />
+                </div>
 
-          ) : (
-            <h2 className="w-60 h-auto text-green-600 text-center text-sm font-medium">Thanks for reporting us we are solve your issue soon as possible</h2>
-          )}
+                {message !== "Success" && message !== "Pending" && (
+                  <div className="my-1 max-w-sm">
+                    <p className="text-red-pure text-xs font-medium">{message}</p>
+                  </div>
+                )}
+                <div className="py-3 flex gap-5 mobile:my-3">
+                  <button
+                    type="button"
+                    onClick={handleReportSubmit}
+                    className="rounded bg-rose-600 w-20 h-10 flex justify-center items-center text-xs font-medium text-gray-100"
+                  >
+                    {!processedReports ? "Report" : <div className="three_dots_loading w-2 h-2"></div>}
+                  </button>
+
+                  <button
+                    onClick={closeModel}
+                    type="button"
+                    className="rounded bg-gray-900 px-5 py-2 text-xs font-medium text-gray-100"
+                  >
+                    No, close
+                  </button>
+                </div>
+
+              </>
+
+            ) : (
+              <h2 className="w-60 h-auto text-green-600 text-center text-sm font-medium">Thanks for reporting us we are solve your issue soon as possible</h2>
+            )}
+          </div>
+
         </div>
-       
-      </div>
 
-    </ModelsController>
+      </ModelsController>
+
+      {serverSuggestion.isModelOpen && (
+        <div className="fixed inset-0 z-[62] bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="w-full max-w-sm bg-white px-6 py-5 space-y-6 border border-gray-300 shadow-xl rounded-lg mx-4">
+            <div className="flex items-center gap-3">
+              <i className="bi bi-exclamation-triangle-fill text-red-600 text-3xl"></i>
+              <div className="text-lg font-semibold text-gray-900">Please Confirm</div>
+            </div>
+            <div className="text-sm text-gray-600">
+              Before reporting a video issue, we suggest you try playing the content using Server 2. If none of the options work, please proceed to report the problem.
+            </div>
+            <div className="flex justify-between flex-wrap gap-3">
+              <button
+                onClick={playSecondServer}
+                className="bg-cyan-600 hover:bg-cyan-500 transition text-white px-5 py-3 rounded-lg w-full sm:w-auto text-base font-medium"
+              >
+                Play Server 2
+              </button>
+              <button
+                onClick={() => {
+                  setServerSuggestion({
+                    isModelOpen: false,
+                    want_report: false,
+                  });
+                }}
+                className="bg-gray-800 hover:bg-gray-700 transition text-white px-5 py-3 rounded-lg w-full sm:w-auto text-base font-medium"
+              >
+                No, I'll report
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+    </>
   );
 
 };

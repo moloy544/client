@@ -12,6 +12,7 @@ import SliderShowcase from "@/components/SliderShowcase";
 import VideoPlayer from "@/components/VideoPlayer";
 import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
+import { openDirectLinkAd } from "@/utils/ads.utility";
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -50,9 +51,9 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   });
 
   const handleVideoSourcePlay = (source, type) => {
-    
+
     // Internet connection check 
-    if(!isOnline){
+    if (!isOnline) {
       creatToastAlert({
         message: "You are offline. Please check your internet connection.",
         visiblityTime: 6000
@@ -70,10 +71,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     // Set the video source as usual
     setVideoSource(source);
 
-    // Open ad link in production environment
-    if (process.env.NODE_ENV !== 'development') {
-      window.open(adsConfig.direct_Link, '_blank', 'noopener,noreferrer'); // Open the ad link in a new tab
-    }
+    // Open direct ad link 
+    openDirectLinkAd()
 
     // Update the URL to include 'play=true' without reloading the page
     const params = new URLSearchParams(window.location.search);
@@ -174,7 +173,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
             {status === "released" ? (
               <PlayButton
-              isOnline={isOnline}
+                isOnline={isOnline}
                 watchLinks={watchLink}
                 playHandler={handleVideoSourcePlay}
                 contentType={type}
@@ -261,9 +260,11 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
             </div>
 
             <MoviesUserActionOptions
-            isOnline={isOnline}
+              isOnline={isOnline}
               movieData={movieDetails}
               reportButton={status?.toLowerCase() === "copyright remove" ? false : true}
+              playHandler={handleVideoSourcePlay}
+              currentPlaySource={videoSource}
             />
           </div>
 
