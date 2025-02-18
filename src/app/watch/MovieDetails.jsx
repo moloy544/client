@@ -364,6 +364,12 @@ function PlayButton({ watchLinks, playHandler, contentType }) {
               </div>
             ))}
           </div>
+          <div className="text-center">
+            <small className="text-[10px] text-gray-300 font-medium text-center">
+              <i className="bi bi-earbuds"></i> Use earphones for better audio.
+            </small>
+
+          </div>
         </div>
       </ModelsController>
     </>

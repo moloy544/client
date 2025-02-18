@@ -13,8 +13,22 @@ function Footer() {
 
     return (
         <footer className="w-full h-auto bg-gray-900 py-4 lg:py-6 px-2 flex flex-col justify-center items-center gap-4 pb-6">
+            {/* YouTube Section */}
             <div className="text-center">
-                <h2 className="text-lg text-gray-300 font-bold my-1">Social links</h2>
+                <h3 className="text-2xl mobile:text-base text-white font-semibold mb-3">Subscribe to Our YouTube Channel</h3>
+                <p className="text-gray-300 text-base mobile:text-sm mb-4">Stay up-to-date with our latest videos, updates, and exclusive content. Don't miss out on anything!</p>
+                <a href="https://www.youtube.com/channel/UCkAFRcc65j_oigFPaBHBerg" target="_blank" rel="noopener noreferrer">
+                    <div className="bg-gray-700 text-white py-2.5 px-6 mobile:px-5 mobile:py-2 rounded-lg font-medium hover:bg-gray-600 transition duration-300 inline-flex items-center text-sm mobile:text-xs">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-8 h-8">
+                            <path fill="#FF3D00" d="M43.2,33.9c-0.4,2.1-2.1,3.7-4.2,4c-3.3,0.5-8.8,1.1-15,1.1c-6.1,0-11.6-0.6-15-1.1c-2.1-0.3-3.8-1.9-4.2-4C4.4,31.6,4,28.2,4,24c0-4.2,0.4-7.6,0.8-9.9c0.4-2.1,2.1-3.7,4.2-4C12.3,9.6,17.8,9,24,9c6.2,0,11.6,0.6,15,1.1c2.1,0.3,3.8,1.9,4.2,4c0.4,2.3,0.9,5.7,0.9,9.9C44,28.2,43.6,31.6,43.2,33.9z" />
+                            <path fill="#FFF" d="M20 31L20 17 32 24z" />
+                        </svg>
+                        <span className="ml-2">Subscribe Now</span>
+                    </div>
+                </a>
+            </div>
+            <div className="text-center">
+                <h2 className="text-2xl mobile:text-lg text-gray-300 font-bold my-1">Social links</h2>
                 <div className="text-sm text-gray-200 gap-5 mobile:gap-2 flex flex-wrap items-center justify-evenly px-2">
                     <a className="flex items-center gap-1" title="Github" href="https://github.com/sanjoy504" target="_blank" rel="noopener noreferrer">
                         <i className="bi bi-github text-[26px]"></i>
@@ -130,13 +144,6 @@ function Footer() {
                 </div>
             </div>
 
-            <div className="text-base text-gray-200 font-semibold flex items-center">
-                <div className="text-base">❤️</div>
-                <div>
-                    <span className="text-orange-500">Love</span> from <Image src={authorImage} alt="Indian flag" width={11} height={11} className="rounded-full inline-block" /> <span className=" text-green-500">India</span>
-                </div>
-            </div>
-
             <div className="text-sm text-gray-400 text-center mx-2 space-y-3">
                 <p>
                     <strong>User Safety:</strong> While we strive to ensure safe viewing experiences, users should be aware that some uploaded content may contain copyrighted material. It&lsquo;s our responsibility to monitor content, but we advise users to watch at their discretion.
@@ -155,8 +162,17 @@ function Footer() {
                 </p>
             </div>
 
+            <div className="text-base text-gray-200 font-semibold flex items-center">
+                <div className="text-base">❤️</div>
+                <div>
+                    <span className="text-orange-500">Love</span> from <Image src={authorImage} alt="Indian flag" width={11} height={11} className="rounded-full inline-block" /> <span className=" text-green-500">India</span>
+                </div>
+            </div>
+
         </footer>
     );
 }
 
 export default Footer;
+
+
