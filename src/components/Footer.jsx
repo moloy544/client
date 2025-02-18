@@ -16,7 +16,7 @@ function Footer() {
             {/* YouTube Section */}
             <div className="text-center">
                 <h3 className="text-2xl mobile:text-base text-white font-semibold mb-3">Subscribe to Our YouTube Channel</h3>
-                <p className="text-gray-300 text-base mobile:text-sm mb-4">Stay up-to-date with our latest videos, updates, and exclusive content. Don't miss out on anything!</p>
+                <p className="text-gray-300 text-base mobile:text-sm mb-4">Stay up-to-date with our latest videos, updates, and exclusive content. Don&lsquo;t miss out on anything!</p>
                 <a href="https://www.youtube.com/channel/UCkAFRcc65j_oigFPaBHBerg" target="_blank" rel="noopener noreferrer">
                     <div className="bg-gray-700 text-white py-2.5 px-6 mobile:px-5 mobile:py-2 rounded-lg font-medium hover:bg-gray-600 transition duration-300 inline-flex items-center text-sm mobile:text-xs">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-8 h-8">
