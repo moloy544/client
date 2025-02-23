@@ -16,7 +16,7 @@ const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
 const typeOptions = ["movie", "series"];
 const videoType = ["hd", "cam"]
 const statusOptions = ['released', 'coming soon']
-const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'punjabi', 'tamil', 'telugu', 'malayalam'];
+const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'punjabi', 'tamil', 'telugu', 'malayalam', 'kannada'];
 const industryOptions = ['bollywood', 'hollywood', 'south'];
 const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons'];
 const videoSource = process.env.VIDEO_SERVER_URL;
@@ -597,7 +597,7 @@ export default function AdminPage() {
                                 </fieldset>
                             </div>
 
-                            <div className="flex flex-col my-3 gap-2 space-y-2">
+                            <div className="flex flex-col my-3 gap-2 space-y-2 max-w-sm">
                                 <label className="font-bold text-gray-800">Language</label>
                                 <fieldset className="flex flex-wrap gap-3">
                                     {languageOptions.map((lng) => (

@@ -151,6 +151,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
       {isReportModelOpen && (
         <ReportModel
           id={_id}
+          content_title={title}
           status={status}
           watchLinks={watchLink}
           playHandler={playHandler}

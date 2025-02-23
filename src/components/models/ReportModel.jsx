@@ -6,7 +6,7 @@ import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { useCurrentWindowSize } from "@/hooks/hook";
 
-export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDownloadOption, watchLinks = null, playHandler, currentPlaySource }) {
+export default function ReportModel({ id, content_title, status, setIsModelOpen, isOpen, isDownloadOption, watchLinks = null, playHandler, currentPlaySource }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
@@ -104,7 +104,8 @@ export default function ReportModel({ id, status, setIsModelOpen, isOpen, isDown
         withCredentials: true
       }).post('/api/v1/user/action/report', {
         reportData: {
-          movie: id,
+          content_id: id,
+          content_title,
           selectedReports,
           writtenReport: writtenReportRef.current?.value,
         }
