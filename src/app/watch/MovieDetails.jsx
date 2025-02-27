@@ -307,7 +307,7 @@ function PlayButton({ watchLinks, playHandler, contentType }) {
       return
     };
 
-    if (contentType === "series") {
+    if (contentType === "series" || watchLinks.length ===1) {
       playHandler(watchLinks[0].source);
     } else {
       setDropDown((prev) => !prev)
@@ -359,7 +359,9 @@ function PlayButton({ watchLinks, playHandler, contentType }) {
                 >
                   <i className={`bi bi-dot ${index === 0 ? "text-cyan-500" : "text-yellow-500"} text-xl`}></i>
                   <span className="mr-1.5">{data.label}</span>
-                  <span className="font-medium text-gray-300">- {data.labelTag}</span>
+                  {data.labelTag &&(
+                    <span className="font-medium text-gray-300">- {data.labelTag}</span>
+                  )}
                 </button>
               </div>
             ))}

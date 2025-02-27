@@ -64,6 +64,7 @@ export default function RootLayout({ children }) {
             <CustomLoadingAds />
           </Suspense>
         )}
+
       </body>
     </html>
   )

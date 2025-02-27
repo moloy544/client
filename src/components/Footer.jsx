@@ -34,7 +34,7 @@ function Footer() {
                         <i className="bi bi-github text-[26px]"></i>
                         <span className="text-cyan-400">Github</span>
                     </a>
-                    <a className="flex items-center" href="https://www.instagram.com/sanjoyrakshit504/" title="Instagram" target="_blank" rel="noopener noreferrer">
+                    <a className="flex items-center" href="https://www.instagram.com/sanjoyrakshit504/" title="Instagram Contact" target="_blank" rel="noopener noreferrer">
                         <svg
                             width="34px"
                             height="34px"
@@ -70,7 +70,7 @@ function Footer() {
                         </svg>
                         <span className="text-cyan-400">Instagram</span>
                     </a>
-                    <a className="flex items-center" href="https://www.facebook.com/sanjoy.rokshit.5" title="Facebook" target="_blank" rel="noopener noreferrer">
+                    <a className="flex items-center" href="https://www.facebook.com/sanjoy.rokshit.5" title="Facebook Contact" target="_blank" rel="noopener noreferrer">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0 0 48 48">
                             <linearGradient id="Ld6sqrtcxMyckEl6xeDdMa_uLWV5A9vXIPu_gr1" x1="9.993" x2="40.615" y1="9.993" y2="40.615" gradientUnits="userSpaceOnUse">
                                 <stop offset="0" stopColor="#2aa4f4"></stop>
@@ -81,7 +81,7 @@ function Footer() {
                         </svg>
                         <span className="text-cyan-400">Facebook</span>
                     </a>
-                    <a className="flex items-center gap-1" title="Github" href="https://t.me/sanjoyrakshit504" target="_blank" rel="noopener noreferrer">
+                    <a className="flex items-center gap-1" title="Telegram Contact" href="https://t.me/sanjoyrakshit504" target="_blank" rel="noopener noreferrer">
                         <svg
                             width="32px"
                             height="32px"
@@ -110,9 +110,16 @@ function Footer() {
                         </svg>
                         <span className="text-cyan-400">Telegram</span>
                     </a>
+                    <div className="flex items-center gap-1 cursor-pointer" title="Email Contact" onClick={handleEmail}>
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="40" height="40" viewBox="0 0 48 48">
+                            <path fill="#1e88e5" d="M34,42H14c-4.411,0-8-3.589-8-8V14c0-4.411,3.589-8,8-8h20c4.411,0,8,3.589,8,8v20C42,38.411,38.411,42,34,42z"></path>
+                            <path fill="#fff" d="M35.926,17.488L29.414,24l6.511,6.511C35.969,30.347,36,30.178,36,30V18C36,17.822,35.969,17.653,35.926,17.488z M26.688,23.899l7.824-7.825C34.347,16.031,34.178,16,34,16H14c-0.178,0-0.347,0.031-0.512,0.074l7.824,7.825C22.795,25.38,25.205,25.38,26.688,23.899z M24,27.009c-1.44,0-2.873-0.542-3.99-1.605l-6.522,6.522C13.653,31.969,13.822,32,14,32h20c0.178,0,0.347-0.031,0.512-0.074l-6.522-6.522C26.873,26.467,25.44,27.009,24,27.009z M12.074,17.488C12.031,17.653,12,17.822,12,18v12c0,0.178,0.031,0.347,0.074,0.512L18.586,24L12.074,17.488z"></path>
+                        </svg>
+                        <span className="text-cyan-400">Email</span>
+                    </div>
                     <a
                         className="flex items-center gap-1"
-                        title="LinkedIn"
+                        title="LinkedIn Contact"
                         href="https://www.linkedin.com/in/sanjoy-rakshit-1796a5287/"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -144,22 +151,26 @@ function Footer() {
                 </div>
             </div>
 
-            <div className="text-sm text-gray-400 text-center mx-2 space-y-3">
-                <p>
-                    <strong>User Safety:</strong> While we strive to ensure safe viewing experiences, users should be aware that some uploaded content may contain copyrighted material. It&lsquo;s our responsibility to monitor content, but we advise users to watch at their discretion.
+            <div className="bg-gray-900 px-2.5 rounded-xl shadow-lg space-y-5 text-gray-300 my-3">
+                <p className="text-lg font-semibold text-center">Support Us with Ads</p>
+                <p className="text-base text-center">
+                    To keep bringing you the content you love, we display a few ads on our site. Your support by viewing these ads helps us continue offering this platform for free. Enjoy your favorite content, and thank you for understanding!
                 </p>
-                <p>
-                    <strong>Content Safty:</strong> Requests for adult content will be rejected and removed from our site. If you see any content that may be pornographic material, please report it to us via email at <span onClick={handleEmail} className="text-gray-400 font-semibold cursor-pointer">moviesbazarorg@gmail.com</span>.
-                </p>
-                <p>
-                    <strong>Advertisement:</strong> We show some ads, which are important for managing our site. Please ignore them and enjoy your favorite content.
-                </p>
-                <p>
-                    <strong>Privacy policy:</strong>  We have some privacy policies to keep you informed about how we manage data. Please take a moment to read them by clicking the link.
-                    <Link href="/privacy-policy/" className="text-blue-200 font-medium ml-1.5">
-                        See privery policy
-                    </Link>
-                </p>
+
+                <div className="text-sm text-gray-300 space-y-4">
+                    <p>
+                        <strong>User Safety:</strong> While we strive to ensure safe viewing experiences, users should be aware that some uploaded content may contain copyrighted material. It&apos;s our responsibility to monitor content, but we advise users to watch at their discretion.
+                    </p>
+                    <p>
+                        <strong>Content Safety:</strong> Requests for adult content will be rejected and removed from our site. If you see any content that may be pornographic material, please report it to us via email at <span onClick={handleEmail} className="text-blue-500 font-semibold cursor-pointer">moviesbazarorg@gmail.com</span>.
+                    </p>
+                    <p>
+                        <strong>Advertisement:</strong> We show some ads, which are important for managing our site. Your support helps us continue offering free content.
+                    </p>
+                    <p>
+                        <strong>Privacy Policy:</strong> We have some privacy policies to keep you informed about how we manage data. Please take a moment to read them by clicking the link. <a href="/privacy-policy/" className="text-blue-500 font-medium">See Privacy Policy</a>
+                    </p>
+                </div>
             </div>
 
             <div className="text-base text-gray-200 font-semibold flex items-center">
