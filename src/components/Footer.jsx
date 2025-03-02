@@ -152,10 +152,6 @@ function Footer() {
             </div>
 
             <div className="bg-gray-900 px-2.5 rounded-xl shadow-lg space-y-5 text-gray-300 my-3">
-                <p className="text-lg font-semibold text-center">Support Us with Ads</p>
-                <p className="text-base text-center">
-                    To keep bringing you the content you love, we display a few ads on our site. Your support by viewing these ads helps us continue offering this platform for free. Enjoy your favorite content, and thank you for understanding!
-                </p>
 
                 <div className="text-sm text-gray-300 space-y-4">
                     <p>
@@ -164,9 +160,7 @@ function Footer() {
                     <p>
                         <strong>Content Safety:</strong> Requests for adult content will be rejected and removed from our site. If you see any content that may be pornographic material, please report it to us via email at <span onClick={handleEmail} className="text-blue-500 font-semibold cursor-pointer">moviesbazarorg@gmail.com</span>.
                     </p>
-                    <p>
-                        <strong>Advertisement:</strong> We show some ads, which are important for managing our site. Your support helps us continue offering free content.
-                    </p>
+                    
                     <p>
                         <strong>Privacy Policy:</strong> We have some privacy policies to keep you informed about how we manage data. Please take a moment to read them by clicking the link. <a href="/privacy-policy/" className="text-blue-500 font-medium">See Privacy Policy</a>
                     </p>
