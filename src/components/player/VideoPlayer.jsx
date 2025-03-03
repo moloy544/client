@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import { useOrientation } from "@/hooks/hook";
 import { isMobileDevice } from "@/utils";
 
@@ -153,12 +153,6 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
     }
 
   }, [isPortrait, isMobile]);
-
-  const dontShowErrorMessageAgain = () => {
-    // Set the sessionStorage key to prevent showing the error message again
-    sessionStorage.setItem('dontShowHlsErrorMessage', 'true');
-    setErrorAccept(true);
-  };
 
 
   useEffect(() => {
