@@ -1,7 +1,7 @@
 import { adsConfig } from "@/config/ads.config";
 
 export const openDirectLinkAd = () => {
-    if (process.env.NODE_ENV !== 'development') return;
+    if (process.env.NODE_ENV === 'development') return;
 
     // Use a less obvious key name like '__adc_ct_0987' for storing the click count
     const storageKey = '__adc_ct_0987';
