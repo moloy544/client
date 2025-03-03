@@ -122,9 +122,9 @@ const VidStackPlayer = memo(({ title, source }) => {
             >
                 <div ref={playerRef} className="w-full h-fit transition-all duration-500 flex items-center rounded-2xl">
                    
-                        <MediaPlayer title="Sprite Fight" src={source}>
+                        <MediaPlayer title={title || "Movies Bazar"} src={source}>
                             <MediaProvider />
-                            <DefaultVideoLayout title={title || "Movies Bazar"} icons={defaultLayoutIcons} />
+                            <DefaultVideoLayout icons={defaultLayoutIcons} />
                         </MediaPlayer>
                 </div>
             </div>
