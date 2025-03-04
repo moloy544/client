@@ -1,16 +1,17 @@
 "use client";
 
-import { openDirectLinkAd } from '@/utils/ads.utility';
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Script from 'next/script';
+import { usePathname } from 'next/navigation';
+import { openDirectLinkAd } from '@/utils/ads.utility';
 
 export default function CustomLoadingAds() {
   const [adClicked, setAdClicked] = useState(false);
+  const [loadAds, setLoadAds] = useState(false); // Control when to load ads
   const location = usePathname();
 
   useEffect(() => {
     const documentBody = document.body;
-
     const noAdsPaths = ["publisher", "search"];
     const currentPath = location.split('/')[1];
 
@@ -37,5 +38,26 @@ export default function CustomLoadingAds() {
     };
   }, [adClicked, location]);
 
-  return null; // No visual output; just manages the ad click functionality
+  // Delay the loading of the ad script by 20 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadAds(true); // Set to true after 20 seconds
+    }, 20000); // 20 seconds
+
+    // Cleanup timer on component unmount
+    return () => clearTimeout(timer);
+  }, []);
+
+
+  return (
+    <>
+      {loadAds && (
+        <Script
+          async={true}
+          src="//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js"
+          strategy="lazyOnload"
+        />
+      )}
+    </>
+  );
 }
