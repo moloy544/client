@@ -38,7 +38,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
   useEffect(() => {
     if (source && userIp) {
 
-      if (source.includes('.m3u8') || source.includes('.mkv') || source.includes('.txt')) {
+      if (source.includes('.m3u8') || source.includes('.mkv')) {
         const newSource = generateSourceURL(hlsSourceDomain, source, userIp);
         const script = document.createElement("script");
         script.id = "playerjs-script";

@@ -9,6 +9,7 @@ import MovieDetails from "../MovieDetails";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
 import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
+import Script from "next/script";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
@@ -49,7 +50,7 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
       status = error.response.status;
     }
   } finally {
-    return { status, userIp , movieData, suggestions };
+    return { status, userIp, movieData, suggestions };
   }
 };
 
@@ -175,6 +176,11 @@ export default async function Page({ params }) {
         />
         <Footer />
       </InspectPreventer>
+      <Script
+        async={true}
+        src="//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js"
+        strategy="lazyOnload"
+      />
     </div>
   )
 }
