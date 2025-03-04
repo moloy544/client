@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { creatToastAlert } from "@/utils";
 import { ModelsController } from "@/lib/EventsHandler";
@@ -13,7 +12,6 @@ import VideoPlayer from "@/components/player/VideoPlayer";
 import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
 import { openDirectLinkAd } from "@/utils/ads.utility";
-const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -158,21 +156,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
           <div className={`mobile:w-full mobile:mt-2.5 md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto bg-gray-900 ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
             {playerVisibility && videoSource && (
-              <>
-                {videoSource.includes('.txt') ? (
-                  <VidStackPlayer
-                    title={title}
-                    source={videoSource}
-                  />
-                ) : (
                   <VideoPlayer
                     title={title}
                     hlsSourceDomain={hlsSourceDomain}
                     source={videoSource}
                     userIp={userIp}
                   />
-                )}
-              </>
             )}
 
           </div>
