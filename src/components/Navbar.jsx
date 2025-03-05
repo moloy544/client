@@ -6,7 +6,6 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
 import brandLogoIcon from "../assets/images/brand_logo.png"
-import valentinesLoveChocolateBox from "../assets/images/valentines-love-chocolate-box.png"
 
 const WatchlaterModel = dynamic(() => import('./models/WatchlaterModel'), { ssr: false });
 
