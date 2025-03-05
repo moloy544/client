@@ -6,6 +6,7 @@ import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import { openDirectLinkAd } from "@/utils/ads.utility";
+import { useCurrentWindowSize } from "@/hooks/hook";
 
 
 // Report content model dinamic import
@@ -23,6 +24,8 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
 
   const [isSaved, setIsSaved] = useState(false);
   const [isReportModelOpen, setIsReportModelOpen] = useState(false);
+   // get window live current width
+   const windowCurrentWidth = useCurrentWindowSize().width;
 
   const {
     _id,
@@ -113,6 +116,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
             imdbId={imdbId}
             handleReportModelOpen={setIsReportModelOpen}
             downloadLinks={downloadLinks}
+            windowCurrentWidth={windowCurrentWidth}
           />
         )}
 
@@ -159,6 +163,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
           isDownloadOption={downloadLinks && downloadLinks.length > 0 ? true : false}
           setIsModelOpen={setIsReportModelOpen}
           isOpen={isReportModelOpen}
+          windowCurrentWidth={windowCurrentWidth}
         />
       )}
 
@@ -166,7 +171,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
   )
 };
 
-function DownloadButton({ isOnline, imdbId, downloadLinks, handleReportModelOpen }) {
+function DownloadButton({ isOnline, imdbId, downloadLinks, handleReportModelOpen, windowCurrentWidth }) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -207,6 +212,7 @@ function DownloadButton({ isOnline, imdbId, downloadLinks, handleReportModelOpen
         imdbId={imdbId}
         linksData={downloadLinks[0]}
         isOpen={isModalOpen}
+        windowCurrentWidth={windowCurrentWidth}
         onClose={() => setIsModalOpen(false)}
         onReportButtonClick={() => {
           setIsModalOpen(false);

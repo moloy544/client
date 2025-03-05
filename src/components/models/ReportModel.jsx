@@ -4,9 +4,8 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
-import { useCurrentWindowSize } from "@/hooks/hook";
 
-export default function ReportModel({ id, content_title, status, setIsModelOpen, isOpen, isDownloadOption, watchLinks = null, playHandler, currentPlaySource }) {
+export default function ReportModel({ id, content_title, status, setIsModelOpen, isOpen, windowCurrentWidth, isDownloadOption, watchLinks = null, playHandler, currentPlaySource }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
@@ -137,9 +136,6 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
     };
   };
 
-  // get window live current width
-  const windowCurrentWidth = useCurrentWindowSize().width;
-
   const reportOptions = [
     { value: "Video not playing", id: "video-option-checkbox", visible: status === "released" },
     { value: "Audio not working", id: "audio-option-checkbox", visible: status === "released" },
@@ -148,9 +144,10 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
     { value: "Share not working", id: "share-option-checkbox", visible: true },
   ];
 
+
   return (
     <>
-      <ModelsController visibility={isOpen} transformEffect={windowCurrentWidth <= 450} windowScroll={false}>
+      <ModelsController visibility={isOpen} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false} windowScroll={false}>
         <div className="w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
           style={{ transform: 'translateY(100%)' }}
         >

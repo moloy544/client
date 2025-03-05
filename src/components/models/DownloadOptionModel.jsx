@@ -1,7 +1,6 @@
 "use client"
 
 import { appConfig } from "@/config/config";
-import { useCurrentWindowSize } from "@/hooks/hook";
 import { ModelsController } from "@/lib/EventsHandler"
 import { creatToastAlert } from "@/utils";
 import axios from "axios";
@@ -43,12 +42,9 @@ const formatQualityType = (quality, qualityType) => {
   return `(${qualityLabel})`;
 };
 
-export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpen, onClose, onReportButtonClick }) {
+export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpen, onClose, onReportButtonClick, windowCurrentWidth }) {
 
   const { title, links, qualityType } = linksData || {};
-
-  // get window live current width 
-  const windowCurrentWidth = useCurrentWindowSize().width;
 
   //const [downloadOptionUrlData, setDownloadOptionUrlData] = useState([]);
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
@@ -120,7 +116,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
 
   return (
     <>
-      <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth <= 450}>
+      <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false}>
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50">
 
           <div className="bg-white rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg py-2">
