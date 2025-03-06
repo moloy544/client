@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import authorImage from '../assets/images/india_flag.jpg';
-import Link from 'next/link';
 
 const handleEmail = () => {
     const email = 'moviesbazarorg@gmail.com';
@@ -27,6 +26,7 @@ function Footer() {
                     </div>
                 </a>
             </div>
+            
             <div className="text-center">
                 <h2 className="text-2xl mobile:text-lg text-gray-300 font-bold my-1">Social links</h2>
                 <div className="text-sm text-gray-200 gap-5 mobile:gap-2 flex flex-wrap items-center justify-evenly px-2">

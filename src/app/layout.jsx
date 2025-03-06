@@ -7,6 +7,7 @@ import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
 import CustomLoadingAds from '@/components/ads/CustomLoadingAds';
 import { BASE_OG_IMAGE_URL } from '@/constant/assets_links';
+import SocialJoinAlert from '@/components/models/SocialJoinAlert';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -51,7 +52,8 @@ export default function RootLayout({ children }) {
           speed={400}
           shadow="0 0 10px #08D5BB,0 0 5px #08D5BB"
         />
-
+        <SocialJoinAlert />
+        
         <ReduxStatePrivider>
           {children}
         </ReduxStatePrivider>
