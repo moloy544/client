@@ -2,15 +2,14 @@
 
 import { useEffect } from "react";
 import { safeLocalStorage } from "@/utils/errorHandlers";
-import { getFullWebAccessState } from "@/context/fullWebAccessState/getFullWebAccessState";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
 
 const SocialJoinAlert = () => {
 
   const dispatch = useDispatch();
 
-  const { isSocialjoinModalShow } = getFullWebAccessState();
+  const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
 
   const closeModal = () => {
     dispatch(updatefullWebAccessState({

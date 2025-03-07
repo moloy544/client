@@ -4,15 +4,15 @@ import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { openDirectLinkAd } from '@/utils/ads.utility';
-import { getFullWebAccessState } from '@/context/fullWebAccessState/getFullWebAccessState';
+import { useSelector } from 'react-redux';
 
 export default function CustomLoadingAds() {
-  
+
   const [adClicked, setAdClicked] = useState(false);
   const [loadAds, setLoadAds] = useState(false); // Control when to load ads
   const location = usePathname();
 
-  const { isSocialjoinModalShow } = getFullWebAccessState();
+  const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
 
   useEffect(() => {
     const documentBody = document.body;
