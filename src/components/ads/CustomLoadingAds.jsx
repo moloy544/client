@@ -4,11 +4,15 @@ import { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { openDirectLinkAd } from '@/utils/ads.utility';
+import { getFullWebAccessState } from '@/context/fullWebAccessState/getFullWebAccessState';
 
 export default function CustomLoadingAds() {
+  
   const [adClicked, setAdClicked] = useState(false);
   const [loadAds, setLoadAds] = useState(false); // Control when to load ads
   const location = usePathname();
+
+  const { isSocialjoinModalShow } = getFullWebAccessState();
 
   useEffect(() => {
     const documentBody = document.body;
@@ -16,7 +20,7 @@ export default function CustomLoadingAds() {
     const currentPath = location.split('/')[1];
 
     // If the current path is in noAdsPaths, prevent ad click functionality
-    if (noAdsPaths.includes(currentPath)) return;
+    if (noAdsPaths.includes(currentPath) || isSocialjoinModalShow) return;
 
     const handleClick = () => {
       // Prevent multiple ad clicks
@@ -36,7 +40,7 @@ export default function CustomLoadingAds() {
     return () => {
       documentBody.removeEventListener("click", handleClick);
     };
-  }, [adClicked, location]);
+  }, [adClicked, location, isSocialjoinModalShow]);
 
   // Delay the loading of the ad script by 20 seconds
   useEffect(() => {

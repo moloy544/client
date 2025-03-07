@@ -52,16 +52,16 @@ export default function RootLayout({ children }) {
           speed={400}
           shadow="0 0 10px #08D5BB,0 0 5px #08D5BB"
         />
-        <SocialJoinAlert />
-        
+
         <ReduxStatePrivider>
+          <SocialJoinAlert />
           {children}
+          {process.env.NODE_ENV !== "production" && (
+            <Suspense>
+              <CustomLoadingAds />
+            </Suspense>
+          )}
         </ReduxStatePrivider>
-        {process.env.NODE_ENV === "production" && (
-          <Suspense>
-            <CustomLoadingAds />
-          </Suspense>
-        )}
 
       </body>
     </html>
