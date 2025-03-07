@@ -56,7 +56,7 @@ export default function RootLayout({ children }) {
         <ReduxStatePrivider>
           <SocialJoinAlert />
           {children}
-          {process.env.NODE_ENV !== "production" && (
+          {process.env.NODE_ENV === "production" && (
             <Suspense>
               <CustomLoadingAds />
             </Suspense>
