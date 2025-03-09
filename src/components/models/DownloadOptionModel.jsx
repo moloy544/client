@@ -6,6 +6,7 @@ import { creatToastAlert } from "@/utils";
 import axios from "axios";
 import { useState } from "react";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
+import { isIOS } from "@/helper/helper";
 
 const formatQualityType = (quality, qualityType) => {
 
@@ -79,6 +80,18 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
           message: 'Download failed. Please try again later, or report the issue to us.',
           visiblityTime: 12000
         });
+        return;
+      }
+
+      if(isIOS()){
+        // iOS doesn't support window.open(), so we use a custom method to open the link in a new tab
+        const iframe = document.createElement('iframe');
+        iframe.src = downloadUrl;
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        setTimeout(() => {
+          iframe.parentNode.removeChild(iframe);
+        }, 5000); // 5 seconds after the download starts
         return;
       }
   
