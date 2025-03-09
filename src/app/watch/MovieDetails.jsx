@@ -153,7 +153,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       <div className="my-6 mobile:my-2.5 flex justify-center items-center">
 
-        <div className={`h-fit w-full ${playerVisibility && videoSource ? "max-w-full mx-4" : "max-w-5xl mx-3"} mobile:mx-1 p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[rgb(32,44,64)] rounded-md shadow-xl`}>
+        <div className={`h-fit w-full ${playerVisibility && videoSource ? "max-w-full mx-4" : "max-w-5xl mx-3"} mobile:mx-1 p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[rgb(29,39,59)] rounded-md shadow-xl`}>
 
           <div className={`mobile:w-full mobile:mt-2.5 md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto bg-gray-900 ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
@@ -212,58 +212,75 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
           <div className="w-full h-auto py-3 flex flex-col mobile:flex-col-reverse">
 
-            <div className="mobile:px-2.5 space-y-3">
+            <div className={`mobile:px-2.5 space-y-3 ${playerVisibility && "lg:inline-flex lg:justify-between"} space-x-21`}>
 
-              <div className="flex flex-wrap items-center space-x-1">
-                <strong className="text-base text-gray-200 font-bold">Title:</strong>
-                <h1 className="text-sm text-gray-300 font-semibold">{title}</h1>
-              </div>
+              <div className="space-y-4">
 
-              <div className="flex flex-wrap items-center space-x-1">
-                <strong className="text-base text-gray-200 font-bold">Year:</strong>
-                <div className="text-sm text-gray-300 font-semibold mt-1">{releaseYear}</div>
-              </div>
-
-              {fullReleaseDate && (
                 <div className="flex flex-wrap items-center space-x-1">
-                  <strong className="text-base text-gray-200 font-bold">
-                    {status === "released" ? "Released:" : "Expeted relesed:"}
-                  </strong>
-                  <div className="text-sm text-gray-300 font-semibold mt-1">{formattedDate}</div>
+                  <strong className="text-base text-gray-200 font-bold">Title:</strong>
+                  <h1 className="text-sm text-gray-300 font-semibold">{title}</h1>
                 </div>
-              )}
 
-              <div className="flex flex-wrap items-center space-x-1">
-                <strong className="text-base text-gray-200 font-bold">Language:</strong>
-                <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-300 font-semibold mt-1" prefetch={false}>
-                  {language?.charAt(0).toUpperCase() + language?.slice(1)}
-                </Link>
-              </div>
-
-              {castDetails?.length > 0 && (
                 <div className="flex flex-wrap items-center space-x-1">
-                  <strong className="text-base text-gray-200 font-bold">Star cast:</strong>
-                  {castDetails?.map((cast, index) => (
-                    <div key={index} className="text-gray-300 text-xs font-semibold mt-1">
-                      {cast}
-                      {index !== castDetails.length - 1 && ','}
-                    </div>
-                  ))}
+                  <strong className="text-base text-gray-200 font-bold">Year:</strong>
+                  <div className="text-sm text-gray-300 font-semibold mt-1">{releaseYear}</div>
                 </div>
-              )}
 
-              <div className="flex flex-wrap items-center space-x-1">
-                <strong className="text-base text-gray-200 font-bold flex-wrap">Genre:</strong>
-                {genre?.map((g, index) =>
-                  g !== "N/A" && (
-                    <Link key={index} className="text-gray-300 text-xs font-semibold mt-1" href={`/browse/genre/${g?.toLowerCase().replace(/[' ']/g, '-')}`} prefetch={false}>
-                      {index !== genre.length - 1 ? `${g} ${'\u2022'} ` : g}
-                    </Link>
+                {fullReleaseDate && (
+                  <div className="flex flex-wrap items-center space-x-1">
+                    <strong className="text-base text-gray-200 font-bold">
+                      {status === "released" ? "Released:" : "Expeted relesed:"}
+                    </strong>
+                    <div className="text-sm text-gray-300 font-semibold mt-1">{formattedDate}</div>
+                  </div>
+                )}
 
-                  ))}
+                <div className="flex flex-wrap items-center space-x-1">
+                  <strong className="text-base text-gray-200 font-bold">Language:</strong>
+                  <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-300 font-semibold mt-1" prefetch={false}>
+                    {language?.charAt(0).toUpperCase() + language?.slice(1)}
+                  </Link>
+                </div>
+
+                {castDetails?.length > 0 && (
+                  <div className="flex flex-wrap items-center space-x-1">
+                    <strong className="text-base text-gray-200 font-bold">Star cast:</strong>
+                    {castDetails?.map((cast, index) => (
+                      <div key={index} className="text-gray-300 text-xs font-semibold mt-1">
+                        {cast}
+                        {index !== castDetails.length - 1 && ','}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="flex flex-wrap items-center space-x-1">
+                  <strong className="text-base text-gray-200 font-bold flex-wrap">Genre:</strong>
+                  {genre?.map((g, index) =>
+                    g !== "N/A" && (
+                      <Link key={index} className="text-gray-300 text-xs font-semibold mt-1" href={`/browse/genre/${g?.toLowerCase().replace(/[' ']/g, '-')}`} prefetch={false}>
+                        {index !== genre.length - 1 ? `${g} ${'\u2022'} ` : g}
+                      </Link>
+
+                    ))}
+                </div>
+
               </div>
 
+              {playerVisibility && (
+                <div className="hidden lg:block mx-1.5">
+                <Image
+                  width={115}  // Fixed width
+                  height={120} // Fixed height
+                  priority
+                  className="select-none pointer-events-none min-w-[115px] max-w-[115px] h-auto aspect-[2.9/4] rounded-md"
+                  src={thumbnail}
+                  alt={title}
+                />
+              </div>
+              )}
             </div>
+
             <div className="px-1.5 mobile:pb-3 space-x-1.5 md:my-6 max-w-lg">
               <p className="text-xs text-yellow-500 font-semibold leading-[18px]">
                 <span className="text-sm text-gray-200 mr-0.5">Note:</span>
