@@ -70,7 +70,7 @@ export async function generateMetadata({ params }) {
   }
 
   // Destructure necessary fields from the movie data
-  const { imdbId, title, thumbnail, releaseYear, type, genre, language, castDetails } = movieData || {};
+  const { imdbId, title, thumbnail, releaseYear, type, genre, language, castDetails, multiAudio } = movieData || {};
 
   // Convert type from params and movie data to lowercase for comparison
   const paramsType = movieDetails[0]?.toLowerCase();
@@ -94,7 +94,7 @@ export async function generateMetadata({ params }) {
 
   // metadata related fields 
   const metaTitle = `Watch ${title} (${releaseYear}) ${transformToCapitalize(type)} Online Free!`;
-  const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} movie in ${language}.`;
+  const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} movie in ${language}${multiAudio ? " and other languages" : ""}.`;
   const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${paramsImdbId?.replace('tt', '')}`;
   const metaKeywords = [
     `${title +" " +type}`,
