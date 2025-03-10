@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { creatToastAlert } from "@/utils";
+import { creatToastAlert, resizeImage } from "@/utils";
 import { ModelsController } from "@/lib/EventsHandler";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -163,6 +163,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                   <VidStackPlayer
                     title={title}
                     source={videoSource}
+                    userIp={userIp}
                   />
                 ) : (
                   <VideoPlayer
@@ -274,7 +275,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                   height={120} // Fixed height
                   priority
                   className="select-none pointer-events-none min-w-[115px] max-w-[115px] h-auto aspect-[2.9/4] rounded-md"
-                  src={thumbnail}
+                  src={resizeImage(thumbnail,'w200')}
                   alt={title}
                 />
               </div>

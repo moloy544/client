@@ -212,19 +212,9 @@ export default function SearchPage() {
                                 alt="Mobies bazar logo"
                                 className="w-11 h-11 mobile:w-9 mobile:h-9"
                             />
-                            <div className="flex flex-col mt-1">
+                            <div className="flex flex-col mt-1 space-y-1">
                                 <Link href="/" className="font-semibold text-yellow-500 text-xl mobile:text-[15px] leading-[14px] relative">
-                                    <span className="inline-flex">
-                                        <span>Movies </span>
-                                        <Image
-                                            src={valentinesLoveChocolateBox}
-                                            alt="Valentine's Day love chocolate box"
-                                            width={22}
-                                            height={22}
-                                            className="animate-bounce"
-                                        />
-                                        <span>Bazar</span>
-                                    </span>
+                                    Movies Bazar
                                 </Link>
                                 <small className="text-yellow-500 mt-0 text-xs mobile:text-[10px] font-medium pl-0.5">
                                     Made with love

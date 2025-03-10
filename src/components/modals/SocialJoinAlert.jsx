@@ -5,42 +5,53 @@ import { safeLocalStorage } from "@/utils/errorHandlers";
 import { useDispatch, useSelector } from "react-redux";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
 
-const SocialJoinAlert = () => {
+const MODAL_KEY = "social_join_alert";
+
+export default function SocialJoinAlert() {
 
   const dispatch = useDispatch();
-
   const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
 
-  const closeModal = () => {
-    dispatch(updatefullWebAccessState({
-      isSocialjoinModalShow: false,
-    }))
+  const handleModalVisibility = (value) => {
+    dispatch(
+      updatefullWebAccessState({
+        isSocialjoinModalShow: value,
+      })
+    );
   };
-
-  const handleModalvisiblity = (value) => {
-    dispatch(updatefullWebAccessState({
-      isSocialjoinModalShow: value,
-    }))
-  }
 
   useEffect(() => {
     // Check if the modal should be shown
-    const modalStatus = safeLocalStorage.get("social_join_alert");
-    if (!modalStatus || modalStatus === "true") {
-      handleModalvisiblity(true);
+    const modalData = safeLocalStorage.get(MODAL_KEY);
+    const modalParseData = modalData ? JSON.parse(modalData) : null;
+
+    const { hideUntil } = modalParseData || {};
+    const currentTime = new Date().getTime();
+
+    // If there's no data or the expiration time has passed, show the modal
+    if (!modalParseData || typeof modalParseData !== "object" || !hideUntil || currentTime > new Date(hideUntil).getTime()) {
+      handleModalVisibility(true);
     } else if (isSocialjoinModalShow) {
-      handleModalvisiblity(false);
+      handleModalVisibility(false);
     }
-  }, []);
+  }, [isSocialjoinModalShow]);
 
   const handleDontShowAgain = () => {
-    safeLocalStorage.set("social_join_alert", "false");
-    handleModalvisiblity(false);
+    handleModalVisibility(false);
+
+    // Set the expiration date 7 days from now
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 7); // Add 7 days
+    const formattedExpirationDate = expirationDate.toISOString();
+
+    safeLocalStorage.set(MODAL_KEY, JSON.stringify({ hideUntil: formattedExpirationDate }));
+
   };
 
   if (!isSocialjoinModalShow) {
     return null;
   }
+
 
   return (
     <div id="social-media-join-modal" className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
@@ -180,10 +191,10 @@ const SocialJoinAlert = () => {
             onClick={handleDontShowAgain}
             className="text-sm mobile:text-xs text-gray-600 font-semibold hover:text-red-500 transition-all"
           >
-            Already Joined? Don&lsquo;t Show Again
+           Don&apos;t Show Again for 7 Days
           </button>
           <button
-            onClick={closeModal}
+            onClick={() => handleModalVisibility(false)}
             className="text-sm mobile:text-xs bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-500 transition-all"
           >
             Close
@@ -193,5 +204,3 @@ const SocialJoinAlert = () => {
     </div>
   );
 };
-
-export default SocialJoinAlert;

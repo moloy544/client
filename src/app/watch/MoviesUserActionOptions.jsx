@@ -10,11 +10,11 @@ import { useCurrentWindowSize } from "@/hooks/hook";
 
 
 // Report content model dinamic import
-const ReportModel = dynamic(() => import('@/components/models/ReportModel'), {
+const ReportModel = dynamic(() => import('@/components/modals/ReportModel'), {
   ssr: false,
 });
 // Download content videos model dinamic import
-const DownloadOptionModel = dynamic(() => import('@/components/models/DownloadOptionModel'), {
+const DownloadOptionModel = dynamic(() => import('@/components/modals/DownloadOptionModel'), {
   ssr: false,
 });
 

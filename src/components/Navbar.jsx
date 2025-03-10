@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import CategoryGroupSlider from "./CategoryGroupSlider";
 import brandLogoIcon from "../assets/images/brand_logo.png"
 
-const WatchlaterModel = dynamic(() => import('./models/WatchlaterModel'), { ssr: false });
+const WatchlaterModel = dynamic(() => import('./modals/WatchlaterModel'), { ssr: false });
 
 export default function Navbar() {
 

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
-import FilterModel from "./models/FilterModel";
+import FilterModel from "./modals/FilterModel";
 import BacktoTopButton from "./BacktoTopButton";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "./cards/Cards";
