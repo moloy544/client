@@ -1,64 +1,79 @@
+// Ads configuration
 import { adsConfig } from "@/config/ads.config";
+import { safeLocalStorage } from "./errorHandlers";
 
+// Helper function to get current time in IST (UTC +5:30)
+const getCurrentISTTime = () => {
+    const currentDate = new Date();
+    const utcOffset = currentDate.getTimezoneOffset() * 60000; // Get offset in milliseconds
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30 hours
+    return new Date(currentDate.getTime() + utcOffset + istOffset);
+};
+
+// Function to check if it's past 5:30 AM IST
+const isPastResetTimeIST = () => {
+    const currentIST = getCurrentISTTime();
+    const resetHour = 5;  // 5:30 AM IST
+    const resetMinute = 30;
+
+    return currentIST.getHours() > resetHour || 
+           (currentIST.getHours() === resetHour && currentIST.getMinutes() >= resetMinute);
+};
+
+// Function to open ads with global reset at 5:30 AM IST
 export const openDirectLinkAd = () => {
     if (process.env.NODE_ENV === 'development') return;
 
-    const maxClicksPerDay = 6; // Total max clicks for the day (3 for main + 3 for secondary)
-    const mainAccountLimit = 3; // Max clicks for the main Adsterra account
-    const currentDate = new Date().toLocaleDateString(); // Get the current date string (e.g., "3/11/2025")
-    const adClicksKey = '__adc_ct_0987'; // Key to store in localStorage
+    if (safeLocalStorage.get('__adc_ct_0987')) {
+        safeLocalStorage.removeItem('__adc_ct_0987');
+    }
+
+    const maxClicksPerDay = 6;  // Total max clicks (3 for main, 3 for secondary)
+    const adClicksKey = '__adc_ct_0988'; // Key for localStorage
     let adClicksData;
+    const currentDate = getCurrentISTTime().toLocaleDateString();
 
     try {
-        // Try to retrieve and parse the data from localStorage
         adClicksData = JSON.parse(localStorage.getItem(adClicksKey));
 
-        // If data is null or not an object (for some reason), initialize it
+        // Initialize if the format is invalid
         if (typeof adClicksData !== 'object' || adClicksData === null) {
-            throw new Error('Invalid ClicksData format');
+            throw new Error('Invalid adClicksData format');
         }
     } catch (e) {
-        // Remove the invalid key from localStorage
+        // Remove invalid key from localStorage and reset
         localStorage.removeItem(adClicksKey);
-        // Reset adClicksData as an empty object
         adClicksData = {};
     }
 
-    // Check if the stored date is today and if the user has clicked less than the limit
-    if (adClicksData.date !== currentDate) {
-        // Reset the click count for a new day
+    // Check if the clicks need to be reset for a new day (past 5:30 AM IST)
+    if (adClicksData.date !== currentDate || isPastResetTimeIST()) {
         adClicksData.date = currentDate;
         adClicksData.count = 0;
     }
 
-    // Determine which account's ad link to use based on the click count
-    let adLink;
-    if (adClicksData.count < mainAccountLimit) {
-        // First 3 clicks go to the main Adsterra account
-        adLink = adsConfig.direct_Link;
-    } else if (adClicksData.count < maxClicksPerDay) {
-        // Next 3 clicks go to the secondary Adsterra account
-        adLink = adsConfig.seconderyAccount.direct_Link;
+    if (adClicksData.count < maxClicksPerDay) {
+        adClicksData.count += 1; // Increment count
+        localStorage.setItem(adClicksKey, JSON.stringify(adClicksData));
+
+        // Create and trigger ad link
+        const link = document.createElement('a');
+        link.href = adsConfig.direct_Link;  // Main account ad link
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     } else {
-        return;
+        // Show secondary account ad link if click limit reached
+        const link = document.createElement('a');
+        link.href = adsConfig.seconderyAccount.direct_Link; // Secondary account ad link
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
-
-    // Allow the ad click and increment the counter
-    adClicksData.count += 1;
-    localStorage.setItem(adClicksKey, JSON.stringify(adClicksData));
-
-    // Create a new anchor element for the ad link
-    const link = document.createElement('a');
-    link.href = adLink;           // Set the href to the determined ad link (main or secondary)
-    link.target = '_blank';       // Open the link in a new tab
-    link.rel = 'noopener noreferrer'; // Ensure security with 'noopener noreferrer'
-
-    // Append the anchor to the body (this step is required for Safari)
-    document.body.appendChild(link);
-
-    // Trigger a click on the anchor
-    link.click();
-
-    // Remove the anchor after clicking
-    document.body.removeChild(link);
 };
