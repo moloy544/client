@@ -22,13 +22,13 @@ const isPastResetTimeIST = () => {
 
 // Function to open ads with global reset at 5:30 AM IST
 export const openDirectLinkAd = () => {
-    //if (process.env.NODE_ENV === 'development') return;
+    if (process.env.NODE_ENV === 'development') return;
 
     if (safeLocalStorage.get('__adc_ct_0987')) {
         safeLocalStorage.remove('__adc_ct_0987');
     }
 
-    const maxClicksPerDay = 6;  // Total max clicks (3 for main, 3 for secondary)
+    const maxClicksPerDay = 10;  // Total max clicks (10 for main, 10 for secondary)
     const adClicksKey = '__adc_ct_0988'; // Key for localStorage
     let adClicksData;
     const currentDate = getCurrentISTTime().toLocaleDateString();
