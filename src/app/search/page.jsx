@@ -14,7 +14,6 @@ import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import brandLogoIcon from "../../assets/images/brand_logo.png"
-import valentinesLoveChocolateBox from "../../assets/images/valentines-love-chocolate-box.png"
 import { openDirectLinkAd } from "@/utils/ads.utility";
 
 // this is return user search history data

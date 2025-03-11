@@ -26,7 +26,7 @@ function Footer() {
                     </div>
                 </a>
             </div>
-            
+
             <div className="text-center">
                 <h2 className="text-2xl mobile:text-lg text-gray-300 font-bold my-1">Social links</h2>
                 <div className="text-sm text-gray-200 gap-5 mobile:gap-2 flex flex-wrap items-center justify-evenly px-2">
@@ -160,7 +160,7 @@ function Footer() {
                     <p>
                         <strong>Content Safety:</strong> Requests for adult content will be rejected and removed from our site. If you see any content that may be pornographic material, please report it to us via email at <span onClick={handleEmail} className="text-blue-500 font-semibold cursor-pointer">moviesbazarorg@gmail.com</span>.
                     </p>
-                    
+
                     <p>
                         <strong>Privacy Policy:</strong> We have some privacy policies to keep you informed about how we manage data. Please take a moment to read them by clicking the link. <a href="/privacy-policy/" className="text-blue-500 font-medium">See Privacy Policy</a>
                     </p>
@@ -173,7 +173,6 @@ function Footer() {
                     <span className="text-orange-500">Love</span> from <Image src={authorImage} alt="Indian flag" width={11} height={11} className="rounded-full inline-block" /> <span className=" text-green-500">India</span>
                 </div>
             </div>
-
         </footer>
     );
 }

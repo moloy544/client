@@ -5,6 +5,7 @@ import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { openDirectLinkAd } from '@/utils/ads.utility';
 import { useSelector } from 'react-redux';
+import { adsConfig } from '@/config/ads.config';
 
 export default function CustomLoadingAds() {
 
@@ -58,7 +59,7 @@ export default function CustomLoadingAds() {
       {loadAds && (
         <Script
           async={true}
-          src="//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js"
+          src={adsConfig.socialBarAdScriptSrc}
           strategy="lazyOnload"
         />
       )}

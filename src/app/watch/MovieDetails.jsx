@@ -178,7 +178,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
           </div>
 
-          <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility && videoSource ? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-600 bg-gray-800`}>
+          <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility && videoSource ? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-700 bg-gray-800`}>
 
             <Image
               priority
@@ -274,7 +274,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                   width={115}  // Fixed width
                   height={120} // Fixed height
                   priority
-                  className="select-none pointer-events-none min-w-[115px] max-w-[115px] h-auto aspect-[2.9/4] rounded-md"
+                  className="select-none pointer-events-none min-w-[115px] max-w-[115px] h-auto aspect-[2.9/4] rounded-md border border-gray-700"
                   src={resizeImage(thumbnail,'w200')}
                   alt={title}
                 />
