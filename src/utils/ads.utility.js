@@ -22,10 +22,10 @@ const isPastResetTimeIST = () => {
 
 // Function to open ads with global reset at 5:30 AM IST
 export const openDirectLinkAd = () => {
-    if (process.env.NODE_ENV === 'development') return;
+    //if (process.env.NODE_ENV === 'development') return;
 
     if (safeLocalStorage.get('__adc_ct_0987')) {
-        safeLocalStorage.removeItem('__adc_ct_0987');
+        safeLocalStorage.remove('__adc_ct_0987');
     }
 
     const maxClicksPerDay = 6;  // Total max clicks (3 for main, 3 for secondary)
@@ -34,7 +34,7 @@ export const openDirectLinkAd = () => {
     const currentDate = getCurrentISTTime().toLocaleDateString();
 
     try {
-        adClicksData = JSON.parse(localStorage.getItem(adClicksKey));
+        adClicksData = JSON.parse(safeLocalStorage.get(adClicksKey));
 
         // Initialize if the format is invalid
         if (typeof adClicksData !== 'object' || adClicksData === null) {
@@ -42,7 +42,7 @@ export const openDirectLinkAd = () => {
         }
     } catch (e) {
         // Remove invalid key from localStorage and reset
-        localStorage.removeItem(adClicksKey);
+        safeLocalStorage.remove(adClicksKey);
         adClicksData = {};
     }
 
@@ -54,7 +54,7 @@ export const openDirectLinkAd = () => {
 
     if (adClicksData.count < maxClicksPerDay) {
         adClicksData.count += 1; // Increment count
-        localStorage.setItem(adClicksKey, JSON.stringify(adClicksData));
+        safeLocalStorage.set(adClicksKey, JSON.stringify(adClicksData));
 
         // Create and trigger ad link
         const link = document.createElement('a');
