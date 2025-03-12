@@ -122,7 +122,7 @@ const VidStackPlayer = memo(({ title, source }) => {
             >
                 <div ref={playerRef} className="w-full h-fit transition-all duration-500 flex items-center rounded-2xl">
                    
-                        <MediaPlayer title={title || "Movies Bazar"} src={source} autoPlay={true}>
+                        <MediaPlayer title={title || "Movies Bazar"} src={source} aspectRatio="16/9" autoPlay playsInline className="w-full h-full">
                             <MediaProvider />
                             <DefaultVideoLayout icons={defaultLayoutIcons} />
                         </MediaPlayer>

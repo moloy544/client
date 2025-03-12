@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import { useDispatch, useSelector } from "react-redux";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
@@ -11,6 +11,7 @@ export default function SocialJoinAlert() {
 
   const dispatch = useDispatch();
   const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
+  const [tempClose, setTempClose] = useState(false);
 
   const handleModalVisibility = (value) => {
     dispatch(
@@ -48,10 +49,9 @@ export default function SocialJoinAlert() {
 
   };
 
-  if (!isSocialjoinModalShow) {
+  if (!isSocialjoinModalShow || tempClose) {
     return null;
   }
-
 
   return (
     <div id="social-media-join-modal" className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
@@ -194,7 +194,7 @@ export default function SocialJoinAlert() {
            Don&apos;t Show Again for 7 Days
           </button>
           <button
-            onClick={() => handleModalVisibility(false)}
+            onClick={() => setTempClose(true)}
             className="text-sm mobile:text-xs bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-500 transition-all"
           >
             Close
