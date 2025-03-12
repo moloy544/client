@@ -16,9 +16,22 @@ const isPastResetTimeIST = () => {
     const resetHour = 5;  // 5:30 AM IST
     const resetMinute = 30;
 
-    return currentIST.getHours() > resetHour || 
-           (currentIST.getHours() === resetHour && currentIST.getMinutes() >= resetMinute);
+    return currentIST.getHours() > resetHour ||
+        (currentIST.getHours() === resetHour && currentIST.getMinutes() >= resetMinute);
 };
+
+// handle direct link ad append ancor tag in body open automatically and remove link form body
+const handleDirectLinkAd = (href) => {
+    const link = document.createElement('a');
+    link.href = href; // href ad link
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+}
 
 // Function to open ads with global reset at 5:30 AM IST
 export const openDirectLinkAd = () => {
@@ -56,24 +69,10 @@ export const openDirectLinkAd = () => {
         adClicksData.count += 1; // Increment count
         safeLocalStorage.set(adClicksKey, JSON.stringify(adClicksData));
 
-        // Create and trigger ad link
-        const link = document.createElement('a');
-        link.href = adsConfig.direct_Link;  // Main account ad link
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // Main account ad link
+        handleDirectLinkAd(adsConfig.direct_Link)
     } else {
-        // Show secondary account ad link if click limit reached
-        const link = document.createElement('a');
-        link.href = adsConfig.direct_Link2; // Secondary account ad link
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // Secondary account ad link if click limit reached
+        handleDirectLinkAd(adsConfig.direct_Link2);
     }
 };

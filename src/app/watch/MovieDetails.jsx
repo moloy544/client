@@ -30,7 +30,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     type,
     status,
     watchLink,
-    videoType,
     hlsSourceDomain
   } = movieDetails || {};
 
@@ -189,11 +188,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
             {status === "released" ? (
               <PlayButton
-                isOnline={isOnline}
                 watchLinks={watchLink}
                 playHandler={handleVideoSourcePlay}
-                contentType={type}
-                videoType={videoType}
               />
             ) : (
               <>
@@ -270,15 +266,15 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
               {playerVisibility && (
                 <div className="hidden lg:block mx-1.5">
-                <Image
-                  width={115}  // Fixed width
-                  height={120} // Fixed height
-                  priority
-                  className="select-none pointer-events-none min-w-[115px] max-w-[115px] h-auto aspect-[2.9/4] rounded-md border border-gray-700"
-                  src={resizeImage(thumbnail,'w200')}
-                  alt={title}
-                />
-              </div>
+                  <Image
+                    width={115}  // Fixed width
+                    height={120} // Fixed height
+                    priority
+                    className="select-none pointer-events-none min-w-[115px] max-w-[115px] h-auto aspect-[2.9/4] rounded-md border border-gray-700"
+                    src={resizeImage(thumbnail, 'w200')}
+                    alt={title}
+                  />
+                </div>
               )}
             </div>
 
@@ -321,7 +317,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   )
 };
 
-function PlayButton({ watchLinks, playHandler, contentType }) {
+function PlayButton({ watchLinks, playHandler }) {
 
   const [showDropdown, setDropDown] = useState(false);
 
@@ -335,11 +331,11 @@ function PlayButton({ watchLinks, playHandler, contentType }) {
       return
     };
 
-    if (contentType === "series" && watchLinks.length === 1) {
+    if (watchLinks.length === 1) {
       playHandler(watchLinks[0].source);
     } else {
-      setDropDown((prev) => !prev)
-    }
+      setDropDown((prev) => !prev);
+    };
 
   };
 
