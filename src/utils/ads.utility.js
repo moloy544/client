@@ -28,7 +28,7 @@ export const openDirectLinkAd = () => {
         safeLocalStorage.remove('__adc_ct_0987');
     }
 
-    const maxClicksPerDay = 10;  // Total max clicks (10 for main, 10 for secondary)
+    const maxClicksPerDay = 5;  // Total max clicks (5 for main, 5 for secondary)
     const adClicksKey = '__adc_ct_0988'; // Key for localStorage
     let adClicksData;
     const currentDate = getCurrentISTTime().toLocaleDateString();
