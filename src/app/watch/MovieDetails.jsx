@@ -335,7 +335,7 @@ function PlayButton({ watchLinks, playHandler, contentType }) {
       return
     };
 
-    if (contentType === "series" || watchLinks.length === 1) {
+    if (contentType === "series" && watchLinks.length === 1) {
       playHandler(watchLinks[0].source);
     } else {
       setDropDown((prev) => !prev)
