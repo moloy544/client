@@ -68,7 +68,7 @@ export const openDirectLinkAd = () => {
     } else {
         // Show secondary account ad link if click limit reached
         const link = document.createElement('a');
-        link.href = adsConfig.seconderyAccount.direct_Link; // Secondary account ad link
+        link.href = adsConfig.direct_Link2; // Secondary account ad link
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
 

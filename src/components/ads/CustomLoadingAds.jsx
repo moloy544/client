@@ -1,16 +1,13 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { openDirectLinkAd } from '@/utils/ads.utility';
 import { useSelector } from 'react-redux';
-import { adsConfig } from '@/config/ads.config';
 
 export default function CustomLoadingAds() {
 
   const [adClicked, setAdClicked] = useState(false);
-  const [loadAds, setLoadAds] = useState(false); // Control when to load ads
   const location = usePathname();
 
   const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
@@ -43,26 +40,6 @@ export default function CustomLoadingAds() {
     };
   }, [adClicked, location, isSocialjoinModalShow]);
 
-  // Delay the loading of the ad script by 20 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoadAds(true); // Set to true after 20 seconds
-    }, 20000); // 20 seconds
 
-    // Cleanup timer on component unmount
-    return () => clearTimeout(timer);
-  }, []);
-
-
-  return (
-    <>
-      {loadAds && (
-        <Script
-          async={true}
-          src={adsConfig.socialBarAdScriptSrc}
-          strategy="lazyOnload"
-        />
-      )}
-    </>
-  );
+  return null
 }
