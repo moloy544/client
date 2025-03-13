@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import { useDispatch, useSelector } from "react-redux";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
@@ -11,8 +11,7 @@ export default function SocialJoinAlert() {
 
   const dispatch = useDispatch();
   const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
-  const [tempClose, setTempClose] = useState(false);
-
+  
   const handleModalVisibility = (value) => {
     dispatch(
       updatefullWebAccessState({
@@ -22,20 +21,26 @@ export default function SocialJoinAlert() {
   };
 
   useEffect(() => {
-    // Check if the modal should be shown
+    const isOldUser = safeLocalStorage.get('utId');
+  
+    if (!isOldUser) {
+      return; // Exit early, no need to check further
+    }
+  
+    // Old user: Check if the modal should be shown
     const modalData = safeLocalStorage.get(MODAL_KEY);
     const modalParseData = modalData ? JSON.parse(modalData) : null;
-
     const { hideUntil } = modalParseData || {};
     const currentTime = new Date().getTime();
-
-    // If there's no data or the expiration time has passed, show the modal
+  
+    // Show modal if no valid data or expiration has passed
     if (!modalParseData || typeof modalParseData !== "object" || !hideUntil || currentTime > new Date(hideUntil).getTime()) {
       handleModalVisibility(true);
-    } else if (isSocialjoinModalShow) {
+    } else {
       handleModalVisibility(false);
     }
-  }, [isSocialjoinModalShow]);
+  }, []);
+  
 
   const handleDontShowAgain = () => {
     handleModalVisibility(false);
@@ -46,10 +51,9 @@ export default function SocialJoinAlert() {
     const formattedExpirationDate = expirationDate.toISOString();
 
     safeLocalStorage.set(MODAL_KEY, JSON.stringify({ hideUntil: formattedExpirationDate }));
-
   };
 
-  if (!isSocialjoinModalShow || tempClose) {
+  if (!isSocialjoinModalShow) {
     return null;
   }
 
@@ -57,14 +61,14 @@ export default function SocialJoinAlert() {
     <div id="social-media-join-modal" className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-2xl p-4 max-w-lg w-full m-4 animate-slideInUp transform transition-all">
         <div className="space-y-4">
-          <h2 className="text-2xl font-extrabold text-gray-900">Important Notice</h2>
-          <p className="text-gray-700 text-sm font-medium">
+          <div className="text-2xl font-extrabold text-gray-900">Important Notice</div>
+          <div className="text-gray-700 text-sm font-medium">
             Don&apos;t miss out! Stay connected with us on social media to ensure you never lose access to MoviesBazar updates and exclusive content.
-          </p>
+          </div>
         </div>
 
         <div className="my-6 text-center">
-          <h3 className="text-lg font-semibold text-gray-800">Groups & Channels</h3>
+          <div className="text-lg font-semibold text-gray-800">Groups & Channels</div>
 
           <div className="flex gap-4 mt-4 whitespace-nowrap flex-wrap items-center justify-evenly">
             {/* Telegram Group Link */}
@@ -191,10 +195,12 @@ export default function SocialJoinAlert() {
             onClick={handleDontShowAgain}
             className="text-sm mobile:text-xs text-gray-600 font-semibold hover:text-red-500 transition-all"
           >
-           Don&apos;t Show Again for 7 Days
+            Don&apos;t Show Again for 7 Days
           </button>
           <button
-            onClick={() => setTempClose(true)}
+            onClick={() => {
+              handleModalVisibility(false);
+            }}
             className="text-sm mobile:text-xs bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-500 transition-all"
           >
             Close
