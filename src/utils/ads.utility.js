@@ -1,78 +1,22 @@
 // Ads configuration
 import { adsConfig } from "@/config/ads.config";
-import { safeLocalStorage } from "./errorHandlers";
-
-// Helper function to get current time in IST (UTC +5:30)
-const getCurrentISTTime = () => {
-    const currentDate = new Date();
-    const utcOffset = currentDate.getTimezoneOffset() * 60000; // Get offset in milliseconds
-    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30 hours
-    return new Date(currentDate.getTime() + utcOffset + istOffset);
-};
-
-// Function to check if it's past 5:30 AM IST
-const isPastResetTimeIST = () => {
-    const currentIST = getCurrentISTTime();
-    const resetHour = 5;  // 5:30 AM IST
-    const resetMinute = 30;
-
-    return currentIST.getHours() > resetHour ||
-        (currentIST.getHours() === resetHour && currentIST.getMinutes() >= resetMinute);
-};
 
 // handle direct link ad append ancor tag in body open automatically and remove link form body
-const handleDirectLinkAd = (href) => {
-    const link = document.createElement('a');
-    link.href = href; // href ad link
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-}
-
-// Function to open ads with global reset at 5:30 AM IST
 export const openDirectLinkAd = () => {
-    if (process.env.NODE_ENV === 'development') return;
-
-    if (safeLocalStorage.get('__adc_ct_0987')) {
-        safeLocalStorage.remove('__adc_ct_0987');
-    }
-
-    const maxClicksPerDay = 5;  // Total max clicks (5 for main, 5 for secondary)
-    const adClicksKey = '__adc_ct_0988'; // Key for localStorage
-    let adClicksData;
-    const currentDate = getCurrentISTTime().toLocaleDateString();
 
     try {
-        adClicksData = JSON.parse(safeLocalStorage.get(adClicksKey));
+        if (process.env.NODE_ENV === 'development') return;
 
-        // Initialize if the format is invalid
-        if (typeof adClicksData !== 'object' || adClicksData === null) {
-            throw new Error('Invalid adClicksData format');
-        }
-    } catch (e) {
-        // Remove invalid key from localStorage and reset
-        safeLocalStorage.remove(adClicksKey);
-        adClicksData = {};
-    }
+        const link = document.createElement('a');
+        link.href = adsConfig.direct_Link; // href ad link
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
 
-    // Check if the clicks need to be reset for a new day (past 5:30 AM IST)
-    if (adClicksData.date !== currentDate || isPastResetTimeIST()) {
-        adClicksData.date = currentDate;
-        adClicksData.count = 0;
-    }
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error('Error opening direct link:', error);
 
-    if (adClicksData.count < maxClicksPerDay) {
-        adClicksData.count += 1; // Increment count
-        safeLocalStorage.set(adClicksKey, JSON.stringify(adClicksData));
-
-        // Main account ad link
-        handleDirectLinkAd(adsConfig.direct_Link)
-    } else {
-        // Secondary account ad link if click limit reached
-        handleDirectLinkAd(adsConfig.direct_Link2);
     }
 };
