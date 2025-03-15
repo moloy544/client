@@ -66,7 +66,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         message: `Can't play this ${type}. Please report to us.`,
       });
       return;
-    }
+    };
 
     // Set the video source as usual
     setVideoSource(source);
