@@ -20,6 +20,7 @@ const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'punjabi
 const industryOptions = ['bollywood', 'hollywood', 'south'];
 const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons'];
 const videoSource = process.env.VIDEO_SERVER_URL;
+const secondVideoSource = process.env.SECOND_VIDEO_SERVER_URL;
 
 const initialMoviesData = {
     imdbId: '',
@@ -91,7 +92,7 @@ export default function AdminPage() {
 
             setState((prev) => ({
                 ...prev,
-                watchLink: [...state.watchLink.filter(link => !link.includes(videoSource)), videoSource + prev.imdbId]
+                watchLink: [...state.watchLink.filter(link => !link.includes(videoSource) && !link.includes(secondVideoSource)), videoSource + prev.imdbId, secondVideoSource + prev.imdbId]
             }));
 
             if (state.imdbId.length >= 8) {

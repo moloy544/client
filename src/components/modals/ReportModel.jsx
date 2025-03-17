@@ -12,7 +12,8 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
   const [processedReports, setProcessedReports] = useState(false);
   const [serverSuggestion, setServerSuggestion] = useState({
     isModelOpen: false,
-    want_report: false
+    want_report: false,
+    serversData: [],
   });
 
   const writtenReportRef = useRef(null);
@@ -41,15 +42,15 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
 
     const isChecked = e.target.checked;
 
-    const isHalsSource = currentPlaySource?.includes('.m3u8') || currentPlaySource?.includes('.mkv');
+    if (isChecked && reportValue === "Video not playing" && !serverSuggestion.want_report && watchLinks && watchLinks.length > 1) {
+      const availableEmbedServer = watchLinks?.filter(({ source }) =>
+        !source.includes('.m3u8') && !source.includes('.mkv') && !source.includes('.txt') && source !== currentPlaySource
+      ) || [];
 
-    const params = new URLSearchParams(window.location.search);
-    const playQuery = params.get("play");
-
-    if (isChecked && reportValue === "Video not playing" && !serverSuggestion.want_report && watchLinks && watchLinks.length > 1 && (!playQuery || isHalsSource)) {
       setServerSuggestion((prevData) => ({
         ...prevData,
-        isModelOpen: true
+        isModelOpen: true,
+        serversData: availableEmbedServer,
       }));
     };
 
@@ -66,16 +67,14 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
     });
   };
 
-  const playSecondServer = () => {
+  const playAlterNativeServer = (source) => {
 
-    // get the embed url form the watch links 
-    const embedUrlData = watchLinks.filter(({ source }) => !source.includes('.m3u8') || source.includes('.mkv'));
-    const embedUrl = embedUrlData[0]?.source;
-    if (embedUrl) {
-      playHandler(embedUrl);
+    if (source) {
+      playHandler(source);
       setServerSuggestion({
         isModelOpen: false,
-        want_report: false
+        want_report: false,
+        serversData: null,
       });
       setIsModelOpen(false);
     } else {
@@ -143,8 +142,7 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
     { value: "Image not showing", id: "image-option-checkbox", visible: true },
     { value: "Share not working", id: "share-option-checkbox", visible: true },
   ];
-
-
+  console.log(serverSuggestion.serversData)
   return (
     <>
       <ModelsController visibility={isOpen} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false} windowScroll={false}>
@@ -240,20 +238,28 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
               <div className="text-lg font-semibold text-gray-900">Please Confirm</div>
             </div>
             <div className="text-sm text-gray-600 font-medium">
-              Before reporting a video issue, we suggest you try playing the content using Server 2. If none of the options work, please proceed to report the problem.
+            Before reporting a video issue, we recommend trying the content on all suggested servers. If none of the options work, please proceed to report the problem.
             </div>
             <div className="flex justify-between flex-wrap gap-3">
-              <button
-                onClick={playSecondServer}
-                className="bg-teal-600 hover:bg-teal-500 transition text-white text-sm px-5 py-3 rounded-lg w-full sm:w-auto font-medium"
-              >
-                Play Server 2
-              </button>
+              {serverSuggestion.serversData?.map(({ source, label, labelTag }, index) => (
+                <button
+                  key={index}
+                  onClick={() => playAlterNativeServer(source)}
+                  className="bg-teal-700 hover:bg-teal-800 transition text-gray-200 hover:text-white text-sm px-5 py-3 rounded-lg w-full sm:w-auto font-medium"
+                >
+                  <span>{label}</span>
+                 {labelTag &&(
+                   <span className="ml-2">{labelTag}</span>
+                 )}
+                </button>
+              ))}
+
               <button
                 onClick={() => {
                   setServerSuggestion({
                     isModelOpen: false,
                     want_report: false,
+                    serversData: null,
                   });
                 }}
                 className="bg-gray-800 hover:bg-gray-700 transition text-white px-5 py-3 rounded-lg w-full sm:w-auto text-sm font-medium"

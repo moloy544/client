@@ -360,44 +360,55 @@ function PlayButton({ watchLinks, playHandler }) {
           <span className="sr-only">Play video</span>
         </button>
       </div>
-      <ModelsController visibility={showDropdown} closeEvent={() => setDropDown(false)}>
-        <div className={`w-60 h-auto py-3.5 px-2 bg-gray-800 shadow-2xl rounded-md absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20`}>
-          <button
-            onClick={() => setDropDown(false)}
-            className="font-medium text-gray-300 hover:text-gray-200 float-right outline-none"
-            type="button"
-          >
-            <i className="bi bi-x-circle"></i>
-            <span className="sr-only">Close</span>
-          </button>
-          <div className="mx-1.5 font-bold text-base text-gray-100">Select Server</div>
-          <div className="text-sm text-gray-200 space-y-2.5 mt-2 mx-1 py-2">
-            {watchLinks?.map((data, index) => (
-              <div key={data.data || index} className="mx-auto self-center">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    playHandler(data.source); // Call the play handler
-                  }}
-                  className="flex items-center w-full h-auto bg-[#283545] font-semibold text-xs capitalize rounded-sm"
-                >
-                  <i className={`bi bi-dot ${index === 0 ? "text-cyan-500" : "text-yellow-500"} text-xl`}></i>
-                  <span className="mr-1.5">{data.label}</span>
-                  {data.labelTag && (
-                    <span className="font-medium text-gray-300">- {data.labelTag}</span>
-                  )}
-                </button>
+      <ModelsController visibility={showDropdown} windowScroll={false}>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+
+          <div className="w-auto h-auto py-4 px-5 bg-gray-800 shadow-lg rounded-md">
+
+            <div className="w-full flex justify-around items-center space-x-3 pb-3">
+              <div className="font-bold text-base text-gray-100 text-center whitespace-nowrap">
+                Select Playback Server
               </div>
-            ))}
-          </div>
-          <div className="text-center">
-            <small className="text-[10px] text-gray-300 font-medium text-center">
-              <i className="bi bi-earbuds"></i> Use earphones for better audio.
-            </small>
+              <button
+                onClick={() => setDropDown(false)}
+                className="text-gray-200 hover:text-white outline-none bg-gray-900 w-6 h-6 rounded-md"
+                type="button"
+              >
+                <i className="bi bi-x-lg"></i>
+                <span className="sr-only">Close</span>
+              </button>
+            </div>
+
+            <div className="space-y-3 my-4">
+              {watchLinks?.map((data, index) => (
+                <div key={data.data || index}>
+                  <button
+                    type="button"
+                    onClick={() => playHandler(data.source)}
+                    className="flex items-center justify-between w-full px-3 py-2 bg-[#2d3644] text-white font-medium text-sm rounded-md hover:bg-gray-700 transition"
+                  >
+                    <span>{data.label}</span>
+                    {data.labelTag && (
+                      <span className="text-gray-300 font-normal">{data.labelTag}</span>
+                    )}
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 text-center">
+              <small className="text-xs text-gray-200">
+                <i className="bi bi-earbuds"></i> Use earphones for better audio.
+              </small>
+              <br />
+              <small className="text-xs text-gray-200">
+                Having trouble? <span className="font-semibold">Try another server.</span>
+              </small>
+            </div>
 
           </div>
         </div>
       </ModelsController>
+
     </>
   )
 }
