@@ -142,7 +142,7 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
     { value: "Image not showing", id: "image-option-checkbox", visible: true },
     { value: "Share not working", id: "share-option-checkbox", visible: true },
   ];
-  console.log(serverSuggestion.serversData)
+
   return (
     <>
       <ModelsController visibility={isOpen} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false} windowScroll={false}>
