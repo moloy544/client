@@ -397,7 +397,7 @@ function PlayButton({ watchLinks, playHandler }) {
                   <button
                     type="button"
                     onClick={() => playHandler(data.source, hideDropDown)}
-                    className="flex items-center justify-between w-full px-3 py-2 bg-[#2d3644] text-white font-medium text-sm rounded-md hover:bg-gray-700 transition"
+                    className="flex items-center justify-between w-full px-3 py-2 bg-[#2d3644] text-white font-medium text-sm rounded-md hover:bg-gray-700 transition capitalize"
                   >
                     <span>{data.label}</span>
                     {data.labelTag && (
