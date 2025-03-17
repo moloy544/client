@@ -13,3 +13,13 @@ export function generateRandomID(length) {
     return result;
 };
 
+export function removeScrollbarHidden() {
+    const body = document.querySelector('body');
+
+    if (body.classList.contains('scrollbar-hidden')) {
+      body.classList.remove('scrollbar-hidden');
+      body.style.overflow = '';
+  }
+
+};
+

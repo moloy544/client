@@ -13,6 +13,7 @@ import VideoPlayer from "@/components/player/VideoPlayer";
 import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
 import { openDirectLinkAd } from "@/utils/ads.utility";
+import { removeScrollbarHidden } from "@/helper/helper";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
@@ -50,7 +51,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     }
   });
 
-  const handleVideoSourcePlay = (source, type) => {
+  const handleVideoSourcePlay = (source, callBack) => {
 
     // Internet connection check 
     if (!isOnline) {
@@ -72,7 +73,9 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     setVideoSource(source);
 
     // Open direct ad link 
-    openDirectLinkAd()
+    openDirectLinkAd();
+
+    removeScrollbarHidden();
 
     // Update the URL to include 'play=true' without reloading the page
     const params = new URLSearchParams(window.location.search);
@@ -87,6 +90,10 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     } else {
       setPlayerVisibility(false);
     };
+    
+    if (callBack && typeof callBack === 'function') {
+      callBack();
+    }
 
 
   };
@@ -333,10 +340,15 @@ function PlayButton({ watchLinks, playHandler }) {
 
     if (watchLinks.length === 1) {
       playHandler(watchLinks[0].source);
+      hideDropDown();
     } else {
       setDropDown((prev) => !prev);
     };
 
+  };
+
+  const hideDropDown = ()=>{
+    setDropDown(false);
   };
 
   return (
@@ -384,7 +396,7 @@ function PlayButton({ watchLinks, playHandler }) {
                 <div key={data.data || index}>
                   <button
                     type="button"
-                    onClick={() => playHandler(data.source)}
+                    onClick={() => playHandler(data.source, hideDropDown)}
                     className="flex items-center justify-between w-full px-3 py-2 bg-[#2d3644] text-white font-medium text-sm rounded-md hover:bg-gray-700 transition"
                   >
                     <span>{data.label}</span>
