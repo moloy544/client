@@ -197,6 +197,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               <PlayButton
                 watchLinks={watchLink}
                 playHandler={handleVideoSourcePlay}
+                currentPlaySource={videoSource}
               />
             ) : (
               <>
@@ -290,7 +291,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 <span className="text-sm text-gray-200 mr-0.5">Note:</span>
                 {status?.toLowerCase() === "copyright remove"
                   ? "Unfortunately, this content is currently unavailable due to copyright restrictions. We apologize for the inconvenience."
-                  : `If this ${type} isn't playing correctly, ${watchLink?.length > 1 ? 'you can try the "Server 2" option, or let us know by clicking the "Report" button.' : 'please let us know by clicking the "Report" button.'} We highly value your feedback and appreciate your continued support!`
+                  : `If this ${type} isn't playing correctly, ${watchLink?.length > 1 ? 'try all available playback option or click the "Report" button.' : 'please click the "Report" button.'} We appreciate your feedback and support!`
                 }
               </p>
             </div>
@@ -324,7 +325,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   )
 };
 
-function PlayButton({ watchLinks, playHandler }) {
+function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
 
   const [showDropdown, setDropDown] = useState(false);
 
@@ -350,6 +351,10 @@ function PlayButton({ watchLinks, playHandler }) {
   const hideDropDown = ()=>{
     setDropDown(false);
   };
+
+  const currentPlayHlsDomain = currentPlaySource ? new URL(currentPlaySource).hostname : null;
+
+  const findCurrentPlayHlsDomainIndex = watchLinks.findIndex(({source})=> source.startsWith('https://'+currentPlayHlsDomain))
 
   return (
     <>
@@ -400,6 +405,11 @@ function PlayButton({ watchLinks, playHandler }) {
                     className="flex items-center justify-between w-full px-3 py-2 bg-[#2d3644] text-white font-medium text-sm rounded-md hover:bg-gray-700 transition capitalize"
                   >
                     <span>{data.label}</span>
+                    {findCurrentPlayHlsDomainIndex === index && (
+                        <span className="text-teal-500 text-xs">
+                         <i className="bi bi-check-circle-fill"></i>
+                        </span>
+                      )}
                     {data.labelTag && (
                       <span className="text-gray-300 font-normal">{data.labelTag}</span>
                     )}
