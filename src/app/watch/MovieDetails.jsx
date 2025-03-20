@@ -90,7 +90,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     } else {
       setPlayerVisibility(false);
     };
-    
+
     if (callBack && typeof callBack === 'function') {
       callBack();
     }
@@ -348,13 +348,13 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
 
   };
 
-  const hideDropDown = ()=>{
+  const hideDropDown = () => {
     setDropDown(false);
   };
 
   const currentPlayHlsDomain = currentPlaySource ? new URL(currentPlaySource).hostname : null;
 
-  const findCurrentPlayHlsDomainIndex = watchLinks.findIndex(({source})=> source.startsWith('https://'+currentPlayHlsDomain))
+  const findCurrentPlayHlsDomainIndex = watchLinks.findIndex(({ source }) => source.startsWith('https://' + currentPlayHlsDomain))
 
   return (
     <>
@@ -395,6 +395,10 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
                 <span className="sr-only">Close</span>
               </button>
             </div>
+            
+            <small className="text-xs text-gray-200">
+              Video not playing? <span className="font-semibold">Try a different server.</span>
+            </small>
 
             <div className="space-y-3 my-4">
               {watchLinks?.map((data, index) => (
@@ -406,10 +410,10 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
                   >
                     <span>{data.label}</span>
                     {findCurrentPlayHlsDomainIndex === index && (
-                        <span className="text-teal-500 text-xs">
-                         <i className="bi bi-check-circle-fill"></i>
-                        </span>
-                      )}
+                      <span className="text-teal-500 text-xs">
+                        <i className="bi bi-check-circle-fill"></i>
+                      </span>
+                    )}
                     {data.labelTag && (
                       <span className="text-gray-300 font-normal">{data.labelTag}</span>
                     )}
@@ -420,10 +424,6 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
             <div className="mt-4 text-center">
               <small className="text-xs text-gray-200">
                 <i className="bi bi-earbuds"></i> Use earphones for better audio.
-              </small>
-              <br />
-              <small className="text-xs text-gray-200">
-                Having trouble? <span className="font-semibold">Try another server.</span>
               </small>
             </div>
 
