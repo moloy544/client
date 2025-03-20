@@ -8,7 +8,6 @@ import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAc
 const MODAL_KEY = "social_join_alert";
 
 export default function SocialJoinAlert() {
-
   const dispatch = useDispatch();
   const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
   
@@ -31,10 +30,13 @@ export default function SocialJoinAlert() {
     const modalData = safeLocalStorage.get(MODAL_KEY);
     const modalParseData = modalData ? JSON.parse(modalData) : null;
     const { hideUntil } = modalParseData || {};
-    const currentTime = new Date().getTime();
-  
-    // Show modal if no valid data or expiration has passed
-    if (!modalParseData || typeof modalParseData !== "object" || !hideUntil || currentTime > new Date(hideUntil).getTime()) {
+
+    // Get current date
+    const currentDate = new Date();
+    const hideUntilDate = hideUntil ? new Date(hideUntil) : null;
+
+    // Show modal if no valid data or if the current date has passed the hideUntil date
+    if (!hideUntilDate || currentDate >= hideUntilDate) {
       handleModalVisibility(true);
     } else {
       handleModalVisibility(false);
