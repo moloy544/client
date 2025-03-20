@@ -95,7 +95,7 @@ export default function RequestContentPage() {
                             {/* New Heading Message */}
                             <div className="bg-gray-700 text-gray-300 p-4 mb-4 rounded">
                                 <p className="mobile:text-xs text-sm font-semibold">
-                                    We get many requests every day, so it may take up to 1 day to add your content. If we have fewer requests, we&lsquo;ll add it within 6 hours. If the content is available, we will add it right away.
+                                    We get many requests every day, so it may take up to 1/2 day to add your content. If we have fewer requests, we&lsquo;ll add it within 24 hours. If the content is available, we will add it right away.
                                 </p>
                             </div>
                             <form onSubmit={handleSubmit}>
