@@ -1,4 +1,4 @@
 export const appConfig = {
-    appDomain: process.env.APP_DOMAIN,
-    backendUrl: process.env.BACKEND_SERVER_URL,
+    appDomain: "https://www.moviesbazar.net",//process.env.APP_DOMAIN,
+    backendUrl: "https://api.moviesbazar.net" //process.env.BACKEND_SERVER_URL,
 }
