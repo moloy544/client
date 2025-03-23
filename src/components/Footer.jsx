@@ -151,11 +151,11 @@ function Footer() {
                 </div>
             </div>
 
-            <div className="bg-gray-800 px-4 py-5 rounded-xl mobile:rounded-md space-y-5 text-gray-300 my-3">
-                <h3 className="text-xl mobile:text-base font-bold text-gray-200">Facing Issues Accessing MoviesBazar? Here's a Quick Fix for Future Problems!</h3>
+            <div className="bg-gray-700 px-4 py-5 rounded-xl mobile:rounded-md space-y-5 text-gray-300 my-3">
+                <h3 className="text-xl mobile:text-base font-bold text-gray-200">Facing Issues Accessing MoviesBazar? Here&apos;s a Quick Fix for Future Problems!</h3>
 
-                <p className="text-sm text-gray-300 font-semibold">
-                    If you suddenly find that MoviesBazar is not opening, don't worry! It doesn’t mean MoviesBazar has stopped servicing. This could be due to certain network or DNS issues. Please follow the instructions below to regain access. Keep this guide handy for future use if the site ever seems unreachable.
+                <p className="text-sm text-gray-200 font-semibold">
+                    If MoviesBazar isn&apos;t opening, don&apos;t worry! This doesn&apos;t mean MoviesBazar has stopped working. It might be a problem with your network or DNS settings. Follow the steps below to fix it and access the site. You can also save this guide in case you face this issue again in the future.
                 </p>
 
                 <ol className="list-decimal list-inside space-y-3">
@@ -163,12 +163,12 @@ function Footer() {
                     <li>Scroll down and find <strong>Security & Privacy</strong> (or <strong>Network Settings</strong>, depending on the browser).</li>
                     <li>Click on that, then scroll down to find <strong>DNS settings</strong>.</li>
                     <li>
-                        You'll see an option for <strong>Use current service provider</strong>. Change this by clicking on <strong>Choose a service provider</strong>. In the input placeholder, you may see suggestions like <strong>Cloudflare</strong> or <strong>Google</strong>. Select <strong>Cloudflare</strong> for improved speed and security.
+                        You&apos;ll see an option for <strong>Use current service provider</strong>. Change this by clicking on <strong>Choose a service provider</strong>. In the input placeholder, you may see suggestions like <strong>Cloudflare</strong> or <strong>Google</strong>. Select <strong>Cloudflare</strong> for improved speed and security.
                     </li>
                 </ol>
 
                 <p className="text-sm text-gray-300">
-                    If you're unsure about how to do this, search <strong>"How to change DNS in [Your Browser Name]"</strong> (e.g., Chrome, Firefox, Safari) on YouTube for simple instructions. Keep this in mind if you face this issue in the future.
+                    If you&apos;re unsure about how to do this, search <strong>How to change DNS in [Your Browser Name]</strong> (e.g., Chrome, Firefox, Safari) on YouTube for simple instructions. Keep this in mind if you face this issue in the future.
                 </p>
             </div>
 
