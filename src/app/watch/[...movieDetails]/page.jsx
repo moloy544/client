@@ -90,11 +90,15 @@ export async function generateMetadata({ params }) {
   const genres = genre?.slice(0, 3).join(', ')
 
   // extract the movie cast names
-  const movieCast = castDetails ? castDetails.join(', ') : null;
+  const movieCast = castDetails
+  ? castDetails.length > 1
+    ? `${castDetails.slice(0, -1).join(', ')} and ${castDetails[castDetails.length - 1]}`
+    : castDetails[0] // If only one cast member, just show that
+  : null;
 
   // metadata related fields 
   const metaTitle = `Watch ${title} (${releaseYear}) ${transformToCapitalize(type)} Online Free!`;
-  const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} ${type} ${category !== 'bollywood' && multiAudio ? `in ${language} and other languages` : multiAudio ? `in ${language} and other languages`: category ==='bollywood' ? multiAudio ? `in ${language} and other languages` : `in ${language}` :''}`.trimEnd().concat('.');
+  const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} ${type} ${category !== 'bollywood' && multiAudio ? `in ${language} and other languages` : multiAudio ? `in ${language} and other languages`: category ==='bollywood' ? multiAudio ? `in ${language} and other languages` : `in ${language}` :''}`.trimEnd();
   const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${paramsImdbId?.replace('tt', '')}`;
   const metaKeywords = [
     `${title +" " +type}`,
