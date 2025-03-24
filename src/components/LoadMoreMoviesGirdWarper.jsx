@@ -1,13 +1,12 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import FilterModel from "./modals/FilterModel";
 import BacktoTopButton from "./BacktoTopButton";
-import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "./cards/Cards";
 
 
@@ -23,16 +22,37 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
     const [page, setPage] = useState(1);
     const conditionalData = (loadMoviesPathname !== patname) ? (initialMovies || []) : loadMoviesData || [];
     const [moviesData, setMoviesData] = useState(conditionalData);
+  
+    // Inifinity scroll for load more data on scroll down
+    const observerElement = useRef(null);
 
     const loadMore = () => setPage((prevPage) => prevPage + 1);
 
-    // infinite scroll load data custom hook
-    const bottomObserverElement = useInfiniteScroll({
-        callback: loadMore,
-        loading,
-        isAllDataLoad,
-        rootMargin: '120px'
-    });
+    const handleObservers = useCallback((entries) => {
+        const target = entries[0];
+        if (target.isIntersecting && !loading && !isAllDataLoad) {
+            loadMore();
+        }
+    }, [loading, isAllDataLoad]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleObservers, {
+            root: null,
+            rootMargin: "120px",
+            threshold: 0.1,
+        });
+
+        if (observerElement.current) {
+            observer.observe(observerElement.current);
+        }
+
+        return () => {
+            if (observerElement.current) {
+                observer.unobserve(observerElement.current);
+            }
+        };
+    }, [handleObservers]);
+
     const setFilter = (data) => {
 
         if (!loading) {
@@ -181,7 +201,7 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
                     </div>
                 )}
 
-                <div className="w-full h-2" ref={bottomObserverElement}></div>
+                <div className="w-full h-2" ref={observerElement}></div>
 
             </main >
 
