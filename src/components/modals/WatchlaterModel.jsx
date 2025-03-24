@@ -188,7 +188,8 @@ export default function WatchlaterModel({ visibility, functions }) {
     return (
         <ModelsController visibility={visibility} closeEvent={hideModel}>
             <div className="w-auto h-auto bg-white rounded-md shadow-2xl absolute top-12 border-gray-400 right-0 z-40 select-none">
-                <div className="flex justify-between items-center border-b border-b-slate-200 px-1.5">
+                <div className="px-1.5 shadow-sm">
+                <div className="flex justify-between items-center border-b border-b-slate-200">
                     {watchLaterData.length > 0 && (
                         <button onClick={clearAll} type="button" title="Clear all" className="text-xs font-medium text-rose-600 underline px-2 py-1">Clear</button>
                     )}
@@ -197,8 +198,11 @@ export default function WatchlaterModel({ visibility, functions }) {
                         <span className="sr-only">Close Watch later model button</span>
                         <i className="bi bi-x"></i>
                     </button>
+                    
+                   </div>
+                   <small className="text-[10px] text-gray-600">Note: Saved items are lost if you clear browser data.</small>
                 </div>
-                <div className="w-72 h-96 overflow-y-scroll scrollbar-hidden">
+                <div className="w-72 h-[420px] overflow-y-scroll scrollbar-hidden">
                     {watchLaterData.length === 0 && loading ? (
                         <div className="w-full h-auto py-40 flex justify-center items-center">
                             <div className="text-rose-500 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -298,8 +302,8 @@ const Card = ({ data, remove }) => {
             <button
                 onClick={(event) => remove(event, imdbId)}
                 type="button"
-                title="Delete"
-                className="w-8 h-8 text-sm block md:hidden group-hover:block text-gray-500 hover:text-red-600 float-right">
+                title="Remove"
+                className="w-7 h-7 text-sm block md:hidden group-hover:block bg-gray-200 rounded-full text-gray-600 hover:bg-red-100 hover:text-red-600 absolute -translate-y-1/4 right-2">
                 <span className="sr-only">Delete</span>
                 <i className="bi bi-trash"></i>
             </button>

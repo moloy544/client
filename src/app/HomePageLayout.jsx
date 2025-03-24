@@ -36,7 +36,7 @@ function HomePageLayout({ initialLayoutData }) {
 
         const observer = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "150px",
+            rootMargin: "120px",
             threshold: 1,
         });
 
