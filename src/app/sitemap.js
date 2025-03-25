@@ -11,8 +11,17 @@ export default async function sitemap() {
 
   const { movies } = response.data;
 
-   // Map over categoryArray and moviesGenreArray to create URLs for the sitemap
-   const categoryUrls = categoryArray.map(({ name }) => ({
+  // Other browse URLs (recently added, top-rated, etc.)
+  const otherBrowseUrlArray = ['recently-added', 'latest/hollywood', 'latest/bollywood', 'latest/south', 'top-rated'];
+
+  const browseUrls = otherBrowseUrlArray.map((browseUrl) => ({
+    url: `${appConfig.appDomain}/browse/${browseUrl}`,
+    changeFrequency: browseUrl === 'recently-added' ? 'daily' : 'weekly',
+    lastModified: new Date().toISOString(),
+  }));
+
+  // Category and Genre URLs
+  const categoryUrls = categoryArray.map(({ name }) => ({
     url: `${appConfig.appDomain}/browse/category/${name.toLowerCase().replace(/[' ']/g, '-')}`,
     changeFrequency: 'weekly',
     lastModified: new Date().toISOString(),
@@ -27,10 +36,10 @@ export default async function sitemap() {
   // Static URLs
   const staticUrls = [
     { url: `${appConfig.appDomain}/`, changeFrequency: 'daily', lastModified: new Date().toISOString() },
-    ...categoryUrls,  // Add category URLs to static URLs
-    ...genreUrls,     // Add genre URLs to static URLs
-  ]
-
+    ...browseUrls,  // Other browse URLs
+    ...categoryUrls,  // Category URLs
+    ...genreUrls,     // Genre URLs
+  ];
 
   // Dynamic movie URLs
   const dynamicUrls = movies.map(({ imdbId, title, type, createdAt }) => ({
@@ -39,6 +48,6 @@ export default async function sitemap() {
     changeFrequency: 'weekly',
   }));
 
-  // Return combined list of URLs (static + dynamic)
+  // Combine static and dynamic URLs
   return [...staticUrls, ...dynamicUrls];
 }

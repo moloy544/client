@@ -159,7 +159,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       <div className="my-6 mobile:my-2.5 flex justify-center items-center">
 
-        <div className={`h-fit w-full ${playerVisibility && videoSource ? "max-w-full mx-4" : "max-w-5xl mx-3"} mobile:mx-1 p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[rgb(29,39,59)] rounded-md shadow-xl`}>
+        <div className={`h-fit w-full ${playerVisibility && videoSource ? "max-w-full mx-4" : "max-w-5xl mx-3"} mobile:mx-1 p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[rgb(29,39,59)] rounded-md shadow-md`}>
 
           <div className={`mobile:w-full mobile:mt-2.5 md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto bg-gray-900 ${playerVisibility && videoSource ? "block" : "hidden"}`}>
 
