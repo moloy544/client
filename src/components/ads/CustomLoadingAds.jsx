@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { safeLocalStorage } from '@/utils/errorHandlers';
 import { generateRandomID } from '@/helper/helper';
 import { adsConfig } from '@/config/ads.config';
+import Script from 'next/script';
 
 // Helper function to get the current time in IST (Indian Standard Time)
 const getCurrentISTTime = () => {
