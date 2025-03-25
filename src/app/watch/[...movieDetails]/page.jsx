@@ -111,18 +111,13 @@ export async function generateMetadata({ params }) {
     `Watch ${title} ${type} online HD`,
     `Where to watch ${title} online`,
     ...castDetails.slice(0, 4).map(cast => `Watch movies featuring ${cast}`) // More engaging phrasing
-  ];
-
-  if (category === 'hollywood') {
-    metaKeywords.shift(`Watch ${title} (${releaseYear}) ${type} in english online free`)
-    
-  }
+  ].join(', ');
 
   // meta data for this movie or series page
   const metaDataObject = {
     title: metaTitle,
     description: metaDesc,
-    keywords: metaKeywords.join(', '),
+    keywords: metaKeywords,
     openGraph: {
       title: metaTitle,
       description: metaDesc,
