@@ -98,10 +98,11 @@ export async function generateMetadata({ params }) {
 
   // metadata related fields 
   const metaTitle = `Watch ${title} (${releaseYear}) ${transformToCapitalize(type)} Online Free!`;
-  const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} ${type} ${category !== 'bollywood' && multiAudio ? `in ${language} and other languages` : multiAudio ? `in ${language} and other languages`: category ==='bollywood' ? multiAudio ? `in ${language} and other languages` : `in ${language}` :''}`.trimEnd();
+  const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} ${type} ${category !== 'bollywood' && multiAudio ? `in ${language}${category === 'hollywood' && language !=='english' ? `, english and other languages` : multiAudio && language!=='hindi dubbed' ? ", hindi dubbed and other languages": " and other languages"}` : multiAudio ? `in ${language} and other languages`: category ==='bollywood' ? multiAudio ? `in ${language} and multiple languages` : `in ${language}` :''}`.trimEnd();
   const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${paramsImdbId?.replace('tt', '')}`;
   const metaKeywords = [
     `${title +" " +type}`,
+    `Watch ${title} (${releaseYear}) ${type} online free`,
     `Watch ${title} (${releaseYear}) ${type} online free`,
     `${title} ${type} full movie`,
     `${title} ${type} full movie watch online free`,
@@ -110,13 +111,18 @@ export async function generateMetadata({ params }) {
     `Watch ${title} ${type} online HD`,
     `Where to watch ${title} online`,
     ...castDetails.slice(0, 4).map(cast => `Watch movies featuring ${cast}`) // More engaging phrasing
-  ].join(', ');
+  ];
+
+  if (category === 'hollywood') {
+    metaKeywords.shift(`Watch ${title} (${releaseYear}) ${type} in english online free`)
+    
+  }
 
   // meta data for this movie or series page
   const metaDataObject = {
     title: metaTitle,
     description: metaDesc,
-    keywords: metaKeywords,
+    keywords: metaKeywords.join(', '),
     openGraph: {
       title: metaTitle,
       description: metaDesc,
