@@ -19,7 +19,7 @@ const MovieCardSkleaton = ({ limit = 20 }) => {
 
 const ResponsiveMovieCard = ({ data, onClickEvent }) => {
 
-    const { imdbId, title, displayTitle, thumbnail, type, releaseYear, language, category, videoType } = data;
+    const { imdbId, title, displayTitle, thumbnail, type, releaseYear, videoType } = data;
 
     return (
 
@@ -44,12 +44,7 @@ const ResponsiveMovieCard = ({ data, onClickEvent }) => {
                         aria-label={title} // For SEO and accessibility
                         title={title} // Optional tooltip for user
                     >
-                        {displayTitle
-                            ? displayTitle
-                            : category !== "bollywood" && language !== "hindi dubbed"
-                                ? title.concat(' (' + language + ')')
-                                : title
-                        }
+                        {displayTitle ? displayTitle : title}
                     </span>
                 </div>
 

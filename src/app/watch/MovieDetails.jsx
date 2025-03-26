@@ -30,7 +30,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     category,
     type,
     status,
-    watchLink,
     hlsSourceDomain
   } = movieDetails || {};
 
@@ -195,7 +194,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
             {status === "released" ? (
               <PlayButton
-                watchLinks={watchLink}
+                watchLinks={movieDetails.watchLink}
                 playHandler={handleVideoSourcePlay}
                 currentPlaySource={videoSource}
               />
@@ -291,7 +290,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 <span className="text-sm text-gray-200 mr-0.5">Note:</span>
                 {status?.toLowerCase() === "copyright remove"
                   ? "Unfortunately, this content is currently unavailable due to copyright restrictions. We apologize for the inconvenience."
-                  : `If this ${type} isn't playing correctly, ${watchLink?.length > 1 ? 'try all available playback option or click the "Report" button.' : 'please click the "Report" button.'} We appreciate your feedback and support!`
+                  : `If this ${type} isn't playing correctly, ${movieDetails.watchLink?.length > 1 ? 'try all available playback option or click the "Report" button.' : 'please click the "Report" button.'} We appreciate your feedback and support!`
                 }
               </p>
             </div>
@@ -378,7 +377,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
         </button>
       </div>
       <ModelsController visibility={showDropdown} windowScroll={false}>
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-[2px] flex items-center justify-center z-50">
 
           <div className="w-auto h-auto py-4 px-5 bg-gray-800 shadow-lg rounded-md">
 
@@ -400,7 +399,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
               Video not playing? <span className="font-semibold">Try a different server.</span>
             </small>
 
-            <div className="space-y-3 my-4">
+            <div className="space-y-3 my-4 px-1">
               {watchLinks?.map((data, index) => (
                 <div key={data.data || index}>
                   <button
@@ -408,14 +407,15 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
                     onClick={() => playHandler(data.source, hideDropDown)}
                     className="flex items-center justify-between w-full px-3 py-2 bg-[#2d3644] text-white font-medium text-sm rounded-md hover:bg-gray-700 transition capitalize"
                   >
-                    <span>{data.label}</span>
-                    {findCurrentPlayHlsDomainIndex === index && (
-                      <span className="text-teal-500 text-xs">
-                        <i className="bi bi-check-circle-fill"></i>
-                      </span>
+                    <span>
+                      {data.label}
+                      {findCurrentPlayHlsDomainIndex === index && (
+                        <i className="bi bi-check-circle-fill text-teal-500 text-xs mx-2.5"></i>
                     )}
+                    </span>
+                   
                     {data.labelTag && (
-                      <span className="text-gray-300 font-normal">{data.labelTag}</span>
+                      <span className="text-gray-200 font-normal">{data.labelTag}</span>
                     )}
                   </button>
                 </div>
