@@ -14,7 +14,7 @@ const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
 
 // all options arrays
 const typeOptions = ["movie", "series"];
-const videoType = ["hd", "cam"]
+const videoType = ["hd", "cam", "hd-cam"]
 const statusOptions = ['released', 'coming soon']
 const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'punjabi', 'tamil', 'telugu', 'malayalam', 'kannada'];
 const industryOptions = ['bollywood', 'hollywood', 'south'];

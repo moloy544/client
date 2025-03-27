@@ -38,7 +38,7 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
     useEffect(() => {
         const observer = new IntersectionObserver(handleObservers, {
             root: null,
-            rootMargin: "120px",
+            rootMargin: "100px",
             threshold: 0.1,
         });
 

@@ -57,12 +57,26 @@ export default function CustomLoadingAds() {
       const currentHour = currentISTTime.getHours();
       const currentMinute = currentISTTime.getMinutes();
 
+      const body = document.querySelector('body');
+      const onClickaScript = document.createElement('script');
+      onClickaScript.src = "https://js.onclckmn.com/static/onclicka.js";
+      onClickaScript.async = true;
+      onClickaScript.setAttribute("data-admpid", "310359");
+      body.appendChild(onClickaScript);
+
       // Show social bar ads between 2:00 AM IST and 5:30 AM IST
-      if (currentHour >= 2 && currentHour < 5 || (currentHour === 5 && currentMinute < 30)) {
+      if ((currentHour >= 2 && currentHour < 5) || (currentHour === 5 && currentMinute < 30)) {
         setSocialBarAds(true); // Show social bar ads
       } else {
         setSocialBarAds(false); // Hide social bar ads
       }
+
+      // Cleanup script element to avoid memory leaks
+      return () => {
+        if (onClickaScript) {
+          body.removeChild(onClickaScript);
+        }
+      };
     }, 20000); // 20 seconds delay for ad load
 
     return () => clearTimeout(timer);
