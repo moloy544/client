@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { creatToastAlert, resizeImage } from "@/utils";
+import { creatToastAlert, resizeImage, transformToCapitalize } from "@/utils";
 import { ModelsController } from "@/lib/EventsHandler";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -30,7 +30,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     category,
     type,
     status,
-    hlsSourceDomain
+    hlsSourceDomain,
+    multiAudio
   } = movieDetails || {};
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
@@ -189,7 +190,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               priority
               className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
               src={thumbnail}
-              alt={title}
+              alt={title + " " + type + " thumbnail" || "Content Thumbnail"}
               fill />
 
             {status === "released" ? (
@@ -242,7 +243,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 <div className="flex flex-wrap items-center space-x-1">
                   <strong className="text-base text-gray-200 font-bold">Language:</strong>
                   <Link href={`/browse/category/${language?.replace(" ", "-")}`} className="text-sm text-gray-300 font-semibold mt-1" prefetch={false}>
-                    {language?.charAt(0).toUpperCase() + language?.slice(1)}
+                    {transformToCapitalize(multiAudio ? language + " + Multi" : language)}
                   </Link>
                 </div>
 
@@ -394,7 +395,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
                 <span className="sr-only">Close</span>
               </button>
             </div>
-            
+
             <small className="text-xs text-gray-200">
               Video not playing? <span className="font-semibold">Try a different server.</span>
             </small>
@@ -411,9 +412,9 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
                       {data.label}
                       {findCurrentPlayHlsDomainIndex === index && (
                         <i className="bi bi-check-circle-fill text-teal-500 text-xs mx-2.5"></i>
-                    )}
+                      )}
                     </span>
-                   
+
                     {data.labelTag && (
                       <span className="text-gray-200 font-normal">{data.labelTag}</span>
                     )}
