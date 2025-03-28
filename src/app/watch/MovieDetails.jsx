@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
 import { openDirectLinkAd } from "@/utils/ads.utility";
 import { removeScrollbarHidden } from "@/helper/helper";
+import { useDetectDevTools } from "@/hooks/hook";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
@@ -36,6 +37,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
   const pathname = usePathname();
+
+  const isDevToolsOpen = useDetectDevTools();
 
   const isOnline = useOnlineStatus({
     onlineCallback: () => {
@@ -161,26 +164,19 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         <div className={`h-fit w-full ${playerVisibility && videoSource ? "max-w-full mx-4" : "max-w-5xl mx-3"} mobile:mx-1 p-2.5 md:p-6 flex mobile:flex-col items-center gap-8 mobile:gap-0 mobile:marker:gap-0 bg-[rgb(29,39,59)] rounded-md shadow-md`}>
 
           <div className={`mobile:w-full mobile:mt-2.5 md:min-w-[400px] lg:min-w-[600px] max-w-[600px] min-h-full mx-auto bg-gray-900 ${playerVisibility && videoSource ? "block" : "hidden"}`}>
-
-            {playerVisibility && videoSource && (
-              <>
-                {videoSource.includes('.txt') ? (
-                  <VidStackPlayer
-                    title={title}
-                    source={videoSource}
-                    userIp={userIp}
-                  />
+            {isDevToolsOpen ? (
+              <div className="flex items-center justify-center w-full h-auto aspect-video text-white text-xs text-center font-bold bg-black">
+                <p>Unable to load content. Please try again later.</p>
+              </div>
+            ) : (
+              playerVisibility && videoSource && (
+                videoSource.includes('.txt') ? (
+                  <VidStackPlayer title={title} source={videoSource} userIp={userIp} />
                 ) : (
-                  <VideoPlayer
-                    title={title}
-                    hlsSourceDomain={hlsSourceDomain}
-                    source={videoSource}
-                    userIp={userIp}
-                  />
-                )}
-              </>
+                  <VideoPlayer title={title} hlsSourceDomain={hlsSourceDomain} source={videoSource} userIp={userIp} />
+                )
+              )
             )}
-
           </div>
 
           <div className={`w-full max-w-[300px] max-h-[400px] ${playerVisibility && videoSource ? "hidden" : 'block'} aspect-[2.4/3] flex-shrink mobile:mt-2 relative overflow-hidden rounded-md border border-gray-700 bg-gray-800`}>
@@ -394,7 +390,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
                 <span className="sr-only">Close</span>
               </button>
             </div>
-            
+
             <small className="text-xs text-gray-200">
               Video not playing? <span className="font-semibold">Try a different server.</span>
             </small>
@@ -411,9 +407,9 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
                       {data.label}
                       {findCurrentPlayHlsDomainIndex === index && (
                         <i className="bi bi-check-circle-fill text-teal-500 text-xs mx-2.5"></i>
-                    )}
+                      )}
                     </span>
-                   
+
                     {data.labelTag && (
                       <span className="text-gray-200 font-normal">{data.labelTag}</span>
                     )}
