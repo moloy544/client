@@ -1,21 +1,21 @@
 import './globals.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Suspense } from 'react';
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
 import CustomLoadingAds from '@/components/ads/CustomLoadingAds';
 import { BASE_OG_IMAGE_URL } from '@/constant/assets_links';
 import SocialJoinAlert from '@/components/modals/SocialJoinAlert';
+import Script from 'next/script'; // Import next/script
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-
   title: {
     default: 'Movies Bazar | Watch Latest Bollywood, Hollywood, and Hindi Dubbed Movies Online',
-    template: '%s | Movies Bazar'
+    template: '%s | Movies Bazar',
   },
   description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online with multi audio and multi quality upto 1080P Movies Bazar',
   keywords: 'online movies, watch movies online, movie streaming, film, cinema, entertainment, Hollywood movies, Hollywood dubbed movies, South movies, South dubbed movies, Bollywood movies',
@@ -27,19 +27,25 @@ export const metadata = {
       template: '%s | Movies Bazar',
     },
     description: 'Watch latest release bollywood, hollywood, south, hindi dubbed, and more movies online with multi audio and multi quality upto 1080P Movies Bazar',
-    url: appConfig.appDomain
+    url: appConfig.appDomain,
   },
-}
+};
 
 export const viewport = {
   themeColor: 'rgb(29, 29, 29)',
 };
 
-
 export default function RootLayout({ children }) {
-
   return (
     <html lang="en">
+      <head>
+        {/* Add the Adcash library script in the head */}
+        <Script
+          id="adcash-lib"
+          strategy="beforeInteractive"
+          src="//acscdn.com/script/aclib.js"
+        />
+      </head>
       <body className={inter.className}>
         <NextTopLoader
           color="#08D5BB"
@@ -54,16 +60,26 @@ export default function RootLayout({ children }) {
         />
 
         <ReduxStatePrivider>
-        <SocialJoinAlert />
+          <SocialJoinAlert />
           {children}
-          {process.env.NODE_ENV === "production" && (
+          {process.env.NODE_ENV === 'production' && (
             <Suspense>
               <CustomLoadingAds />
             </Suspense>
           )}
         </ReduxStatePrivider>
 
+        {/* Add the Adcash In-Page Push tag in body */}
+        <Script id="adpush-tag" strategy="lazyOnload">
+          {`
+            aclib.runInPagePush({
+              zoneId: '9754474',
+              refreshRate: 30,
+              maxAds: 2,
+            });
+          `}
+        </Script>
       </body>
     </html>
-  )
+  );
 }
