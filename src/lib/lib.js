@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 // Prevent browser inspector custom component all children under this component is not use browser inspector
 export function InspectPreventer({ children, forceToPrevent = true }) {

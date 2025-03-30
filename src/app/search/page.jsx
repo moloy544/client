@@ -55,11 +55,13 @@ export default function SearchPage() {
     // after form submission this function is called
     const handleSubmitForm = (searchText) => {
 
-        // Reset the search result and end of data flag and back to top window for best user experience
-        window.scrollTo({
-            top: 0,
-            behavior: 'instant',
-        })
+        if (window && typeof window !== 'undefined') {
+            // Reset the search result and end of data flag and back to top window for best user experience
+            window.scrollTo({
+                top: 0,
+                behavior: 'instant',
+            })
+        };
         setSearchQuery(searchText);
         setPage(1);
         setEndOfData(false);

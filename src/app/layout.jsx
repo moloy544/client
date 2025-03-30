@@ -38,14 +38,15 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        {/* Add the Adcash library script in the head */}
-        <Script
-          id="adcash-lib"
-          strategy="beforeInteractive"
-          src="//acscdn.com/script/aclib.js"
-        />
-      </head>
+      { /* Add the Adcash library script in the head */ process.env.NODE_ENV === 'production' && (
+        <head>
+          <Script
+            id="adcash-lib"
+            strategy="beforeInteractive"
+            src="//acscdn.com/script/aclib.js"
+          />
+        </head>
+      )}
       <body className={inter.className}>
         <NextTopLoader
           color="#08D5BB"
@@ -63,22 +64,27 @@ export default function RootLayout({ children }) {
           <SocialJoinAlert />
           {children}
           {process.env.NODE_ENV === 'production' && (
-            <Suspense>
-              <CustomLoadingAds />
-            </Suspense>
+            <>
+              <Suspense>
+                <CustomLoadingAds />
+              </Suspense>
+
+              {/* Add the Adcash In-Page Push tag in body */}
+        <Script id="adpush-tag" strategy="lazyOnload">
+                {`
+          aclib.runInPagePush({
+            zoneId: '9754474',
+            refreshRate: 30,
+            maxAds: 2,
+          });
+        `}
+          </Script>
+
+            </>
           )}
+
         </ReduxStatePrivider>
 
-        {/* Add the Adcash In-Page Push tag in body */}
-        <Script id="adpush-tag" strategy="lazyOnload">
-          {`
-            aclib.runInPagePush({
-              zoneId: '9754474',
-              refreshRate: 30,
-              maxAds: 2,
-            });
-          `}
-        </Script>
       </body>
     </html>
   );

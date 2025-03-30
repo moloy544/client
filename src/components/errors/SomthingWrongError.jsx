@@ -55,9 +55,14 @@ function SomthingWrongError({
                     Something went wrong!
                 </h1>
 
-                <p className="mt-4 text-gray-200">
+                <p className="mt-4 text-gray-200 font-semibold">
                     {`Please reload the page and try again or go back to ${isNavigateHistory ? "previews page." : "home page."}`}
                 </p>
+
+                <small className="text-gray-300 mt-2.5 font-medium">
+                    Help us fix the problem! Please click the report button at the top right to let us know.
+                </small>
+
                 <div className="w-full h-auto flex justify-center flex-wrap space-x-3">
                     <button
                         type="button"

@@ -202,9 +202,9 @@ function FixedSearchIcon() {
     };
 
     return (
-        <div className="fixed right-14 bottom-16 mobile:bottom-10 mobile:right-8 w-12 h-12 md:w-14 md:h-14 bg-teal-600 rounded-full z-20 flex items-center justify-center" style={{ boxShadow: '#0d9488 0px 0px 6px' }}>
+        <div className="fixed right-14 bottom-16 mobile:bottom-10 mobile:right-8 w-[50px] h-[50px] md:w-14 md:h-14 bg-teal-600 rounded-full z-20 flex items-center justify-center" style={{ boxShadow: '#0d9488 0px 0px 6px' }}>
             <Link aria-label="Search" title="Search" href="/search">
-                <i className="bi bi-search md:text-2xl text-[20px] text-gray-300 font-bold"></i>
+                <i className="bi bi-search text-2xl text-gray-300 font-bold"></i>
             </Link>
         </div>
     );

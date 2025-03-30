@@ -354,7 +354,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
 
   const currentPlayHlsDomain = currentPlaySource ? new URL(currentPlaySource).hostname : null;
 
-  const findCurrentPlayHlsDomainIndex = watchLinks.findIndex(({ source }) => source.startsWith('https://' + currentPlayHlsDomain))
+  const findCurrentPlayHlsDomainIndex = watchLinks?.findIndex(({ source }) => source?.startsWith('https://' + currentPlayHlsDomain));
 
   return (
     <>

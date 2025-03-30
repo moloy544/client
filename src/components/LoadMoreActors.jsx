@@ -33,7 +33,7 @@ export default function LoadMoreActorsGirdWarper({ apiUrl, industry, initialActo
         callback: loadMore,
         loading,
         isAllDataLoad,
-        rootMargin: '200px'
+        rootMargin: '100px'
     });
 
     useEffect(() => {

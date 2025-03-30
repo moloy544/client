@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {  useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { loadMoreFetch } from "@/utils";
@@ -8,6 +8,7 @@ import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import FilterModel from "./modals/FilterModel";
 import BacktoTopButton from "./BacktoTopButton";
 import { MovieCardSkleaton, ResponsiveMovieCard } from "./cards/Cards";
+import { useInfiniteScroll } from "@/hooks/observers";
 
 
 function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd }) {
@@ -22,36 +23,13 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
     const [page, setPage] = useState(1);
     const conditionalData = (loadMoviesPathname !== patname) ? (initialMovies || []) : loadMoviesData || [];
     const [moviesData, setMoviesData] = useState(conditionalData);
-  
+
     // Inifinity scroll for load more data on scroll down
-    const observerElement = useRef(null);
-
-    const loadMore = () => setPage((prevPage) => prevPage + 1);
-
-    const handleObservers = useCallback((entries) => {
-        const target = entries[0];
-        if (target.isIntersecting && !loading && !isAllDataLoad) {
-            loadMore();
-        }
-    }, [loading, isAllDataLoad]);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(handleObservers, {
-            root: null,
-            rootMargin: "100px",
-            threshold: 0.1,
-        });
-
-        if (observerElement.current) {
-            observer.observe(observerElement.current);
-        }
-
-        return () => {
-            if (observerElement.current) {
-                observer.unobserve(observerElement.current);
-            }
-        };
-    }, [handleObservers]);
+    const observerElement = useInfiniteScroll({
+        rootMargin: '100px',
+        isAllDataLoad,
+        callback: () => setPage((prevPage) => prevPage + 1)
+    });
 
     const setFilter = (data) => {
 

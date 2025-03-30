@@ -15,7 +15,7 @@ export function useInfiniteScroll({ callback, loading, isAllDataLoad, rootMargin
         const observer = new IntersectionObserver(handleObservers, {
             root: null,
             rootMargin: rootMargin || "50px",
-            threshold: 0.1,
+            threshold: 0.5,
         });
 
         if (observerElement.current) {
