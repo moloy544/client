@@ -49,9 +49,90 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
       status = error.response.status;
     }
   } finally {
-    return { status, userIp , movieData, suggestions };
+    return { status, userIp, movieData, suggestions };
   }
 };
+
+const formatDate = (date) => {
+  const originalDate = new Date(date);
+
+  // Extract year, month (0-indexed, so +1), and day
+  const year = originalDate.getFullYear();
+  const month = String(originalDate.getMonth() + 1).padStart(2, '0'); // Ensure 2 digits
+  const day = String(originalDate.getDate()).padStart(2, '0'); // Ensure 2 digits
+
+  // Return formatted date in YYYY-MM-DD format
+  return `${year}-${month}-${day}`;
+};
+
+const createJsonldSchema = (movieDetails) => {
+  if (!movieDetails) return null;
+
+  const {
+    title, thumbnail, releaseYear, fullReleaseDate, type, imdbRating, genre = [],
+    language, category, castDetails = [], watchLink = [], multiAudio, createdAt, status
+  } = movieDetails;
+
+  // Extract the first 3 genres
+  const genres = genre.slice(0, 3).join(', ');
+
+  // Format cast names
+  const movieCast = castDetails.length
+    ? castDetails.length > 1
+      ? `${castDetails.slice(0, -1).join(', ')} and ${castDetails.at(-1)}`
+      : castDetails[0]
+    : null;
+
+  // Generate movie description with language/multiAudio details
+  const description = [
+    `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free!`,
+    movieCast ? `Starring ${movieCast}.` : '',
+    `Enjoy this ${genres} ${type}`,
+    category !== 'bollywood' && multiAudio
+      ? `in ${language}${category === 'hollywood' && language !== 'english' ? `, English and other languages` : multiAudio && language !== 'hindi dubbed' ? ", Hindi dubbed and other languages" : " and other languages"}`
+      : multiAudio ? `in ${language} and other languages`
+        : category === 'bollywood'
+          ? multiAudio ? `in ${language} and multiple languages` : `in ${language}`
+          : ''
+  ].filter(Boolean).join(' ');
+
+  // Base Schema
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Movie",
+    ...(title && { "name": title }),
+    ...(fullReleaseDate && { "datePublished": formatDate(fullReleaseDate) }),
+    ...(thumbnail && { "thumbnailUrl": thumbnail }),
+    ...(description && { "description": description }),
+    ...(genre.length && { "genre": genre }),
+    ...(castDetails.length && { "actor": castDetails.map(name => ({ "@type": "Person", name })) }),
+    ...(status && { "status": status }),
+    ...(imdbRating > 0 && {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": imdbRating,
+        "bestRating": 10,
+        "worstRating": 1
+      }
+    }),
+    "uploadDate": formatDate(createdAt || fullReleaseDate)
+  };
+
+  // Add VideoObject details if watchLink is available
+  const embedUrlObject = watchLink.find(({ source }) =>
+    !source.includes('.m3u8') && !source.includes('.mkv') && !source.includes('.txt')
+  );
+
+  if (embedUrlObject) {
+    Object.assign(schema, {
+      "@type": "VideoObject",
+      "embedUrl": embedUrlObject.source
+    });
+  }
+
+  return JSON.stringify(schema, null, 2);
+};
+
 
 // Generate metadata for content
 export async function generateMetadata({ params }) {
@@ -91,17 +172,17 @@ export async function generateMetadata({ params }) {
 
   // extract the movie cast names
   const movieCast = castDetails
-  ? castDetails.length > 1
-    ? `${castDetails.slice(0, -1).join(', ')} and ${castDetails[castDetails.length - 1]}`
-    : castDetails[0] // If only one cast member, just show that
-  : null;
+    ? castDetails.length > 1
+      ? `${castDetails.slice(0, -1).join(', ')} and ${castDetails[castDetails.length - 1]}`
+      : castDetails[0] // If only one cast member, just show that
+    : null;
 
   // metadata related fields 
   const metaTitle = `Watch ${title} (${releaseYear}) ${transformToCapitalize(type)} Online Free!`;
-  const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} ${type} ${category !== 'bollywood' && multiAudio ? `in ${language}${category === 'hollywood' && language !=='english' ? `, english and other languages` : multiAudio && language!=='hindi dubbed' ? ", hindi dubbed and other languages": " and other languages"}` : multiAudio ? `in ${language} and other languages`: category ==='bollywood' ? multiAudio ? `in ${language} and multiple languages` : `in ${language}` :''}`.trimEnd();
+  const metaDesc = `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free! Starring ${movieCast}. Enjoy this ${genres} ${type} ${category !== 'bollywood' && multiAudio ? `in ${language}${category === 'hollywood' && language !== 'english' ? `, english and other languages` : multiAudio && language !== 'hindi dubbed' ? ", hindi dubbed and other languages" : " and other languages"}` : multiAudio ? `in ${language} and other languages` : category === 'bollywood' ? multiAudio ? `in ${language} and multiple languages` : `in ${language}` : ''}`.trimEnd();
   const metaOgUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${paramsImdbId?.replace('tt', '')}`;
   const metaKeywords = [
-    `${title +" " +type}`,
+    `${title + " " + type}`,
     `Watch ${title} (${releaseYear}) ${type} online free`,
     `Watch ${title} (${releaseYear}) ${type} online free`,
     `${title} ${type} full movie`,
@@ -169,7 +250,9 @@ export default async function Page({ params }) {
     )
   };
 
+
   return (
+
     <div className="min-w-full min-h-screen bg-custom-dark-bg">
       <InspectPreventer>
         <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
@@ -180,6 +263,14 @@ export default async function Page({ params }) {
         />
         <Footer />
       </InspectPreventer>
+
+      {/* Include JSON-LD schema for SEO */}
+      <script
+        id="json-ld-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: createJsonldSchema(movieData) }}
+      />
+
     </div>
   )
 }

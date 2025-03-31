@@ -16,6 +16,7 @@ import { openDirectLinkAd } from "@/utils/ads.utility";
 import { removeScrollbarHidden } from "@/helper/helper";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
+
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   const {

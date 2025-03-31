@@ -6,22 +6,12 @@ import { openDirectLinkAd } from '@/utils/ads.utility';
 import { useSelector } from 'react-redux';
 import { safeLocalStorage } from '@/utils/errorHandlers';
 import { generateRandomID } from '@/helper/helper';
-import { adsConfig } from '@/config/ads.config';
-import Script from 'next/script';
-
-// Helper function to get the current time in IST (Indian Standard Time)
-const getCurrentISTTime = () => {
-  const currentDate = new Date();
-  const utcOffset = currentDate.getTimezoneOffset() * 60000; // Offset in milliseconds
-  const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC +5:30
-  return new Date(currentDate.getTime() + utcOffset + istOffset);
-};
 
 export default function CustomLoadingAds() {
+  
   const [adClicked, setAdClicked] = useState(false);
   const location = usePathname();
   const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
-  const [socialBarAds, setSocialBarAds] = useState(false);
 
   useEffect(() => {
     const documentBody = document.body;
@@ -51,39 +41,5 @@ export default function CustomLoadingAds() {
     };
   }, [adClicked, location, isSocialjoinModalShow]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const currentISTTime = getCurrentISTTime();
-      const currentHour = currentISTTime.getHours();
-      const currentMinute = currentISTTime.getMinutes();
-
-      /**const body = document.querySelector('body');
-      const onClickaScript = document.createElement('script');
-      onClickaScript.src = "https://js.onclckmn.com/static/onclicka.js";
-      onClickaScript.async = true;
-      onClickaScript.setAttribute("data-admpid", "310359");
-      body.appendChild(onClickaScript);**/
-
-      // Show social bar ads between 2:00 AM IST and 5:30 AM IST
-      if ((currentHour >= 2 && currentHour < 5) || (currentHour === 5 && currentMinute < 30)) {
-        setSocialBarAds(true); // Show social bar ads
-      } else {
-        setSocialBarAds(false); // Hide social bar ads
-      }
-    }, 20000); // 20 seconds delay for ad load
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <>
-      {socialBarAds && (
-        <Script
-          async={true}
-          src={adsConfig.socialBarAdScriptSrc}
-          strategy="lazyOnload"
-        />
-      )}
-    </>
-  );
-}
+  return null;
+};

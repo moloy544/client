@@ -1,4 +1,4 @@
-export const adsConfig = {
+export const partnerIntegration = {
   adOptions1:{
       key: '7cb32ff000cfd9e6c01a19c16bfead48',
       height: 50,

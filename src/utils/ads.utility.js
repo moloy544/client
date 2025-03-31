@@ -1,4 +1,4 @@
-import { adsConfig } from "@/config/ads.config";
+import { partnerIntegration } from "@/config/ads.config";
 import { safeLocalStorage } from "./errorHandlers";
 
 // Completely generic and non-descriptive key for storing the ad click count in localStorage
@@ -26,11 +26,11 @@ export const openDirectLinkAd = () => {
         // Cycle through three different ad links based on the click count (modulo 3)
         let directLinkAd;
         if (adClickCount % 3 === 0) {
-            directLinkAd = adsConfig.direct_Link;
+            directLinkAd = partnerIntegration.direct_Link;
         } else if (adClickCount % 3 === 1) {
-            directLinkAd = adsConfig.direct_Link2;
+            directLinkAd = partnerIntegration.direct_Link2;
         } else {
-            directLinkAd = adsConfig.direct_Link3
+            directLinkAd = partnerIntegration.direct_Link3
         };
 
         // Create and append an anchor tag to open the ad link
