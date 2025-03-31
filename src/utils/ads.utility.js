@@ -9,10 +9,11 @@ let inMemoryAdClickCount = 0;
 
 export const openDirectLinkAd = () => {
     try {
-        if (process.env.NODE_ENV === 'development') return;
+        //if (process.env.NODE_ENV === 'development') return;
+
+        let adClickCount;
 
         // Attempt to fetch ad click count from localStorage, otherwise fallback to in-memory count
-        let adClickCount;
         try {
             adClickCount = parseInt(safeLocalStorage.get(obfuscatedKey), 10);
             if (isNaN(adClickCount)) {
@@ -23,14 +24,16 @@ export const openDirectLinkAd = () => {
             adClickCount = inMemoryAdClickCount;
         }
 
-        // Cycle through three different ad links based on the click count (modulo 3)
+        // Cycle through four different ad links based on the click count (modulo 4)
         let directLinkAd;
-        if (adClickCount % 3 === 0) {
+        if (adClickCount % 4 === 0) {
             directLinkAd = partnerIntegration.direct_Link;
-        } else if (adClickCount % 3 === 1) {
+        } else if (adClickCount % 4 === 1) {
             directLinkAd = partnerIntegration.direct_Link2;
+        } else if (adClickCount % 4 === 2) {
+            directLinkAd = partnerIntegration.direct_Link3;
         } else {
-            directLinkAd = partnerIntegration.direct_Link3
+            directLinkAd = partnerIntegration.direct_Link4;
         };
 
         // Create and append an anchor tag to open the ad link
@@ -46,9 +49,9 @@ export const openDirectLinkAd = () => {
         // Increment the click count
         adClickCount++;
 
-        // Check if it's the third link click, reset adClickCount to 0
-        if (adClickCount % 3 === 0) {
-            adClickCount = 0;  // Reset after the third link
+        // Reset the ad click count after the 4th click
+        if (adClickCount % 4 === 0) {
+            adClickCount = 0;
         };
 
         // Save the updated click count back to localStorage (if available) or fallback to in-memory
