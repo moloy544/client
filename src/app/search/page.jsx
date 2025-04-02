@@ -15,13 +15,23 @@ import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import brandLogoIcon from "../../assets/images/brand_logo.png"
 import { openDirectLinkAd } from "@/utils/ads.utility";
+import { safeLocalStorage } from "@/utils/errorHandlers";
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
-    const historyData = localStorage.getItem('searchHistory');
-    const parseData = historyData ? JSON.parse(historyData) : [];
-    return parseData;
-}
+    const historyData = safeLocalStorage.get('searchHistory');
+
+    if (!historyData || historyData === "undefined") {
+        return []; // Return an empty array if it's null, undefined, or invalid
+    }
+
+    try {
+        return JSON.parse(historyData);
+    } catch (error) {
+        console.error("Error parsing search history:", error);
+        return []; // Return an empty array if JSON parsing fails
+    }
+};
 
 export default function SearchPage() {
 
@@ -55,7 +65,7 @@ export default function SearchPage() {
     // after form submission this function is called
     const handleSubmitForm = (searchText) => {
 
-        if (window && typeof window !== 'undefined') {
+        if (typeof window !== 'undefined') {
             // Reset the search result and end of data flag and back to top window for best user experience
             window.scrollTo({
                 top: 0,
@@ -70,7 +80,7 @@ export default function SearchPage() {
     };
 
     // Function to add a search term to the search history
-    const addToSearchHistory = (newData) => {
+    const addToSearchHistory = (newData, isCount=false) => {
 
         const { text } = newData || {};
 
@@ -83,15 +93,23 @@ export default function SearchPage() {
         if (searchTermIndex !== -1) {
 
             const existingTerm = existingHistoryArray.splice(searchTermIndex, 1)[0];
-            //update the search count
-            existingTerm.count += 1;
 
+            if (isCount) {
+                //update the search count
+            existingTerm.count += 1;
+            }
+            
             existingHistoryArray.unshift(existingTerm);
 
         } else {
 
+            const initialData = {
+                searchKeyword: text,
+                count: isCount? 1 : 0,
+            };
+
             // If the search term doesn't exist, add it to the beginning with clickCount 1
-            existingHistoryArray.unshift({ searchKeyword: text, count: 1 });
+            existingHistoryArray.unshift(initialData);
         };
 
         // Limit the search history to 20 items
@@ -101,7 +119,7 @@ export default function SearchPage() {
         };
 
         // Save the updated search history array back to local storage
-        localStorage.setItem('searchHistory', JSON.stringify(existingHistoryArray));
+        safeLocalStorage.set('searchHistory', JSON.stringify(existingHistoryArray));
         setSearchHistory(existingHistoryArray);
     };
     // get serach items from database function
@@ -136,6 +154,7 @@ export default function SearchPage() {
                 if (page === 1) {
                     // Add single array search results 
                     setSearchResult(moviesData);
+                    addToSearchHistory({ text: q });
 
                 } else {
                     // Add new array search results to existing array 
@@ -157,7 +176,8 @@ export default function SearchPage() {
 
     // get user searh query form url and add to search bar
     useEffect(() => {
-
+        
+        if (typeof window !== 'undefined') {
         const params = new URLSearchParams(window.location.search);
         const paramsQuery = params.get("query")?.replace(/ +/g, ' ').trim();
 
@@ -168,6 +188,7 @@ export default function SearchPage() {
                 inputSearchBar.value = paramsQuery || "";
             };
         };
+    }
 
     }, []);
 
@@ -185,14 +206,19 @@ export default function SearchPage() {
         if (tragetElement) {
             const altData = tragetElement.alt || null;
             if (altData) {
-                addToSearchHistory({ text: searchQuery });
+                addToSearchHistory({ text: searchQuery }, true);
             };
         };
     };
 
     // check is error encountered show error message
     if (error) {
-        return <SomthingWrongError onclickEvent={() => window.location.reload()} />
+        return <SomthingWrongError onclickEvent={() =>{ 
+            if (typeof window !== "undefined") {
+                window.location.reload()
+            };
+        }}
+             />
     };
 
     return (
@@ -351,6 +377,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
     };
 
     function handleSearch(term) {
+        if (typeof window !== 'undefined') {
         const params = new URLSearchParams(window.location.search);
 
         // If the term is provided, set the 'query' param, otherwise remove it
@@ -364,6 +391,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         const newUrl = `${pathname}?${params.toString()}`;
         window.history.replaceState({}, '', newUrl);
     };
+    };
 
     const submit = (event) => {
         event.preventDefault();
@@ -372,9 +400,9 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         const formJson = Object.fromEntries(formData.entries());
         const searchValue = formJson.searchText?.trim();
 
-        if (tryCount >= 3) {
+        if (tryCount >= 5) {
             creatToastAlert({
-                message: 'You have reached the maximum number of attempts',
+                message: "You've reached the max attempts for this search term.",
             });
             return;
         };
@@ -394,14 +422,14 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         if (index === "Clear all") {
             setSearchHistory([]);
             setFilteredHistory([]);
-            localStorage.removeItem('searchHistory');
+            safeLocalStorage.remove('searchHistory');
             return;
         }
         const data = getLocalStorageSearchHistory();
         const updatedData = data.filter((_, i) => i !== index);
         setSearchHistory(updatedData);
         setFilteredHistory(updatedData);
-        localStorage.setItem('searchHistory', JSON.stringify(updatedData));
+        safeLocalStorage.set('searchHistory', JSON.stringify(updatedData));
     };
 
     const handleSelectHistoryItem = (q) => {
