@@ -8,7 +8,6 @@ import { appConfig } from '@/config/config';
 import CustomLoadingAds from '@/components/ads/CustomLoadingAds';
 import { BASE_OG_IMAGE_URL } from '@/constant/assets_links';
 import SocialJoinAlert from '@/components/modals/SocialJoinAlert';
-import Script from 'next/script'; // Import next/script
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -38,15 +37,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      { /* Add the Adcash library script in the head */ process.env.NODE_ENV === 'production' && (
-        <head>
-          <Script
-            id="adcash-lib"
-            strategy="beforeInteractive"
-            src="//acscdn.com/script/aclib.js"
-          />
-        </head>
-      )}
+
       <body className={inter.className}>
         <NextTopLoader
           color="#08D5BB"
@@ -64,23 +55,9 @@ export default function RootLayout({ children }) {
           <SocialJoinAlert />
           {children}
           {process.env.NODE_ENV === 'production' && (
-            <>
               <Suspense>
                 <CustomLoadingAds />
               </Suspense>
-
-              {/* Add the Adcash In-Page Push tag in body */}
-        <Script id="adpush-tag" strategy="lazyOnload">
-                {`
-          aclib.runInPagePush({
-            zoneId: '9754474',
-            refreshRate: 30,
-            maxAds: 2,
-          });
-        `}
-          </Script>
-
-            </>
           )}
 
         </ReduxStatePrivider>
