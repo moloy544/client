@@ -6,7 +6,7 @@ import { creatToastAlert } from "@/utils";
 import axios from "axios";
 import { useState } from "react";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
-import { isIOS } from "@/helper/helper";
+import { isAndroid, isIOS } from "@/helper/helper";
 
 const formatQualityType = (quality, qualityType) => {
 
@@ -58,13 +58,13 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
         });
         return;
       }
-  
+
       // Set the loading state
       setDownloadStartProgress(true);
-  
+
       // Fetch the HTML content from the URL
       const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_urls/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
-  
+
       if (response.status !== 200) {
         creatToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
@@ -72,9 +72,9 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
         });
         return;
       }
-  
+
       const { downloadUrl } = response.data || {};
-  
+
       if (!downloadUrl) {
         creatToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
@@ -83,7 +83,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
         return;
       }
 
-      if(isIOS()){
+      if (isIOS()) {
         // iOS doesn't support window.open(), so we use a custom method to open the link in a new tab
         const iframe = document.createElement('iframe');
         iframe.src = downloadUrl;
@@ -94,22 +94,22 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
         }, 5000); // 5 seconds after the download starts
         return;
       }
-  
+
       // Create a new anchor element
       const link = document.createElement('a');
       link.href = downloadUrl;           // Set the href to the download URL
       link.target = '_blank';            // Open the link in a new tab
-      link.rel = 'noopener noreferrer';  // Ensure security with 'noopener noreferrer'
-  
+      link.rel = 'nofollow noopener noreferrer';  // Ensure security with 'nofollow noopener noreferrer'
+
       // Append the anchor to the body (this step is required for Safari)
       document.body.appendChild(link);
-  
+
       // Trigger a click on the anchor
       link.click();
-  
+
       // Remove the anchor after clicking
       document.body.removeChild(link);
-  
+
     } catch (error) {
       console.error('Error fetching download option URLs:', error);
       creatToastAlert({
@@ -120,7 +120,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
       setDownloadStartProgress(false);
     }
   };
-  
+
 
   // validate if false anything returns nothing
   if (!links || !Array.isArray(links) || links.length === 0) {
@@ -134,7 +134,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
 
           <div className="bg-white rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg py-2">
             <div className="flex justify-around">
-              <div className="text-lg font-bold my-3 mx-3 text-black">Download Options</div>
+              <div className="text-lg font-bold my-3 text-black"><i className="bi bi-download"></i> Download Options</div>
               <button type="button"
                 onClick={onReportButtonClick}
                 className="bg-transparent outline-none text-sm font-semibold text-gray-800 px-2">
@@ -145,8 +145,28 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
             <div className="px-5">
               {/* Title */}
               <div className="text-sm text-gray-700 font-bold text-center my-2.5 line-clamp-2">{title}</div>
+
+              {isIOS() ? (
+                <p className="text-xs text-gray-600 font-semibold my-4">
+                  <span className="text-gray-800 font-bold">Note:</span> We detected you&rsquo;re using an iPhone.
+                  To play this file, install <span className="font-bold text-yellow-600">VLC Player</span> from the App Store,
+                  as iOS doesn&rsquo;t support it by default.
+                  <a className="text-blue-700 font-semibold underline" href="https://apps.apple.com/app/vlc-for-mobile/id650377962" target="_blank" rel="nofollow">
+                    Click here to install VLC Player
+                  </a>.
+                </p>
+              ) : isAndroid() && (
+                <p className="text-xs text-gray-600 font-semibold my-4">
+                  <span className="text-gray-800 font-bold">Note:</span> If the downloaded file is not playing properly on your phone,
+                  install <span className="font-bold text-yellow-600">VLC Player</span> from the Play Store.
+                  <a className="text-blue-700 font-semibold underline" href="https://play.google.com/store/apps/details?id=org.videolan.vlc" target="_blank" rel="nofollow">
+                    Click here to install VLC Player
+                  </a>.
+                </p>
+              )}
+
               {/* Download Links */}
-              <div className="space-y-2 max-w-sm mx-auto">
+              <div className="space-y-2 max-w-sm mx-auto py-1.5">
                 {links.map(({ quality, size }, index) => (
                   <button
                     type="button"

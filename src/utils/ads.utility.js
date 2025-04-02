@@ -9,7 +9,7 @@ let inMemoryAdClickCount = 0;
 
 export const openDirectLinkAd = () => {
     try {
-        //if (process.env.NODE_ENV === 'development') return;
+        if (process.env.NODE_ENV === 'development') return;
 
         let adClickCount;
 
@@ -40,7 +40,7 @@ export const openDirectLinkAd = () => {
         const link = document.createElement('a');
         link.href = directLinkAd;
         link.target = '_blank';
-        link.rel = 'noopener noreferrer';
+        link.rel = 'nofollow noopener noreferrer';
 
         document.body.appendChild(link);
         link.click();
