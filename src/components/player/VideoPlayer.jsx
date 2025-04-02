@@ -17,15 +17,15 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
 
   if (!originalURL) return null;
 
-  const hlsProviderDomain = new URL(hlsSourceDomain || process.env.VIDEO_SERVER_URL).hostname;
-  const secondHlsProviderDomain = new URL(process.env.SECOND_VIDEO_SERVER_URL).hostname;
+  const hlsProviderDomain = new URL(hlsSourceDomain || process.env.VIDEO_SERVER_URL).hostname+'m';
+  const secondHlsProviderDomain = new URL(process.env.SECOND_VIDEO_SERVER_URL).hostname+'d';
 
   // Check if the originalURL contains either hlsProviderDomain or secondHlsProviderDomain
   const isHlsProviderMatch = originalURL.includes(hlsProviderDomain);
   const isSecondHlsProviderMatch = originalURL.includes(secondHlsProviderDomain);
 
   // If neither domain matches, return the original URL
-  if (!isHlsProviderMatch && !isSecondHlsProviderMatch) {
+  if (!isHlsProviderMatch && !isSecondHlsProviderMatch && !originalURL.includes('stream2')) {
     return originalURL;
   }
 
