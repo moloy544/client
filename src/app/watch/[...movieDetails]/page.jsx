@@ -107,15 +107,8 @@ const createJsonldSchema = (movieDetails) => {
     ...(genre.length && { "genre": genre }),
     ...(castDetails.length && { "actor": castDetails.map(name => ({ "@type": "Person", name })) }),
     ...(status && { "status": status }),
-    ...(imdbRating > 0 && {
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": imdbRating,
-        "bestRating": 10,
-        "worstRating": 1
-      }
-    }),
-    "uploadDate": formatDate(createdAt || fullReleaseDate)
+
+    "uploadDate": createdAt || fullReleaseDate
   };
 
   // Add VideoObject details if watchLink is available
