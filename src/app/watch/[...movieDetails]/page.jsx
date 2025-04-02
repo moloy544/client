@@ -53,80 +53,6 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
   }
 };
 
-const formatDate = (date) => {
-  const originalDate = new Date(date);
-
-  // Extract year, month (0-indexed, so +1), and day
-  const year = originalDate.getFullYear();
-  const month = String(originalDate.getMonth() + 1).padStart(2, '0'); // Ensure 2 digits
-  const day = String(originalDate.getDate()).padStart(2, '0'); // Ensure 2 digits
-
-  // Return formatted date in YYYY-MM-DD format
-  return `${year}-${month}-${day}`;
-};
-
-const createJsonldSchema = (movieDetails) => {
-  if (!movieDetails) return null;
-
-  const {
-    title, thumbnail, releaseYear, fullReleaseDate, type, imdbRating, genre = [],
-    language, category, castDetails = [], watchLink = [], multiAudio, createdAt, status
-  } = movieDetails;
-
-  // Extract the first 3 genres
-  const genres = genre.slice(0, 3).join(', ');
-
-  // Format cast names
-  const movieCast = castDetails.length
-    ? castDetails.length > 1
-      ? `${castDetails.slice(0, -1).join(', ')} and ${castDetails.at(-1)}`
-      : castDetails[0]
-    : null;
-
-  // Generate movie description with language/multiAudio details
-  const description = [
-    `${title} (${releaseYear}) ${transformToCapitalize(type)} - Watch online free!`,
-    movieCast ? `Starring ${movieCast}.` : '',
-    `Enjoy this ${genres} ${type}`,
-    category !== 'bollywood' && multiAudio
-      ? `in ${language}${category === 'hollywood' && language !== 'english' ? `, English and other languages` : multiAudio && language !== 'hindi dubbed' ? ", Hindi dubbed and other languages" : " and other languages"}`
-      : multiAudio ? `in ${language} and other languages`
-        : category === 'bollywood'
-          ? multiAudio ? `in ${language} and multiple languages` : `in ${language}`
-          : ''
-  ].filter(Boolean).join(' ');
-
-  // Base Schema
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Movie",
-    ...(title && { "name": title }),
-    ...(fullReleaseDate && { "datePublished": formatDate(fullReleaseDate) }),
-    ...(thumbnail && { "thumbnailUrl": thumbnail }),
-    ...(description && { "description": description }),
-    ...(genre.length && { "genre": genre }),
-    ...(castDetails.length && { "actor": castDetails.map(name => ({ "@type": "Person", name })) }),
-    ...(status && { "status": status }),
-
-    "uploadDate": createdAt || fullReleaseDate
-  };
-
-  // Add VideoObject details if watchLink is available
-  const embedUrlObject = watchLink.find(({ source }) =>
-    !source.includes('.m3u8') && !source.includes('.mkv') && !source.includes('.txt')
-  );
-
-  if (embedUrlObject) {
-    Object.assign(schema, {
-      "@type": "VideoObject",
-      "embedUrl": embedUrlObject.source
-    });
-  }
-
-  return JSON.stringify(schema, null, 2);
-};
-
-
 // Generate metadata for content
 export async function generateMetadata({ params }) {
 
@@ -256,14 +182,6 @@ export default async function Page({ params }) {
         />
         <Footer />
       </InspectPreventer>
-
-      {/* Include JSON-LD schema for SEO */}
-      <script
-        id="json-ld-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: createJsonldSchema(movieData) }}
-      />
-
     </div>
   )
 }
