@@ -88,14 +88,20 @@ export default function CustomLoadingAds() {
       head.appendChild(adcashMainScript);
       adcashMainScript.onload = () => {
         if (window) {
+
+          const ids = ['9775234', '9775202', '9754474'];
+
+          // Select a random ID from the array
+          const randomId = ids[Math.floor(Math.random() * ids.length)];
+          console.log(randomId)
           window.aclib.runInPagePush({
-            zoneId: '9754474',
+            zoneId: randomId,
             refreshRate: 30,
             maxAds: 2,
           });
         };
       }
-    }, 20000); // 20 seconds delay for ad load
+    }, 10000); // 10 seconds delay for ad load
 
     return () => {
       clearTimeout(mainScriptAppendTimer);
