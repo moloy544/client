@@ -93,7 +93,7 @@ export default function CustomLoadingAds() {
 
           // Select a random ID from the array
           const randomId = ids[Math.floor(Math.random() * ids.length)];
-          console.log(randomId)
+          
           window.aclib.runInPagePush({
             zoneId: randomId,
             refreshRate: 30,
