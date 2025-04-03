@@ -5,12 +5,27 @@ import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
+import { categoryArray } from "@/constant/constsnt";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
+
+const validateCategory = (category) => {
+  if (!category || category === '' || category === "") return false; // If category is empty, return false
+
+  // Convert category to lowercase for case-insensitive comparison
+  const validCategories = categoryArray.map(item => item.name.toLowerCase());
+
+  return validCategories.includes(category.toLowerCase());
+};
 
 export async function generateMetadata({ params }) {
 
   const editParamsQuery = transformToCapitalize(params.categoryName);
+
+  const isValidcategory = validateCategory(editParamsQuery);
+  if (!isValidcategory) {
+    return;
+  };
 
   const metaData = {
     title:{
@@ -36,6 +51,10 @@ export default async function Page({ params }) {
 
   const category = params?.categoryName;
 
+  const editParamsQuery = transformToCapitalize(category);
+
+  const isValidcategory = validateCategory(editParamsQuery);
+
   const apiUrl = `${appConfig.backendUrl}/api/v1/movies/category/${category}`;
 
   const filterData = {
@@ -43,13 +62,13 @@ export default async function Page({ params }) {
     genre: "all",
   };
 
-  const { status, data, dataIsEnd } = await loadMoreFetch({
+  const { status, data, dataIsEnd } = isValidcategory && await loadMoreFetch({
 
     apiPath: apiUrl,
     bodyData: { filterData },
     limitPerPage: 40
   });
-  if (status === 404) {
+  if (status === 404 || !isValidcategory) {
     notFound();
   } else if (status === 500) {
     return (
