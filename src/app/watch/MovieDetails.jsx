@@ -235,7 +235,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 {fullReleaseDate && (
                   <div className="flex flex-wrap items-center space-x-1">
                     <strong className="text-base text-gray-200 font-bold">
-                      {status === "released" ? "Released:" : "Expeted relesed:"}
+                      {status === "released" ? "Released:" : "Expected Release:"}
                     </strong>
                     <div className="text-sm text-gray-300 font-semibold mt-1">{formattedDate}</div>
                   </div>
