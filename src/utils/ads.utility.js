@@ -24,17 +24,15 @@ export const openDirectLinkAd = () => {
             adClickCount = inMemoryAdClickCount;
         }
 
-        // Cycle through four different ad links based on the click count (modulo 4)
+        // Cycle through only 3 ad links
         let directLinkAd;
-        if (adClickCount % 4 === 0) {
+        if (adClickCount % 3 === 0) {
             directLinkAd = partnerIntegration.direct_Link;
-        } else if (adClickCount % 4 === 1) {
+        } else if (adClickCount % 3 === 1) {
             directLinkAd = partnerIntegration.direct_Link2;
-        } else if (adClickCount % 4 === 2) {
-            directLinkAd = partnerIntegration.direct_Link3;
         } else {
-            directLinkAd = partnerIntegration.direct_Link4;
-        };
+            directLinkAd = partnerIntegration.direct_Link3;
+        }
 
         // Create and append an anchor tag to open the ad link
         const link = document.createElement('a');
