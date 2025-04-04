@@ -11,7 +11,6 @@ export const partnerIntegration = {
     },
     direct_Link: 'https://filthygracefulspinach.com/q0ivyz4x?key=c9c21ad723a04644e3b45ac2cf40e3ed',
     direct_Link2: 'https://filthygracefulspinach.com/easfk1mniq?key=05ac6e1f871849016f5e6111022e1b4f',
-    direct_Link3: 'https://filthygracefulspinach.com/mi8cmzmk9?key=fbe88493e05091a1c48f844397c022f6',
     socialBarAdScriptSrc : '//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js',
     popunderAdScriptSrc : '//filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js',
     seconderyAccount:{

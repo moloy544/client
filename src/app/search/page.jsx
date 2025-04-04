@@ -14,7 +14,7 @@ import { ResponsiveMovieCard } from "@/components/cards/Cards";
 import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import brandLogoIcon from "../../assets/images/brand_logo.png"
-import { openDirectLinkAd } from "@/utils/ads.utility";
+import { openDirectLink } from "@/utils/ads.utility";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 
 // this is return user search history data
@@ -339,7 +339,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         setVisibility(true);
         if (!isAdClick) {
 
-            openDirectLinkAd();
+            openDirectLink();
             setIsAdClick(true);
         }
     };

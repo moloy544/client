@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
-import { openDirectLinkAd } from "@/utils/ads.utility";
+import { openDirectLink } from "@/utils/ads.utility";
 import { useCurrentWindowSize } from "@/hooks/hook";
 import { isIOS } from "@/helper/helper";
 
@@ -181,10 +181,10 @@ function DownloadButton({ isOnline, imdbId, downloadLinks, handleReportModelOpen
 
     if (!isIOS()) {
       setTimeout(() => {
-        openDirectLinkAd();
+        openDirectLink();
        }, 1000);
     }else{
-      openDirectLinkAd();
+      openDirectLink();
     }
       
   };

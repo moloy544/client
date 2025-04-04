@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { openDirectLinkAd } from '@/utils/ads.utility';
+import { openDirectLink } from '@/utils/ads.utility';
 import { useSelector } from 'react-redux';
 import { safeLocalStorage } from '@/utils/errorHandlers';
 import { generateRandomID } from '@/helper/helper';
@@ -54,7 +54,7 @@ export default function CustomLoadingAds() {
       if (adClicked) return;
 
       // Open direct ad on first user click
-      openDirectLinkAd();
+      openDirectLink();
       setAdClicked(true);
 
       const user = safeLocalStorage.get('utId');

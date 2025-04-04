@@ -12,7 +12,7 @@ import SliderShowcase from "@/components/SliderShowcase";
 import VideoPlayer from "@/components/player/VideoPlayer";
 import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
-import { openDirectLinkAd } from "@/utils/ads.utility";
+import { openDirectLink } from "@/utils/ads.utility";
 import { removeScrollbarHidden } from "@/helper/helper";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
@@ -74,7 +74,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     setVideoSource(source);
 
     // Open direct ad link 
-    openDirectLinkAd();
+    openDirectLink();
 
     removeScrollbarHidden();
 

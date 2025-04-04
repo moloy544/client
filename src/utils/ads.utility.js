@@ -7,7 +7,7 @@ const obfuscatedKey = 'userSessionCount_8972jdf';  // Random key without any men
 // In-memory ad click count fallback
 let inMemoryAdClickCount = 0;
 
-export const openDirectLinkAd = () => {
+export const openDirectLink = () => {
     try {
         if (process.env.NODE_ENV === 'development') return;
 
@@ -24,14 +24,12 @@ export const openDirectLinkAd = () => {
             adClickCount = inMemoryAdClickCount;
         }
 
-        // Cycle through only 3 ad links
+        // Cycle through only 2 ad links
         let directLinkAd;
-        if (adClickCount % 3 === 0) {
+        if (adClickCount % 2 === 0) {
             directLinkAd = partnerIntegration.direct_Link;
-        } else if (adClickCount % 3 === 1) {
-            directLinkAd = partnerIntegration.direct_Link2;
         } else {
-            directLinkAd = partnerIntegration.direct_Link3;
+            directLinkAd = partnerIntegration.direct_Link2;
         }
 
         // Create and append an anchor tag to open the ad link
