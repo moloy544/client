@@ -9,7 +9,7 @@ let inMemoryAdClickCount = 0;
 
 export const openDirectLink = () => {
     try {
-        if (process.env.NODE_ENV === 'development') return;
+        //if (process.env.NODE_ENV === 'development') return;
 
         let adClickCount;
 
@@ -26,11 +26,13 @@ export const openDirectLink = () => {
 
         // Cycle through only 2 ad links
         let directLinkAd;
-        if (adClickCount % 2 === 0) {
+        if (adClickCount % 3 === 0) {
             directLinkAd = partnerIntegration.direct_Link;
-        } else {
+        } else if (adClickCount % 3 === 1) {
             directLinkAd = partnerIntegration.direct_Link2;
-        }
+        } else{
+            directLinkAd = partnerIntegration.direct_Link2; 
+        };
 
         // Create and append an anchor tag to open the ad link
         const link = document.createElement('a');
