@@ -31,7 +31,7 @@ export const openDirectLink = () => {
         } else if (adClickCount % 3 === 1) {
             directLinkAd = partnerIntegration.direct_Link2;
         } else{
-            directLinkAd = partnerIntegration.direct_Link2; 
+            directLinkAd = partnerIntegration.direct_Link3; 
         };
 
         // Create and append an anchor tag to open the ad link
