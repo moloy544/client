@@ -191,7 +191,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               priority
               className="transition-transform duration-8000 transform-gpu animate-zoom select-none pointer-events-none"
               src={thumbnail}
-              alt={title + " " + type + " thumbnail" || "Content Thumbnail"}
+              alt={title + " " + type + " thumbnail" || `${type} thumbnail`}
               fill />
 
             {status === "released" ? (

@@ -9,7 +9,7 @@ let inMemoryAdClickCount = 0;
 
 export const openDirectLink = () => {
     try {
-        //if (process.env.NODE_ENV === 'development') return;
+        if (process.env.NODE_ENV === 'development') return;
 
         let adClickCount;
 
