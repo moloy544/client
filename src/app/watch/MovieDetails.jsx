@@ -329,6 +329,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
 
   const [showDropdown, setDropDown] = useState(false);
+  const [isRpmplayOnline, setIsRpmplayOnline] = useState(false);
 
   const play = () => {
 
@@ -340,7 +341,11 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
       return
     };
 
-    if (watchLinks.length === 1) {
+    const findRpmplayOnline = watchLinks.filter(({source})=> source.includes('rpmplay.online'));
+    if (findRpmplayOnline.length > 0) {
+      setIsRpmplayOnline(true);
+    }
+    if (watchLinks.length === 1 && findRpmplayOnline.length === 0) {
       playHandler(watchLinks[0].source);
       hideDropDown();
     } else {
@@ -379,9 +384,9 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
         </button>
       </div>
       <ModelsController visibility={showDropdown} windowScroll={false}>
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-[2px] flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-[2px] flex items-center justify-center z-50 mx-2">
 
-          <div className="w-auto h-auto py-4 px-5 bg-gray-800 shadow-lg rounded-md">
+          <div className="w-auto h-auto py-4 px-5 bg-gray-800 shadow-lg rounded-md max-w-xs mx-4">
 
             <div className="w-full flex justify-around items-center space-x-3 pb-3">
               <div className="font-bold text-base text-gray-100 text-center whitespace-nowrap">
@@ -397,9 +402,32 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
               </button>
             </div>
 
-            <small className="text-xs text-gray-200">
+           {isRpmplayOnline ?(
+              <small className="text-xs text-gray-200">
+              Try to play at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio:{" "}
+              <span className="font-semibold text-[#f59e0b]">
+                Go to Player Settings ⚙️
+              </span>{" "}
+              <span className="text-gray-400">&rarr;</span>{" "}
+              <span className="font-semibold text-[#3b82f6]">
+                Click on <u>Audio</u>
+              </span>{" "}
+              <span className="text-gray-400">&rarr;</span>{" "}
+              <span className="font-semibold text-[#ec4899]">
+                Click on <u>Track</u>
+              </span>{" "}
+              <span className="text-gray-400">&rarr;</span>{" "}
+              <span className="font-semibold text-[#10b981]">
+                Choose any available language (like Hindi, English, Tamil, Telugu, etc.)
+              </span>
+              .
+            </small>                                   
+            
+            ):(
+              <small className="text-xs text-gray-200">
               Video not playing? <span className="font-semibold">Try a different server.</span>
             </small>
+            )}
 
             <div className="space-y-3 my-4 px-1">
               {watchLinks?.map((data, index) => (

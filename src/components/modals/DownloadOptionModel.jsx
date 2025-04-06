@@ -132,8 +132,8 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
       <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false}>
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50">
 
-          <div className="bg-white rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg py-2">
-            <div className="flex justify-around">
+          <div className="bg-white max-h-full overflow-y-scroll scrollbar-hidden rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg relative">
+            <div className="flex justify-around sticky top-0 bg-white py-2">
               <div className="text-lg font-bold my-3 text-black"><i className="bi bi-download"></i> Download Options</div>
               <button type="button"
                 onClick={onReportButtonClick}
@@ -188,13 +188,15 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
                   If the download not start after click, wait a few minutes and try again. You can also try a different download option or watch online if needed.
                 </p>
               </div>
-
+             
+             <div className="bg-white w-full h-auto sticky bottom-0 pb-4 pt-7">
               <button
                 onClick={onClose}
-                className="w-full mb-4 mt-7 bg-gray-900 hover:bg-gray-950 text-gray-50 py-2 rounded-md transition-colors"
+                className="w-full bg-gray-900 hover:bg-gray-950 text-gray-50 py-2 rounded-md transition-colors"
               >
                 Close
               </button>
+              </div>
             </div>
           </div>
         </div>
