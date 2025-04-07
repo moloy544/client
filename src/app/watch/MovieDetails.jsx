@@ -341,9 +341,10 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
       return
     };
 
-    const findRpmplayOnline = watchLinks.filter(({source})=> source.includes('rpmplay.online'));
+    const findRpmplayOnline = watchLinks.filter(({ source }) => source.includes('rpmplay.online'));
     if (findRpmplayOnline.length > 0) {
-      setIsRpmplayOnline(true);
+      const findIndex = watchLinks.findIndex(({ source }) => source.includes('rpmplay.online'));
+      setIsRpmplayOnline(` Try to play <span class="text-yellow-500 font-semibold">server ${findIndex + 1}</span> at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio: `);
     }
     if (watchLinks.length === 1 && findRpmplayOnline.length === 0) {
       playHandler(watchLinks[0].source);
@@ -402,31 +403,31 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
               </button>
             </div>
 
-           {isRpmplayOnline ?(
+            {isRpmplayOnline ? (
               <small className="text-xs text-gray-200">
-              Try to play at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio:{" "}
-              <span className="font-semibold text-[#f59e0b]">
-                Go to Player Settings ⚙️
-              </span>{" "}
-              <span className="text-gray-400">&rarr;</span>{" "}
-              <span className="font-semibold text-[#3b82f6]">
-                Click on <u>Audio</u>
-              </span>{" "}
-              <span className="text-gray-400">&rarr;</span>{" "}
-              <span className="font-semibold text-[#ec4899]">
-                Click on <u>Track</u>
-              </span>{" "}
-              <span className="text-gray-400">&rarr;</span>{" "}
-              <span className="font-semibold text-[#10b981]">
-                Choose any available language (like Hindi, English, Tamil, Telugu, etc.)
-              </span>
-              .
-            </small>                                   
-            
-            ):(
+                <span dangerouslySetInnerHTML={{ __html: isRpmplayOnline }} />
+                <span className="font-semibold text-[#f59e0b]">
+                  Go to Player Settings ⚙️
+                </span>{" "}
+                <span className="text-gray-400">&rarr;</span>{" "}
+                <span className="font-semibold text-[#3b82f6]">
+                  Click on <u>Audio</u>
+                </span>{" "}
+                <span className="text-gray-400">&rarr;</span>{" "}
+                <span className="font-semibold text-[#ec4899]">
+                  Click on <u>Track</u>
+                </span>{" "}
+                <span className="text-gray-400">&rarr;</span>{" "}
+                <span className="font-semibold text-[#10b981]">
+                  Choose any available language (like Hindi, English, Tamil, Telugu, etc.)
+                </span>
+                .
+              </small>
+
+            ) : (
               <small className="text-xs text-gray-200">
-              Video not playing? <span className="font-semibold">Try a different server.</span>
-            </small>
+                Video not playing? <span className="font-semibold">Try a different server.</span>
+              </small>
             )}
 
             <div className="space-y-3 my-4 px-1">
