@@ -49,6 +49,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
 
   //const [downloadOptionUrlData, setDownloadOptionUrlData] = useState([]);
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
+  const [sourceUrl, setSourceUrl] = useState(null);
 
   const handleDownload = async (sourceIndex) => {
     try {
@@ -83,32 +84,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
         return;
       }
 
-      if (isIOS()) {
-        // iOS doesn't support window.open(), so we use a custom method to open the link in a new tab
-        const iframe = document.createElement('iframe');
-        iframe.src = downloadUrl;
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-        setTimeout(() => {
-          iframe.parentNode.removeChild(iframe);
-        }, 5000); // 5 seconds after the download starts
-        return;
-      }
-
-      // Create a new anchor element
-      const link = document.createElement('a');
-      link.href = downloadUrl;           // Set the href to the download URL
-      link.target = '_blank';            // Open the link in a new tab
-      link.rel = 'nofollow noopener noreferrer';  // Ensure security with 'nofollow noopener noreferrer'
-
-      // Append the anchor to the body (this step is required for Safari)
-      document.body.appendChild(link);
-
-      // Trigger a click on the anchor
-      link.click();
-
-      // Remove the anchor after clicking
-      document.body.removeChild(link);
+      setSourceUrl(downloadUrl)
 
     } catch (error) {
       console.error('Error fetching download option URLs:', error);
@@ -120,8 +96,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
       setDownloadStartProgress(false);
     }
   };
-
-
+  
   // validate if false anything returns nothing
   if (!links || !Array.isArray(links) || links.length === 0) {
     return null
@@ -182,22 +157,48 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
 
               <div className="mt-3 space-y-1 font-medium text-xs text-gray-500">
                 <p className="text-center">
-                  After clicking the download option, please don&lsquo;t close the opend window; your download will start shortly and automatically.
+                  After clicking the download now button, please don&lsquo;t close the opend window; your download will start shortly and automatically.
                 </p>
                 <p className="text-center">
                   If the download not start after click, wait a few minutes and try again. You can also try a different download option or watch online if needed.
                 </p>
               </div>
-             
-             <div className="bg-white w-full h-auto sticky bottom-0 pb-4 pt-7">
-              <button
-                onClick={onClose}
-                className="w-full bg-gray-900 hover:bg-gray-950 text-gray-50 py-2 rounded-md transition-colors"
-              >
-                Close
-              </button>
+
+              <div className="bg-white w-full h-auto sticky bottom-0 pb-4 pt-7">
+                <button
+                  onClick={onClose}
+                  className="w-full bg-gray-900 hover:bg-gray-950 text-gray-50 py-2 rounded-md transition-colors"
+                >
+                  Close
+                </button>
               </div>
             </div>
+            {sourceUrl && (
+              <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 px-4">
+                <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm mx-auto text-center">
+                  <div className="text-xl font-semibold mb-2">🎉 Download Ready!</div>
+                  <div className="text-sm text-gray-600 mb-4 font-medium">
+                    Your download link is ready. Click below to start downloading.
+                  </div>
+                  <a
+                    href={sourceUrl}
+                    target="_blank"
+                    rel="nofollow noopener noreferrer"
+                    className="block w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition font-semibold"
+                  >
+                    Download Now
+                  </a>
+
+                  <button
+                    onClick={() => setSourceUrl(null)}
+                    className="mt-3 text-base font-medium text-red-pure hover:text-red-700 py-1.5 px-4 my-3"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+
+            )}
           </div>
         </div>
       </ModelsController>
@@ -208,4 +209,4 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, isOpe
       />
     </>
   )
-}
+};
