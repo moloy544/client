@@ -73,8 +73,11 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     // Set the video source as usual
     setVideoSource(source);
 
-    // Open direct ad link 
-    openDirectLink();
+    const findRpmplayOnline = movieDetails.watchLink?.filter(({ source }) => source.includes('rpmplay.online'));
+    if (findRpmplayOnline?.length === 0) {
+      // Open direct ad link 
+      openDirectLink();
+    };
 
     removeScrollbarHidden();
 
@@ -94,8 +97,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     if (callBack && typeof callBack === 'function') {
       callBack();
-    }
-
+    };
 
   };
 
@@ -345,8 +347,12 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
 
     const findRpmplayOnline = watchLinks.filter(({ source }) => source.includes('rpmplay.online'));
     if (findRpmplayOnline.length > 0) {
-         setIsRpmplayOnline(` Try to play <span class="text-yellow-500 font-semibold">server ${findIndex + 1}</span> at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio: `);
-    }
+      setIsRpmplayOnline(` Try to play <span class="text-yellow-500 font-semibold">server ${findIndex + 1}</span> at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio: `);
+
+      // Open direct ad link 
+      openDirectLink();
+    };
+
     if (watchLinks.length === 1 && findRpmplayOnline.length === 0) {
       playHandler(watchLinks[0].source);
       hideDropDown();
@@ -409,7 +415,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
                 <small className="text-xs text-gray-200">
                   <span dangerouslySetInnerHTML={{ __html: isRpmplayOnline }} />
                   <span className="font-semibold text-[#f59e0b]">
-                    Go to Server {findIndex+1} Player Settings ⚙️
+                    Go to Server {findIndex + 1} Player Settings ⚙️
                   </span>{" "}
                   <span className="text-gray-400">&rarr;</span>{" "}
                   <span className="font-semibold text-[#3b82f6]">
