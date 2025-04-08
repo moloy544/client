@@ -392,7 +392,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
         </button>
       </div>
       <ModelsController visibility={showDropdown} windowScroll={false}>
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-[2px] flex items-center justify-center z-50 mx-2">
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-[2px] flex items-center justify-center z-50 px-2">
 
           <div className="w-auto h-auto py-4 px-5 bg-gray-800 shadow-lg rounded-md max-w-xs mx-4">
 
@@ -413,34 +413,34 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
             {isRpmplayOnline ? (
               <>
                 <small className="text-xs text-gray-200">
-                  <span dangerouslySetInnerHTML={{ __html: isRpmplayOnline }} />
+                  &#8226; <span dangerouslySetInnerHTML={{ __html: isRpmplayOnline }} />{" "}
                   <span className="font-semibold text-[#f59e0b]">
-                    Go to Server {findIndex + 1} Player Settings ⚙️
+                    Open Server {findIndex + 1} Settings <i className="bi bi-gear-fill text-gray-400"></i>
                   </span>{" "}
                   <span className="text-gray-400">&rarr;</span>{" "}
                   <span className="font-semibold text-[#3b82f6]">
-                    Click on <u>Audio</u>
+                    Click <u>Audio <i className="bi bi-music-note-beamed text-gray-300"></i></u>
                   </span>{" "}
                   <span className="text-gray-400">&rarr;</span>{" "}
                   <span className="font-semibold text-[#ec4899]">
-                    Click on <u>Track</u>
+                    Click <u>Track</u>
                   </span>{" "}
                   <span className="text-gray-400">&rarr;</span>{" "}
                   <span className="font-semibold text-[#10b981]">
-                    Choose available language (like Hindi, English, Tamil, Telugu, etc.)
+                    Select your language (Hindi, English, Tamil, Telugu, etc.)
                   </span>
                   .
                 </small>
 
                 {watchLinks.length > 1 && (
-                  <div className="text-xs text-gray-200 my-3 text-center">
-                    Video not playing or facing any issue? <span className="font-semibold">Try a different server.</span>
+                  <div className="text-xs text-gray-200 my-1.5 text-center">
+                    &#8226; Video not working? <span className="font-semibold">Try another server.</span>
                   </div>
                 )}
               </>
             ) : watchLinks.length > 1 && (
               <small className="text-xs text-gray-200">
-                Video not playing? <span className="font-semibold">Try a different server.</span>
+                &#8226; Video not working? <span className="font-semibold">Try another server.</span>
               </small>
             )}
 
