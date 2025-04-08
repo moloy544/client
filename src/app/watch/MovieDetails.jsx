@@ -454,7 +454,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
                   >
                     <span>
                       {data.label}
-                      {findCurrentPlayHlsDomainIndex === index && (
+                      {watchLinks.length >1 && findCurrentPlayHlsDomainIndex === index && (
                         <i className="bi bi-check-circle-fill text-teal-500 text-xs mx-2.5"></i>
                       )}
                     </span>
