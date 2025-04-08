@@ -89,7 +89,7 @@ export default function CustomLoadingAds() {
       adcashMainScript.onload = () => {
         if (window) {
 
-          const ids = ['9775234', '9775202', '9754474'];
+          const ids = ['9795498', '9775202', '9754474'];
 
           // Select a random ID from the array
           const randomId = ids[Math.floor(Math.random() * ids.length)];
