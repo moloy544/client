@@ -1,7 +1,7 @@
 
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import { headers } from "next/headers";
+//import { headers } from "next/headers";
 import axios from "axios";
 import { creatUrlLink, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
@@ -13,7 +13,7 @@ import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
-function getClientIp() {
+/**function getClientIp() {
 
     const requestHeaders = headers();
     const xRealIp = requestHeaders.get('x-real-ip');
@@ -23,7 +23,7 @@ function getClientIp() {
         xRealIp || (xForwardedFor ? xForwardedFor.split(',')[0].trim() : null) ||
         '0.0.0.0');
 
-};
+};**/
 
 // imdbId validating  using regex pattern
 const imdbIdPattern = /^tt\d{7,}$/;
@@ -34,7 +34,7 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
   let status = 500; // Default status in case of an error
   let movieData = null;
   let suggestions = null
-  let userIp = getClientIp();
+  let userIp = null;
 
   try {
 
@@ -43,7 +43,7 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
       return { status, movieData, suggestions };
     };
 
-    const ip = getClientIp();
+    const ip = '0.0.0.0';
 
     // get contet details form backend database
     const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`, {
@@ -54,7 +54,7 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
       status = response.status;
       movieData = response.data.movieData || null;
       suggestions = response.data.suggestions || null;
-      userIp = userIp || response.data.userIp;
+      userIp = null //userIp || response.data.userIp;
     } else {
       status = response.status
     }
