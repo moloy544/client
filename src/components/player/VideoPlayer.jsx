@@ -13,12 +13,26 @@ const areEqual = (prevProps, nextProps) => {
   )
 };
 
+
+function generateRandomIp() {
+  const part1 = Math.floor(Math.random() * 256);
+  const part2 = Math.floor(Math.random() * 256);
+  const part3 = Math.floor(Math.random() * 256);
+  const part4 = Math.floor(Math.random() * 256);
+  return `${part1}.${part2}.${part3}.${part4}`;
+};
+
+function isValidIp(ip) {
+  const ipRegex = /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/;
+  return ipRegex.test(ip);
+};
+
 export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
 
   if (!originalURL) return null;
 
-  const hlsProviderDomain = new URL(hlsSourceDomain || process.env.VIDEO_SERVER_URL).hostname+'m';
-  const secondHlsProviderDomain = new URL(process.env.SECOND_VIDEO_SERVER_URL).hostname+'d';
+  const hlsProviderDomain = new URL(hlsSourceDomain || process.env.VIDEO_SERVER_URL).hostname + 'm';
+  const secondHlsProviderDomain = new URL(process.env.SECOND_VIDEO_SERVER_URL).hostname + 'd';
 
   // Check if the originalURL contains either hlsProviderDomain or secondHlsProviderDomain
   const isHlsProviderMatch = originalURL.includes(hlsProviderDomain);
@@ -40,7 +54,7 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
 
 
 const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
-  
+
   const playerRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -49,10 +63,18 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
   const isMobile = isMobileDevice();
 
   useEffect(() => {
-    if (source && userIp) {
+
+    let ip = userIp;
+
+    if (!ip || ip === '0.0.0.0' || !isValidIp(ip)) {
+      ip = generateRandomIp();
+
+    };
+
+    if (source && ip) {
 
       if (source.includes('.m3u8') || source.includes('.mkv')) {
-        const newSource = generateSourceURL(hlsSourceDomain, source, userIp);
+        const newSource = generateSourceURL(hlsSourceDomain, source, ip);
         const script = document.createElement("script");
         script.id = "playerjs-script";
         script.src = "/static/js/player_v2.1.js";
