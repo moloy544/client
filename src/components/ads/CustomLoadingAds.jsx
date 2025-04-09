@@ -6,34 +6,7 @@ import { openDirectLink } from '@/utils/ads.utility';
 import { useSelector } from 'react-redux';
 import { safeLocalStorage } from '@/utils/errorHandlers';
 import { generateRandomID } from '@/helper/helper';
-
-function isNotHuman() {
-
-  if (typeof window === 'undefined') {
-    return true;
-  }
-
-  const userAgent = navigator.userAgent.toLowerCase();
-  const botPatterns = [
-    /bot/i,
-    /spider/i,
-    /crawl/i,
-    /slurp/i,
-    /mediapartners/i,
-    /adsbot/i,
-    /googlebot/i,
-    /bingbot/i,
-    /yandexbot/i,
-    /duckduckbot/i,
-    /baiduspider/i,
-    /sogou/i,
-    /exabot/i,
-    /facebot/i,
-    /ia_archiver/i
-  ];
-
-  return botPatterns.some(pattern => pattern.test(userAgent));
-};
+import { isNotHuman } from '@/utils';
 
 export default function CustomLoadingAds() {
 
