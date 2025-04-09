@@ -1,30 +1,24 @@
-//import { headers } from "next/headers";
-// IP nikalne ka function
-/**async function getClientIp() {
-    //const xRealIp = requestHeaders.get('x-real-ip');
-    //const cfConnectingIp = requestHeaders.get('cf-connecting-ip');
-    //const xForwardedFor = requestHeaders.get('x-forwarded-for');
-
-    const res = await fetch('https://api.ipify.org?format=json');
-  const data = await res.json();
-  return data.ip;
-
-    /**return (
-      xRealIp ||
-      cfConnectingIp ||
-      (xForwardedFor ? xForwardedFor.split(',')[0].trim() : null) ||
-      'IP Not Found'
-    );**/
+import { headers } from "next/headers";
 
 import RestrictionsCheck from "@/components/RestrictionsCheck";
 
+function getClientIp() {
 
-export default async function Page() {
-  // headers() se current request headers milenge
-  //const requestHeaders = headers();
+    const requestHeaders = headers();
+    const xRealIp = requestHeaders.get('x-real-ip');
+    const xForwardedFor = requestHeaders.get('x-forwarded-for');
 
+    return (
+        xRealIp || (xForwardedFor ? xForwardedFor.split(',')[0].trim() : null) ||
+        'IP Not Found');
 
-  return (
-    <RestrictionsCheck />
-  );
+};
+
+export default function Page() {
+
+    const clientIp = getClientIp();
+
+    return (
+        <RestrictionsCheck userServerGetIp={clientIp} />
+    );
 }
