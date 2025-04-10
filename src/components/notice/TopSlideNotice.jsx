@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { appConfig } from "@/config/config";
 
 export default function TopSlideNotice() {
     const [show, setShow] = useState(false);
@@ -10,6 +11,20 @@ export default function TopSlideNotice() {
         const showTimer = setTimeout(() => {
             setShow(true);
         }, 5000); // Show after 5 sec
+
+        (async()=>{
+           
+            const response = await fetch(`${appConfig.backendUrl}/api/v1/user/check-ip`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ test: 'data' }),
+              });
+            
+              const data = await response.json();
+              console.log('User IP:', data.ip);
+        })()
 
 
         return () => {

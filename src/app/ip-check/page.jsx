@@ -1,3 +1,4 @@
+import TopSlideNotice from "@/components/notice/TopSlideNotice";
 import { headers } from "next/headers";
 
 
@@ -11,12 +12,7 @@ function getClientData() {
     const ip =  xRealIp || (xForwardedFor ? xForwardedFor.split(',')[0].trim() : null) ||
         "0.0.0.0";
 
-        const data ={ip};
-
-
-    if (countryCode) {
-        data.countryCode = countryCode
-    };
+        const data ={ip, countryCode};
 
     return data
 
@@ -30,6 +26,7 @@ export default function Page() {
         <div>
          <h2>ip is: {clientData.ip}</h2>
          <h4>Country code: {clientData.countryCode || "N/A"}</h4>
+         <TopSlideNotice />
          </div>
     )
 }

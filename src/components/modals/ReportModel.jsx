@@ -135,13 +135,19 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
     };
   };
 
-  const reportOptions = [
-    { value: "Video not playing", id: "video-option-checkbox", visible: status === "released" },
-    { value: "Audio not working", id: "audio-option-checkbox", visible: status === "released" },
-    { value: "Download not working", id: "download-option-checkbox", visible: isDownloadOption },
-    { value: "Image not showing", id: "image-option-checkbox", visible: true },
-    { value: "Share not working", id: "share-option-checkbox", visible: true },
+  const baseOptions = [
+    { value: "Video not playing", id: "video-option-checkbox", condition: () => status === "released" },
+    { value: "Audio not working", id: "audio-option-checkbox", condition: () => status === "released" },
+    { value: "Download not working", id: "download-option-checkbox", condition: () => isDownloadOption },
+    { value: "Image not showing", id: "image-option-checkbox", condition: () => true },
+    { value: "Share not working", id: "share-option-checkbox", condition: () => true },
   ];
+  
+  const reportOptions = baseOptions.map(option => ({
+    ...option,
+    visible: option.condition(),
+  }));
+  
 
   return (
     <>
