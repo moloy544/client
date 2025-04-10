@@ -41,14 +41,14 @@ export default function RestrictedModal({ onClose, contentTitle, contentType }) 
                         {/* BookMyShow */}
                         <a href="https://in.bookmyshow.com" target="_blank" rel="noopener noreferrer nofollow"
                             className="flex items-center gap-2 px-2 py-2.5 border rounded-lg hover:bg-gray-100 transition">
-                            <Image width={25} h={25} src={bokmyshowIcon} className="rounded-lg" />
+                            <Image width={25} h={25} src={bokmyshowIcon} className="rounded-lg" alt="BookMyShow Logo" />
                             <span className="text-gray-800 font-semibold text-xs">Bool My Show</span>
                         </a>
 
                         {/* Paytm Movies */}
                         <a href="https://paytm.com/movies" target="_blank" rel="noopener noreferrer nofollow"
                             className="flex items-center gap-2 px-2 py-2.5 border rounded-lg hover:bg-gray-100 transition">
-                            <Image width={25} h={25} src={paytmIcon} className="rounded-lg" />
+                            <Image width={25} h={25} src={paytmIcon} className="rounded-lg" alt="Paytm movies logo" />
                             <span className="text-gray-800 font-semibold text-xs">Paytm Movies</span>
                         </a>
 

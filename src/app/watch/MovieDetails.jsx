@@ -406,9 +406,8 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
           <span className="sr-only">Play video</span>
         </button>
       </div>
-      <ModelsController visibility={showDropdown} windowScroll={false}>
-
-        {UserRestrictedChecking ? (
+     
+        {showDropdown && UserRestrictedChecking ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
             <div className="bg-white rounded-2xl shadow-xl max-w-md w-full text-center relative mx-4 py-8 px-6 flex items-center justify-center flex-col space-y-4">
               <button
@@ -431,13 +430,15 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
             </div>
           </div>
 
-        ) : isUserRestricted && isContentRestricted ? (
+        ) : showDropdown && isUserRestricted && isContentRestricted ? (
           <RestrictedModal
             onClose={hideDropDown}
             contentTitle={contentTitle}
             contentType={contentType}
           />
         ) : (
+          <ModelsController visibility={showDropdown} windowScroll={false}>
+
           <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-[2px] flex items-center justify-center z-50 px-2">
 
             <div className="w-auto h-auto py-4 px-5 bg-gray-800 shadow-lg rounded-md max-w-xs mx-2">
@@ -520,10 +521,10 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
 
             </div>
           </div>
+          </ModelsController>
 
         )}
-      </ModelsController>
-
+     
     </>
   )
 }

@@ -8,6 +8,7 @@ import { safeLocalStorage } from "@/utils/errorHandlers";
 import { openDirectLink } from "@/utils/ads.utility";
 import { useCurrentWindowSize } from "@/hooks/hook";
 import { isIOS } from "@/helper/helper";
+import { useSelector } from "react-redux";
 
 
 // Report content model dinamic import
@@ -21,10 +22,13 @@ const DownloadOptionModel = dynamic(() => import('@/components/modals/DownloadOp
 
 const buttonsClass = "flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-gray-300 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-[#18212b]";
 
-export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true, playHandler, currentPlaySource, isContentRestricted }) {
+export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true, playHandler, currentPlaySource }) {
 
   const [isSaved, setIsSaved] = useState(false);
   const [isReportModelOpen, setIsReportModelOpen] = useState(false);
+
+  const { isUserRestricted } = useSelector((state) => state.fullWebAccessState);
+
    // get window live current width
    const windowCurrentWidth = useCurrentWindowSize().width;
 
@@ -36,7 +40,8 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
     releaseYear,
     type,
     downloadLinks,
-    watchLink
+    watchLink,
+    isContentRestricted
   } = movieData || {};
 
   //Share movie function
@@ -93,6 +98,8 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
 
   }, []);
 
+  const isAllRestricted = isUserRestricted && isContentRestricted;
+
   return (
     <>
 
@@ -118,6 +125,9 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
             handleReportModelOpen={setIsReportModelOpen}
             downloadLinks={downloadLinks}
             windowCurrentWidth={windowCurrentWidth}
+            ontentTitle={title}
+            contentType={type}
+            isAllRestricted={isAllRestricted}
           />
         )}
 
@@ -165,7 +175,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
           setIsModelOpen={setIsReportModelOpen}
           isOpen={isReportModelOpen}
           windowCurrentWidth={windowCurrentWidth}
-          isContentRestricted={isContentRestricted}
+          isAllRestricted={isAllRestricted}
         />
       )}
 
@@ -173,7 +183,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
   )
 };
 
-function DownloadButton({ isOnline, imdbId, downloadLinks, handleReportModelOpen, windowCurrentWidth }) {
+function DownloadButton({ isOnline, imdbId, downloadLinks, isAllRestricted, handleReportModelOpen, windowCurrentWidth, contentTitle, contentType }) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -219,6 +229,9 @@ function DownloadButton({ isOnline, imdbId, downloadLinks, handleReportModelOpen
         linksData={downloadLinks[0]}
         isOpen={isModalOpen}
         windowCurrentWidth={windowCurrentWidth}
+        isAllRestricted={isAllRestricted}
+        contentTitle={contentTitle}
+         contentType={contentType}
         onClose={() => setIsModalOpen(false)}
         onReportButtonClick={() => {
           setIsModalOpen(false);

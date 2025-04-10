@@ -43,18 +43,6 @@ export default function TopSlideNotice() {
 
                 dispatch(updatefullWebAccessState({ isUserRestricted: isRestricted }));
 
-                if (isRestricted !== true) {
-                    setTimeout(() => {
-                        setShow(true);
-
-                        // 15 sec baad hide kar do
-                        setTimeout(() => {
-                            setShow(false);
-                        }, 24000);
-
-                    }, 6000);
-                };
-
                 // Mark as checked
                 sessionStorage.setItem("x9_user_tkn_check", isRestricted ? "true" : "false");
 
