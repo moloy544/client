@@ -4,8 +4,9 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
+import { useSelector } from "react-redux";
 
-export default function ReportModel({ id, content_title, status, setIsModelOpen, isOpen, windowCurrentWidth, isDownloadOption, watchLinks = null, playHandler, currentPlaySource }) {
+export default function ReportModel({ id, content_title, status, setIsModelOpen, isOpen, windowCurrentWidth, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isContentRestricted }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
@@ -15,6 +16,8 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
     want_report: false,
     serversData: [],
   });
+
+  const { isUserRestricted } = useSelector((state) => state.fullWebAccessState);
 
   const writtenReportRef = useRef(null);
 
@@ -136,8 +139,8 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
   };
 
   const baseOptions = [
-    { value: "Video not playing", id: "video-option-checkbox", condition: () => status === "released" },
-    { value: "Audio not working", id: "audio-option-checkbox", condition: () => status === "released" },
+    { value: "Video not playing", id: "video-option-checkbox", condition: () => status === "released" && (isUserRestricted && isContentRestricted ? false : true) },
+    { value: "Audio not working", id: "audio-option-checkbox", condition: () => status === "released" && (isUserRestricted && isContentRestricted ? false : true) },
     { value: "Download not working", id: "download-option-checkbox", condition: () => isDownloadOption },
     { value: "Image not showing", id: "image-option-checkbox", condition: () => true },
     { value: "Share not working", id: "share-option-checkbox", condition: () => true },

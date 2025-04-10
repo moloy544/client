@@ -21,7 +21,7 @@ const DownloadOptionModel = dynamic(() => import('@/components/modals/DownloadOp
 
 const buttonsClass = "flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-gray-300 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-[#18212b]";
 
-export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true, playHandler, currentPlaySource }) {
+export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true, playHandler, currentPlaySource, isContentRestricted }) {
 
   const [isSaved, setIsSaved] = useState(false);
   const [isReportModelOpen, setIsReportModelOpen] = useState(false);
@@ -165,6 +165,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
           setIsModelOpen={setIsReportModelOpen}
           isOpen={isReportModelOpen}
           windowCurrentWidth={windowCurrentWidth}
+          isContentRestricted={isContentRestricted}
         />
       )}
 

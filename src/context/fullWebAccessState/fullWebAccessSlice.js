@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
    isSocialjoinModalShow: false,
-   isRestricted: false,
+   UserRestrictedChecking: false,
+   isUserRestricted: false,
 };
 
 export const fullWebAccessStateSlice = createSlice({
