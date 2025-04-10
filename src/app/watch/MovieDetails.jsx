@@ -394,7 +394,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource }) {
       <ModelsController visibility={showDropdown} windowScroll={false}>
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-[2px] flex items-center justify-center z-50 px-2">
 
-          <div className="w-auto h-auto py-4 px-5 bg-gray-800 shadow-lg rounded-md max-w-xs mx-4">
+          <div className="w-auto h-auto py-4 px-5 bg-gray-800 shadow-lg rounded-md max-w-xs mx-2">
 
             <div className="w-full flex justify-around items-center space-x-3 pb-3">
               <div className="font-bold text-base text-gray-100 text-center whitespace-nowrap">
