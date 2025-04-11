@@ -118,7 +118,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
 
         </div>
 
-        {!isAllRestricted && downloadLinks && downloadLinks.length > 0 && (
+        {downloadLinks && downloadLinks.length > 0 && (
           <DownloadButton
             isOnline={isOnline}
             imdbId={imdbId}
