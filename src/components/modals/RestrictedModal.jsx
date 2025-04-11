@@ -2,7 +2,7 @@ import bokmyshowIcon from "../../assets/icons/bookmyshow-small-icon.jpg";
 import paytmIcon from "../../assets/icons/paytm-small-icon.png";
 import Image from "next/image";
 
-export default function RestrictedModal({ onClose, contentTitle, contentType }) {
+export default function RestrictedModal({ onClose, contentTitle, contentType, isInTheater }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
@@ -30,6 +30,8 @@ export default function RestrictedModal({ onClose, contentTitle, contentType }) 
                         </div>
 
                     </div>
+                    {isInTheater &&(
+                        <>
                     <div className="text-sm md:text-base text-gray-700 mb-5 font-semibold">
                         No worries! 🎉 You can still enjoy <span className="text-red-600">{contentTitle}</span> {contentType || ""} at your nearest cinema.
                         Book your tickets now and experience it on the big screen! 🍿
@@ -53,6 +55,8 @@ export default function RestrictedModal({ onClose, contentTitle, contentType }) 
                         </a>
 
                     </div>
+                    </>
+                    )}
 
                     <div className="text-xs text-gray-600 mt-3">
                         Thank you for supporting creativity and respecting copyright laws.
