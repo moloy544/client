@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink } from "@/utils";
@@ -9,15 +9,18 @@ import { openDirectLink } from "@/utils/ads.utility";
 import { useCurrentWindowSize } from "@/hooks/hook";
 import { isIOS } from "@/helper/helper";
 import { useSelector } from "react-redux";
+import FullScreenBackdropLoading from "@/components/loadings/BackdropLoading";
 
 
 // Report content model dinamic import
 const ReportModel = dynamic(() => import('@/components/modals/ReportModel'), {
   ssr: false,
+  loading: () => <FullScreenBackdropLoading loadingMessage="Loading..., Please wait" />
 });
 // Download content videos model dinamic import
 const DownloadOptionModel = dynamic(() => import('@/components/modals/DownloadOptionModel'), {
   ssr: false,
+  loading: () => <FullScreenBackdropLoading loadingMessage="Loading..., Please wait" />
 });
 
 const buttonsClass = "flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-gray-300 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-[#18212b]";
@@ -29,8 +32,8 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
 
   const { isUserRestricted } = useSelector((state) => state.fullWebAccessState);
 
-   // get window live current width
-   const windowCurrentWidth = useCurrentWindowSize().width;
+  // get window live current width
+  const windowCurrentWidth = useCurrentWindowSize().width;
 
   const {
     _id,
@@ -41,7 +44,8 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
     type,
     downloadLinks,
     watchLink,
-    isContentRestricted
+    isContentRestricted,
+    isInTheater
   } = movieData || {};
 
   //Share movie function
@@ -128,7 +132,9 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
             ontentTitle={title}
             contentType={type}
             isAllRestricted={isAllRestricted}
+            isInTheater={isInTheater}
           />
+
         )}
 
         <div onClick={handleShare} role="button" title="Share" className={buttonsClass}>
@@ -183,7 +189,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
   )
 };
 
-function DownloadButton({ isOnline, imdbId, downloadLinks, isAllRestricted, handleReportModelOpen, windowCurrentWidth, contentTitle, contentType }) {
+function DownloadButton({ isOnline, imdbId, downloadLinks, isAllRestricted, isInTheater, handleReportModelOpen, windowCurrentWidth, contentTitle, contentType }) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -193,13 +199,12 @@ function DownloadButton({ isOnline, imdbId, downloadLinks, isAllRestricted, hand
     if (!isIOS()) {
       setTimeout(() => {
         openDirectLink();
-       }, 1000);
-    }else{
+      }, 1000);
+    } else {
       openDirectLink();
     }
-      
-  };
 
+  };
 
   return (
     <>
@@ -223,22 +228,25 @@ function DownloadButton({ isOnline, imdbId, downloadLinks, isAllRestricted, hand
         </svg>
         <div className="text-xs font-semibold">Download</div>
       </div>
-      <DownloadOptionModel
-        isOnline={isOnline}
-        imdbId={imdbId}
-        linksData={downloadLinks[0]}
-        isOpen={isModalOpen}
-        windowCurrentWidth={windowCurrentWidth}
-        isAllRestricted={isAllRestricted}
-        contentTitle={contentTitle}
-         contentType={contentType}
-        onClose={() => setIsModalOpen(false)}
-        onReportButtonClick={() => {
-          setIsModalOpen(false);
-          handleReportModelOpen(true)
-        }}
+      {isModalOpen && (
+        <DownloadOptionModel
+          isOnline={isOnline}
+          imdbId={imdbId}
+          linksData={downloadLinks[0]}
+          isOpen={isModalOpen}
+          windowCurrentWidth={windowCurrentWidth}
+          isAllRestricted={isAllRestricted}
+          isInTheater={isInTheater}
+          contentTitle={contentTitle}
+          contentType={contentType}
+          onClose={() => setIsModalOpen(false)}
+          onReportButtonClick={() => {
+            setIsModalOpen(false);
+            handleReportModelOpen(true)
+          }}
 
-      />
+        />
+      )}
     </>
   )
 };

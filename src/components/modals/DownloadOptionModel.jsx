@@ -45,7 +45,7 @@ const formatQualityType = (quality, qualityType) => {
   return `(${qualityLabel})`;
 };
 
-export default function DownloadOptionModel({ isOnline, imdbId, linksData, contentTitle, contentType, isAllRestricted, isOpen, onClose, onReportButtonClick, windowCurrentWidth }) {
+export default function DownloadOptionModel({ isOnline, imdbId, linksData, contentTitle, contentType, isAllRestricted, isInTheater, isOpen, onClose, onReportButtonClick, windowCurrentWidth }) {
 
   const { title, links, qualityType } = linksData || {};
 
@@ -134,6 +134,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
           <RestrictedModal 
           contentTitle={contentTitle} 
           contentType={contentType} 
+          isInTheater={isInTheater}
           onClose={onClose}
           />
         ) : (
@@ -238,10 +239,12 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
           </ModelsController>
         )}
      
-      <FullScreenBackdropLoading
-        isLoading={downloadStartProgress}
+      {downloadStartProgress &&(
+        <FullScreenBackdropLoading
+        loadingSpinner={true}
         loadingMessage="Starting download... Please wait"
       />
+      )}
     </>
   )
 };
