@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { appConfig } from "@/config/config";
 import { useDispatch } from "react-redux";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
+import { safeSessionStorage } from "@/utils/errorHandlers";
 
 export default function TopSlideNotice() {
     const dispatch = useDispatch();
@@ -16,7 +17,7 @@ export default function TopSlideNotice() {
         const fetchGeoInfo = async () => {
             try {
 
-                const alreadyChecked = sessionStorage.getItem("x9_user_tkn_check");
+                const alreadyChecked = safeSessionStorage.get("x9_user_tkn_check");
                 if (alreadyChecked) {
                     const isRestricted = alreadyChecked === 'true';
                     dispatch(updatefullWebAccessState({ isUserRestricted: isRestricted }));
@@ -44,7 +45,7 @@ export default function TopSlideNotice() {
                 dispatch(updatefullWebAccessState({ isUserRestricted: isRestricted }));
 
                 // Mark as checked
-                sessionStorage.setItem("x9_user_tkn_check", isRestricted ? "true" : "false");
+               safeSessionStorage.set("x9_user_tkn_check", isRestricted ? "true" : "false");
 
             } catch (error) {
                 console.error("Geo check failed:", error);
