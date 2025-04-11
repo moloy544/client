@@ -5,13 +5,15 @@ import { appConfig } from "@/config/config";
 import { useDispatch } from "react-redux";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
 import { safeSessionStorage } from "@/utils/errorHandlers";
+import { isNotHuman } from "@/utils";
 
 export default function TopSlideNotice() {
     const dispatch = useDispatch();
     const didRun = useRef(false);
 
     useEffect(() => {
-        if (didRun.current) return;
+
+        if (isNotHuman() || didRun.current) return;
         didRun.current = true;
 
         const fetchGeoInfo = async () => {
@@ -53,8 +55,8 @@ export default function TopSlideNotice() {
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: false }));
             }
         };
-
-        fetchGeoInfo();
+        
+            fetchGeoInfo();
 
     }, [dispatch]);
 
