@@ -1,14 +1,15 @@
 "use client"
 
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
 import { appConfig } from "@/config/config";
+import { isAndroid, isIOS } from "@/helper/helper";
 import { ModelsController } from "@/lib/EventsHandler"
 import { creatToastAlert } from "@/utils";
-import axios from "axios";
-import { useState } from "react";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
-import { isAndroid, isIOS } from "@/helper/helper";
 import RestrictedModal from "./RestrictedModal";
-import { useSelector } from "react-redux";
+
 
 const formatQualityType = (quality, qualityType) => {
 
@@ -213,7 +214,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                   <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm mx-auto text-center">
                     <div className="text-xl font-semibold mb-2">🎉 Download Ready!</div>
                     <div className="text-sm text-gray-600 mb-4 font-medium">
-                      Your download link is ready. Click below to start downloading.
+                    Your download is ready. Click the button below to start, and after clicking, please don&lsquo;t close the open window or new tab until the download starts.
                     </div>
                     <a
                       href={sourceUrl}
