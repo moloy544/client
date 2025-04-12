@@ -20,10 +20,14 @@ export default function RestrictionsCheck() {
         const fetchGeoInfo = async () => {
             try {
 
-                const alreadyChecked = safeSessionStorage.get("x9_user_tkn_check");
+                const UserRestrictedData = safeSessionStorage.get("x9_user_tkn_check") ? JSON.parse(safeSessionStorage.get("x9_user_tkn_check")) : null;
+                const alreadyChecked = UserRestrictedData?.isRestricted ? UserRestrictedData.isRestricted : false;
                 if (alreadyChecked) {
-                    const isRestricted = alreadyChecked === 'true';
-                    dispatch(updatefullWebAccessState({ isUserRestricted: isRestricted }));
+                    const dataToSaveInState = { isUserRestricted: UserRestrictedData.isRestricted };
+                    if (UserRestrictedData.geo) {
+                        dataToSaveInState.userRealIp = UserRestrictedData.geo;
+                    }
+                    dispatch(updatefullWebAccessState(dataToSaveInState));
                     return;
                 };
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: true }));
@@ -44,10 +48,22 @@ export default function RestrictionsCheck() {
                 const data = await response.json();
                 const isRestricted = typeof data?.isRestricted === "boolean" ? data.isRestricted : false;
 
-                dispatch(updatefullWebAccessState({ isUserRestricted: isRestricted }));
+                const userIp = data.geo;
 
-                // Mark as checked
-               safeSessionStorage.set("x9_user_tkn_check", isRestricted ? "true" : "false");
+                const dataToSave = {
+                    isRestricted: isRestricted,
+                };
+
+                if (userIp) {
+                    dataToSave.geo = userIp;
+                };
+
+                 const dataToSaveInState = { isUserRestricted: isRestricted, userRealIp: userIp };
+
+                dispatch(updatefullWebAccessState(dataToSaveInState));
+
+               // Save the data in session storage
+               safeSessionStorage.set("x9_user_tkn_check", JSON.stringify(dataToSave));
 
             } catch (error) {
                 console.error("Geo check failed:", error);

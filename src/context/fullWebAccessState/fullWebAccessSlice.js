@@ -5,6 +5,7 @@ const initialState = {
    isSocialjoinModalShow: false,
    UserRestrictedChecking: false,
    isUserRestricted: false,
+   userRealIp: null
 };
 
 export const fullWebAccessStateSlice = createSlice({

@@ -3,6 +3,7 @@
 import { memo, useCallback, useEffect, useRef } from "react";
 import { useOrientation } from "@/hooks/hook";
 import { isMobileDevice } from "@/utils";
+import { useSelector } from "react-redux";
 
 //Memoization to avoid unnecessary re-renders
 const areEqual = (prevProps, nextProps) => {
@@ -115,12 +116,13 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
   const containerRef = useRef(null);
 
   const isPortrait = useOrientation();
-
+  const { userRealIp } = useSelector((state) => state.fullWebAccessState);
+  
   const isMobile = isMobileDevice();
 
   useEffect(() => {
 
-    let ip = userIp;
+    let ip = userRealIp || userIp;
 
     if (!ip || ip === '0.0.0.0' || !isValidIp(ip)) {
       ip = generateCountrySpecificIp();
@@ -167,7 +169,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
         if (playerJsScript) document.body.removeChild(playerJsScript);
       };
     }
-  }, [source, userIp, title]);
+  }, [source, userRealIp, userIp, title]);
 
   const handleObservers = useCallback(async (entries) => {
 
