@@ -463,7 +463,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
               {isRpmplayOnline ? (
                 <>
                   <small className="text-xs text-gray-200">
-                    &#8226; <span>Try to play <span class="text-yellow-500 font-semibold">server {findIndex + 1}</span> at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio:</span>{" "}
+                    &#8226; <span>Try to play <span className="text-yellow-500 font-semibold">server {findIndex + 1}</span> at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio:</span>{" "}
                     <span className="font-semibold text-[#f59e0b]">
                       Open Server {findIndex + 1} Player Settings <i className="bi bi-gear-fill text-gray-400"></i>
                     </span>{" "}
