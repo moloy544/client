@@ -138,7 +138,7 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
   const baseOptions = [
     { value: "Video not playing", id: "video-option-checkbox", condition: () => status === "released" && isAllRestricted ? false : true },
     { value: "Audio not working", id: "audio-option-checkbox", condition: () => status === "released" && isAllRestricted ? false : true },
-    { value: "Download not working", id: "download-option-checkbox", condition: () => isDownloadOption && isAllRestricted ? false : true },
+    { value: "Download not working", id: "download-option-checkbox", condition: () => isAllRestricted ? false : isDownloadOption },
     { value: "Image not showing", id: "image-option-checkbox", condition: () => true },
     { value: "Share not working", id: "share-option-checkbox", condition: () => true },
   ];
