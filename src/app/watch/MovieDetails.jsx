@@ -408,39 +408,39 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
           <span className="sr-only">Play video</span>
         </button>
       </div>
-     
-        {showDropdown && UserRestrictedChecking ? (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl shadow-xl max-w-md w-full text-center relative mx-4 py-8 px-6 flex items-center justify-center flex-col space-y-4">
-              <button
-                onClick={hideDropDown}
-                className="bg-gray-400 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-400 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 absolute top-2 right-3"
-                aria-label="Close"
-              >
-                <i className="bi bi-x-lg text-base"></i>
-              </button>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-10 animate-spin fill-teal-600"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
-                />
-              </svg>
-              <span className="text-base font-semibold text-gray-800">Please wait, we are verifying...</span>
-            </div>
-          </div>
 
-        ) : showDropdown && isUserRestricted && isContentRestricted ? (
-          <RestrictedModal
-            onClose={hideDropDown}
-            contentTitle={contentTitle}
-            contentType={contentType}
-            isInTheater={isInTheater}
-          />
-        ) : (
-          <ModelsController visibility={showDropdown} windowScroll={false}>
+      {showDropdown && UserRestrictedChecking ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full text-center relative mx-4 py-8 px-6 flex items-center justify-center flex-col space-y-4">
+            <button
+              onClick={hideDropDown}
+              className="bg-gray-400 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-400 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 absolute top-2 right-3"
+              aria-label="Close"
+            >
+              <i className="bi bi-x-lg text-base"></i>
+            </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-10 animate-spin fill-teal-600"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+              />
+            </svg>
+            <span className="text-base font-semibold text-gray-800">Please wait, we are verifying...</span>
+          </div>
+        </div>
+
+      ) : showDropdown && isUserRestricted && isContentRestricted ? (
+        <RestrictedModal
+          onClose={hideDropDown}
+          contentTitle={contentTitle}
+          contentType={contentType}
+          isInTheater={isInTheater}
+        />
+      ) : (
+        <ModelsController visibility={showDropdown} windowScroll={false}>
 
           <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-[2px] flex items-center justify-center z-50 px-2">
 
@@ -488,10 +488,19 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                     </div>
                   )}
                 </>
-              ) : watchLinks.length > 1 && (
-                <small className="text-xs text-gray-200">
-                  &#8226; Video not working? <span className="font-semibold">Try another server.</span>
-                </small>
+              ) : (
+                <div className="text-base text-gray-200 my-1.5 text-center flex flex-col space-y-2">
+                  {watchLinks.length > 1 && (
+                    <small>
+                      &#8226; Video not playing? <span className="font-semibold">Try another server.</span>
+                    </small>
+                  )}
+
+                  <small>
+                    &#8226; Video stop in middle or not moving? <span className="font-semibold">Go back and pick same server again.</span>
+                  </small>
+
+                </div>
               )}
 
               <div className="space-y-3 my-4 px-1">
@@ -524,10 +533,10 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
 
             </div>
           </div>
-          </ModelsController>
+        </ModelsController>
 
-        )}
-     
+      )}
+
     </>
   )
 }
