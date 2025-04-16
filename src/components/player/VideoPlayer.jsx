@@ -4,6 +4,7 @@ import { memo, useCallback, useEffect, useRef } from "react";
 import { useOrientation } from "@/hooks/hook";
 import { isMobileDevice } from "@/utils";
 import { useSelector } from "react-redux";
+import { isIOS } from "@/helper/helper";
 
 //Memoization to avoid unnecessary re-renders
 const areEqual = (prevProps, nextProps) => {
@@ -186,7 +187,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
     const playerContainerFloatingClass = "w-full h-full flex justify-center items-center transition-all duration-500 shadow-xl shadow-slate-700 p-5 bg-gray-950";
     const playerContainerStaticClass = "w-full h-full flex justify-center items-center transition-all duration-500";
 
-    if (!playerContainer || !player) return;
+    if (!playerContainer || !player || isIOS()) return;
 
     // Handle non-portrait mode
     if (!isPortrait && isMobile) {
