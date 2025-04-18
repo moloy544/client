@@ -54,7 +54,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
   const [sourceUrl, setSourceUrl] = useState(null);
   const { UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
-  
+
   const handleDownload = async (sourceIndex) => {
     try {
       if (!isOnline) {
@@ -68,7 +68,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       setDownloadStartProgress(true);
 
       // Fetch the HTML content from the URL
-      const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_urls/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
+      const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_source/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
 
       if (response.status !== 200) {
         creatToastAlert({
@@ -80,7 +80,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
 
       const { downloadUrl } = response.data || {};
 
-      if (!downloadUrl) {
+      if (!downloadUrl || downloadUrl.length === 0) {
         creatToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
           visiblityTime: 12000
@@ -108,39 +108,39 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
 
   return (
     <>
-        {isOpen && UserRestrictedChecking ? (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl shadow-xl max-w-md w-full text-center relative mx-4 py-8 px-6 flex items-center justify-center flex-col space-y-4">
-              <button
-                onClick={onClose}
-                className="bg-gray-400 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-400 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 absolute top-2 right-3"
-                aria-label="Close"
-              >
-                <i className="bi bi-x-lg text-base"></i>
-              </button>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-10 animate-spin fill-teal-600"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
-                />
-              </svg>
-              <span className="text-base font-semibold text-gray-800">Please wait, we are verifying...</span>
-            </div>
+      {isOpen && UserRestrictedChecking ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full text-center relative mx-4 py-8 px-6 flex items-center justify-center flex-col space-y-4">
+            <button
+              onClick={onClose}
+              className="bg-gray-400 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-400 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 absolute top-2 right-3"
+              aria-label="Close"
+            >
+              <i className="bi bi-x-lg text-base"></i>
+            </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-10 animate-spin fill-teal-600"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+              />
+            </svg>
+            <span className="text-base font-semibold text-gray-800">Please wait, we are verifying...</span>
           </div>
+        </div>
 
-        ) : isOpen &&isAllRestricted ? (
-          <RestrictedModal 
-          contentTitle={contentTitle} 
-          contentType={contentType} 
+      ) : isOpen && isAllRestricted ? (
+        <RestrictedModal
+          contentTitle={contentTitle}
+          contentType={contentType}
           isInTheater={isInTheater}
           onClose={onClose}
-          />
-        ) : (
-          <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false}>
-   
+        />
+      ) : (
+        <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false}>
+
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50">
 
             <div className="bg-white max-h-full overflow-y-scroll scrollbar-hidden rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg relative">
@@ -214,20 +214,29 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                   <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm mx-auto text-center">
                     <div className="text-xl font-semibold mb-2">🎉 Download Ready!</div>
                     <div className="text-sm text-gray-600 mb-4 font-medium">
-                    Your download is ready. Click the button below to start, and after clicking, please don&lsquo;t close the open window or new tab until the download starts.
+                      Your download is ready. Click the button below to start, and after clicking, please don&lsquo;t close the open window or new tab until the download starts.
                     </div>
-                    <a
-                      href={sourceUrl}
-                      target="_blank"
-                      rel="nofollow noopener noreferrer"
-                      className="block w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition font-semibold"
-                    >
-                      Download Now
-                    </a>
-
+                    {sourceUrl.length > 1 && (
+                      <div className="text-sm text-gray-600 mb-4 font-medium">
+                        <span className="font-bold">Note:</span> We have multiple servers available for this download. If one server is slow or not working, please try another one.
+                      </div>
+                    )}
+                    <div className="space-y-3">
+                      {sourceUrl.map((source, index) => (
+                        <a
+                          key={index}
+                          href={source}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
+                        >
+                          {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
+                        </a>
+                      ))}
+                    </div>
                     <button
                       onClick={() => setSourceUrl(null)}
-                      className="mt-3 text-base font-medium text-red-pure hover:text-red-700 py-1.5 px-4 my-3"
+                      className="mt-3.5 text-base font-medium text-red-pure hover:text-red-700 py-1.5 px-4 my-3"
                     >
                       Close
                     </button>
@@ -237,14 +246,14 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
               )}
             </div>
           </div>
-          </ModelsController>
-        )}
-     
-      {downloadStartProgress &&(
+        </ModelsController>
+      )}
+
+      {downloadStartProgress && (
         <FullScreenBackdropLoading
-        loadingSpinner={true}
-        loadingMessage="Starting download... Please wait"
-      />
+          loadingSpinner={true}
+          loadingMessage="Starting download... Please wait"
+        />
       )}
     </>
   )
