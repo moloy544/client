@@ -60,15 +60,9 @@ export default function CustomLoadingAds() {
       adcashMainScript.src = "//acscdn.com/script/aclib.js";
       head.appendChild(adcashMainScript);
       adcashMainScript.onload = () => {
-        if (window) {
-
-          const ids = ['9795498', '9775202', '9754474'];
-
-          // Select a random ID from the array
-          const randomId = ids[Math.floor(Math.random() * ids.length)];
-          
+        if (window) {  
           window.aclib.runInPagePush({
-            zoneId: randomId,
+            zoneId: '9775202',
             refreshRate: 30,
             maxAds: 2,
           });
