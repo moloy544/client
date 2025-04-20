@@ -369,13 +369,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
       // Open direct ad link 
       openDirectLink();
     };
-
-    if (watchLinks.length === 1 && findRpmplayOnline.length === 0) {
-      playHandler(watchLinks[0].source);
-      hideDropDown();
-    } else {
       setDropDown((prev) => !prev);
-    };
 
   };
 
