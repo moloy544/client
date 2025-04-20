@@ -92,7 +92,7 @@ export default function AdminPage() {
 
             setState((prev) => ({
                 ...prev,
-                watchLink: [...state.watchLink.filter(link => !link.includes(videoSource) && !link.includes(secondVideoSource)), videoSource + prev.imdbId, secondVideoSource + prev.imdbId]
+                watchLink: [...state.watchLink.filter(link => !link.includes(videoSource)), videoSource + prev.imdbId]
             }));
 
             if (state.imdbId.length >= 8) {

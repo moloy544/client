@@ -8,7 +8,7 @@ import { safeSessionStorage } from "@/utils/errorHandlers";
 import { isNotHuman } from "@/utils";
 
 export default function RestrictionsCheck() {
-    
+
     const dispatch = useDispatch();
     const didRun = useRef(false);
 
@@ -29,7 +29,10 @@ export default function RestrictionsCheck() {
                     }
                     dispatch(updatefullWebAccessState(dataToSaveInState));
                     return;
+                } else if (UserRestrictedData) {
+                    return;
                 };
+
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: true }));
 
                 const response = await fetch(`${appConfig.backendUrl}/api/v1/user/restrictionsCheck`, {
@@ -58,21 +61,21 @@ export default function RestrictionsCheck() {
                     dataToSave.geo = userIp;
                 };
 
-                 const dataToSaveInState = { isUserRestricted: isRestricted, userRealIp: userIp };
+                const dataToSaveInState = { isUserRestricted: isRestricted, userRealIp: userIp };
 
                 dispatch(updatefullWebAccessState(dataToSaveInState));
 
-               // Save the data in session storage
-               safeSessionStorage.set("x9_user_tkn_check", JSON.stringify(dataToSave));
+                // Save the data in session storage
+                safeSessionStorage.set("x9_user_tkn_check", JSON.stringify(dataToSave));
 
             } catch (error) {
                 console.error("Geo check failed:", error);
-            } finally{
+            } finally {
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: false }));
             }
         };
-        
-            fetchGeoInfo();
+
+        fetchGeoInfo();
 
     }, [dispatch]);
 

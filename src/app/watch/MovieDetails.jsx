@@ -16,6 +16,7 @@ import { openDirectLink } from "@/utils/ads.utility";
 import { removeScrollbarHidden } from "@/helper/helper";
 import RestrictedModal from "@/components/modals/RestrictedModal";
 import { useSelector } from "react-redux";
+import RestrictionsCheck from "@/components/RestrictionsCheck";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 
@@ -369,7 +370,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
       // Open direct ad link 
       openDirectLink();
     };
-      setDropDown((prev) => !prev);
+    setDropDown((prev) => !prev);
 
   };
 
@@ -530,7 +531,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
         </ModelsController>
 
       )}
-
+      <RestrictionsCheck />
     </>
   )
 }
