@@ -296,11 +296,12 @@ export default function SearchPage() {
                         )}
 
                         {!loading && seatrchResult.length < 1 && searchQuery !== " " && (
-                            <div className="flex flex-col justify-center my-40 space-y-2 px-4">
+                            <div className="flex flex-col justify-center my-40 space-y-2 px-4 max-w-3xl justify-self-center">
                                 <h2 className="text-gray-100 text-xl mobile:text-base text-center font-semibold">
-                                    We are not found anything
+                                No results found.
                                 </h2>
-                                <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again for 100% best result try with same title</small>
+                                <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again. For 100% best results, use the exact original title.
+                                Tip: You can search on Google to find the correct title.</small>
                                 <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => router.push('/request-form')}>
                                     <i className="bi bi-send"></i> Request content
                                 </button>
