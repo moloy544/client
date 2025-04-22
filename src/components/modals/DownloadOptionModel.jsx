@@ -10,7 +10,6 @@ import { creatToastAlert } from "@/utils";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
 import RestrictedModal from "./RestrictedModal";
 
-
 const formatQualityType = (quality, qualityType) => {
 
   // Determine label based on specific quality values
@@ -46,6 +45,8 @@ const formatQualityType = (quality, qualityType) => {
   return `(${qualityLabel})`;
 };
 
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 export default function DownloadOptionModel({ isOnline, imdbId, linksData, contentTitle, contentType, isAllRestricted, isInTheater, isOpen, onClose, onReportButtonClick, windowCurrentWidth }) {
 
   const { title, links, qualityType } = linksData || {};
@@ -55,7 +56,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   const [sourceUrl, setSourceUrl] = useState(null);
   const { UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
 
-  const handleDownload = async (sourceIndex) => {
+  const handleDownload = async (sourceIndex, url) => {
     try {
       if (!isOnline) {
         creatToastAlert({
@@ -63,9 +64,16 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         });
         return;
       }
-
-      // Set the loading state
       setDownloadStartProgress(true);
+
+      // If it's a Pixeldrain link, simulate loading without calling the API
+      if (url && url.includes("pixeldrain")) {
+        const delayOptions = [1000, 1500, 2000, 2500];
+        const randomDelay = delayOptions[Math.floor(Math.random() * delayOptions.length)];
+        await wait(randomDelay);
+        setSourceUrl([url]);
+        return;
+      }
 
       // Fetch the HTML content from the URL
       const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_source/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
@@ -178,11 +186,11 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
 
                 {/* Download Links */}
                 <div className="space-y-2 max-w-sm mx-auto py-1.5">
-                  {links.map(({ quality, size }, index) => (
+                  {links.map(({ quality, url, size }, index) => (
                     <button
                       type="button"
                       key={index}
-                      onClick={() => handleDownload(index)}
+                      onClick={() => handleDownload(index, url)}
                       className="block w-full text-sm text-cyan-900 hover:text-cyan-800 font-semibold px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md transition"
                     >
                       <span>{quality} - {size}</span>
@@ -252,7 +260,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       {downloadStartProgress && (
         <FullScreenBackdropLoading
           loadingSpinner={true}
-          loadingMessage="Starting download... Please wait"
+          loadingMessage="Preparing your download... Please wait."
         />
       )}
     </>
