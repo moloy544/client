@@ -2,7 +2,7 @@ import bokmyshowIcon from "../../assets/icons/bookmyshow-small-icon.jpg";
 import paytmIcon from "../../assets/icons/paytm-small-icon.png";
 import Image from "next/image";
 
-export default function RestrictedModal({ onClose, contentTitle, contentType, isInTheater }) {
+export default function RestrictedModal({ onClose, contentTitle, contentType, isInTheater, ticketBookLink }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
@@ -41,10 +41,10 @@ export default function RestrictedModal({ onClose, contentTitle, contentType, is
                     <div className="flex flex-wrap justify-center items-center gap-4 mb-4">
 
                         {/* BookMyShow */}
-                        <a href="https://in.bookmyshow.com" target="_blank" rel="noopener noreferrer nofollow"
+                        <a href={ticketBookLink ? ticketBookLink :"https://in.bookmyshow.com"} target="_blank" rel="noopener noreferrer nofollow"
                             className="flex items-center gap-2 px-2 py-2.5 border rounded-lg hover:bg-gray-100 transition">
                             <Image width={25} h={25} src={bokmyshowIcon} className="rounded-lg" alt="BookMyShow Logo" />
-                            <span className="text-gray-800 font-semibold text-xs">Bool My Show</span>
+                            <span className="text-gray-800 font-semibold text-xs">BookMyShow</span>
                         </a>
 
                         {/* Paytm Movies */}

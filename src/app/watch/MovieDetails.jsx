@@ -37,7 +37,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     hlsSourceDomain,
     multiAudio,
     isContentRestricted,
-    isInTheater
+    isInTheater,
+    ticketBookLink
   } = movieDetails || {};
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
@@ -210,6 +211,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                 contentType={type || "content"}
                 isContentRestricted={isContentRestricted}
                 isInTheater={isInTheater}
+                ticketBookLink={ticketBookLink}
               />
             ) : (
               <>
@@ -338,7 +340,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   )
 };
 
-function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, contentType, isContentRestricted, isInTheater }) {
+function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, contentType, isContentRestricted, isInTheater, ticketBookLink }) {
 
   const [showDropdown, setDropDown] = useState(false);
   const [isRpmplayOnline, setIsRpmplayOnline] = useState(false);
@@ -433,6 +435,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
           contentTitle={contentTitle}
           contentType={contentType}
           isInTheater={isInTheater}
+          ticketBookLink={ticketBookLink}
         />
       ) : (
         <ModelsController visibility={showDropdown} windowScroll={false}>
