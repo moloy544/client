@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { loadMoreFetch } from "@/utils";
+import { isMobileDevice, loadMoreFetch } from "@/utils";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import FilterModel from "./modals/FilterModel";
 import BacktoTopButton from "./buttons/BacktoTopButton";
@@ -26,9 +26,11 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
     const conditionalData = (loadMoviesPathname !== patname) ? (initialMovies || []) : loadMoviesData || [];
     const [moviesData, setMoviesData] = useState(conditionalData);
 
+    const isMobile = isMobileDevice();
+
     // Inifinity scroll for load more data on scroll down
     const observerElement = useInfiniteScroll({
-        rootMargin: '100px',
+        rootMargin: isMobile ? '120px': '180px',
         isAllDataLoad,
         callback: () => setPage((prevPage) => prevPage + 1)
     });
