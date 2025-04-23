@@ -1,8 +1,10 @@
 import axios from "axios";
 import { appConfig } from "@/config/config";
+import dynamicLoad from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import HomePageLayout from "./HomePageLayout";
 import Footer from "@/components/Footer";
+const LoadContentError = dynamicLoad(() => import('@/components/errors/LoadContentError'), { ssr: false });
 
 const getHomePageData = async () => {
   try {
@@ -33,10 +35,8 @@ export default async function Page() {
           <HomePageLayout initialLayoutData={data} />
         </main>
       ) : (
-        <div className="w-full min-h-[70vh] bg-custom-dark-bg flex justify-center items-center">
-          <div className="">
-            <div className="text-center text-lg font-bold text-gray-100">Error while load movies</div>
-          </div>
+        <div className="w-full h-full min-h-[450px] bg-custom-dark-bg flex items-center justify-center">
+        <LoadContentError />
         </div>
       )}
       <Footer />

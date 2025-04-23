@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { updateLoadActors } from "@/context/loadActorsState/loadActorsSlice";
-import BacktoTopButton from "./BacktoTopButton";
+import BacktoTopButton from "./buttons/BacktoTopButton";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { MovieCardSkleaton, ResponsiveActorCard } from "./cards/Cards";
 

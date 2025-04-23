@@ -9,7 +9,7 @@ import { creatUrlLink, editActorsImageUrl, resizeImage } from "@/utils";
 import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SliderShowcase from "@/components/SliderShowcase";
-import BacktoTopButton from "@/components/BacktoTopButton";
+import BacktoTopButton from "@/components/buttons/BacktoTopButton";
 
 function HomePageLayout({ initialLayoutData }) {
 

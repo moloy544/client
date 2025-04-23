@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
@@ -6,8 +5,6 @@ import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 import { categoryArray } from "@/constant/constsnt";
-
-const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
 const validateCategory = (category) => {
   if (!category || category === '' || category === "") return false; // If category is empty, return false
@@ -70,11 +67,7 @@ export default async function Page({ params }) {
   });
   if (status === 404 || !isValidcategory) {
     notFound();
-  } else if (status === 500) {
-    return (
-      <SomthingWrongError />
-    )
-  };
+  }
 
   const categoryName = transformToCapitalize(params.categoryName);
 
@@ -94,6 +87,7 @@ export default async function Page({ params }) {
           initialFilter={filterData}
           initialMovies={moviesData || []}
           isDataEnd={dataIsEnd}
+          apiError={status === 500 ? true : false}
         />
 
       </div>

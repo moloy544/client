@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, loadMoreFetch } from "@/utils";
@@ -11,11 +12,12 @@ import { ModelsController } from "@/lib/EventsHandler";
 import NavigateBack from "@/components/NavigateBack";
 import CategoryGroupSlider from "@/components/CategoryGroupSlider";
 import { ResponsiveMovieCard } from "@/components/cards/Cards";
-import SomthingWrongError from "@/components/errors/SomthingWrongError";
 import Footer from "@/components/Footer";
 import brandLogoIcon from "../../assets/images/brand_logo.png"
 import { openDirectLink } from "@/utils/ads.utility";
 import { safeLocalStorage } from "@/utils/errorHandlers";
+
+const LoadContentError = dynamic(() => import('@/components/errors/LoadContentError'), { ssr: false });
 
 // this is return user search history data
 const getLocalStorageSearchHistory = () => {
@@ -80,7 +82,7 @@ export default function SearchPage() {
     };
 
     // Function to add a search term to the search history
-    const addToSearchHistory = (newData, isCount=false) => {
+    const addToSearchHistory = (newData, isCount = false) => {
 
         const { text } = newData || {};
 
@@ -96,16 +98,16 @@ export default function SearchPage() {
 
             if (isCount) {
                 //update the search count
-            existingTerm.count += 1;
+                existingTerm.count += 1;
             }
-            
+
             existingHistoryArray.unshift(existingTerm);
 
         } else {
 
             const initialData = {
                 searchKeyword: text,
-                count: isCount? 1 : 0,
+                count: isCount ? 1 : 0,
             };
 
             // If the search term doesn't exist, add it to the beginning with clickCount 1
@@ -176,19 +178,19 @@ export default function SearchPage() {
 
     // get user searh query form url and add to search bar
     useEffect(() => {
-        
-        if (typeof window !== 'undefined') {
-        const params = new URLSearchParams(window.location.search);
-        const paramsQuery = params.get("query")?.replace(/ +/g, ' ').trim();
 
-        // Handle the initial search when query parameter is present
-        if (paramsQuery && paramsQuery !== '' && paramsQuery !== ' ') {
-            const inputSearchBar = document.querySelector("#search-bar-input");
-            if (inputSearchBar) {
-                inputSearchBar.value = paramsQuery || "";
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const paramsQuery = params.get("query")?.replace(/ +/g, ' ').trim();
+
+            // Handle the initial search when query parameter is present
+            if (paramsQuery && paramsQuery !== '' && paramsQuery !== ' ') {
+                const inputSearchBar = document.querySelector("#search-bar-input");
+                if (inputSearchBar) {
+                    inputSearchBar.value = paramsQuery || "";
+                };
             };
-        };
-    }
+        }
 
     }, []);
 
@@ -209,16 +211,6 @@ export default function SearchPage() {
                 addToSearchHistory({ text: searchQuery }, true);
             };
         };
-    };
-
-    // check is error encountered show error message
-    if (error) {
-        return <SomthingWrongError onclickEvent={() =>{ 
-            if (typeof window !== "undefined") {
-                window.location.reload()
-            };
-        }}
-             />
     };
 
     return (
@@ -266,51 +258,63 @@ export default function SearchPage() {
             <div className="w-full h-full bg-custom-dark-bg overflow-x-hidden mobile:pt-28 pt-32">
 
                 {searchQuery !== "" ? (
-
-                    <div className="w-full h-full">
-
-                        {seatrchResult.length > 0 && (
-                            <h3 className="text-gray-300 text-base mobile:text-sm py-2 font-bold px-2">
-                                Results for <span className=" text-cyan-500">{searchQuery}</span>
-                            </h3>
-                        )}
-                        <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] px-2 pt-3 pb-10 mobile:pt-2">
-                            {seatrchResult.map((movie, index) => (
-                                <ResponsiveMovieCard
-                                    key={movie.imdbId || index}
-                                    data={movie}
-                                    onClickEvent={onMovieCardClickHandler}
-                                />
-                            ))}
-
-                        </main>
-
-                        {loading && (
-                            <div className={`w-full h-full flex justify-center items-center ${seatrchResult.length > 0 ? "my-14 mobile:my-12" : "my-36 mobile:my-32"}`}>
-                                <div className="text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                                    role="status">
-                                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-                                    >Loading...</span>
-                                </div>
+                    <>
+                        {error ? (
+                            <div className="w-full h-full min-h-[450px] flex items-center justify-center">
+                   
+                            <LoadContentError
+                                customRefreshFunction={() => getMovies(searchQuery)}
+                                customRefreshTitle="Retry Search"
+                                errorDescription={"We couldn’t load the search results. Please try again using the retry button or come back later."}
+                            />
                             </div>
-                        )}
+                        ) :
+                            (<div className="w-full h-full">
 
-                        {!loading && seatrchResult.length < 1 && searchQuery !== " " && (
-                            <div className="flex flex-col justify-center my-40 space-y-2 px-4 max-w-3xl justify-self-center">
-                                <h2 className="text-gray-100 text-xl mobile:text-base text-center font-semibold">
-                                No results found.
-                                </h2>
-                                <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again. For 100% best results, use the exact original title.
-                                Tip: You can search on Google to find the correct title.</small>
-                                <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => router.push('/request-form')}>
-                                    <i className="bi bi-send"></i> Request content
-                                </button>
+                                {seatrchResult.length > 0 && (
+                                    <h3 className="text-gray-300 text-base mobile:text-sm py-2 font-bold px-2">
+                                        Results for <span className=" text-cyan-500">{searchQuery}</span>
+                                    </h3>
+                                )}
+                                <main className="w-auto h-fit gap-2 mobile:gap-1.5 grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(160px,1fr))] px-2 pt-3 pb-10 mobile:pt-2">
+                                    {seatrchResult.map((movie, index) => (
+                                        <ResponsiveMovieCard
+                                            key={movie.imdbId || index}
+                                            data={movie}
+                                            onClickEvent={onMovieCardClickHandler}
+                                        />
+                                    ))}
+
+                                </main>
+
+                                {loading && (
+                                    <div className={`w-full h-full flex justify-center items-center ${seatrchResult.length > 0 ? "my-14 mobile:my-12" : "my-36 mobile:my-32"}`}>
+                                        <div className="text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                                            role="status">
+                                            <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+                                            >Loading...</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {!loading && seatrchResult.length < 1 && searchQuery !== " " && (
+                                    <div className="flex flex-col justify-center my-40 space-y-2 px-4 max-w-3xl justify-self-center">
+                                        <h2 className="text-gray-100 text-xl mobile:text-base text-center font-semibold">
+                                            No results found.
+                                        </h2>
+                                        <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again. For 100% best results, use the exact original title.
+                                            Tip: You can search on Google to find the correct title.</small>
+                                        <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => router.push('/request-form')}>
+                                            <i className="bi bi-send"></i> Request content
+                                        </button>
+                                    </div>
+                                )}
+
+                                <div ref={bottomObserverElement}></div>
+
                             </div>
-                        )}
-
-                        <div ref={bottomObserverElement}></div>
-
-                    </div>
+                            )}
+                    </>
                 ) : (
                     <div className="w-full h-full my-40">
                         <h2 className="text-gray-200 text-xl mobile:text-base text-center font-semibold">Search and watch movies and series</h2>
@@ -379,19 +383,19 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
 
     function handleSearch(term) {
         if (typeof window !== 'undefined') {
-        const params = new URLSearchParams(window.location.search);
+            const params = new URLSearchParams(window.location.search);
 
-        // If the term is provided, set the 'query' param, otherwise remove it
-        if (term) {
-            params.set('query', term);
-        } else {
-            params.delete('query');
-        }
+            // If the term is provided, set the 'query' param, otherwise remove it
+            if (term) {
+                params.set('query', term);
+            } else {
+                params.delete('query');
+            }
 
-        // Use history.pushState() to update the URL without reloading the page
-        const newUrl = `${pathname}?${params.toString()}`;
-        window.history.replaceState({}, '', newUrl);
-    };
+            // Use history.pushState() to update the URL without reloading the page
+            const newUrl = `${pathname}?${params.toString()}`;
+            window.history.replaceState({}, '', newUrl);
+        };
     };
 
     const submit = (event) => {

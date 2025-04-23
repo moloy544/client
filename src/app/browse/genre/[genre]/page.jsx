@@ -1,11 +1,8 @@
-import dynamic from "next/dynamic";
 import { loadMoreFetch, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
-
-const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false })
 
 export async function generateMetadata({ params }) {
 
@@ -44,12 +41,6 @@ export default async function Page({ params }) {
         limitPerPage: 40
     });
 
-    if (status === 500) {
-        return (
-            <SomthingWrongError />
-        )
-    };
-
     const capitalizeGenre = transformToCapitalize(genre);
 
     const { filterOptions, moviesData } = data;
@@ -68,6 +59,7 @@ export default async function Page({ params }) {
                     serverResponseExtraFilter={filterOptions || []}
                     initialMovies={moviesData || []}
                     isDataEnd={dataIsEnd}
+                    apiError={status === 500 ? true : false}
                 />
 
             </div>

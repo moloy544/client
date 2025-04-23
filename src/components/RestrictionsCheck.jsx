@@ -35,7 +35,7 @@ export default function RestrictionsCheck() {
 
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: true }));
 
-                const response = await fetch(`${appConfig.backendUrl}/api/v1/user/restrictionsCheck`, {
+                const response = await fetch(`${appConfig.GEO_CHECK_API_URL}/api/v1/user/restrictionsCheck`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
