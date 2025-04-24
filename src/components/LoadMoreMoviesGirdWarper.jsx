@@ -26,11 +26,9 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
     const conditionalData = (loadMoviesPathname !== patname) ? (initialMovies || []) : loadMoviesData || [];
     const [moviesData, setMoviesData] = useState(conditionalData);
 
-    const isMobile = isMobileDevice();
-
     // Inifinity scroll for load more data on scroll down
     const observerElement = useInfiniteScroll({
-        rootMargin: isMobile ? '120px': '180px',
+        rootMargin: '150px',
         isAllDataLoad,
         callback: () => setPage((prevPage) => prevPage + 1)
     });
