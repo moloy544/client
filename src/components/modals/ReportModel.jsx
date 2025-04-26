@@ -163,7 +163,7 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
                 <div className="space-y-2 mb-4 max-w-sm">
                   <h2 className="text-base font-bold leading-4">Are you sure you want to report?</h2>
                   <p className="mt-2 text-xs text-gray-600 font-medium">
-                    Please select the issue or describe the problem. We are solve your problem within 6 hours.
+                    Please select the issue or describe the problem. We are solve your problem within 12 hours.
                   </p>
                 </div>
 
