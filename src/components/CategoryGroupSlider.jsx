@@ -1,4 +1,4 @@
-
+import { Fragment } from "react"
 import Link from "next/link"
 import { categoryArray, moviesGenreArray } from "@/constant/constsnt"
 import { creatUrlLink } from "@/utils"
@@ -8,10 +8,9 @@ const LinkButton = ({ linkData, parentUrl }) => {
   return (
     <>
       {linkData?.map(({ id, name, linkUrl, visiblity }) => (
-        <>
+        <Fragment key={id}>
           {typeof visiblity === "boolean" && !visiblity ? null :
             <Link
-              key={id}
               title={name} // Tooltip for user
               href={linkUrl
                 ? creatUrlLink(linkUrl)
@@ -23,7 +22,7 @@ const LinkButton = ({ linkData, parentUrl }) => {
 
             </Link>
           }
-        </>
+        </Fragment>
       ))}
 
     </>
