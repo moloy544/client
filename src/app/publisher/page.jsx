@@ -8,6 +8,7 @@ import { creatToastAlert, resizeImage } from "@/utils";
 import { getTodayDate, isValidImageUrl, validateMovieDetailsInput } from "./utils/admin.utils";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
 import ActorControllerSection from "./components/ActorControllerSection";
+import Link from "next/link";
 
 // text or number input style properties
 const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
@@ -403,6 +404,7 @@ export default function AdminPage() {
         <>
             <header className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2.5 py-3.5 text-base text-gray-100 bg-purple-600 shadow-md">
                 <h2 className="text-base text-white font-semibold">Moviesbazar admin</h2>
+                <Link href="/video-managemant" className="text-sm text-white font-semibold">Video Management</Link>
             </header>
 
             <main className="w-auto h-full min-h-screen bg-white text-gray-950 flex justify-center flex-wrap overflow-x-hidden py-2">

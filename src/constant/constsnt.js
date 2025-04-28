@@ -37,6 +37,11 @@ export const categoryArray = [
   {
     id: 9,
     name: "Bengali"
+  },
+  {
+    id: 10,
+    name: "Bangladeshi",
+    visiblity: false
   }
 ];
 
