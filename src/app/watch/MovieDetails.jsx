@@ -202,24 +202,19 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               alt={title + " " + type + " thumbnail" || `${type} thumbnail`}
               fill />
 
-            {status === "released" ? (
-              <PlayButton
-                watchLinks={movieDetails.watchLink}
-                playHandler={handleVideoSourcePlay}
-                currentPlaySource={videoSource}
-                contentTitle={title}
-                contentType={type || "content"}
-                isContentRestricted={isContentRestricted}
-                isInTheater={isInTheater}
-                ticketBookLink={ticketBookLink}
-              />
-            ) : (
-              <>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-70 w-auto h-auto py-2 px-3 text-center text-white font-semibold text-sm capitalize">
-                  {status?.toLowerCase() === "copyright remove" ? "Not Available Due To Copyright" : status}
-                </div>
-              </>
-            )}
+            <PlayButton
+              watchLinks={movieDetails.watchLink}
+              content_status={status}
+              fullReleaseDateString={formattedDate}
+              playHandler={handleVideoSourcePlay}
+              currentPlaySource={videoSource}
+              contentTitle={title}
+              contentType={type || "content"}
+              isContentRestricted={isContentRestricted}
+              isInTheater={isInTheater}
+              ticketBookLink={ticketBookLink}
+            />
+
             {imdbRating && (
               <div className="absolute top-1 right-2 w-auto h-auto flex gap-1 items-center bg-gray-900 bg-opacity-70 text-xs font-semibold text-gray-200 px-2 py-1 rounded-md">
                 <svg width="12" height="12" className="text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="presentation"><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"></path></svg>
@@ -340,7 +335,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   )
 };
 
-function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, contentType, isContentRestricted, isInTheater, ticketBookLink }) {
+function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, content_status, fullReleaseDateString, contentType, isContentRestricted, isInTheater, ticketBookLink }) {
 
   const [showDropdown, setDropDown] = useState(false);
   const [isRpmplayOnline, setIsRpmplayOnline] = useState(false);
@@ -366,8 +361,8 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
     };
 
     const findRpmplayOnline = watchLinks.filter(({ source }) => source.includes('rpmplay.online'));
-    if (findRpmplayOnline.length > 0) {
-      setIsRpmplayOnline(true);
+    if (findRpmplayOnline.length > 0 || content_status === "coming soon") {
+      setIsRpmplayOnline(findRpmplayOnline.length > 0);
 
       // Open direct ad link 
       openDirectLink();
@@ -386,11 +381,14 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
 
   return (
     <>
+      {/* Centered Play Button */}
       <div className="w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <button type="button"
+        <button
+          type="button"
           onClick={play}
           title="Play"
-          className="bg-gray-950 bg-opacity-70 text-gray-100 hover:text-cyan-500 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110">
+          className="bg-gray-950 bg-opacity-70 text-gray-100 hover:text-cyan-500 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="30"
@@ -399,13 +397,13 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
             fill="currentColor"
             role="presentation"
           >
-            <path d="M10.8 15.9l4.67-3.5c.27-.2.27-.6 0-.8L10.8 8.1a.5.5 0 0 0-.8.4v7c0 .41.47.65.8.4zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+            <path d="M10.8 15.9l4.67-3.5c.27-.2.27-.6 0-.8L10.8 8.1a.5.5 0 0 0-.8.4v7c0 .41.47.65.8.4zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
           </svg>
-
           <span className="sr-only">Play video</span>
         </button>
       </div>
 
+      {/* Loading Modal */}
       {showDropdown && UserRestrictedChecking ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-xl max-w-md w-full text-center relative mx-4 py-8 px-6 flex items-center justify-center flex-col space-y-4">
@@ -421,14 +419,11 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
               className="w-10 animate-spin fill-teal-600"
               viewBox="0 0 24 24"
             >
-              <path
-                d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
-              />
+              <path d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z" />
             </svg>
             <span className="text-base font-semibold text-gray-800">Please wait, we are verifying...</span>
           </div>
         </div>
-
       ) : showDropdown && isUserRestricted && isContentRestricted ? (
         <RestrictedModal
           onClose={hideDropDown}
@@ -439,102 +434,127 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
         />
       ) : (
         <ModelsController visibility={showDropdown} windowScroll={false}>
-
           <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-[2px] flex items-center justify-center z-50 px-2">
-
             <div className="w-auto h-auto py-4 px-5 bg-gray-800 shadow-lg rounded-md max-w-xs mx-2">
-
-              <div className="w-full flex justify-around items-center space-x-3 pb-3">
-                <div className="font-bold text-base text-gray-100 text-center whitespace-nowrap">
-                  Select Playback Server
-                </div>
-                <button
-                  onClick={() => setDropDown(false)}
-                  className="text-gray-200 hover:text-white outline-none bg-gray-900 w-6 h-6 rounded-md"
-                  type="button"
-                >
-                  <i className="bi bi-x-lg"></i>
-                  <span className="sr-only">Close</span>
-                </button>
-              </div>
-
-              {isRpmplayOnline ? (
+              {content_status === "released" ? (
                 <>
-                  <small className="text-xs text-gray-200">
-                    &#8226; <span>Try to play <span className="text-yellow-500 font-semibold">server {findIndex + 1}</span> at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio:</span>{" "}
-                    <span className="font-semibold text-[#f59e0b]">
-                      Open Server {findIndex + 1} Player Settings <i className="bi bi-gear-fill text-gray-400"></i>
-                    </span>{" "}
-                    <span className="text-gray-400">&rarr;</span>{" "}
-                    <span className="font-semibold text-[#3b82f6]">
-                      Click <u>Audio <i className="bi bi-music-note-beamed text-gray-300"></i></u>
-                    </span>{" "}
-                    <span className="text-gray-400">&rarr;</span>{" "}
-                    <span className="font-semibold text-[#ec4899]">
-                      Click <u>Track</u>
-                    </span>{" "}
-                    <span className="text-gray-400">&rarr;</span>{" "}
-                    <span className="font-semibold text-[#10b981]">
-                      Select your language (Hindi, English, Tamil, Telugu, etc.)
-                    </span>
-                    .
-                  </small>
-
-                  {watchLinks.length > 1 && (
-                    <div className="text-xs text-gray-200 my-1.5 text-center">
-                      &#8226; Video not working? <span className="font-semibold">Try another server.</span>
+                  <div className="w-full flex justify-around items-center space-x-3 pb-3">
+                    <div className="font-bold text-base text-gray-100 text-center whitespace-nowrap">
+                      Select Playback Server
                     </div>
-                  )}
-                </>
-              ) : (
-                <div className="text-base text-gray-200 my-1.5 text-center flex flex-col space-y-2">
-                  {watchLinks.length > 1 && (
-                    <small>
-                      &#8226; Video not playing? <span className="font-semibold">Try another server.</span>
-                    </small>
-                  )}
-
-                  <small>
-                    &#8226; Video stop in middle or not moving? <span className="font-semibold">Go back and pick same server again.</span>
-                  </small>
-
-                </div>
-              )}
-
-              <div className="space-y-3 my-4 px-1">
-                {watchLinks?.map((data, index) => (
-                  <div key={data.data || index}>
                     <button
+                      onClick={() => setDropDown(false)}
+                      className="text-gray-200 hover:text-white outline-none bg-gray-900 w-6 h-6 rounded-md"
                       type="button"
-                      onClick={() => playHandler(data.source, hideDropDown)}
-                      className="flex items-center justify-between w-full px-3 py-2 bg-[#2d3644] text-white font-medium text-sm rounded-md hover:bg-gray-700 transition capitalize"
                     >
-                      <span>
-                        {data.label}
-                        {watchLinks.length > 1 && findCurrentPlayHlsDomainIndex === index && (
-                          <i className="bi bi-check-circle-fill text-teal-500 text-xs mx-2.5"></i>
-                        )}
-                      </span>
-
-                      {data.labelTag && (
-                        <span className="text-gray-200 font-normal">{data.labelTag}</span>
-                      )}
+                      <i className="bi bi-x-lg"></i>
+                      <span className="sr-only">Close</span>
                     </button>
                   </div>
-                ))}
-              </div>
-              <div className="mt-4 text-center">
-                <small className="text-xs text-gray-200">
-                  <i className="bi bi-earbuds"></i> Use earphones for better audio.
-                </small>
-              </div>
 
+                  {isRpmplayOnline ? (
+                    <>
+                      <small className="text-xs text-gray-200">
+                        &#8226; Try to play <span className="text-yellow-500 font-semibold">server {findIndex + 1}</span> at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio:
+                        <span className="font-semibold text-[#f59e0b]"> Open Server {findIndex + 1} Player Settings </span>
+                        <span className="text-gray-400">→</span>
+                        <span className="font-semibold text-[#3b82f6]"> Click <u>Audio</u></span>
+                        <span className="text-gray-400">→</span>
+                        <span className="font-semibold text-[#ec4899]"> Click <u>Track</u></span>
+                        <span className="text-gray-400">→</span>
+                        <span className="font-semibold text-[#10b981]"> Select your language</span>.
+                      </small>
+                      {watchLinks.length > 1 && (
+                        <div className="text-xs text-gray-200 my-1.5 text-center">
+                          &#8226; Video not working? <span className="font-semibold">Try another server.</span>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="text-base text-gray-200 my-1.5 text-center flex flex-col space-y-2">
+                      {watchLinks.length > 1 && (
+                        <small>
+                          &#8226; Video not playing? <span className="font-semibold">Try another server.</span>
+                        </small>
+                      )}
+                      <small>
+                        &#8226; Video stop in middle? <span className="font-semibold">Go back and pick same server again.</span>
+                      </small>
+                    </div>
+                  )}
+
+                  <div className="space-y-3 my-4 px-1">
+                    {watchLinks?.map((data, index) => (
+                      <div key={data.data || index}>
+                        <button
+                          type="button"
+                          onClick={() => playHandler(data.source, hideDropDown)}
+                          className="flex items-center justify-between w-full px-3 py-2 bg-[#2d3644] text-white font-medium text-sm rounded-md hover:bg-gray-700 transition capitalize"
+                        >
+                          <span>
+                            {data.label}
+                            {watchLinks.length > 1 && findCurrentPlayHlsDomainIndex === index && (
+                              <i className="bi bi-check-circle-fill text-teal-500 text-xs mx-2.5"></i>
+                            )}
+                          </span>
+                          {data.labelTag && (
+                            <span className="text-gray-200 font-normal">{data.labelTag}</span>
+                          )}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 text-center">
+                    <small className="text-xs text-gray-200">
+                      <i className="bi bi-earbuds"></i> Use earphones for better audio.
+                    </small>
+                  </div>
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-4 relative text-center">
+                  <button
+                    onClick={() => setDropDown(false)}
+                    className="text-gray-200 hover:text-white outline-none bg-gray-900 w-6 h-6 rounded-md absolute right-2 top-2 flex items-center justify-center"
+                    type="button"
+                    aria-label="Close"
+                  >
+                    <i className="bi bi-x-lg text-sm"></i>
+                  </button>
+
+                  <div className="pt-6 space-y-4 max-w-md">
+                    <h2 className="text-xl font-bold text-gray-100">{`Coming Soon – Releases on ${fullReleaseDateString}`}</h2>
+
+                    <p className="text-sm text-gray-200">
+                      This content is expected to be available on&nbsp;
+                      <span className="text-yellow-300 font-semibold">{fullReleaseDateString}</span>.
+                      Please check back after the release date to start watching.
+                    </p>
+
+                    <p className="text-xs text-gray-300">
+                      <strong>Note:</strong> Release dates may occasionally be delayed or extended. While we strive to provide accurate information,
+                      schedules are subject to change. We recommend bookmarking this page and returning later for updates.
+                    </p>
+
+                    <Link href="/">
+                      <button
+                        type="button"
+                        className="mt-2 px-4 py-2 bg-teal-600 text-white font-semibold rounded-md hover:bg-teal-700 transition duration-300"
+                      >
+                        Explore More Content
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+
+              )}
             </div>
           </div>
         </ModelsController>
-
       )}
+
+      {/* Restriction Check Component */}
       <RestrictionsCheck />
     </>
-  )
-}
+  );
+}  
