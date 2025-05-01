@@ -48,14 +48,13 @@
     border: 1px solid #01524a;
 }
 
-.responsive_movie_card .movie_name_container{
+.responsive_movie_card .movie_title{
   width: 100%;
   height: auto;
   font-weight: 500;
   background-color: rgba(0, 0, 0, 0.60);
   position: absolute;
   bottom: 0;
-  z-index: 4;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
@@ -68,7 +67,7 @@
     flex-shrink: 0;
 }
 
-.slidershowcase_movie_card .movie_name_container{
+.slidershowcase_movie_card .movie_title{
   width: 100%;
   height: auto;
   font-weight: 500;

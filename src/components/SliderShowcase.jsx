@@ -129,7 +129,7 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, thumbnailImagePrior
                                         />
                                     </div>
 
-                                    <div className="movie_name_container px-2 py-1.5">
+                                    <div className="movie_title px-2 py-1.5">
                                         <span
                                             className="w-auto text-white font-semibold line-clamp-3 mobile:text-[10px] text-xs leading-[14px] mobile:leading-3 capitalize break-words"
                                             aria-label={title} // For SEO and accessibility
