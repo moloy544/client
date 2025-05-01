@@ -66,7 +66,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         message: "You are offline. Please check your internet connection.",
         visiblityTime: 6000
       });
-      return;
     }
     // Validate if no video source and show report message
     if (!source) {
@@ -525,15 +524,13 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                   <div className="pt-6 space-y-4 max-w-md">
                     <h2 className="text-xl font-bold text-gray-100">{`Coming Soon – Releases on ${fullReleaseDateString}`}</h2>
 
-                    <p className="text-sm text-gray-200">
-                      This content is expected to be available on&nbsp;
-                      <span className="text-yellow-300 font-semibold">{fullReleaseDateString}</span>.
-                      Please check back after the release date to start watching.
+                    <p className="text-sm text-gray-200 font-medium">
+                      Expected release: <span className="text-yellow-300">{fullReleaseDateString}</span>. If it&lsquo;s not available at the release time, please check back later and stay tuned.
                     </p>
 
                     <p className="text-xs text-gray-300">
                       <strong>Note:</strong> Release dates may occasionally be delayed or extended. While we strive to provide accurate information,
-                      schedules are subject to change. We recommend bookmarking this page and returning later for updates.
+                      schedules are subject to change. We recommend bookmark this page or add to watch later and returning later for updates.
                     </p>
 
                     <Link href="/">
@@ -557,4 +554,44 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
       <RestrictionsCheck />
     </>
   );
-}  
+};
+
+const ReleaseNotice = ({ releaseDateISO }) => {
+  const [message, setMessage] = useState('');
+
+  const calculateReleaseMessage = () => {
+    const today = new Date();
+    const releaseDate = new Date(releaseDateISO);
+    const timeDifference = releaseDate - today;
+
+    // Calculate the difference in days
+    const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const releaseDateString = releaseDate.toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+
+    if (timeDifference < 0) {
+      // Already released, but not yet available
+      setMessage(`Expected release: ${releaseDateString}. If not available immediately, please check back later.`);
+    } else if (daysLeft === 0) {
+      // Releases today
+      setMessage(`Releases today. Please check back later if it’s not yet available.`);
+    } else {
+      // More than 1 day left
+      setMessage(`${daysLeft} days left until release on ${releaseDateString}.`);
+    }
+  };
+
+  // Calculate the message once the component renders
+  if (!message) {
+    calculateReleaseMessage();
+  }
+
+  return (
+    <p className="text-sm text-gray-200">
+      {message}
+    </p>
+  );
+};
