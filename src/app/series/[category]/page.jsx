@@ -4,10 +4,17 @@ import LoadMoreMoviesGirdWarper from "@/components/LoadMoreMoviesGirdWarper";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
 import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
+import { notFound } from "next/navigation";
+
+const seriesCategory = ['hollywood', 'south', 'bollywood', 'netflix', 'hotstar'];
 
 export async function generateMetadata({ params }) {
 
   const editParamsQuery = transformToCapitalize(params.category);
+
+  const isValidCategory = seriesCategory.includes(params.category);
+
+  if (!isValidCategory) return;
 
   const metaData = {
     title: {
@@ -32,6 +39,7 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
 
   const category = params.category;
+  const isValidCategory = seriesCategory.includes(category);
 
   const apiUrl = `${appConfig.backendUrl}/api/v1/series/${category}`;
 
@@ -40,12 +48,16 @@ export default async function Page({ params }) {
     genre: "all",
   };
 
-  const { data, dataIsEnd } = await loadMoreFetch({
+  const { data, dataIsEnd } = isValidCategory && await loadMoreFetch({
 
     apiPath: apiUrl,
     bodyData: { filterData },
     limitPerPage: 30
   });
+
+  if (!isValidCategory) {
+    notFound();
+  };
 
   const title = transformToCapitalize(category + ' series');
 
