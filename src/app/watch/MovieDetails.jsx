@@ -64,7 +64,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     if (!isOnline) {
       creatToastAlert({
         message: "You are offline. Please check your internet connection.",
-        visiblityTime: 6000
+        visibilityTime: 6000
       });
     }
     // Validate if no video source and show report message
@@ -354,7 +354,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
     if (!watchLinks || watchLinks.length === 0) {
       creatToastAlert({
         message: "Playback is disabled by mistake please report us",
-        visiblityTime: 6000
+        visibilityTime: 6000
       });
       return
     };

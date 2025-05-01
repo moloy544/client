@@ -95,34 +95,32 @@ const imageToBase64Url = (file) => {
 // ******** Creat Toast Message Alert In Dom For Temporarily *******/
 //Creat Tooltip Popup Messages 
 let currentTooltip = null;
-const creatToastAlert = ({ message, visiblityTime = 8000 }) => {
-  // If there's already a tooltip displayed, remove it before showing the new one
-  if (currentTooltip && currentTooltip.element) {
+const creatToastAlert = ({ message, visibilityTime = 8000 }) => {
+  if (currentTooltip?.element) {
     document.body.removeChild(currentTooltip.element);
     clearTimeout(currentTooltip.timerId);
   }
 
-  // Create a div element for the tooltip
   const toolTip = document.createElement('div');
-
   toolTip.classList.add('custome_toast_message', 'md:text-base');
-
-  // Set inner text (or inner HTML if needed)
   toolTip.innerText = transformToCapitalize(message);
 
-  // Append the created element to the DOM, assuming you want to add it to the body
+  // Convert ms to seconds
+  const fadeOutDelaySeconds = Math.max((visibilityTime - 500) / 1000, 0); // subtract 0.5s for slideDown duration
+
+  // Dynamically assign animation string to match custom visibility time
+  toolTip.style.animation = `slideUp 0.5s forwards, slideDown 0.5s forwards ${fadeOutDelaySeconds}s`;
+
   document.body.appendChild(toolTip);
 
-  // Remove the tooltip after the specified visibility time
   const timerId = setTimeout(() => {
     document.body.removeChild(toolTip);
-    // Clear the reference to the tooltip
     currentTooltip = null;
-  }, visiblityTime);
+  }, visibilityTime);
 
-  // Update the currentTooltip and store the DOM element and timerId
   currentTooltip = { element: toolTip, timerId };
 };
+
 
 function resizeImage(src, resize = 'f_auto,q_auto') {
   let resizeParam = resize || 'f_auto,q_auto';

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, loadMoreFetch } from "@/utils";
 import { useInfiniteScroll } from "@/hooks/observers";
@@ -40,8 +40,6 @@ export default function SearchPage() {
     const backendServer = appConfig.backendUrl;
 
     const limitPerPage = 30;
-
-    const router = useRouter();
 
     // Set all state
     const [searchHistory, setSearchHistory] = useState([]);
@@ -261,12 +259,12 @@ export default function SearchPage() {
                     <>
                         {error ? (
                             <div className="w-full h-full min-h-[450px] flex items-center justify-center">
-                   
-                            <LoadContentError
-                                customRefreshFunction={() => getMovies(searchQuery)}
-                                customRefreshTitle="Retry Search"
-                                errorDescription={"We couldn’t load the search results. Please try again using the retry button or come back later."}
-                            />
+
+                                <LoadContentError
+                                    customRefreshFunction={() => getMovies(searchQuery)}
+                                    customRefreshTitle="Retry Search"
+                                    errorDescription={"We couldn’t load the search results. Please try again using the retry button or come back later."}
+                                />
                             </div>
                         ) :
                             (<div className="w-full h-full">
@@ -304,7 +302,13 @@ export default function SearchPage() {
                                         </h2>
                                         <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again. For 100% best results, use the exact original title.
                                             Tip: You can search on Google to find the correct title.</small>
-                                        <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => router.push('/request-form')}>
+                                        <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => {
+                                            creatToastAlert({
+                                                message: "Requested content is unavailable until 2 June 2025. We apologize for the inconvenience.",
+                                                visibilityTime: 12000
+                                            });
+
+                                        }}>
                                             <i className="bi bi-send"></i> Request content
                                         </button>
                                     </div>

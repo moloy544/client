@@ -83,7 +83,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       if (response.status !== 200) {
         creatToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
-          visiblityTime: 12000
+          visibilityTime: 12000
         });
         return;
       }
@@ -93,7 +93,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       if (!downloadUrl || downloadUrl.length === 0) {
         creatToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
-          visiblityTime: 12000
+          visibilityTime: 12000
         });
         return;
       }
@@ -104,7 +104,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       console.error('Error fetching download option URLs:', error);
       creatToastAlert({
         message: 'Download failed. Please try again later, or report the issue to us.',
-        visiblityTime: 12000
+        visibilityTime: 12000
       });
     } finally {
       setDownloadStartProgress(false);
