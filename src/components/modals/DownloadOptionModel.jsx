@@ -9,6 +9,7 @@ import { ModelsController } from "@/lib/EventsHandler"
 import { creatToastAlert } from "@/utils";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
 import RestrictedModal from "./RestrictedModal";
+import { openDirectLink } from "@/utils/ads.utility";
 
 const formatQualityType = (quality, qualityType) => {
 
@@ -65,6 +66,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         return;
       }
       setDownloadStartProgress(true);
+      openDirectLink();
 
       // If it's a Pixeldrain link, simulate loading without calling the API
       if (url && url.includes("pixeldrain")) {
