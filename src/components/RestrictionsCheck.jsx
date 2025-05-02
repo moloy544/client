@@ -12,16 +12,17 @@ export default function RestrictionsCheck() {
     const didRun = useRef(false);
 
     useEffect(() => {
-        if (isNotHuman() || didRun.current) return;
+        if (didRun.current || isNotHuman()) return;
         didRun.current = true;
 
-        //Get current IST time accurately
+        //Get current IST time
         const nowUTC = new Date();
-        const istTime = new Date(nowUTC.getTime() + 5.5 * 60 * 60 * 1000);
+        const istOffsetMs = 5.5 * 60 * 60 * 1000;
+        const istTime = new Date(nowUTC.getTime() + istOffsetMs);
         const hourIST = istTime.getHours();
-
-        //Allow API call only between 7 AM to 8 PM IST
-        if (hourIST < 7 || hourIST >= 20) {
+       
+        //Allow only between 7AM to 8PM IST (inclusive)
+        if (hourIST < 7 || hourIST > 20) {
             return;
         }
 
