@@ -5,7 +5,7 @@ import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 
-export default function ReportModel({ id, content_title, status, setIsModelOpen, isOpen, windowCurrentWidth, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
+export default function ReportModel({ id, imdbId, content_title, status, setIsModelOpen, isOpen, windowCurrentWidth, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
@@ -103,7 +103,7 @@ export default function ReportModel({ id, content_title, status, setIsModelOpen,
       }).post('/api/v1/user/action/report', {
         reportData: {
           content_id: id,
-          content_title,
+          content_title: content_title+ "-" + imdbId,
           selectedReports,
           writtenReport: writtenReportRef.current?.value,
         }
