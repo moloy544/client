@@ -70,7 +70,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
 
       // If it's a Pixeldrain link, simulate loading without calling the API
       if (url && url.includes("pixeldrain")) {
-        const delayOptions = [1000, 1500, 2000, 2500];
+        const delayOptions = [1000, 1500, 2000];
         const randomDelay = delayOptions[Math.floor(Math.random() * delayOptions.length)];
         await wait(randomDelay);
         setSourceUrl([url]);
@@ -165,7 +165,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
 
               <div className="px-5">
                 {/* Title */}
-                <div className="text-sm text-gray-700 font-bold text-center my-2.5 line-clamp-2">{title}</div>
+                <div className="text-sm text-gray-700 font-bold text-center my-2.5 line-clamp-3">{title}</div>
 
                 {isIOS() ? (
                   <p className="text-xs text-gray-600 font-semibold my-4">
@@ -202,9 +202,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                 </div>
 
                 <div className="mt-3 space-y-1 font-medium text-xs text-gray-500">
-                  <p className="text-center">
-                    After clicking the download now button, please don&lsquo;t close the opend window; your download will start shortly and automatically.
-                  </p>
+                  
                   <p className="text-center">
                     If the download not start after click, wait a few minutes and try again. You can also try a different download option or watch online if needed.
                   </p>
