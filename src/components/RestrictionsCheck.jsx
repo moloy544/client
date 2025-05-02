@@ -7,6 +7,13 @@ import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAc
 import { safeSessionStorage } from "@/utils/errorHandlers";
 import { isNotHuman } from "@/utils";
 
+const getCurrentISTTime = () => {
+    const currentDate = new Date();
+    const utcOffset = currentDate.getTimezoneOffset() * 60000; // Offset in milliseconds
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC +5:30
+    return new Date(currentDate.getTime() + utcOffset + istOffset);
+};
+
 export default function RestrictionsCheck() {
     const dispatch = useDispatch();
     const didRun = useRef(false);
@@ -15,16 +22,11 @@ export default function RestrictionsCheck() {
         if (didRun.current || isNotHuman()) return;
         didRun.current = true;
 
-        //Get current IST time
-        const nowUTC = new Date();
-        const istOffsetMs = 5.5 * 60 * 60 * 1000;
-        const istTime = new Date(nowUTC.getTime() + istOffsetMs);
-        const hourIST = istTime.getHours();
-       
-        //Allow only between 7AM to 8PM IST (inclusive)
-        if (hourIST < 7 || hourIST > 20) {
-            return;
-        }
+
+        const currentISTTime = getCurrentISTTime();
+        const currentHour = currentISTTime.getHours();
+        const currentMinute = currentISTTime.getMinutes();
+
 
         const fetchGeoInfo = async () => {
             try {
@@ -68,8 +70,10 @@ export default function RestrictionsCheck() {
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: false }));
             }
         };
-
-        fetchGeoInfo();
+        // Call Api between 2:00 AM IST and 5:30 AM IST
+        if ((currentHour >= 7 && currentHour < 20)) {
+            fetchGeoInfo();
+        }
 
     }, [dispatch]);
 
