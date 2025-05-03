@@ -521,7 +521,10 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                     <i className="bi bi-x-lg text-sm"></i>
                   </button>
 
-                  <div className="pt-6 space-y-4 max-w-md">
+                  
+                    <div className="pt-6 space-y-4 max-w-md">
+                    {content_status === "coming soon" ?(
+                      <>
                     <h2 className="text-xl font-bold text-gray-100">{`Coming Soon – Releases on ${fullReleaseDateString}`}</h2>
 
                     <p className="text-sm text-gray-200 font-medium">
@@ -532,6 +535,12 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                       <strong>Note:</strong> Release dates may occasionally be delayed or extended. While we strive to provide accurate information,
                       schedules are subject to change. We recommend bookmark this page or add to watch later and returning later for updates.
                     </p>
+                    </>
+                    ):(
+                      <div className="my-5">
+                      <h2 className="text-sm font-semibold text-gray-200">{content_status}</h2>
+                      </div>
+                    )}
 
                     <Link href="/">
                       <button
@@ -542,7 +551,9 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                       </button>
                     </Link>
                   </div>
+                  
                 </div>
+                 
 
               )}
             </div>
