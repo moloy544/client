@@ -165,7 +165,9 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
 
               <div className="px-5">
                 {/* Title */}
-                <div className="text-sm text-gray-700 font-bold text-center my-2.5 line-clamp-3">{title}</div>
+                <div className="text-sm text-gray-700 font-bold text-center my-2.5">
+                  <p className="break-words whitespace-normal">{title}</p>
+                </div>
 
                 {isIOS() ? (
                   <p className="text-xs text-gray-600 font-semibold my-4">
@@ -202,7 +204,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                 </div>
 
                 <div className="mt-3 space-y-1 font-medium text-xs text-gray-500">
-                  
+
                   <p className="text-center">
                     If the download not start after click, wait a few minutes and try again. You can also try a different download option or watch online if needed.
                   </p>
