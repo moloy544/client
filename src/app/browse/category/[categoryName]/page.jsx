@@ -6,13 +6,28 @@ import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 import { categoryArray } from "@/constant/constsnt";
 
+const otherExpectedCategories = [
+  'hindi', 'hindi dubbed', 'bengali dubbed', 'english', 'punjabi',
+  'tamil', 'telugu', 'malayalam', 'kannada', 'dubbed', 'korean',
+  'japanese', 'chinese', 'french', 'german', 'spanish', 'italian',
+  'portuguese', 'arabic', 'turkish', 'thai', 'vietnamese',
+  'indonesian', 'filipino', 'swedish', 'norwegian', 'danish',
+  'finnish', 'russian', 'ukrainian', 'polish', 'hungarian',
+  'czech', 'slovakian'
+];
+
 const validateCategory = (category) => {
-  if (!category || category === '' || category === "") return false; // If category is empty, return false
+  if (!category?.trim()) return false; // Empty or whitespace-only check
 
-  // Convert category to lowercase for case-insensitive comparison
-  const validCategories = categoryArray.map(item => item.name.toLowerCase());
+  const normalizedCategory = category.toLowerCase().trim();
 
-  return validCategories.includes(category.toLowerCase());
+  const validCategories = [
+    ...categoryArray.map(item => item.name.toLowerCase()),
+    ...otherExpectedCategories
+  ];
+
+  // Check against predefined lists or if the category contains "dubbed"
+  return validCategories.includes(normalizedCategory) || normalizedCategory.includes('dubbed');
 };
 
 export async function generateMetadata({ params }) {

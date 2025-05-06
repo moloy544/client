@@ -18,28 +18,32 @@ export const categoryArray = [
   },
   {
     id: 5,
+    name: "Trending"
+  },
+  {
+    id: 6,
     name: "Series",
     linkUrl: "/series"
 
   },
   {
-    id: 6,
+    id: 7,
     name: "Movies",
   },
   {
-    id: 7,
+    id: 8,
     name: "Hindi"
   },
   {
-    id: 8,
+    id: 9,
     name: "Hindi Dubbed"
   },
   {
-    id: 9,
+    id: 10,
     name: "Bengali"
   },
   {
-    id: 10,
+    id: 11,
     name: "Bangladeshi",
     visiblity: false
   }

@@ -1,0 +1,103 @@
+'use client'
+
+import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { creatToastAlert } from "@/utils";
+import Image from "next/image";
+import brandLogoIcon from "../../../assets/images/brand_logo.png"
+import { appConfig } from "@/config/config";
+
+export default function DMCAadminLoginPage() {
+
+    const router = useRouter();
+    const [process, setProcess] = useState(false);
+
+    const handalLogin = async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        const { username, password } = formJson;
+
+        try {
+            if (password?.trim() === "" || username?.trim() === "") {
+                creatToastAlert({
+                    message: "Please enter all required fields"
+                });
+                return;
+            };
+            setProcess(true);
+            const res = await axios.post(`${appConfig.backendUrl}/api/v1/dmca-admin/login`, {
+                username: username, 
+                password
+            });
+            if (res.status === 200) {
+                router.replace('/dmca-admin');
+            } else {
+                creatToastAlert({
+                    message: res.data.message || "Invalid login details"
+                });
+            }
+
+        } catch (error) {
+            //console.log(error);
+            if (error.response.data && error.response.data.message) {
+                creatToastAlert({
+                    message: error.response.data.message || "Failed to login"
+                });
+            }
+        } finally {
+            setProcess(false);
+        }
+    };
+
+    return (
+        <div className="flex items-center justify-center w-full min-h-screen bg-gradient-to-r from-gray-800 to-gray-900 px-2">
+            <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 mobile:p-6">
+                <div className="text-center mb-6">
+                    <Image
+                        src={brandLogoIcon}
+                        width={50}
+                        height={50}
+                        alt="Movies Bazar Logo"
+                        className="mx-auto mb-4 rounded-md w-20 h-20"
+                    />
+                   <h2 className="text-2xl font-bold text-gray-800">DMCA Admin Login</h2>
+                   <p className="text-sm text-gray-500">Sign in to manage DMCA takedowns</p>
+                </div>
+
+                <form onSubmit={handalLogin}>
+                    <div className="space-y-5">
+                        <div>
+                            <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="Enter your username"
+                                className="mt-1 block w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                className="mt-1 block w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            />
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={process}
+                        className={`cursor-pointer w-full h-10 flex items-center justify-center p-6 mt-8 bg-gray-900 ${!process ? "text-white" : "bg-opacity-70 cursor-not-allowed text-gray-300"} font-bold text-center rounded`}>
+                        {!process ? "Login" : <div className="three_dots_loading w-2 h-2"></div>}
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+}

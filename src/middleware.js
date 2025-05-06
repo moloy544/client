@@ -5,23 +5,40 @@ export async function middleware(req) {
   const path = req.nextUrl.pathname;
   const cookies = cookie();
 
-  // getting the admin cookie
-  const adminCookie = cookies.get('moviesbazar_publisher');
+  // Publisher login cookie
+  const publisherCookie = cookies.get('moviesbazar_publisher');
 
-  // If the admin is not logged in (no cookie) and tries to access a protected route
-  if (!adminCookie && path.startsWith("/publisher") && path !== "/publisher/login") {
-    // redirect to admin login page
-    return NextResponse.redirect(new URL('/publisher/login', req.url));
+  // DMCA admin login cookie
+  const dmcaAdminCookie = cookies.get('dmca_admin_token');
+
+  // 🔒 Protect publisher routes
+  if (path.startsWith("/publisher")) {
+    // If not logged in and not on login page
+    if (!publisherCookie && path !== "/publisher/login") {
+      return NextResponse.redirect(new URL('/publisher/login', req.url));
+    }
+    // If logged in and tries to access login page again
+    if (publisherCookie && path === "/publisher/login") {
+      return NextResponse.redirect(new URL('/publisher', req.url));
+    }
   }
 
-  // If the admin is logged in and tries to access the login page, redirect to publisher
-  if (adminCookie && path === "/publisher/login") {
-    return NextResponse.redirect(new URL('/publisher', req.url));
+  // 🔒 Protect DMCA admin routes
+  if (path.startsWith("/dmca-admin")) {
+    // If not logged in and not on login page
+    if (!dmcaAdminCookie && path !== "/dmca-admin/login") {
+      return NextResponse.redirect(new URL('/dmca-admin/login', req.url));
+    }
+    // If logged in and tries to access login page again
+    if (dmcaAdminCookie && path === "/dmca-admin/login") {
+      return NextResponse.redirect(new URL('/dmca-admin', req.url));
+    }
   }
 
   return NextResponse.next();
 }
 
+// ✅ Apply to both paths
 export const config = {
-  matcher: '/publisher/:path*',  // Match all publisher routes, including deeper paths
+  matcher: ['/publisher/:path*', '/dmca-admin/:path*'],
 };

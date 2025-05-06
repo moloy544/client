@@ -4,6 +4,8 @@ Allow: /
 # Disallow access to the admin or publisher section and all paths under it
 Disallow: /publisher
 Disallow: /publisher/*
+Disallow: /dmca-admin
+Disallow: /dmca-admin/*
 Disallow: /api
 Disallow: /api/*
 Disallow: /embed

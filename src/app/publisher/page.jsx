@@ -17,11 +17,10 @@ const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
 const typeOptions = ["movie", "series"];
 const videoType = ["hd", "cam", "hd-cam"]
 const statusOptions = ['released', 'coming soon']
-const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'punjabi', 'tamil', 'telugu', 'malayalam', 'kannada'];
+const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'bengali dubbed', 'punjabi', 'tamil', 'telugu', 'malayalam', 'kannada'];
 const industryOptions = ['bollywood', 'hollywood', 'south'];
 const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons', 'Animes'];
 const videoSource = process.env.VIDEO_SERVER_URL;
-const secondVideoSource = process.env.SECOND_VIDEO_SERVER_URL;
 
 const initialMoviesData = {
     imdbId: '',
