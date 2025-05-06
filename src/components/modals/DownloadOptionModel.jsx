@@ -301,7 +301,7 @@ const LanguageGuideModal = ({ isOpen, handleClose, transformEffect }) => {
             <p><strong className="text-gray-900">Step 1:</strong> Download & install VLC Media Player.</p>
             <p>If not downloaded, choose your OS below to download:</p>
 
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-3 text-base text-gray-700">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3 text-base text-gray-700">
               <a
                 href="https://play.google.com/store/apps/details?id=org.videolan.vlc"
                 target="_blank"
