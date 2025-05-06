@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import { isAndroid, isIOS } from "@/helper/helper";
+import { handleEmailUs, isAndroid, isIOS } from "@/helper/helper";
 import { ModelsController } from "@/lib/EventsHandler"
 import { creatToastAlert } from "@/utils";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
@@ -51,8 +51,9 @@ const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 export default function DownloadOptionModel({ isOnline, imdbId, linksData, contentTitle, contentType, isAllRestricted, isInTheater, isOpen, onClose, onReportButtonClick, windowCurrentWidth }) {
 
   const { title, links, qualityType } = linksData || {};
-
+  // 
   //const [downloadOptionUrlData, setDownloadOptionUrlData] = useState([]);
+  const [isInstractionsModalOpen, setInstractionsModalOpen] = useState(false);
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
   const [sourceUrl, setSourceUrl] = useState(null);
   const { UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
@@ -151,7 +152,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       ) : (
         <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false}>
 
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50 py-4 px-3">
 
             <div className="bg-white max-h-full overflow-y-scroll scrollbar-hidden rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg relative">
               <div className="flex justify-around sticky top-0 bg-white py-2">
@@ -187,6 +188,13 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                     </a>.
                   </p>
                 )}
+
+                <p
+                  onClick={() => setInstractionsModalOpen(true)}
+                  className="text-blue-500 cursor-pointer underline underline-offset-2 my-4 text-sm"
+                >
+                  ✅ Click here to learn how to change audio language
+                </p>
 
                 {/* Download Links */}
                 <div className="space-y-2 max-w-sm mx-auto py-1.5">
@@ -259,6 +267,11 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         </ModelsController>
       )}
 
+      <LanguageGuideModal
+        isOpen={isInstractionsModalOpen}
+        handleClose={() => setInstractionsModalOpen(false)}
+      />
+
       {downloadStartProgress && (
         <FullScreenBackdropLoading
           loadingSpinner={true}
@@ -267,4 +280,143 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       )}
     </>
   )
+};
+
+const LanguageGuideModal = ({ isOpen, handleClose }) => {
+
+  return (
+
+    <ModelsController visibility={isOpen} windowScroll={false}>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50 py-4 px-3">
+        <div className="bg-white max-h-full overflow-y-scroll scrollbar-hidden rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg relative">
+
+          <div className="sticky top-0 bg-white py-2 px-4">
+            <h2 className="text-xl font-semibold text-center">
+              How to Change Audio Language in VLC
+            </h2>
+          </div>
+
+          <div className="p-4 pb-7 space-y-4 text-base text-gray-600 font-medium">
+            <p><strong className="text-gray-900">Step 1:</strong> Download & install VLC Media Player.</p>
+            <p>If not downloaded, choose your OS below to download:</p>
+
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-3 text-base text-gray-700">
+              <a
+                href="https://play.google.com/store/apps/details?id=org.videolan.vlc"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 border px-3 py-2 rounded hover:bg-gray-100 transition"
+              >
+                <i className="bi bi-android"></i> Android
+              </a>
+              <a
+                href="https://apps.apple.com/app/vlc-for-mobile/id650377962"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 border px-3 py-2 rounded hover:bg-gray-100 transition"
+              >
+                <i className="bi bi-phone"></i> iOS
+              </a>
+              <a
+                href="https://www.videolan.org/vlc/download-windows.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 border px-3 py-2 rounded hover:bg-gray-100 transition"
+              >
+                <i className="bi bi-windows"></i> Windows
+              </a>
+              <a
+                href="https://www.videolan.org/vlc/download-macosx.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 border px-3 py-2 rounded hover:bg-gray-100 transition"
+              >
+                <i className="bi bi-apple"></i> macOS
+              </a>
+
+              <a
+                href="https://www.videolan.org/vlc/#download"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 border px-3 py-2 rounded hover:bg-gray-100 transition"
+              >
+                <i className="bi bi-laptop"></i> Linux
+              </a>
+            </div>
+
+            <p><strong className="text-gray-900">Step 2:</strong> Search on YouTube:</p>
+            <ul className="list-disc list-inside ml-4 space-y-2">
+              <li><em>Search on YouTube:</em></li>
+              <li>
+                <span className="text-gray-700 font-semibold">Use queries like:</span>
+                <ul className="list-disc list-inside ml-6 space-y-1 font-normal">
+                  <li>
+                    <a
+                      href="https://www.youtube.com/results?search_query=How+to+change+audio+track+in+VLC+player+on+Android"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      How to change audio track in VLC player on Android
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.youtube.com/results?search_query=How+to+switch+audio+language+in+VLC+player+on+Windows"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      How to switch audio language in VLC player on Windows
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.youtube.com/results?search_query=Change+audio+and+subtitle+in+VLC+player+on+iOS"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      Change audio and subtitle in VLC player on iOS
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.youtube.com/results?search_query=How+to+enable+subtitles+and+change+audio+track+in+VLC+Mac"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      How to enable subtitles and change audio track in VLC Mac
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <p className="text-sm text-gray-600 text-center font-medium">
+              Note: Why VLC? We recommend it because it&lsquo;s one of the most popular and easiest to use media players, offering features like easy audio track and subtitle switching (if available).
+            </p>
+
+            <p className="text-sm text-gray-600 text-center font-medium">
+              Facing any issues? Please feel free to reach out to us via email at <span onClick={handleEmailUs} className="text-blue-500 font-semibold cursor-pointer">
+                moviesbazarorg@gmail.com
+              </span>
+            </p>
+
+          </div>
+
+          <div className="bg-white w-full sticky bottom-0 pb-4 pt-4 justify-center items-center flex">
+            <button
+              onClick={handleClose}
+              className="w-[80%] bg-gray-900 hover:bg-gray-950 text-gray-50 py-2 rounded-md transition-colors"
+            >
+              Close
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </ModelsController>
+  );
 };

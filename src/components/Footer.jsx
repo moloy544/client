@@ -2,11 +2,8 @@
 
 import Image from 'next/image';
 import authorImage from '../assets/images/india_flag.jpg';
+import { handleEmailUs } from '@/helper/helper';
 
-const handleEmail = () => {
-    const email = 'moviesbazarorg@gmail.com';
-    window.location.href = `mailto:${email}`;
-};
 
 function Footer() {
 
@@ -110,7 +107,7 @@ function Footer() {
                         </svg>
                         <span className="text-cyan-400">Telegram</span>
                     </a>
-                    <div className="flex items-center gap-1 cursor-pointer" title="Email Contact" onClick={handleEmail}>
+                    <div className="flex items-center gap-1 cursor-pointer" title="Email Contact" onClick={handleEmailUs}>
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="40" height="40" viewBox="0 0 48 48">
                             <path fill="#1e88e5" d="M34,42H14c-4.411,0-8-3.589-8-8V14c0-4.411,3.589-8,8-8h20c4.411,0,8,3.589,8,8v20C42,38.411,38.411,42,34,42z"></path>
                             <path fill="#fff" d="M35.926,17.488L29.414,24l6.511,6.511C35.969,30.347,36,30.178,36,30V18C36,17.822,35.969,17.653,35.926,17.488z M26.688,23.899l7.824-7.825C34.347,16.031,34.178,16,34,16H14c-0.178,0-0.347,0.031-0.512,0.074l7.824,7.825C22.795,25.38,25.205,25.38,26.688,23.899z M24,27.009c-1.44,0-2.873-0.542-3.99-1.605l-6.522,6.522C13.653,31.969,13.822,32,14,32h20c0.178,0,0.347-0.031,0.512-0.074l-6.522-6.522C26.873,26.467,25.44,27.009,24,27.009z M12.074,17.488C12.031,17.653,12,17.822,12,18v12c0,0.178,0.031,0.347,0.074,0.512L18.586,24L12.074,17.488z"></path>
@@ -179,7 +176,7 @@ function Footer() {
                         <strong>User Safety:</strong> While we strive to ensure safe viewing experiences, users should be aware that some uploaded content may contain copyrighted material. It&apos;s our responsibility to monitor content, but we advise users to watch at their discretion.
                     </p>
                     <p>
-                        <strong>Content Safety:</strong> Requests for adult content will be rejected and removed from our site. If you see any content that may be pornographic material, please report it to us via email at <span onClick={handleEmail} className="text-blue-500 font-semibold cursor-pointer">moviesbazarorg@gmail.com</span>.
+                        <strong>Content Safety:</strong> Requests for adult content will be rejected and removed from our site. If you see any content that may be pornographic material, please report it to us via email at <span onClick={handleEmailUs} className="text-blue-500 font-semibold cursor-pointer">moviesbazarorg@gmail.com</span>.
                     </p>
 
                     <p>

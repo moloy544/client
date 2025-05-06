@@ -1,3 +1,4 @@
+
 export function isIOS() {
     const userAgent = window.navigator.userAgent.toLowerCase();
     return /iphone|ipad|ipod/.test(userAgent);
@@ -25,5 +26,11 @@ export function removeScrollbarHidden() {
       body.style.overflow = '';
   }
 
+};
+
+// Email us for any query
+export const handleEmailUs = () => {
+    const email = 'moviesbazarorg@gmail.com';
+    window.location.href = `mailto:${email}`;
 };
 
