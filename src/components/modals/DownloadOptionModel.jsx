@@ -152,7 +152,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       ) : (
         <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false}>
 
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50 py-4 px-3">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50">
 
             <div className="bg-white max-h-full overflow-y-scroll scrollbar-hidden rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg relative">
               <div className="flex justify-around sticky top-0 bg-white py-2">
@@ -268,6 +268,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       )}
 
       <LanguageGuideModal
+        transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false}
         isOpen={isInstractionsModalOpen}
         handleClose={() => setInstractionsModalOpen(false)}
       />
@@ -282,12 +283,12 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   )
 };
 
-const LanguageGuideModal = ({ isOpen, handleClose }) => {
+const LanguageGuideModal = ({ isOpen, handleClose, transformEffect }) => {
 
   return (
 
-    <ModelsController visibility={isOpen} windowScroll={false}>
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50 py-4 px-3">
+    <ModelsController visibility={isOpen} windowScroll={false} transformEffect={transformEffect}>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50 lg:py-4">
         <div className="bg-white max-h-full overflow-y-scroll scrollbar-hidden rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg relative">
 
           <div className="sticky top-0 bg-white py-2 px-4">
