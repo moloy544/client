@@ -41,6 +41,8 @@ const formatQualityType = (quality, qualityType) => {
   };
 
   if (qualityType.toLowerCase() === "cam") return `(${qualityLabel} - CAM)`
+  if (qualityType.toLowerCase() === "hd-cam") return `(${qualityLabel} - HD CAM)`
+    
 
   // Format as "quality (Label)"
   return `(${qualityLabel})`;
