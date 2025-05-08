@@ -50,10 +50,10 @@ const formatQualityType = (quality, qualityType) => {
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-export default function DownloadOptionModel({ isOnline, imdbId, linksData, contentTitle, contentType, isAllRestricted, isInTheater, isOpen, onClose, onReportButtonClick, windowCurrentWidth }) {
+export default function DownloadOptionModel({ isOnline, imdbId, linksData, contentTitle, contentType, isAllRestricted, isInTheater, isOpen, onClose, onReportButtonClick }) {
 
   const { title, links, qualityType } = linksData || {};
-  // 
+  
   //const [downloadOptionUrlData, setDownloadOptionUrlData] = useState([]);
   const [isInstractionsModalOpen, setInstractionsModalOpen] = useState(false);
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
@@ -152,7 +152,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
           onClose={onClose}
         />
       ) : (
-        <ModelsController visibility={isOpen} windowScroll={false} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false}>
+        <ModelsController visibility={isOpen} windowScroll={false} transformEffect={true}>
 
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50">
 
@@ -270,7 +270,6 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       )}
 
       <LanguageGuideModal
-        transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false}
         isOpen={isInstractionsModalOpen}
         handleClose={() => setInstractionsModalOpen(false)}
       />
@@ -285,11 +284,11 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   )
 };
 
-const LanguageGuideModal = ({ isOpen, handleClose, transformEffect }) => {
+const LanguageGuideModal = ({ isOpen, handleClose }) => {
 
   return (
 
-    <ModelsController visibility={isOpen} windowScroll={false} transformEffect={transformEffect}>
+    <ModelsController visibility={isOpen} windowScroll={false} transformEffect={true}>
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center sm-screen:items-end justify-center z-50 lg:py-4">
         <div className="bg-white max-h-full overflow-y-scroll scrollbar-hidden rounded-lg sm-screen:rounded-xl sm-screen:rounded-b-none sm-screen:w-full max-w-[450px] shadow-lg relative">
 

@@ -5,7 +5,7 @@ import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 
-export default function ReportModel({ id, imdbId, content_title, status, setIsModelOpen, isOpen, windowCurrentWidth, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
+export default function ReportModel({ id, imdbId, content_title, status, setIsModelOpen, isOpen, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
@@ -151,7 +151,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
 
   return (
     <>
-      <ModelsController visibility={isOpen} transformEffect={windowCurrentWidth ? windowCurrentWidth <= 450 : false} windowScroll={false}>
+      <ModelsController visibility={isOpen} transformEffect={true} windowScroll={false}>
         <div className="w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
           style={{ transform: 'translateY(100%)' }}
         >

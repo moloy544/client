@@ -1,5 +1,6 @@
 "use client";
 
+import { useCurrentWindowSize } from "@/hooks/hook";
 import { cloneElement, useEffect, useRef, useState, Children } from "react";
 
 export const ModelsController = ({
@@ -9,18 +10,24 @@ export const ModelsController = ({
     transformEffect = false,
     windowScroll = true
 }) => {
+
     if (Children.count(children) !== 1) {
         throw new Error("ModelsController expects exactly one child element.");
-    }
+    };
+
+    const windowCurrentWidth = useCurrentWindowSize().width;
+
+    const isTransformEffect = (transformEffect && typeof transformEffect === "boolean" && windowCurrentWidth <= 450) ? true : false;
 
     const initialStyle = {
-        transition: transformEffect ? 'opacity 0.3s ease, transform 0.3s ease' : 'opacity 0.5s ease',
+        transition: isTransformEffect ? 'opacity 0.3s ease, transform 0.3s ease' : 'opacity 0.5s ease',
         opacity: 0,
     };
 
     const elementRef = useRef(null);
     const [styleObj, setStyleObj] = useState(initialStyle);
 
+   
     // Intersection Observer to auto-close modal if less than 50% visible
     useEffect(() => {
         const observerCallback = (entries) => {
@@ -76,7 +83,7 @@ export const ModelsController = ({
             setStyleObj(prevStyle => ({
                 ...prevStyle,
                 opacity: 1,
-                transform: transformEffect ? 'translateY(0)' : undefined,
+                transform: isTransformEffect ? 'translateY(0)' : undefined,
             }));
             if (windowScroll === false && !body.classList.contains('scrollbar-hidden')) {
                 body.classList.add('scrollbar-hidden');
@@ -86,7 +93,7 @@ export const ModelsController = ({
             setStyleObj(prevStyle => ({
                 ...prevStyle,
                 opacity: 0,
-                transform: transformEffect ? 'translateY(100%)' : undefined,
+                transform: isTransformEffect ? 'translateY(100%)' : undefined,
             }));
             if (body.classList.contains('scrollbar-hidden')) {
                 body.classList.remove('scrollbar-hidden');
@@ -101,7 +108,7 @@ export const ModelsController = ({
                 body.style.overflow = '';
             }
         };
-    }, [visibility, transformEffect, windowScroll]);
+    }, [visibility, isTransformEffect, windowScroll]);
 
     const childWithProps = children && visibility ? cloneElement(children, {
         ref: elementRef,

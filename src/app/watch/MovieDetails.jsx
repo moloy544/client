@@ -13,10 +13,11 @@ import VideoPlayer from "@/components/player/VideoPlayer";
 import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
 import { openDirectLink } from "@/utils/ads.utility";
-import { removeScrollbarHidden } from "@/helper/helper";
+import { handleEmailUs, removeScrollbarHidden } from "@/helper/helper";
 import RestrictedModal from "@/components/modals/RestrictedModal";
 import { useSelector } from "react-redux";
 import RestrictionsCheck from "@/components/RestrictionsCheck";
+import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 
@@ -338,6 +339,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
 
   const [showDropdown, setDropDown] = useState(false);
   const [isRpmplayOnline, setIsRpmplayOnline] = useState(false);
+  const [isInstractionsModalOpen, setInstractionsModalOpen] = useState(false);
   const { isUserRestricted, UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
 
   const findIndex = watchLinks.findIndex(({ source }) => source.includes('rpmplay.online'));
@@ -451,36 +453,29 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                     </button>
                   </div>
 
-                  {isRpmplayOnline ? (
-                    <>
-                      <small className="text-xs text-gray-200">
-                        &#8226; Try to play <span className="text-yellow-500 font-semibold">server {findIndex + 1}</span> at least 3/4 times. Sometimes the video may take time to load, please be patient. If it has multi-audio:
-                        <span className="font-semibold text-[#f59e0b]"> Open Server {findIndex + 1} Player Settings </span>
-                        <span className="text-gray-400">→</span>
-                        <span className="font-semibold text-[#3b82f6]"> Click <u>Audio</u></span>
-                        <span className="text-gray-400">→</span>
-                        <span className="font-semibold text-[#ec4899]"> Click <u>Track</u></span>
-                        <span className="text-gray-400">→</span>
-                        <span className="font-semibold text-[#10b981]"> Select your language</span>.
+                  <div className="text-base text-gray-200 my-1.5 text-center flex flex-col space-y-2">
+                    {isRpmplayOnline && (
+                      <small className="text-xs text-gray-200 font-medium">
+                        &#8226; If you choose <span className="text-yellow-500 font-semibold">server {findIndex + 1}</span> Try to play at least 3/4 times. Sometimes the video may take time to load, please be patient.
                       </small>
-                      {watchLinks.length > 1 && (
-                        <div className="text-xs text-gray-200 my-1.5 text-center">
-                          &#8226; Video not working? <span className="font-semibold">Try another server.</span>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="text-base text-gray-200 my-1.5 text-center flex flex-col space-y-2">
-                      {watchLinks.length > 1 && (
-                        <small>
-                          &#8226; Video not playing? <span className="font-semibold">Try another server.</span>
-                        </small>
-                      )}
-                      <small>
-                        &#8226; Video stop in middle? <span className="font-semibold">Go back and pick same server again.</span>
+                    )}
+                    {watchLinks.length > 1 && (
+                      <small className="font-medium">
+                        &#8226; Video not playing? <span className="font-semibold">Try another server.</span>
                       </small>
-                    </div>
-                  )}
+                    )}
+                    <small className="font-medium">
+                      &#8226; Video stop in middle? <span className="font-semibold">Go back and pick same server again.</span>
+                    </small>
+
+                  </div>
+
+                  <p
+                    onClick={() => setInstractionsModalOpen(true)}
+                    className="text-blue-400 cursor-pointer underline underline-offset-2 my-4 text-sm"
+                  >
+                    ✅ Click here to Learn how to use player features like changing audio, quality, and more
+                  </p>
 
                   <div className="space-y-3 my-4 px-1">
                     {watchLinks?.map((data, index) => (
@@ -521,24 +516,23 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                     <i className="bi bi-x-lg text-sm"></i>
                   </button>
 
-                  
-                    <div className="pt-6 space-y-4 max-w-md">
-                    {content_status === "coming soon" ?(
+                  <div className="pt-6 space-y-4 max-w-md">
+                    {content_status === "coming soon" ? (
                       <>
-                    <h2 className="text-xl font-bold text-gray-100">{`Coming Soon – Releases on ${fullReleaseDateString}`}</h2>
+                        <h2 className="text-xl font-bold text-gray-100">{`Coming Soon – Releases on ${fullReleaseDateString}`}</h2>
 
-                    <p className="text-sm text-gray-200 font-medium">
-                      Expected release: <span className="text-yellow-300">{fullReleaseDateString}</span>. If it&lsquo;s not available at the release time, please check back later and stay tuned.
-                    </p>
+                        <p className="text-sm text-gray-200 font-medium">
+                          Expected release: <span className="text-yellow-300">{fullReleaseDateString}</span>. If it&lsquo;s not available at the release time, please check back later and stay tuned.
+                        </p>
 
-                    <p className="text-xs text-gray-300">
-                      <strong>Note:</strong> Release dates may occasionally be delayed or extended. While we strive to provide accurate information,
-                      schedules are subject to change. We recommend bookmark this page or add to watch later and returning later for updates.
-                    </p>
-                    </>
-                    ):(
+                        <p className="text-xs text-gray-300">
+                          <strong>Note:</strong> Release dates may occasionally be delayed or extended. While we strive to provide accurate information,
+                          schedules are subject to change. We recommend bookmark this page or add to watch later and returning later for updates.
+                        </p>
+                      </>
+                    ) : (
                       <div className="my-5">
-                      <h2 className="text-sm font-semibold text-gray-200">{content_status}</h2>
+                        <h2 className="text-sm font-semibold text-gray-200">{content_status}</h2>
                       </div>
                     )}
 
@@ -551,58 +545,22 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                       </button>
                     </Link>
                   </div>
-                  
+
                 </div>
-                 
+
 
               )}
             </div>
           </div>
         </ModelsController>
       )}
-
+      <PlayerGuideModal
+        isOpen={isInstractionsModalOpen}
+        handleClose={() => setInstractionsModalOpen(false)}
+      />
       {/* Restriction Check Component */}
       <RestrictionsCheck />
     </>
   );
 };
 
-const ReleaseNotice = ({ releaseDateISO }) => {
-  const [message, setMessage] = useState('');
-
-  const calculateReleaseMessage = () => {
-    const today = new Date();
-    const releaseDate = new Date(releaseDateISO);
-    const timeDifference = releaseDate - today;
-
-    // Calculate the difference in days
-    const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const releaseDateString = releaseDate.toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-
-    if (timeDifference < 0) {
-      // Already released, but not yet available
-      setMessage(`Expected release: ${releaseDateString}. If not available immediately, please check back later.`);
-    } else if (daysLeft === 0) {
-      // Releases today
-      setMessage(`Releases today. Please check back later if it’s not yet available.`);
-    } else {
-      // More than 1 day left
-      setMessage(`${daysLeft} days left until release on ${releaseDateString}.`);
-    }
-  };
-
-  // Calculate the message once the component renders
-  if (!message) {
-    calculateReleaseMessage();
-  }
-
-  return (
-    <p className="text-sm text-gray-200">
-      {message}
-    </p>
-  );
-};

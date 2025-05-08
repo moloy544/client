@@ -1,12 +1,11 @@
 'use client'
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import { openDirectLink } from "@/utils/ads.utility";
-import { useCurrentWindowSize } from "@/hooks/hook";
 import { isIOS } from "@/helper/helper";
 import { useSelector } from "react-redux";
 import FullScreenBackdropLoading from "@/components/loadings/BackdropLoading";
@@ -31,9 +30,6 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
   const [isReportModelOpen, setIsReportModelOpen] = useState(false);
 
   const { isUserRestricted } = useSelector((state) => state.fullWebAccessState);
-
-  // get window live current width
-  const windowCurrentWidth = useCurrentWindowSize().width;
 
   const {
     _id,
@@ -128,7 +124,6 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
             imdbId={imdbId}
             handleReportModelOpen={setIsReportModelOpen}
             downloadLinks={downloadLinks}
-            windowCurrentWidth={windowCurrentWidth}
             ontentTitle={title}
             contentType={type}
             isAllRestricted={isAllRestricted}
@@ -181,7 +176,6 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
           isDownloadOption={downloadLinks && downloadLinks.length > 0 ? true : false}
           setIsModelOpen={setIsReportModelOpen}
           isOpen={isReportModelOpen}
-          windowCurrentWidth={windowCurrentWidth}
           isAllRestricted={isAllRestricted}
         />
       )}
