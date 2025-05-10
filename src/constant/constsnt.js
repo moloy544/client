@@ -18,7 +18,8 @@ export const categoryArray = [
   },
   {
     id: 5,
-    name: "Trending"
+    name: "Trending",
+    linkUrl: "/browse/listings/trending-content"
   },
   {
     id: 6,

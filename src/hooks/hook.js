@@ -1,5 +1,6 @@
 "use client"
 
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const useOrientation = () => {
@@ -35,7 +36,7 @@ const useCurrentWindowSize = () => {
                     height: window.innerHeight
                 });
             }
-            
+
         };
 
         // Set initial value on mount
@@ -97,8 +98,35 @@ const useDetectDevTools = () => {
     return isDevToolsOpen;
 };
 
+const useHandleModalsVisiblityByQueryParams = () => {
+
+    const pathname = usePathname();
+
+    const handleModalVisibility = ({modalId, open=false, close=true}) => {
+        // Check if the window object is available (for SSR compatibility)
+        if (typeof window === 'undefined') return;
+
+        // Create a new URLSearchParams object from the current URL's query string
+        const params = new URLSearchParams(window.location.search);
+
+        // If the term is provided, set the 'query' param, otherwise remove it
+        if (open) {
+            params.set('modal', modalId);
+        } else if (close) {
+            params.delete('modal');
+        }
+
+        // Use history.pushState() to update the URL without reloading the page
+        const newUrl = `${pathname}?${params.toString()}`;
+        window.history.replaceState(null, '', newUrl);
+
+    };
+    return handleModalVisibility;
+};
+
 export {
     useOrientation,
     useCurrentWindowSize,
-    useDetectDevTools
+    useDetectDevTools,
+    useHandleModalsVisiblityByQueryParams
 }

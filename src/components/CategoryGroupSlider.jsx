@@ -13,7 +13,7 @@ const LinkButton = ({ linkData, parentUrl }) => {
             <Link
               title={name} // Tooltip for user
               href={linkUrl
-                ? creatUrlLink(linkUrl)
+                ? linkUrl
                 : parentUrl + "/" + creatUrlLink(name)}
             >
               <div className="bg-[#1D263B] hover:bg-gray-700 w-auto h-auto py-2 px-3 rounded-[5px] font-medium text-xs text-gray-300 whitespace-nowrap">
