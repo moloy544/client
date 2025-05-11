@@ -380,6 +380,8 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
 
   const findCurrentPlayHlsDomainIndex = watchLinks?.findIndex(({ source }) => source?.startsWith('https://' + currentPlayHlsDomain));
 
+  const isOnlyRpmPlaySource = watchLinks.length ===1 && watchLinks?.some(({source})=> source.includes('rpmplay.online'));
+
   return (
     <>
       {/* Centered Play Button */}
@@ -555,6 +557,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
         </ModelsController>
       )}
       <PlayerGuideModal
+      guidePlayerIndex={isOnlyRpmPlaySource ? 2 : 1}
         isOpen={isInstractionsModalOpen}
         handleClose={() => setInstractionsModalOpen(false)}
       />

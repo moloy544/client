@@ -48,7 +48,7 @@ const secondaryPlayerImageGuidedata = [
     },
 ];
 
-export function PlayerGuideModal({ isOpen, handleClose }) {
+export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex=1 }) {
 
     return (
         <ModelsController
@@ -67,6 +67,7 @@ export function PlayerGuideModal({ isOpen, handleClose }) {
                     </div>
 
                     <div className="p-4 pb-7 space-y-4">
+                        <div className={guidePlayerIndex === 1 ? "flex flex-col": "flex flex-col-reverse"}>
                         <section className="w-full px-2">
                             <strong className="text-blue-950 font-bold">Primary Player Guide:</strong>
                             <p className="text-gray-700 text-sm my-2 font-medium">
@@ -112,6 +113,7 @@ export function PlayerGuideModal({ isOpen, handleClose }) {
                                 ))}
                             </div>
                         </section>
+                        </div>
 
                         <p className="text-sm text-gray-600 text-center font-medium">
                             Having trouble? Feel free to email us at{" "}
