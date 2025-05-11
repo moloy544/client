@@ -13,7 +13,7 @@ const otherExpectedCategories = [
   'portuguese', 'arabic', 'turkish', 'thai', 'vietnamese',
   'indonesian', 'filipino', 'swedish', 'norwegian', 'danish',
   'finnish', 'russian', 'ukrainian', 'polish', 'hungarian',
-  'czech', 'slovakian'
+  'czech', 'slovakian','documentary'
 ];
 
 const validateCategory = (category) => {

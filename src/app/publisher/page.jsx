@@ -14,7 +14,7 @@ import Link from "next/link";
 const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
 
 // all options arrays
-const typeOptions = ["movie", "series"];
+const typeOptions = ["movie", "series", "documentary"];
 const videoType = ["hd", "cam", "hd-cam"]
 const statusOptions = ['released', 'coming soon']
 const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'bengali dubbed', 'punjabi', 'tamil', 'telugu', 'malayalam', 'kannada'];
