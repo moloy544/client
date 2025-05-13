@@ -8,8 +8,8 @@ const nextConfig = {
     APP_DOMAIN: 'https://www.moviesbazar.net',
     BACKEND_SERVER_URL: process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://moviesbazar-api-v8.vercel.app',
     GEO_CHECK_API_SERVER_URL: process.env.NODE_ENV === 'development' ? 'http://localhost:8000' :'https://moviesbazar-geo-api.up.railway.app',
-    VIDEO_SERVER_URL: 'https://lp352engiao.com/play/', 
-    SECOND_VIDEO_SERVER_URL: 'https://hi351sinoom.com/play/'
+    VIDEO_SERVER_URL: 'https://ing3vin5om3.com/play/', 
+    SECOND_VIDEO_SERVER_URL: 'https://lp352engiao.com/play/'
   },
 
   images: {

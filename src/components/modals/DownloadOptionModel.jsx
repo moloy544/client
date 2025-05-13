@@ -42,7 +42,7 @@ const formatQualityType = (quality, qualityType) => {
 
   if (qualityType.toLowerCase() === "cam") return `(${qualityLabel} - CAM)`
   if (qualityType.toLowerCase() === "hd-cam") return `(${qualityLabel} - HD CAM)`
-    
+
 
   // Format as "quality (Label)"
   return `(${qualityLabel})`;
@@ -53,7 +53,7 @@ const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 export default function DownloadOptionModel({ isOnline, imdbId, linksData, contentTitle, contentType, isAllRestricted, isInTheater, isOpen, onClose, onReportButtonClick }) {
 
   const { title, links, qualityType } = linksData || {};
-  
+
   //const [downloadOptionUrlData, setDownloadOptionUrlData] = useState([]);
   const [isInstractionsModalOpen, setInstractionsModalOpen] = useState(false);
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
@@ -191,11 +191,9 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                   </p>
                 )}
 
-                <p
-                  onClick={() => setInstractionsModalOpen(true)}
-                  className="text-blue-500 cursor-pointer underline underline-offset-2 my-4 text-sm"
-                >
-                  ✅ Click here to learn how to change audio language
+                <p onClick={() => setInstractionsModalOpen(true)}
+                  className="text-blue-500 cursor-pointer underline underline-offset-2 my-4 text-sm">
+                  ✅ Click to learn how to change audio after download (if multiple languages)
                 </p>
 
                 {/* Download Links */}
