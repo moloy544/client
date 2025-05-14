@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
+import { transformToCapitalize } from "@/utils";
 
 export default function ReportModel({ id, imdbId, content_title, status, setIsModelOpen, isOpen, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
 
@@ -43,14 +44,12 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
     const isChecked = e.target.checked;
 
     if (isChecked && reportValue === "Video not playing" && !serverSuggestion.want_report && watchLinks && watchLinks.length > 1) {
-      const availableEmbedServer = watchLinks?.filter(({ source }) =>
-        !source.includes('.m3u8') && !source.includes('.mkv') && !source.includes('.txt') && source !== currentPlaySource
-      ) || [];
+      const availableServer = watchLinks?.filter(({ source }) => source !== currentPlaySource) || [];
 
       setServerSuggestion((prevData) => ({
         ...prevData,
         isModelOpen: true,
-        serversData: availableEmbedServer,
+        serversData: availableServer,
       }));
     };
 
@@ -103,7 +102,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
       }).post('/api/v1/user/action/report', {
         reportData: {
           content_id: id,
-          content_title: content_title+ "-" + imdbId,
+          content_title: content_title + "-" + imdbId,
           selectedReports,
           writtenReport: writtenReportRef.current?.value,
         }
@@ -142,12 +141,16 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
     { value: "Image not showing", id: "image-option-checkbox", condition: () => true },
     { value: "Share not working", id: "share-option-checkbox", condition: () => true },
   ];
-  
+
   const reportOptions = baseOptions.map(option => ({
     ...option,
     visible: option.condition(),
   }));
-  
+
+  // Do this logic before returning JSX
+  const rpmShareSourceIndex = currentPlaySource?.includes('rpmplay.online')
+    ? watchLinks.findIndex(({ source }) => source.includes('rpmplay.online'))
+    : null;
 
   return (
     <>
@@ -237,44 +240,58 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
       </ModelsController>
 
       <ModelsController visibility={serverSuggestion.isModelOpen} windowScroll={false}>
-        <div className="fixed inset-0 z-[62] bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="w-full max-w-sm bg-white px-6 py-5 space-y-6 border border-gray-300 shadow-xl rounded-lg mx-4">
-            <div className="flex items-center gap-3">
-              <i className="bi bi-exclamation-triangle-fill text-red-600 text-3xl"></i>
+        <div className="fixed inset-0 z-[62] bg-black/60 flex justify-center items-center px-4">
+          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 space-y-6">
+
+            {/* Header */}
+            <div className="flex items-start gap-4">
+              <i className="bi bi-exclamation-triangle-fill text-red-600 text-3xl mt-1"></i>
               <div className="text-lg font-semibold text-gray-900">Please Confirm</div>
             </div>
-            <div className="text-sm text-gray-600 font-medium">
-            Before reporting a video issue, we recommend trying the content on all suggested servers. If none of the options work, please proceed to report the problem.
+
+            {/* Description */}
+            <div className="text-gray-700 text-sm leading-relaxed space-y-2 font-medium">
+              <p>
+                Before reporting a video issue, we recommend trying the content on all suggested servers. If none of the options work, please proceed to report the problem.
+              </p>
+              {rpmShareSourceIndex !== null && (
+                <p className="text-gray-600">
+                  If the video is not playing on server <strong className="text-blue-700">{rpmShareSourceIndex + 1}</strong>, try clicking it 3 to 4 times. Sometimes the video takes time to load, so please wait up to 30 seconds.
+                </p>
+              )}
             </div>
-            <div className="flex justify-between flex-wrap gap-3">
+
+            {/* Buttons */}
+            <div className="flex flex-wrap justify-center gap-3 space-y-4">
               {serverSuggestion.serversData?.map(({ source, label, labelTag }, index) => (
                 <button
                   key={index}
                   onClick={() => playAlterNativeServer(source)}
-                  className="bg-teal-700 hover:bg-teal-800 transition text-gray-200 hover:text-white text-sm px-5 py-3 rounded-lg w-full sm:w-auto font-medium"
+                  className="bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all shadow-sm"
                 >
                   <span>{label}</span>
-                 {labelTag &&(
-                   <span className="ml-2">{labelTag}</span>
-                 )}
+                  {labelTag && (
+                    <span className="ml-2 capitalize">({transformToCapitalize(labelTag)})</span>
+                  )}
                 </button>
               ))}
 
               <button
-                onClick={() => {
+                onClick={() =>
                   setServerSuggestion({
                     isModelOpen: false,
                     want_report: false,
                     serversData: null,
-                  });
-                }}
-                className="bg-gray-800 hover:bg-gray-700 transition text-white px-5 py-3 rounded-lg w-full sm:w-auto text-sm font-medium"
+                  })
+                }
+                className="bg-gray-700 hover:bg-gray-800 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all shadow-sm"
               >
-                No, I&lsquo;ll report
+                No, I’ll report
               </button>
             </div>
           </div>
         </div>
+
       </ModelsController>
     </>
   );

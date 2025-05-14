@@ -35,8 +35,6 @@ const initialMoviesData = {
     language: 'hindi',
     genre: [],
     watchLink: [],
-    multiAudio: false,
-    videoType: "hd",
     castDetails: [],
     tags: [],
 };
@@ -466,7 +464,7 @@ export default function AdminPage() {
                                 <label className="font-bold text-gray-800">Select image OR Add image url</label>
                                 <input onChange={handleFileInputChnage} type="file" name="thumbnail-file" id="thumbnail-file" accept="image/*" />
                                 <input className={inputStyle + ' my-1.5'} type="text" value={imagePreview}
-                                    onChange={(e) => setImagePreview(e.target.value)}
+                                    onChange={(e) => setImagePreview(e.target.value ? e.target.value.replace('original', 'w500') : e.target.value)}
                                     placeholder="Enter external image url" />
                             </div>
 
