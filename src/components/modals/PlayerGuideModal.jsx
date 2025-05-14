@@ -91,7 +91,7 @@ export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex=1 }) {
                             </div>
                         </section>
 
-                        <section className="w-full px-2 border-t-2 border-b-2 border-gray-600 py-4">
+                        <section className={`w-full px-2  ${guidePlayerIndex !== 1 ? "border-b-2" : "border-t-2 border-b-2"} border-gray-600`}>
                             <strong className="text-blue-950 font-bold">Secondary Player Guide:</strong>
                             <p className="text-gray-700 text-sm my-2 font-medium">
                                 For changing language, audio track, and sound settings.
