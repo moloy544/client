@@ -19,6 +19,10 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
 
   const writtenReportRef = useRef(null);
 
+  // Rpmysource releated
+  const rpmShareSourceIndex = watchLinks.findIndex(({ source }) => source.includes('rpmplay.online'));
+  const isOnlyRpmPlaySource = watchLinks.length === 1 && watchLinks?.some(({ source }) => source.includes('rpmplay.online'));
+
   const closeModel = () => {
 
     if (message !== "") {
@@ -43,7 +47,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
 
     const isChecked = e.target.checked;
 
-    if (isChecked && reportValue === "Video not playing" && !serverSuggestion.want_report && watchLinks && watchLinks.length > 1) {
+    if (isChecked && reportValue === "Video not playing" && !serverSuggestion.want_report && watchLinks && (watchLinks.length > 1 || isOnlyRpmPlaySource)) {
       const availableServer = watchLinks?.filter(({ source }) => source !== currentPlaySource) || [];
 
       setServerSuggestion((prevData) => ({
@@ -147,11 +151,6 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
     visible: option.condition(),
   }));
 
-  // Do this logic before returning JSX
-  const rpmShareSourceIndex = currentPlaySource?.includes('rpmplay.online')
-    ? watchLinks.findIndex(({ source }) => source.includes('rpmplay.online'))
-    : null;
-
   return (
     <>
       <ModelsController visibility={isOpen} transformEffect={true} windowScroll={false}>
@@ -251,18 +250,21 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
 
             {/* Description */}
             <div className="text-gray-700 text-sm leading-relaxed space-y-2 font-medium">
-              <p>
-                Before reporting a video issue, we recommend trying the content on all suggested servers. If none of the options work, please proceed to report the problem.
-              </p>
-              {rpmShareSourceIndex !== null && (
+              {!isOnlyRpmPlaySource && (
+                <p>
+                  Before reporting a video issue, we recommend trying the content on all suggested servers. If none of the options work, please proceed to report the problem.
+                </p>
+              )}
+
+              {rpmShareSourceIndex !== -1 && (
                 <p className="text-gray-600">
-                  If the video is not playing on server <strong className="text-blue-700">{rpmShareSourceIndex + 1}</strong>, try clicking it 3 to 4 times. Sometimes the video takes time to load, so please wait up to 30 seconds.
+                  If the video is not playing on server <strong className="text-blue-700">{rpmShareSourceIndex + 1}</strong>, please try playing it 3/4 times. It may take up to 30 seconds to load, so we recommend waiting patiently during that time
                 </p>
               )}
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-wrap justify-center gap-3 space-y-4">
+            <div className="flex flex-wrap justify-center gap-3 space-y-2">
               {serverSuggestion.serversData?.map(({ source, label, labelTag }, index) => (
                 <button
                   key={index}
@@ -271,24 +273,24 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                 >
                   <span>{label}</span>
                   {labelTag && (
-                    <span className="ml-2 capitalize">({transformToCapitalize(labelTag)})</span>
+                    <span className="ml-2 capitalize break-words">{transformToCapitalize(labelTag)}</span>
                   )}
                 </button>
               ))}
 
-              <button
-                onClick={() =>
-                  setServerSuggestion({
-                    isModelOpen: false,
-                    want_report: false,
-                    serversData: null,
-                  })
-                }
-                className="bg-gray-700 hover:bg-gray-800 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all shadow-sm"
-              >
-                No, I’ll report
-              </button>
             </div>
+            <button
+              onClick={() =>
+                setServerSuggestion({
+                  isModelOpen: false,
+                  want_report: false,
+                  serversData: null,
+                })
+              }
+              className="bg-gray-700 block ml-auto mr-auto hover:bg-gray-800 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all shadow-sm"
+            >
+              No, I will report it
+            </button>
           </div>
         </div>
 
