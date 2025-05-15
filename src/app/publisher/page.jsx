@@ -18,7 +18,7 @@ const typeOptions = ["movie", "series", "documentary"];
 const videoType = ["hd", "cam", "hd-cam"]
 const statusOptions = ['released', 'coming soon']
 const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'bengali dubbed', 'punjabi', 'tamil', 'telugu', 'malayalam', 'kannada'];
-const industryOptions = ['bollywood', 'hollywood', 'south'];
+const industryOptions = ['bollywood', 'hollywood', 'south', 'tollywood'];
 const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons', 'Animes'];
 const videoSource = process.env.VIDEO_SERVER_URL;
 
