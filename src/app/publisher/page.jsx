@@ -488,10 +488,12 @@ export default function AdminPage() {
                             </div>
 
                             <div className="flex flex-col my-3">
+                            <small>Title Length:{state.title?.length}</small>
                                 <label className="font-bold text-gray-800">Title</label>
                                 <input className={inputStyle} type="text" value={state.title} onChange={(e) => handleInputChange(e.target.value, 'title')} placeholder="Enter title" />
                             </div>
                             <div className="flex flex-col my-3">
+                                <small>Display Title Length:{state.displayTitle?.length}</small>
                                 <label className="font-bold text-gray-800">Display Title</label>
                                 <input className={inputStyle} type="text" value={state.displayTitle} onChange={(e) => handleInputChange(e.target.value, 'displayTitle')} placeholder="Enter dispay title (Optional)" />
                             </div>
@@ -500,7 +502,6 @@ export default function AdminPage() {
                                 <label className="font-bold text-gray-800">Imdb Rating</label>
                                 <input className={inputStyle} type="number" value={state.imdbRating} onChange={(e) => handleInputChange(e.target.value, 'imdbRating')} placeholder="Enter imdb rating" step={0.1} max={10} />
                             </div>
-
 
                             <div className="max-w-[200px] flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Release Year</label>

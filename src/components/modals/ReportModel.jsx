@@ -121,7 +121,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
         setTimeout(() => {
           setMessage("Pending");
           closeModel();
-        }, 3000);
+        }, 24000);
       } else {
         setMessage(reportResponse.data.message);
       }
@@ -154,7 +154,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
   return (
     <>
       <ModelsController visibility={isOpen} transformEffect={true} windowScroll={false}>
-        <div className="w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center bg-gray-950 bg-opacity-50 z-[60]"
+        <div className={`w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center ${message === "Success" ? "px-2.5":"px-0"} bg-gray-950 bg-opacity-50 z-[60]`}
           style={{ transform: 'translateY(100%)' }}
         >
 
@@ -165,7 +165,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                 <div className="space-y-2 mb-4 max-w-sm">
                   <h2 className="text-base font-bold leading-4">Are you sure you want to report?</h2>
                   <p className="mt-2 text-xs text-gray-600 font-medium">
-                    Please select the issue or describe the problem. We are solve your problem within 12 hours.
+                    Please select the issue or describe the problem. We do our best to resolve your issue within 14 to 24 hours.
                   </p>
                 </div>
 
@@ -226,11 +226,24 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                     No, close
                   </button>
                 </div>
-
               </>
-
             ) : (
-              <h2 className="w-60 h-auto text-green-600 text-center text-sm font-medium">Thanks for reporting us we are solve your issue soon as possible</h2>
+              <div className="flex flex-col items-center justify-center space-y-3 py-6 px-4 relative">
+                <button
+                  onClick={() => closeModel()}
+                  type="button"
+                  className="bg-gray-400 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-400 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 absolute top-2 right-3"
+                  aria-label="Close"
+                >
+                  <i className="bi bi-x-lg text-base"></i>
+                </button>
+                <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <h2 className="max-w-xs text-gray-700 text-center text-sm font-bold">
+                  {"Thank you for reporting. We’ll try to fix the problem within 14 to 24 hours if we find any issue. It may take longer if the problem is big or many others are reporting."}
+                </h2>
+              </div>
             )}
           </div>
 
@@ -264,7 +277,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-wrap justify-center gap-3 space-y-2">
+            <div className="flex flex-wrap justify-center items-center gap-3 space-y-2">
               {serverSuggestion.serversData?.map(({ source, label, labelTag }, index) => (
                 <button
                   key={index}

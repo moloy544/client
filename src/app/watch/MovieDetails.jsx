@@ -26,6 +26,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   const {
     imdbRating,
     title,
+    imdbId,
     thumbnail,
     releaseYear,
     fullReleaseDate,
@@ -186,6 +187,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                     hlsSourceDomain={hlsSourceDomain}
                     source={videoSource}
                     userIp={userIp}
+                    imdbId={imdbId}
                   />
                 )}
               </>
@@ -412,6 +414,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
           <div className="bg-white rounded-2xl shadow-xl max-w-md w-full text-center relative mx-4 py-8 px-6 flex items-center justify-center flex-col space-y-4">
             <button
               onClick={hideDropDown}
+              type="button"
               className="bg-gray-400 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-400 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 absolute top-2 right-3"
               aria-label="Close"
             >
@@ -445,13 +448,12 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                     <div className="font-bold text-base text-gray-100 text-center whitespace-nowrap">
                       Select Playback Server
                     </div>
-                    <button
-                      onClick={() => setDropDown(false)}
-                      className="text-gray-200 hover:text-white outline-none bg-gray-900 w-6 h-6 rounded-md"
-                      type="button"
+                     <button
+                        onClick={() => setDropDown(false)}
+                        className="bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-700 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-600"
+                        aria-label="Close"
                     >
-                      <i className="bi bi-x-lg"></i>
-                      <span className="sr-only">Close</span>
+                        <i className="bi bi-x-lg text-base"></i>
                     </button>
                   </div>
 
