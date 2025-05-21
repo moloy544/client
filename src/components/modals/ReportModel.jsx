@@ -151,10 +151,13 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
     visible: option.condition(),
   }));
 
+  const today = new Date();
+  const targetDate = new Date("2025-05-23");
+
   return (
     <>
       <ModelsController visibility={isOpen} transformEffect={true} windowScroll={false}>
-        <div className={`w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center ${message === "Success" ? "px-2.5":"px-0"} bg-gray-950 bg-opacity-50 z-[60]`}
+        <div className={`w-full h-full fixed top-0 left-0 flex justify-center sm-screen:items-end items-center ${message === "Success" ? "px-2.5" : "px-0"} bg-gray-950 bg-opacity-50 z-[60]`}
           style={{ transform: 'translateY(100%)' }}
         >
 
@@ -241,7 +244,8 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
                 <h2 className="max-w-xs text-gray-700 text-center text-sm font-bold">
-                  {"Thank you for reporting. We’ll try to fix the problem within 14 to 24 hours if we find any issue. It may take longer if the problem is big or many others are reporting."}
+                  {today < targetDate ? "Thank you for reporting. We’re currently receiving a high number of reports, so it may take 2 to 3 days to fix the problem. We appreciate your patience."
+                    : "Thank you for reporting. We’ll try to fix the problem within 14 to 24 hours if we find any issue. It may take longer if the problem is big or many others are reporting."}
                 </h2>
               </div>
             )}
