@@ -382,7 +382,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
 
   const findCurrentPlayHlsDomainIndex = watchLinks?.findIndex(({ source }) => source?.startsWith('https://' + currentPlayHlsDomain));
 
-  const isOnlyRpmPlaySource = watchLinks.length ===1 && watchLinks?.some(({source})=> source.includes('rpmplay.online'));
+  const isOnlyRpmPlaySource = watchLinks.length ===1 && watchLinks?.some(({source})=> source.includes('rpmplay.online') || source.includes('p2pplay.online'));
 
   return (
     <>
