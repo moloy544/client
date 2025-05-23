@@ -111,7 +111,7 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
 }
 
 
-const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
+const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim=null }) => {
 
   const playerRef = useRef(null);
   const containerRef = useRef(null);
@@ -134,17 +134,19 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp }) => {
 
       if (source.includes('.m3u8') || source.includes('.mkv')) {
         const newSource = generateSourceURL(hlsSourceDomain, source, ip);
+        const playerOptions={
+          id: 'player',
+          file: newSource,
+        };
+        if (videoTrim && typeof videoTrim === 'number') {
+          playerOptions.start = videoTrim;
+        };
         const script = document.createElement("script");
         script.id = "playerjs-script";
         script.src = "/static/js/player_v2.1.js";
         script.async = true;
         script.onload = () => {
-
-          new MoviesbazarPlayer({
-            id: 'player',
-            file: newSource
-          });
-
+          new MoviesbazarPlayer(playerOptions);
         };
         document.body.appendChild(script);
       } else {
