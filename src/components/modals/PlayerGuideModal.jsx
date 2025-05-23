@@ -116,6 +116,19 @@ export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex = 1 }) 
                                         </div>
                                     ))}
                                 </div>
+                                 <div className="grid grid-cols-1 space-y-6 items-center mt-4">
+                                    {Array.from({ length: 3 }, (_, index) => (
+                                        <div
+                                            className="w-auto flex items-center justify-center flex-col spacey-3"
+                                            key={index}
+                                        >
+                                            <Image
+                                                src={require(`@/assets/images/3rd-player-image-${index + 1}.png`)}
+                                            alt={`3rd Player Guide - ${index + 1}`}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
                             </section>
                         </div>
 
