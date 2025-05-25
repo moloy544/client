@@ -19,7 +19,7 @@ const videoType = ["hd", "cam", "hd-cam"]
 const statusOptions = ['released', 'coming soon']
 const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'bengali dubbed', 'punjabi', 'tamil', 'telugu', 'malayalam', 'kannada'];
 const industryOptions = ['bollywood', 'hollywood', 'south', 'tollywood'];
-const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Cartoons', 'Animes'];
+const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Apple TV', 'Cartoons', 'Animes'];
 const videoSource = process.env.VIDEO_SERVER_URL;
 
 const initialMoviesData = {
@@ -35,6 +35,7 @@ const initialMoviesData = {
     language: 'hindi',
     genre: [],
     watchLink: [],
+    videoTrim: 0,
     castDetails: [],
     tags: [],
 };
@@ -200,7 +201,10 @@ export default function AdminPage() {
             };
             if(details.displayTitle.trim() === ""){
                 delete details.displayTitle;
-            }
+            };
+            if (details.videoTrim === 0) {
+                delete details.videoTrim;
+            };
 
             // add movie data sate in form data
             formData.append('data', JSON.stringify(details));
@@ -485,6 +489,11 @@ export default function AdminPage() {
                                 <label className="font-bold text-gray-800">Video sources</label>
                                 <input type="text" data-field="watchLink" id="video-source-input" className={inputStyle} placeholder="Enter video source" />
                                 <button type="button" onClick={() => creatInputValueToArrayHandler('video-source-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
+                            </div>
+
+                            <div className="flex flex-col my-3">
+                                <label className="font-bold text-gray-800">Video Trim Duration Value</label>
+                                <input type="number" data-field="videoTrim" id="video-trim-input" onChange={(e) => handleInputChange(Number(e.target.value), 'videoTrim')} className={inputStyle} placeholder="Video trim duration" />
                             </div>
 
                             <div className="flex flex-col my-3">
