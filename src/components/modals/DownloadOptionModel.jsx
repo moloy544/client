@@ -254,16 +254,18 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                           </a>
                         ) : (
                           <a
+
                             key={index}
+                            href={source}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
                             onClick={(e) => {
                               e.preventDefault();
                               openDirectLink(() => {
                                 setIsAdzOpen(true);
-                                handleDownload(index, source);
                               });
                             }}
-                            href={source}
-                            target="_blank"
+
                             className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
                           >
                             {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}

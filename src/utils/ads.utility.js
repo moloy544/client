@@ -1,6 +1,6 @@
 import { partnerIntegration } from "@/config/ads.config";
 
-export const openDirectLink = () => {
+export const openDirectLink = (cb) => {
     try {
         if (process.env.NODE_ENV === 'development') return;
      
@@ -13,6 +13,7 @@ export const openDirectLink = () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        if (cb && typeof cb === 'function') cb();
 
     } catch (error) {
         console.error('Error opening direct link:', error);
