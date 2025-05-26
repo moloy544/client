@@ -5,8 +5,6 @@ import dynamic from "next/dynamic";
 import { appConfig } from "@/config/config";
 import { creatToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
-import { openDirectLink } from "@/utils/ads.utility";
-import { isIOS } from "@/helper/helper";
 import { useSelector } from "react-redux";
 import FullScreenBackdropLoading from "@/components/loadings/BackdropLoading";
 
@@ -190,15 +188,6 @@ function DownloadButton({ isOnline, imdbId, downloadLinks, isAllRestricted, isIn
 
   const openDownloadOptionModel = () => {
     setIsModalOpen(true);
-
-    if (!isIOS()) {
-      setTimeout(() => {
-        openDirectLink();
-      }, 1000);
-    } else {
-      openDirectLink();
-    }
-
   };
 
   return (

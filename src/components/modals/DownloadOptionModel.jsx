@@ -58,6 +58,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   const [isInstractionsModalOpen, setInstractionsModalOpen] = useState(false);
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
   const [sourceUrl, setSourceUrl] = useState(null);
+  const [isAdzOpen, setIsAdzOpen] = useState(false);
   const { UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
 
   const handleDownload = async (sourceIndex, url) => {
@@ -73,7 +74,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
 
       // If it's a Pixeldrain link, simulate loading without calling the API
       if (url && url.includes("pixeldrain")) {
-        const delayOptions = [1000, 1500, 2000];
+        const delayOptions = [1500, 2000, 2500];
         const randomDelay = delayOptions[Math.floor(Math.random() * delayOptions.length)];
         await wait(randomDelay);
         setSourceUrl([url]);
@@ -241,15 +242,33 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                     )}
                     <div className="space-y-3">
                       {sourceUrl.map((source, index) => (
-                        <a
-                          key={index}
-                          href={source}
-                          target="_blank"
-                          rel="nofollow noopener noreferrer"
-                          className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
-                        >
-                          {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
-                        </a>
+                        isAdzOpen ? (
+                          <a
+                            key={index}
+                            href={source}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
+                          >
+                            {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
+                          </a>
+                        ) : (
+                          <a
+                            key={index}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              openDirectLink(() => {
+                                setIsAdzOpen(true);
+                                handleDownload(index, source);
+                              });
+                            }}
+                            href={source}
+                            target="_blank"
+                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
+                          >
+                            Download Now
+                          </a>
+                        )
                       ))}
                     </div>
                     <button
