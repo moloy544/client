@@ -20,8 +20,8 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
   const writtenReportRef = useRef(null);
 
   // Rpmysource releated
-  const rpmShareSourceIndex = watchLinks.findIndex(({ source }) => source.includes('rpmplay.online'));
-  const isOnlyRpmPlaySource = watchLinks.length === 1 && watchLinks?.some(({ source }) => source.includes('rpmplay.online'));
+  const rpmShareSourceIndex = watchLinks.findIndex(({ source }) => source.includes('rpmplay.online') || source.includes('p2pplay.online'));
+  const isOnlyRpmPlaySource = watchLinks.length === 1 && watchLinks?.some(({ source }) => source.includes('rpmplay.online') || source.includes('p2pplay.online'));
 
   const closeModel = () => {
 

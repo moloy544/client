@@ -2,8 +2,10 @@ import { partnerIntegration } from "@/config/ads.config";
 
 export const openDirectLink = (cb) => {
     try {
-        if (process.env.NODE_ENV === 'development') return;
-     
+        if (process.env.NODE_ENV === 'development'){
+            if (cb && typeof cb === 'function') cb();
+            return;
+        } 
         // Create and append an anchor tag to open the ad link
         const link = document.createElement('a');
         link.href = partnerIntegration.direct_Link;
