@@ -181,7 +181,7 @@ export default async function Page({ params }) {
     // If sts is not 200 ok show error message
   } else if (status !== 200) {
     return (
-      <SomthingWrongError reportMessage={`Hello MoviesBazar Team,\n\nI am experiencing an error while exploring the content. The error occurred on the following content id: ${paramsImdbId}.\n\nThank you for your assistance!`} />
+      <SomthingWrongError />
     )
   };
 
