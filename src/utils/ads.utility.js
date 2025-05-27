@@ -3,9 +3,14 @@ import { safeLocalStorage } from "./errorHandlers";
 
 export const openDirectLink = (cb) => {
   try {
-    
+
+    if (process.env.NODE_ENV === 'development') {
+      if (cb && typeof cb === 'function') cb();
+      return;
+    };
+
     const link = document.createElement('a');
-    link.href = "https://www.facebook.com/";//partnerIntegration.direct_Link;
+    link.href = partnerIntegration.direct_Link;
     link.target = '_blank';
     link.rel = 'nofollow noopener noreferrer';
 
@@ -14,13 +19,13 @@ export const openDirectLink = (cb) => {
     document.body.removeChild(link);
 
     // Check user last use date and only show overlay if user is older than 1 day
-  const oldUser = safeLocalStorage.get('firstUseDate');
-  const now = new Date();
+    const oldUser = safeLocalStorage.get('firstUseDate');
+    const now = new Date();
 
-  if (!oldUser) {
-    // First visit — save current date and don't show overlay
-    safeLocalStorage.set('firstUseDate', now.toISOString());
-  }
+    if (!oldUser) {
+      // First visit — save current date and don't show overlay
+      safeLocalStorage.set('firstUseDate', now.toISOString());
+    }
     if (cb && typeof cb === 'function') cb();
 
   } catch (error) {
@@ -35,13 +40,13 @@ let countdownInterval;
 let lastPathname = null;
 
 export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", callBack }) => {
-openDirectLink();
-return;
+  openDirectLink();
+  return;
   if (process.env.NODE_ENV === 'development') {
     if (callBack && typeof callBack === 'function') callBack();
     return;
   };
-   
+
 
 
   const currentPath = window.location.pathname;
