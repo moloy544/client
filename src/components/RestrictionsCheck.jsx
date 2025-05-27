@@ -15,7 +15,7 @@ const getCurrentISTTime = () => {
     return new Date(currentDate.getTime() + utcOffset + istOffset);
 };
 
-export default function RestrictionsCheck() {
+export default function RestrictionsCheck({ urgentCheck = false }) {
     const dispatch = useDispatch();
     const didRun = useRef(false);
 
@@ -69,8 +69,11 @@ export default function RestrictionsCheck() {
             }
         };
 
-        // Call API only between 7:00 AM and 10:00 PM IST
-        if (currentHour >= 7 && currentHour < 22) {
+        // Call API only between 7:00 AM and 08:00 PM IST
+        if (currentHour >= 7 && currentHour < 20) {
+            fetchGeoInfo();
+        } else if (urgentCheck) {
+            // If urgent check is required, force the fetch regardless of time
             fetchGeoInfo();
         }
 

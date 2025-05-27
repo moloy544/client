@@ -40,6 +40,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     videoTrim,
     multiAudio,
     isContentRestricted,
+    permanentDisabled,
     isInTheater,
     ticketBookLink
   } = movieDetails || {};
@@ -335,6 +336,9 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
           title="Explore more from same actor"
         />
       </div>
+
+      {/* Restriction Check Component */}
+      <RestrictionsCheck urgentCheck={permanentDisabled ? true : false} />
     </>
   )
 };
@@ -565,8 +569,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
         isOpen={isInstractionsModalOpen}
         handleClose={() => setInstractionsModalOpen(false)}
       />
-      {/* Restriction Check Component */}
-      <RestrictionsCheck />
+
     </>
   );
 };
