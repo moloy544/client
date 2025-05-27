@@ -15,6 +15,15 @@ export const openDirectLink = (cb) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    // Check user last use date and only show overlay if user is older than 1 day
+  const oldUser = safeLocalStorage.get('firstUseDate');
+  const now = new Date();
+
+  if (!oldUser) {
+    // First visit — save current date and don't show overlay
+    safeLocalStorage.set('firstUseDate', now.toISOString());
+  }
     if (cb && typeof cb === 'function') cb();
 
   } catch (error) {
@@ -33,7 +42,9 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
   if (process.env.NODE_ENV === 'development') {
     if (callBack && typeof callBack === 'function') callBack();
     return;
-  }
+  };
+   openDirectLink();
+return;
 
   const currentPath = window.location.pathname;
 
@@ -64,7 +75,7 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
     return; // Don't show overlay for first-time users
   };
 
-  const lastUse = new Date(user);
+  const lastUse = new Date(oldUser);
   const diffInMs = now - lastUse;
   const oneDayMs = 24 * 60 * 60 * 1000;
 
