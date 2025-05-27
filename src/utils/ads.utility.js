@@ -3,12 +3,9 @@ import { safeLocalStorage } from "./errorHandlers";
 
 export const openDirectLink = (cb) => {
   try {
-    if (process.env.NODE_ENV === 'development') {
-      if (cb && typeof cb === 'function') cb();
-      return;
-    }
+    
     const link = document.createElement('a');
-    link.href = partnerIntegration.direct_Link;
+    link.href = "https://www.facebook.com/";//partnerIntegration.direct_Link;
     link.target = '_blank';
     link.rel = 'nofollow noopener noreferrer';
 
@@ -38,13 +35,14 @@ let countdownInterval;
 let lastPathname = null;
 
 export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", callBack }) => {
-
+openDirectLink();
+return;
   if (process.env.NODE_ENV === 'development') {
     if (callBack && typeof callBack === 'function') callBack();
     return;
   };
-   openDirectLink();
-return;
+   
+
 
   const currentPath = window.location.pathname;
 
