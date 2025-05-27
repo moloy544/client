@@ -12,8 +12,8 @@ import SliderShowcase from "@/components/SliderShowcase";
 import VideoPlayer from "@/components/player/VideoPlayer";
 import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
-import { openDirectLink } from "@/utils/ads.utility";
-import { handleEmailUs, removeScrollbarHidden } from "@/helper/helper";
+import { openDirectLinkWithCountdown } from "@/utils/ads.utility";
+import { removeScrollbarHidden } from "@/helper/helper";
 import RestrictedModal from "@/components/modals/RestrictedModal";
 import { useSelector } from "react-redux";
 import RestrictionsCheck from "@/components/RestrictionsCheck";
@@ -78,33 +78,40 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       return;
     };
 
-    // Set the video source as usual
-    setVideoSource(source);
-
     const findRpmplayOnline = movieDetails.watchLink?.filter(({ source }) => source.includes('rpmplay.online'));
+
+    const handleVisibility = () => {
+
+      setVideoSource(source);
+
+      removeScrollbarHidden();
+
+      // Update the URL to include 'play=true' without reloading the page
+      const params = new URLSearchParams(window.location.search);
+      const playQuery = params.get("play");
+      if (!playQuery) {
+        params.set('play', 'true'); // Add play=true to the query parameters
+        // Use history.pushState() to update the URL without causing a page reload
+        const newUrl = `${pathname}?${params.toString()}`;
+        window.history.pushState({}, '', newUrl);
+        // Set player visibility to true to show the player
+        setPlayerVisibility(true);
+      } else {
+        setPlayerVisibility(false);
+      };
+
+      if (callBack && typeof callBack === 'function') {
+        callBack();
+      };
+    };
+
     if (findRpmplayOnline?.length === 0) {
       // Open direct ad link 
-      openDirectLink();
-    };
-
-    removeScrollbarHidden();
-
-    // Update the URL to include 'play=true' without reloading the page
-    const params = new URLSearchParams(window.location.search);
-    const playQuery = params.get("play");
-    if (!playQuery) {
-      params.set('play', 'true'); // Add play=true to the query parameters
-      // Use history.pushState() to update the URL without causing a page reload
-      const newUrl = `${pathname}?${params.toString()}`;
-      window.history.pushState({}, '', newUrl);
-      // Set player visibility to true to show the player
-      setPlayerVisibility(true);
+      openDirectLinkWithCountdown({
+        actionTypeMessage: "steaming", callBack: () => handleVisibility()
+      });
     } else {
-      setPlayerVisibility(false);
-    };
-
-    if (callBack && typeof callBack === 'function') {
-      callBack();
+      handleVisibility();
     };
 
   };
@@ -353,7 +360,9 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
     if (isUserRestricted && isContentRestricted) {
       setDropDown((prev) => !prev);
       // Open direct ad link 
-      openDirectLink();
+      openDirectLinkWithCountdown({
+        actionTypeMessage: "steaming",
+      });
       return;
     }
 
@@ -370,7 +379,9 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
       setIsRpmplayOnline(findRpmplayOnline.length > 0);
 
       // Open direct ad link 
-      openDirectLink();
+      openDirectLinkWithCountdown({
+        actionTypeMessage: "steaming",
+      });
     };
     setDropDown((prev) => !prev);
 
@@ -384,7 +395,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
 
   const findCurrentPlayHlsDomainIndex = watchLinks?.findIndex(({ source }) => source?.startsWith('https://' + currentPlayHlsDomain));
 
-  const isOnlyRpmPlaySource = (watchLinks.length ===1 || watchLinks.length ===2) && watchLinks?.some(({source})=> source.includes('rpmplay.online') || source.includes('p2pplay.online'));
+  const isOnlyRpmPlaySource = (watchLinks.length === 1 || watchLinks.length === 2) && watchLinks?.some(({ source }) => source.includes('rpmplay.online') || source.includes('p2pplay.online'));
 
   return (
     <>
@@ -450,12 +461,12 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                     <div className="font-bold text-base text-gray-100 text-center whitespace-nowrap">
                       Select Playback Server
                     </div>
-                     <button
-                        onClick={() => setDropDown(false)}
-                        className="bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-700 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-600"
-                        aria-label="Close"
+                    <button
+                      onClick={() => setDropDown(false)}
+                      className="bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-700 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-600"
+                      aria-label="Close"
                     >
-                        <i className="bi bi-x-lg text-base"></i>
+                      <i className="bi bi-x-lg text-base"></i>
                     </button>
                   </div>
 
@@ -561,7 +572,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
         </ModelsController>
       )}
       <PlayerGuideModal
-      guidePlayerIndex={isOnlyRpmPlaySource ? 2 : 1}
+        guidePlayerIndex={isOnlyRpmPlaySource ? 2 : 1}
         isOpen={isInstractionsModalOpen}
         handleClose={() => setInstractionsModalOpen(false)}
       />

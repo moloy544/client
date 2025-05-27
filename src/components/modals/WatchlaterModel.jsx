@@ -200,7 +200,7 @@ export default function WatchlaterModel({ visibility, functions }) {
                     </button>
                     
                    </div>
-                   <small className="text-[10px] text-gray-600">Note: Saved items are lost if you clear browser data.</small>
+                   <small className="text-[10px] text-gray-600 font-medium">Note: Saved items are lost if you clear browser data.</small>
                 </div>
                 <div className="w-72 h-[420px] overflow-y-scroll scrollbar-hidden">
                     {watchLaterData.length === 0 && loading ? (

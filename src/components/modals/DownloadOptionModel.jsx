@@ -9,7 +9,7 @@ import { ModelsController } from "@/lib/EventsHandler"
 import { creatToastAlert } from "@/utils";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
 import RestrictedModal from "./RestrictedModal";
-import { openDirectLink } from "@/utils/ads.utility";
+import { openDirectLinkWithCountdown } from "@/utils/ads.utility";
 
 const formatQualityType = (quality, qualityType) => {
 
@@ -58,7 +58,6 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   const [isInstractionsModalOpen, setInstractionsModalOpen] = useState(false);
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
   const [sourceUrl, setSourceUrl] = useState(null);
-  const [isAdzOpen, setIsAdzOpen] = useState(false);
   const { UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
 
   const handleDownload = async (sourceIndex, url) => {
@@ -70,7 +69,9 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         return;
       }
       setDownloadStartProgress(true);
-      openDirectLink();
+      openDirectLinkWithCountdown({
+        actionTypeMessage: "download",
+      });
 
       // If it's a Pixeldrain link, simulate loading without calling the API
       if (url && url.includes("pixeldrain")) {
@@ -242,35 +243,16 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                     )}
                     <div className="space-y-3">
                       {sourceUrl.map((source, index) => (
-                        isAdzOpen ? (
-                          <a
-                            key={index}
-                            href={source}
-                            target="_blank"
-                            rel="nofollow noopener noreferrer"
-                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
-                          >
-                            {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
-                          </a>
-                        ) : (
-                          <a
 
-                            key={index}
-                            href={source}
-                            target="_blank"
-                            rel="nofollow noopener noreferrer"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              openDirectLink(() => {
-                                setIsAdzOpen(true);
-                              });
-                            }}
-
-                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
-                          >
-                            {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
-                          </a>
-                        )
+                        <a
+                          key={index}
+                          href={source}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
+                        >
+                          {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
+                        </a>
                       ))}
                     </div>
                     <button
