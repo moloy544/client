@@ -66,22 +66,25 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
   // Check user last use date and only show overlay if user is older than 1 day
   const oldUser = safeLocalStorage.get('firstUseDate');
   const now = new Date();
+  const isSocialjoinAvailable = safeLocalStorage.get('social_join_alert');
 
   if (!oldUser) {
     // First visit — save current date and don't show overlay
     safeLocalStorage.set('firstUseDate', now.toISOString());
-
-    // If it's the first visit, just call the callback and return
-    if (callBack && typeof callBack === 'function') callBack();
-    return; // Don't show overlay for first-time users
   };
+
+  if (!isSocialjoinAvailable) {
+    // If social join alert is available, do not show overlay
+    if (callBack && typeof callBack === 'function') callBack();
+    return;
+  }
 
   const lastUse = new Date(oldUser);
   const diffInMs = now - lastUse;
   const oneDayMs = 24 * 60 * 60 * 1000;
 
   // User is less than 1 day old or preventCountdown true, do NOT show overlay just call the callback and return
-  if (diffInMs < oneDayMs || preventCountdown) {
+  if ((diffInMs < oneDayMs || preventCountdown) && !isSocialjoinAvailable) {
     if (callBack && typeof callBack === 'function') callBack();
     console.log("User is less than 1 day old or preventCountdown is true, not showing overlay.");
     return;
