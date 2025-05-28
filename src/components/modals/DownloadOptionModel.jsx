@@ -9,7 +9,7 @@ import { ModelsController } from "@/lib/EventsHandler"
 import { creatToastAlert } from "@/utils";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
 import RestrictedModal from "./RestrictedModal";
-import { openDirectLink } from "@/utils/ads.utility";
+import { openDirectLink, openDirectLinkWithCountdown } from "@/utils/ads.utility";
 
 const formatQualityType = (quality, qualityType) => {
 
@@ -70,8 +70,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         return;
       }
       setDownloadStartProgress(true);
-      openDirectLink();
-
+  
       // If it's a Pixeldrain link, simulate loading without calling the API
       if (url && url.includes("pixeldrain")) {
         const delayOptions = [1500, 2000, 2500];
@@ -258,8 +257,17 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                           className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
                           key={index}
                           onClick={() => {
-                            setIsAdzOpen(true);
-                            openDirectLink();
+                            
+                            openDirectLinkWithCountdown({
+                              actionTypeMessage: "download",
+                              callBack:()=>{
+                                setIsAdzOpen(true);
+                                creatToastAlert({
+                                  message: "Now you can download the content.",
+                                 
+                                })
+                              }
+                            });
                           }}
                           >{sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}</button>
                         )

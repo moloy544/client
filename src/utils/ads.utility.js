@@ -1,5 +1,6 @@
 import { partnerIntegration } from "@/config/ads.config";
 import { safeLocalStorage } from "./errorHandlers";
+import { handleEmailUs } from "@/helper/helper";
 
 export const openDirectLink = (cb) => {
   try {
@@ -32,12 +33,12 @@ export const openDirectLink = (cb) => {
 };
 
 let overlayDiv;
-let timer = 20;
+let timer = 7; // Countdown timer in seconds
 let spentTime = 0;
 let countdownInterval;
 let lastPathname = null;
 
-export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", callBack }) => {
+export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", callBack, preventCountdown = false }) => {
 
   if (process.env.NODE_ENV === 'development') {
     if (callBack && typeof callBack === 'function') callBack();
@@ -48,7 +49,7 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
 
   // Reset timer if user has navigated to a different page
   if (lastPathname !== currentPath) {
-    timer = 10;
+    timer = 7;
     spentTime = 0;
     lastPathname = currentPath;
   }
@@ -70,15 +71,19 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
     // First visit — save current date and don't show overlay
     safeLocalStorage.set('firstUseDate', now.toISOString());
 
+    // If it's the first visit, just call the callback and return
+    if (callBack && typeof callBack === 'function') callBack();
     return; // Don't show overlay for first-time users
   };
 
-  const lastUse = new Date(user);
+  const lastUse = new Date(oldUser);
   const diffInMs = now - lastUse;
   const oneDayMs = 24 * 60 * 60 * 1000;
 
-  if (diffInMs < oneDayMs) {
-    // User is less than 1 day old, do NOT show overlay
+  // User is less than 1 day old or preventCountdown true, do NOT show overlay just call the callback and return
+  if (diffInMs < oneDayMs || preventCountdown) {
+    if (callBack && typeof callBack === 'function') callBack();
+    console.log("User is less than 1 day old or preventCountdown is true, not showing overlay.");
     return;
   }
 
@@ -113,28 +118,42 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
       if (callBack && typeof callBack === "function") callBack();
 
       return;
-    }
+    };
+
+    window.handleEmailUs = handleEmailUs;
 
     overlayDiv.innerHTML = `
-    <div class="flex flex-col items-center justify-center gap-4 px-4 text-center max-w-md">
+  <div class="flex flex-col items-center justify-center gap-4 px-4 text-center max-w-md">
+
+    <!-- Top-right Report Button -->
+    <button
+      type="button"
+      onclick="handleEmailUs()"
+      class="fixed top-2 right-2 flex items-center gap-1 rounded bg-slate-600 bg-opacity-20 px-2.5 py-1.5 text-xs font-medium text-slate-200 hover:bg-slate-700 focus:outline-none"
+    >
+      <i class="bi bi-bug text-sm"></i> Report
+    </button>
+
     <div class="w-20 h-20 rounded-full border-4 border-yellow-500 flex items-center justify-center bg-white shadow-lg">
       <i class="bi bi-hourglass-split text-3xl text-yellow-600"></i>
     </div>
 
     <p class="text-lg sm:text-base font-medium text-white">
-      You stayed <span class="text-yellow-400 font-bold">${spentTime}s</span> on the ad tab.<br>
-      Please wait <span class="text-yellow-400 font-bold">${left}s</span> more to continue.
+      You have stayed on the ad tab for <span class="text-yellow-400 font-bold">${spentTime} seconds</span>.<br>
+      Please wait <span class="text-yellow-400 font-bold">${left} seconds</span> more to continue.
     </p>
 
     <p class="text-sm text-red-400">
       If you closed the ad, click the button below.<br>
       Open it for just 10 seconds to enjoy free ${actionTypeMessage}.
     </p>
-  ${showButton ? `<button id="revisit-ad" style="
-    margin-top: 15px; padding: 10px 20px; font-size: 16px;
-    background: #ff4500; border: none; color: white; border-radius: 5px;
-    cursor: pointer;
-  ">Open Ad Again</button>` : ""}
+
+    ${showButton ? `<button id="revisit-ad" style="
+      margin-top: 15px; padding: 10px 20px; font-size: 16px;
+      background: #ff4500; border: none; color: white; border-radius: 5px;
+      cursor: pointer;
+    ">Open Ad Again</button>` : ""}
+  </div>
 `;
 
     if (showButton) {
