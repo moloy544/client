@@ -34,3 +34,32 @@ export const handleEmailUs = () => {
     window.location.href = `mailto:${email}`;
 };
 
+export async function captureScreen() {
+  try {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: { mediaSource: "screen" }
+    });
+
+    const track = stream.getVideoTracks()[0];
+    const imageCapture = new ImageCapture(track);
+    const bitmap = await imageCapture.grabFrame();
+
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height);
+
+    // Convert to PNG and download
+    const imgURL = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = imgURL;
+    link.download = "screenshot.png";
+    link.click();
+
+    // Stop the screen capture
+    track.stop();
+  } catch (err) {
+    console.error("Error capturing screen:", err);
+  }
+}

@@ -33,7 +33,7 @@ export const openDirectLink = (cb) => {
 };
 
 let overlayDiv;
-let timer = 7; // Countdown timer in seconds
+let timer = 5; // Countdown timer in seconds
 let spentTime = 0;
 let countdownInterval;
 let lastPathname = null;
@@ -49,7 +49,7 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
 
   // Reset timer if user has navigated to a different page
   if (lastPathname !== currentPath) {
-    timer = 7;
+    timer = 5;
     spentTime = 0;
     lastPathname = currentPath;
   }
