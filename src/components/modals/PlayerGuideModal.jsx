@@ -48,6 +48,25 @@ const secondaryPlayerImageGuidedata = [
     },
 ];
 
+const secondary2PlayerImageGuidedata = [
+  {
+    title: "Open Settings",
+    description: "Tap the settings icon on the video player screen.",
+  },
+  {
+    title: "Go to Audio Options",
+    description: "Tap the audio icon to see all available languages.",
+  },
+  {
+    title: "Select Audio Track",
+    description: "Pick your preferred language from the list.",
+  },
+  {
+    title: "Change Video Quality",
+    description: "Tap the quality option to adjust video resolution.",
+  },
+];
+
 export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex = 1 }) {
 
     return (
@@ -116,16 +135,18 @@ export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex = 1 }) 
                                         </div>
                                     ))}
                                 </div>
-                                 <div className="grid grid-cols-1 space-y-6 items-center mt-4">
-                                    {Array.from({ length: 3 }, (_, index) => (
+                                <div className="grid grid-cols-1 space-y-6 items-center mt-4">
+                                    {secondary2PlayerImageGuidedata.map(({ title, description }, index) => (
                                         <div
                                             className="w-auto flex items-center justify-center flex-col spacey-3"
                                             key={index}
                                         >
                                             <Image
                                                 src={require(`@/assets/images/3rd-player-image-${index + 1}.png`)}
-                                            alt={`3rd Player Guide - ${index + 1}`}
+                                                alt={`3rd Player Guide - ${title}`}
                                             />
+                                            <h4 className="text-base text-gray-800 font-semibold">{title}</h4>
+                                            <p className="text-sm text-gray-700 font-medium">{description}</p>
                                         </div>
                                     ))}
                                 </div>
