@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { creatUrlLink, resizeImage } from '@/utils';
 
-const SliderShowcase = ({ title, moviesData, space, linkUrl, thumbnailImagePriority = false, children }) => {
+const SliderShowcase = ({ title, description, moviesData, space, linkUrl, thumbnailImagePriority = false, children }) => {
 
     const sliderContainerRef = useRef(null);
     const movieCardRef = useRef(null);
@@ -90,9 +90,18 @@ const SliderShowcase = ({ title, moviesData, space, linkUrl, thumbnailImagePrior
         <section className="w-full h-auto relative space-y-2.5 py-1.5">
             <div className="w-full h-auto flex justify-between items-center px-2.5">
                 <div className="flex items-center border-l-[3px] rounded-sm border-teal-600 pl-1">
-                    <h2 className="text-gray-200 text-[18px] mobile:text-sm font-semibold line-clamp-1">
-                        {title}
-                    </h2>
+                    {description ? (
+                        <div className="flex flex-col items-start">
+                            <h2 className="text-gray-200 text-[18px] mobile:text-sm font-semibold line-clamp-1">
+                                {title}
+                            </h2>
+                            <p className="mobile:text-[11px] text-sm text-gray-300">{description}</p>
+                        </div>
+                    ) : (
+                        <h2 className="text-gray-200 text-[18px] mobile:text-sm font-semibold line-clamp-1">
+                            {title}
+                        </h2>
+                    )}
                 </div>
                 {linkUrl && (
                     <Link href={linkUrl} className="text-[13px] mobile:text-[12px] text-gray-200 hover:text-cyan-400 font-medium" prefetch={false}>

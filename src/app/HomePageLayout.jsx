@@ -105,6 +105,7 @@ function HomePageLayout({ initialLayoutData }) {
 
                 <SliderShowcase key={data.title}
                     title={data.title}
+                    description={data.description}
                     moviesData={data.movies}
                     linkUrl={data.linkUrl}
                 />
@@ -152,6 +153,7 @@ function HomePageLayout({ initialLayoutData }) {
                 <SliderShowcase
                     key={data.title || index}
                     title={data.title}
+                    description={data.description}
                     moviesData={data.movies}
                     linkUrl={data.linkUrl} />
 
