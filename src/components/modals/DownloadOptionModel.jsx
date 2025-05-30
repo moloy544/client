@@ -9,7 +9,7 @@ import { ModelsController } from "@/lib/EventsHandler"
 import { creatToastAlert } from "@/utils";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
 import RestrictedModal from "./RestrictedModal";
-import { openDirectLink, openDirectLinkWithCountdown } from "@/utils/ads.utility";
+import { openDirectLink } from "@/utils/ads.utility";
 
 const formatQualityType = (quality, qualityType) => {
 
@@ -70,7 +70,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         return;
       }
       setDownloadStartProgress(true);
-  
+
       // If it's a Pixeldrain link, simulate loading without calling the API
       if (url && url.includes("pixeldrain")) {
         const delayOptions = [1500, 2000, 2500];
@@ -202,7 +202,10 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                     <button
                       type="button"
                       key={index}
-                      onClick={() => handleDownload(index, url)}
+                      onClick={() => {
+                        handleDownload(index, url);
+                        openDirectLink();
+                      }}
                       className="block w-full text-sm text-cyan-900 hover:text-cyan-800 font-semibold px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md transition"
                     >
                       <span>{quality} - {size}</span>
@@ -242,33 +245,31 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                     <div className="space-y-3">
                       {sourceUrl.map((source, index) => (
                         isAdzOpen ? (
-                        <a
-                          key={index}
-                          href={source}
-                          target="_blank"
-                          rel="nofollow noopener noreferrer"
-                          className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
-                        >
-                          {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
-                        </a>
-                        ):(
-                        <button
-                          type="button"
-                          className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
-                          key={index}
-                          onClick={() => {
-                            
-                            openDirectLinkWithCountdown({
-                              actionTypeMessage: "download",
-                              callBack:()=>{
-                                setIsAdzOpen(true);
-                                creatToastAlert({
-                                  message: "Now you can download the content.",
-                                 
-                                })
-                              }
-                            });
-                          }}
+                          <a
+                            key={index}
+                            href={source}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
+                          >
+                            {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
+                          </a>
+                        ) : (
+                          <button
+                            type="button"
+                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
+                            key={index}
+                            onClick={() => {
+                              openDirectLink(
+                                () => {
+                                  setIsAdzOpen(true);
+                                  creatToastAlert({
+                                    message: "Now you can download the content.",
+
+                                  })
+                                }
+                              );
+                            }}
                           >{sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}</button>
                         )
                       ))}

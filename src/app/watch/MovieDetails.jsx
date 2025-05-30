@@ -12,7 +12,7 @@ import SliderShowcase from "@/components/SliderShowcase";
 import VideoPlayer from "@/components/player/VideoPlayer";
 import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
-import { openDirectLink, openDirectLinkWithCountdown } from "@/utils/ads.utility";
+import { openDirectLink } from "@/utils/ads.utility";
 import { removeScrollbarHidden } from "@/helper/helper";
 import RestrictedModal from "@/components/modals/RestrictedModal";
 import { useSelector } from "react-redux";
@@ -107,11 +107,9 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     };
 
     if (findRpmplayOnline?.length === 0) {
-      openDirectLinkWithCountdown({
-        callBack: () => {
+      openDirectLink(
           handlePlayerVisibility()
-        }
-      });
+      );
     } else {
       handlePlayerVisibility();
     };

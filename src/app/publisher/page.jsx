@@ -405,7 +405,6 @@ export default function AdminPage() {
         <>
             <header className="sticky top-0 z-30 flex items-center gap-2 w-full h-auto px-2.5 py-3.5 text-base text-gray-100 bg-purple-600 shadow-md">
                 <h2 className="text-base text-white font-semibold">Moviesbazar admin</h2>
-                <Link href="/video-managemant" className="text-sm text-white font-semibold">Video Management</Link>
             </header>
 
             <main className="w-auto h-full min-h-screen bg-white text-gray-950 flex justify-center flex-wrap overflow-x-hidden py-2">
@@ -493,7 +492,7 @@ export default function AdminPage() {
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Video Trim Duration Value</label>
-                                <input type="number" data-field="videoTrim" id="video-trim-input" onChange={(e) => handleInputChange(Number(e.target.value), 'videoTrim')} className={inputStyle} placeholder="Video trim duration" />
+                                <input type="number" value={state.videoTrim} data-field="videoTrim" id="video-trim-input" onChange={(e) => handleInputChange(Number(e.target.value), 'videoTrim')} className={inputStyle} placeholder="Video trim duration" />
                             </div>
 
                             <div className="flex flex-col my-3">
