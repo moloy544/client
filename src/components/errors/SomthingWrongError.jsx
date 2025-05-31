@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import NavigateBack from "../NavigateBack";
 import errorImage from "../../assets/images/status500_error_message.png"
+import { appConfig } from "@/config/config";
 
 function SomthingWrongError({
     onclickEvent,
@@ -62,6 +63,18 @@ function SomthingWrongError({
                 <small className="text-gray-300 mt-2.5 font-medium">
                     Help us fix the problem! Please click the report button at the top right to let us know.
                 </small>
+
+                <p className="my-3 text-gray-300 text-sm">
+                    Make sure your open domain is:{" "}
+                    <a
+                        href={appConfig.appDomain}
+                        className="text-white font-medium underline hover:text-blue-400"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {appConfig.appDomain}
+                    </a>
+                </p>
 
                 <div className="w-full h-auto flex justify-center flex-wrap space-x-3">
                     <button

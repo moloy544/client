@@ -1,5 +1,6 @@
 "use client"
 
+import { appConfig } from "@/config/config";
 import { motion } from "framer-motion";
 
 export default function LoadContentError({ errorDescription, customRefreshFunction, customRefreshTitle }) {
@@ -24,9 +25,22 @@ export default function LoadContentError({ errorDescription, customRefreshFuncti
             >
 
                 <div className="text-2xl sm-screen:text-xl font-bold mb-2">Something Went Wrong</div>
+
                 <p className="text-gray-400 text-sm mb-6">
                     {errorDescription ? errorDescription : "We could't load the movies right now. Please try refreshing the page or come back later."}
                 </p>
+                <p className="my-3 text-gray-300 text-sm">
+                    Make sure your open domain is:{" "}
+                    <a
+                        href={appConfig.appDomain}
+                        className="text-white font-medium underline hover:text-blue-400"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {appConfig.appDomain}
+                    </a>
+                </p>
+
                 <div className="w-full h-auto flex justify-center flex-wrap items-center gap-5 mb-4">
                     <motion.button
                         whileTap={{ scale: 0.95 }}
