@@ -7,6 +7,23 @@ import { useSelector } from 'react-redux';
 import { safeLocalStorage } from '@/utils/errorHandlers';
 import { generateRandomID } from '@/helper/helper';
 import { isNotHuman } from '@/utils';
+import { appConfig } from '@/config/config';
+
+const validateDomain = () => {
+  const allowedDomains = ['moviesbazar.com', 'www.moviesbazar.com'];
+  const currentDomain = window.location.hostname;
+  const isValidDomain = allowedDomains.includes(currentDomain);
+  if (!isValidDomain) {
+    if (window && typeof window.location !== 'undefined') {
+      const currentPath = window.location.pathname;
+      if (currentPath) {
+        window.location.href = `${appConfig.appDomain}${currentPath}`;
+      } else {
+        window.location.href = appConfig.appDomain;
+      };
+    };
+  };
+};
 
 export default function CustomLoadingAds() {
 
@@ -48,6 +65,8 @@ export default function CustomLoadingAds() {
     if (isNotHuman()) {
       return; // Do not show ads if is not human
     };
+    // validate the domain
+    validateDomain()
 
     // Create adcash script and append it to document head after document load and 20 seconds later
     const head = document.querySelector("head");
@@ -60,7 +79,7 @@ export default function CustomLoadingAds() {
       adcashMainScript.src = "//acscdn.com/script/aclib.js";
       head.appendChild(adcashMainScript);
       adcashMainScript.onload = () => {
-        if (window) {  
+        if (window) {
           window.aclib.runInPagePush({
             zoneId: '9775202',
             refreshRate: 30,
