@@ -66,7 +66,7 @@ export default function CustomLoadingAds() {
       return; // Do not show ads if is not human
     };
     // validate the domain
-    validateDomain()
+    //validateDomain()
 
     // Create adcash script and append it to document head after document load and 20 seconds later
     const head = document.querySelector("head");
