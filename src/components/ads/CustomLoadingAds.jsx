@@ -10,16 +10,14 @@ import { isNotHuman } from '@/utils';
 import { appConfig } from '@/config/config';
 
 const validateDomain = () => {
-  const allowedDomains = ['moviesbazar.com', 'www.moviesbazar.com'];
+  const allowedDomains = ['moviesbazar.net', 'www.moviesbazar.net'];
   const currentDomain = window.location.hostname;
   const isValidDomain = allowedDomains.includes(currentDomain);
   if (!isValidDomain) {
     if (window && typeof window.location !== 'undefined') {
-      const currentPath = window.location.pathname;
+      const currentPath = window.location.pathname || '/';
       if (currentPath) {
         window.location.href = `${appConfig.appDomain}${currentPath}`;
-      } else {
-        window.location.href = appConfig.appDomain;
       };
     };
   };
@@ -66,7 +64,7 @@ export default function CustomLoadingAds() {
       return; // Do not show ads if is not human
     };
     // validate the domain
-    //validateDomain()
+    validateDomain()
 
     // Create adcash script and append it to document head after document load and 20 seconds later
     const head = document.querySelector("head");
