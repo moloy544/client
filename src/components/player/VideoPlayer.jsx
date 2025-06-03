@@ -156,6 +156,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim=nu
         iframe.id = "player-embedded-iframe";
         iframe.allow = "autoplay; fullscreen";
         iframe.src = source;
+        iframe.title = title || "Movies Bazar Streaming Iframe";
         playerRef.current.appendChild(iframe);
       }
 

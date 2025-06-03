@@ -302,15 +302,9 @@ export default function SearchPage() {
                                         </h2>
                                         <small className="text-xs text-gray-200 text-center font-medium">Please double check the search keyword spelling and try again. For 100% best results, use the exact original title.
                                             Tip: You can search on Google to find the correct title.</small>
-                                        <button className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md" onClick={() => {
-                                            creatToastAlert({
-                                                message: "Requested content is unavailable until 2 June 2025. We apologize for the inconvenience.",
-                                                visibilityTime: 12000
-                                            });
-
-                                        }}>
+                                        <Link href="/request-form" className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md">
                                             <i className="bi bi-send"></i> Request content
-                                        </button>
+                                        </Link>
                                     </div>
                                 )}
 

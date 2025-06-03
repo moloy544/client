@@ -122,7 +122,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
             imdbId={imdbId}
             handleReportModelOpen={setIsReportModelOpen}
             downloadLinks={downloadLinks}
-            ontentTitle={title}
+            contentTitle={title}
             contentType={type}
             isAllRestricted={isAllRestricted}
             isInTheater={isInTheater}
