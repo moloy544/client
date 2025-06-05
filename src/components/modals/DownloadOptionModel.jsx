@@ -71,8 +71,9 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       }
       setDownloadStartProgress(true);
 
-      // If it's a Pixeldrain link, simulate loading without calling the API
-      if (url && url.includes("pixeldrain")) {
+
+      // If it's not filesdl.site link, simulate loading without calling the API
+      if (!url.includes("filesdl.site")) {
         const delayOptions = [1500, 2000, 2500];
         const randomDelay = delayOptions[Math.floor(Math.random() * delayOptions.length)];
         await wait(randomDelay);
