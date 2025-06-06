@@ -67,7 +67,6 @@ export default async function Page({ params }) {
 
   const filterData = {
     genre: "all",
-    createdAt: -1
   };
 
   const { status, data, dataIsEnd } = await loadMoreFetch({

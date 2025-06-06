@@ -8,7 +8,6 @@ import { creatToastAlert, resizeImage } from "@/utils";
 import { getTodayDate, isValidImageUrl, validateMovieDetailsInput } from "./utils/admin.utils";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
 import ActorControllerSection from "./components/ActorControllerSection";
-import Link from "next/link";
 
 // text or number input style properties
 const inputStyle = "border-2 border-blue-700 rounded-md p-1 text-sm";
@@ -18,7 +17,7 @@ const typeOptions = ["movie", "series", "documentary"];
 const videoType = ["hd", "cam", "hd-cam"]
 const statusOptions = ['released', 'coming soon']
 const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'bengali dubbed', 'punjabi', 'tamil', 'telugu', 'malayalam', 'kannada'];
-const industryOptions = ['bollywood', 'hollywood', 'south', 'tollywood', 'international'];
+const industryOptions = ['bollywood', 'hollywood', 'south', 'tollywood', 'international', 'bangladeshi'];
 const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Apple TV', 'Cartoons', 'Animes'];
 const videoSource = process.env.VIDEO_SERVER_URL;
 
