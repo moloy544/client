@@ -23,6 +23,11 @@ const primaryPlayerImageGuidedata = [
         title: "Fit Video to Screen",
         description: "Tap the Scale option to adjust the video size. Use the -5% option to zoom out and +5% to zoom in. This helps you fit the video properly on your mobile screen. 100% option for original size.",
     },
+    
+    {
+        title: "Skip Playback by 10 Seconds",
+        description: "Double tap on the right side to skip forward 10 seconds, or or double tap on the left side to go 10 seconds back."
+    },
 ];
 
 const secondaryPlayerImageGuidedata = [
@@ -49,22 +54,22 @@ const secondaryPlayerImageGuidedata = [
 ];
 
 const secondary2PlayerImageGuidedata = [
-  {
-    title: "Open Settings",
-    description: "Tap the settings icon on the video player screen.",
-  },
-  {
-    title: "Go to Audio Options",
-    description: "Tap the audio icon to see all available languages.",
-  },
-  {
-    title: "Select Audio Track",
-    description: "Pick your preferred language from the list.",
-  },
-  {
-    title: "Change Video Quality",
-    description: "Tap the quality option to adjust video resolution.",
-  },
+    {
+        title: "Open Settings",
+        description: "Tap the settings icon on the video player screen.",
+    },
+    {
+        title: "Go to Audio Options",
+        description: "Tap the audio icon to see all available languages.",
+    },
+    {
+        title: "Select Audio Track",
+        description: "Pick your preferred language from the list.",
+    },
+    {
+        title: "Change Video Quality",
+        description: "Tap the quality option to adjust video resolution.",
+    },
 ];
 
 export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex = 1 }) {
