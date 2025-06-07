@@ -70,6 +70,26 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         return;
       }
       setDownloadStartProgress(true);
+      const reverseReplacements = [
+        { from: 'anony.nl', to: 'pixeldrain.net' },
+        { from: 'vgm', to: 'Vegamovies' },
+        { from: 'm4', to: 'Movies4u' },
+        { from: 'fdl.st', to: 'filesdl.site' },
+      ];
+
+      // Apply all reverse replacements
+      if (typeof url === 'string') {
+        for (const { from, to } of reverseReplacements) {
+          if (url.includes(from)) {
+            url = url.replace(from, to);
+          }
+        }
+
+        // Add back '?download' if it's a pixeldrain URL
+        if (url.includes('pixeldrain.net') && !url.includes('?download')) {
+          url += '?download';
+        }
+      }
 
       // If it's not filesdl.site link, simulate loading without calling the API
       if (!url.includes("filesdl.site")) {

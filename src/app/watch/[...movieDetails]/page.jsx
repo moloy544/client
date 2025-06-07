@@ -46,7 +46,7 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
     const ip = '0.0.0.0';
 
     // get contet details form backend database
-    const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/${imdbId}`, {
+    const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/v2/${imdbId}`, {
       params: { suggestion, ip }
     });
 

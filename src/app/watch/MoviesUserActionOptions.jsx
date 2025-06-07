@@ -36,7 +36,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
     title,
     releaseYear,
     type,
-    downloadLinks,
+    secondTypeSource: downloadLinks,
     watchLink,
     isContentRestricted,
     isInTheater
