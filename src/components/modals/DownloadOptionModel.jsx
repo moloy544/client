@@ -61,7 +61,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   const [isAdzOpen, setIsAdzOpen] = useState(false);
   const { UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
 
-  const handleDownload = async (sourceIndex, url) => {
+  const handleDownload = async (sourceIndex, url, quality) => {
     try {
       if (!isOnline) {
         creatToastAlert({
@@ -71,13 +71,15 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       }
       setDownloadStartProgress(true);
 
-
       // If it's not filesdl.site link, simulate loading without calling the API
       if (!url.includes("filesdl.site")) {
         const delayOptions = [1500, 2000, 2500];
         const randomDelay = delayOptions[Math.floor(Math.random() * delayOptions.length)];
         await wait(randomDelay);
-        setSourceUrl([url]);
+        setSourceUrl({
+          quality,
+          urls: [url]
+        });
         return;
       }
 
@@ -102,7 +104,10 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         return;
       }
 
-      setSourceUrl(downloadUrl)
+      setSourceUrl({
+        quality,
+        urls: downloadUrl
+      });
 
     } catch (error) {
       console.error('Error fetching download option URLs:', error);
@@ -119,7 +124,6 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   if (!links || !Array.isArray(links) || links.length === 0) {
     return null
   };
-
   return (
     <>
       {isOpen && UserRestrictedChecking ? (
@@ -204,7 +208,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                       type="button"
                       key={index}
                       onClick={() => {
-                        handleDownload(index, url);
+                        handleDownload(index, url, quality);
                         openDirectLink();
                       }}
                       className="block w-full text-sm text-cyan-900 hover:text-cyan-800 font-semibold px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md transition"
@@ -231,34 +235,35 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                   </button>
                 </div>
               </div>
-              {sourceUrl && (
+              {sourceUrl && sourceUrl.urls?.length > 0 && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 px-4">
-                  <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm mx-auto text-center">
+                  <div className="bg-white rounded-lg shadow-lg px-5 py-3 w-full max-w-sm mx-auto text-center">
                     <div className="text-xl font-semibold mb-2">🎉 Download Ready!</div>
                     <div className="text-sm text-gray-600 mb-4 font-medium">
                       Your download is ready. Click the button below to start, and after clicking, please don&lsquo;t close the open window or new tab until the download starts.
                     </div>
-                    {sourceUrl.length > 1 && (
+                    {sourceUrl.urls.length > 1 && (
                       <div className="text-sm text-gray-600 mb-4 font-medium">
-                        <span className="font-bold">Note:</span> We have multiple servers available for this download. If one server is slow or not working, please try another one.
+                        <span className="font-bold">Note:</span> Multiple servers are available for this download. If one is slow or not working, try a different one.
                       </div>
                     )}
+                    <div className="font-semibold my-2 text-gray-600">Quality: {sourceUrl.quality}</div>
                     <div className="space-y-3">
-                      {sourceUrl.map((source, index) => (
+                      {sourceUrl.urls?.map((source, index) => (
                         isAdzOpen ? (
                           <a
                             key={index}
                             href={source}
                             target="_blank"
                             rel="nofollow noopener noreferrer"
-                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
+                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold text-sm`}
                           >
-                            {sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
+                            {sourceUrl.urls.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
                           </a>
                         ) : (
                           <button
                             type="button"
-                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold`}
+                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold text-sm`}
                             key={index}
                             onClick={() => {
                               openDirectLink(
@@ -271,13 +276,15 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                                 }
                               );
                             }}
-                          >{sourceUrl.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}</button>
+                          >
+                            {sourceUrl.urls.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
+                          </button>
                         )
                       ))}
                     </div>
                     <button
                       onClick={() => setSourceUrl(null)}
-                      className="mt-3.5 text-base font-medium text-red-pure hover:text-red-700 py-1.5 px-4 my-3"
+                      className="mt-5 text-base font-medium text-red-pure hover:text-red-700 py-1.5 px-4 my-3"
                     >
                       Close
                     </button>
