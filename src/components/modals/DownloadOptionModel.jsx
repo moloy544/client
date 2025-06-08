@@ -59,6 +59,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   const [downloadStartProgress, setDownloadStartProgress] = useState(false);
   const [sourceUrl, setSourceUrl] = useState(null);
   const [isAdzOpen, setIsAdzOpen] = useState(false);
+  const [backupServerResponseSource, setBackupServerResponseSource] = useState({});
   const { UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
 
   const handleDownload = async (sourceIndex, url, quality) => {
@@ -89,7 +90,13 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         if (url.includes('pixeldrain.net') && !url.includes('?download')) {
           url += '?download';
         }
-      }
+      };
+
+      // Use cached backup source if already fetched
+      if (backupServerResponseSource?.[quality]) {
+        setSourceUrl({ quality, urls: backupServerResponseSource[quality] });
+        return;
+      };
 
       // If it's not filesdl.site link, simulate loading without calling the API
       if (!url.includes("filesdl.site")) {
@@ -100,8 +107,11 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
           quality,
           urls: [url]
         });
+        // Backup the source
+        setBackupServerResponseSource(prev => ({ ...prev, [quality]: [url] }));
+
         return;
-      }
+      };
 
       // Fetch the HTML content from the URL
       const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_source/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
@@ -122,7 +132,10 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
           visibilityTime: 12000
         });
         return;
-      }
+      };
+
+      // Cache the fetched backup source
+      setBackupServerResponseSource(prev => ({ ...prev, [quality]: downloadUrl }));
 
       setSourceUrl({
         quality,
@@ -256,8 +269,8 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                 </div>
               </div>
               {sourceUrl && sourceUrl.urls?.length > 0 && (
-                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 px-4">
-                  <div className="bg-white rounded-lg shadow-lg px-5 py-3 w-full max-w-sm mx-auto text-center">
+                <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 px-2.5">
+                  <div className="bg-white rounded-lg shadow-lg px-4 py-3 w-full max-w-sm mx-auto text-center">
                     <div className="text-xl font-semibold mb-2">🎉 Download Ready!</div>
                     <div className="text-sm text-gray-600 mb-4 font-medium">
                       Your download is ready. Click the button below to start, and after clicking, please don&lsquo;t close the open window or new tab until the download starts.
@@ -279,6 +292,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                             className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold text-sm`}
                           >
                             {sourceUrl.urls.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
+                            {source.includes('fdownload.php') && <span className="text-xs ml-2">{"(Stable)"}</span>}
                           </a>
                         ) : (
                           <button
