@@ -18,32 +18,42 @@ const areEqual = (prevProps, nextProps) => {
 
 function generateCountrySpecificIp() {
   const countryRanges = [
-  { country: 'India & Nepal', weight: 30, ranges: [
-    ['49.32.0.0', '49.63.255.255'], // India
-    ['103.0.0.0', '103.255.255.255'], // India all
-    ['202.51.64.0', '202.51.95.255'] // Nepal
-  ]},
+    {
+      country: 'India & Nepal', weight: 30, ranges: [
+        ['49.32.0.0', '49.63.255.255'], // India
+        ['103.0.0.0', '103.255.255.255'], // India all
+        ['202.51.64.0', '202.51.95.255'] // Nepal
+      ]
+    },
 
-  { country: 'Pakistan & Bangladesh', weight: 25, ranges: [
-    ['39.32.0.0', '39.63.255.255'], // Pakistan
-    ['103.48.16.0', '103.48.23.255'] // Bangladesh
-  ]},
+    {
+      country: 'Pakistan & Bangladesh', weight: 25, ranges: [
+        ['39.32.0.0', '39.63.255.255'], // Pakistan
+        ['103.48.16.0', '103.48.23.255'] // Bangladesh
+      ]
+    },
 
-  { country: 'North America', weight: 30, ranges: [
-    ['3.0.0.0', '3.255.255.255'], // USA
-    ['24.48.0.0', '24.48.255.255'] // Canada
-  ]},
+    {
+      country: 'North America', weight: 30, ranges: [
+        ['3.0.0.0', '3.255.255.255'], // USA
+        ['24.48.0.0', '24.48.255.255'] // Canada
+      ]
+    },
 
-  { country: 'Middle East', weight: 20, ranges: [
-    ['94.200.0.0', '94.200.255.255'], // UAE
-    ['188.48.0.0', '188.55.255.255'] // Saudi Arabia
-  ]},
+    {
+      country: 'Middle East', weight: 20, ranges: [
+        ['94.200.0.0', '94.200.255.255'], // UAE
+        ['188.48.0.0', '188.55.255.255'] // Saudi Arabia
+      ]
+    },
 
-  { country: 'Europe', weight: 15, ranges: [
-    ['2.0.0.0', '2.15.255.255'], // France
-    ['51.140.0.0', '51.143.255.255'] // UK
-  ]}
-];
+    {
+      country: 'Europe', weight: 15, ranges: [
+        ['2.0.0.0', '2.15.255.255'], // France
+        ['51.140.0.0', '51.143.255.255'] // UK
+      ]
+    }
+  ];
 
   function ipToInt(ip) {
     return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0);
@@ -111,14 +121,14 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
 }
 
 
-const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim=null }) => {
+const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = null }) => {
 
   const playerRef = useRef(null);
   const containerRef = useRef(null);
 
   const isPortrait = useOrientation();
   const { userRealIp } = useSelector((state) => state.fullWebAccessState);
-  
+
   const isMobile = isMobileDevice();
 
   useEffect(() => {
@@ -134,21 +144,27 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim=nu
 
       if (source.includes('.m3u8') || source.includes('.mkv')) {
         const newSource = generateSourceURL(hlsSourceDomain, source, ip);
-        const playerOptions={
+        const playerOptions = {
           id: 'player',
           file: newSource,
         };
         if (videoTrim && typeof videoTrim === 'number') {
           playerOptions.start = videoTrim;
         };
-        const script = document.createElement("script");
-        script.id = "playerjs-script";
-        script.src = "/static/js/player_v2.1.js";
-        script.async = true;
-        script.onload = () => {
+
+        // Load player js if it's load fail form parent component by next script
+        if (typeof MoviesbazarPlayer !== "function") {
+          const script = document.createElement("script");
+          script.id = "playerjs-script";
+          script.src = "/static/js/player_v2.1.js";
+          script.async = true;
+          script.onload = () => {
+            new MoviesbazarPlayer(playerOptions);
+          };
+          document.body.appendChild(script);
+        } else {
           new MoviesbazarPlayer(playerOptions);
-        };
-        document.body.appendChild(script);
+        }
       } else {
         //load embed iframe if is not hls url
         const iframe = document.createElement("iframe");

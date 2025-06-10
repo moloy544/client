@@ -18,6 +18,7 @@ import RestrictedModal from "@/components/modals/RestrictedModal";
 import { useSelector } from "react-redux";
 import RestrictionsCheck from "@/components/RestrictionsCheck";
 import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
+import Script from "next/script";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 
@@ -108,7 +109,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     if (findRpmplayOnline?.length === 0) {
       openDirectLink(
-          handlePlayerVisibility()
+        handlePlayerVisibility()
       );
     } else {
       handlePlayerVisibility();
@@ -150,7 +151,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     };
   }, [playerVisibility, videoSource]);
 
-
   const originalDate = new Date(fullReleaseDate);
 
   const formattedDate = originalDate.toLocaleDateString('en-GB', {
@@ -169,6 +169,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       pathLink: `/browse/category/${category}`,
     }
   ];
+
+  const isHLSPlayListAvailble = movieDetails.watchLink.some(({ source }) => source.includes('.m3u8') || source.includes('.mkv') || source.includes('.txt'))
 
   return (
     <>
@@ -344,6 +346,13 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       {/* Restriction Check Component */}
       <RestrictionsCheck urgentCheck={permanentDisabled ? true : false} />
+
+      {isHLSPlayListAvailble && (
+        <Script
+          src="/static/js/player_v2.1.js"
+          strategy="afterInteractive"
+        />
+      )}
     </>
   )
 };
@@ -394,6 +403,7 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
   const findCurrentPlayHlsDomainIndex = watchLinks?.findIndex(({ source }) => source?.startsWith('https://' + currentPlayHlsDomain));
 
   const isOnlyRpmPlaySource = (watchLinks.length === 1 || watchLinks.length === 2) && watchLinks?.some(({ source }) => source.includes('rpmplay.online') || source.includes('p2pplay.online'));
+
 
   return (
     <>

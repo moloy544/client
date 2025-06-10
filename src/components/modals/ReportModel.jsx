@@ -257,7 +257,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
 
       <ModelsController visibility={serverSuggestion.isModelOpen} windowScroll={false}>
         <div className="fixed inset-0 z-[62] bg-black/60 flex justify-center items-center px-4">
-          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 space-y-6">
+          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200 p-2.5 space-y-6">
 
             {/* Header */}
             <div className="flex items-start gap-4">
@@ -266,7 +266,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
             </div>
 
             {/* Description */}
-            <div className="text-gray-700 text-sm leading-relaxed space-y-2 font-medium">
+            <div className="text-gray-700 text-sm leading-relaxed space-y-2 font-medium px-2">
               {!isOnlyRpmPlaySource && (
                 <p>
                   Before reporting a video issue, we recommend trying the content on all suggested servers. If none of the options work, please proceed to report the problem.
@@ -281,21 +281,23 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-wrap justify-center items-center gap-3 space-y-2">
+            <div className="flex flex-wrap justify-center space-y-1.5 gap-2 sm:gap-3">
               {serverSuggestion.serversData?.map(({ source, label, labelTag }, index) => (
                 <button
                   key={index}
                   onClick={() => playAlterNativeServer(source)}
-                  className="bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all shadow-sm"
+                  className="flex items-center bg-teal-600 hover:bg-teal-700 text-white text-[13px] sm:text-sm font-medium px-3 py-2 rounded-lg transition-all shadow shadow-teal-300/20"
                 >
                   <span>{label}</span>
                   {labelTag && (
-                    <span className="ml-2 capitalize break-words">{transformToCapitalize(labelTag)}</span>
+                    <span className="ml-2 capitalize break-words text-teal-100">
+                      {labelTag}
+                    </span>
                   )}
                 </button>
               ))}
-
             </div>
+
             <button
               onClick={() =>
                 setServerSuggestion({
