@@ -344,8 +344,11 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         />
       </div>
 
-      {/* Restriction Check Component */}
-      <RestrictionsCheck urgentCheck={permanentDisabled ? true : false} />
+      {/* Restriction Check Component */
+        isContentRestricted && isContentRestricted === true && (
+          <RestrictionsCheck urgentCheck={permanentDisabled ? true : false} />
+        )}
+
 
       {isHLSPlayListAvailble && (
         <Script
