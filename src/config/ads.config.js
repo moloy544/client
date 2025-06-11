@@ -14,9 +14,9 @@ export const partnerIntegration = {
     direct_Link3: 'https://filthygracefulspinach.com/hfa7b8jc6?key=ef80b89e18571af9e957d52316480302',
     socialBarAdScriptSrc : '//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js',
     popunderAdScriptSrc : '//filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js',
-    seconderyAccounts:{
-      dipti504:{
-        socialBarScript: '//pl26308489.effectiveratecpm.com/fb/47/5c/fb475c469ca9a9d41077272abc31cdf9.js'
+    seconderyAccounts:{ // login email in adsterra moviesbazarorg@gmail.com
+      dipti544:{
+        socialBarScript: '//pl25993150.profitableratecpm.com/d4/56/de/d456de9af69ae4c7e6ad4dfe7e6938ba.js'
       }
     }
 } 

@@ -8,6 +8,7 @@ import { safeLocalStorage } from '@/utils/errorHandlers';
 import { generateRandomID } from '@/helper/helper';
 import { isNotHuman } from '@/utils';
 import { appConfig } from '@/config/config';
+import { partnerIntegration } from '@/config/ads.config';
 
 const validateDomain = () => {
   const allowedDomains = ['moviesbazar.net', 'www.moviesbazar.net'];
@@ -63,32 +64,48 @@ export default function CustomLoadingAds() {
     if (isNotHuman()) {
       return; // Do not show ads if is not human
     };
-    // validate the domain
-    validateDomain()
+
+    if (process.env.NODE_ENV === 'production') {
+      // validate the domain
+      validateDomain()
+    }
 
     // Create adcash script and append it to document head after document load and 20 seconds later
-    const head = document.querySelector("head");
-    const mainScriptAppendTimer = setTimeout(() => {
+    //const head = document.querySelector("head");
+    //const mainScriptAppendTimer = setTimeout(() => {
+    // Create adcash script tag
+    //const adcashMainScript = document.createElement("script");
+    //adcashMainScript.id = "aclib";
+    //adcashMainScript.type = "text/javascript";
+    //adcashMainScript.async = true;
+    //adcashMainScript.src = "//acscdn.com/script/aclib.js";
+    //head.appendChild(adcashMainScript);
+    //adcashMainScript.onload = () => {
+    //if (window) {
+    //window.aclib.runInPagePush({
+    //zoneId: '9775202',
+    //refreshRate: 30,
+    //maxAds: 2,
+    //});
+    //};
+    //}
+    //}, 10000); // 10 seconds delay for ad load
+
+
+    // Handle adsterra in-page push
+    const body = document.querySelector("body");
+
+    const scriptAppendTimer = setTimeout(() => {
       // Create adcash script tag
-      const adcashMainScript = document.createElement("script");
-      adcashMainScript.id = "aclib";
-      adcashMainScript.type = "text/javascript";
-      adcashMainScript.async = true;
-      adcashMainScript.src = "//acscdn.com/script/aclib.js";
-      head.appendChild(adcashMainScript);
-      adcashMainScript.onload = () => {
-        if (window) {
-          window.aclib.runInPagePush({
-            zoneId: '9775202',
-            refreshRate: 30,
-            maxAds: 2,
-          });
-        };
-      }
-    }, 10000); // 10 seconds delay for ad load
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.async = true;
+      script.src = partnerIntegration.seconderyAccounts.dipti544.socialBarScript;
+      body.appendChild(script);
+    }, 5000); // 5 seconds delay for ad load
 
     return () => {
-      clearTimeout(mainScriptAppendTimer);
+      clearTimeout(scriptAppendTimer);
     }
   }, []);
 

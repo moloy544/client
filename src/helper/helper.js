@@ -1,6 +1,12 @@
 
 export function isIOS() {
-    const userAgent = window.navigator.userAgent.toLowerCase();
+  let userAgent;
+  if (typeof window!=="undefined") {
+     userAgent = window.navigator.userAgent.toLowerCase();
+  }else{
+    userAgent = navigator.userAgent.toLowerCase();
+  }
+    
     return /iphone|ipad|ipod/.test(userAgent);
 };
 
