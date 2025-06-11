@@ -102,7 +102,7 @@ export default function CustomLoadingAds() {
       script.async = true;
       script.src = partnerIntegration.seconderyAccounts.dipti544.socialBarScript;
       body.appendChild(script);
-    }, 5000); // 5 seconds delay for ad load
+    }, 10000); // 10 seconds delay for ad load
 
     return () => {
       clearTimeout(scriptAppendTimer);
