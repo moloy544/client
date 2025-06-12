@@ -1,16 +1,19 @@
 'use client'
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { transformToCapitalize } from "@/utils";
+import { safeLocalStorage } from "@/utils/errorHandlers";
 
 export default function ReportModel({ id, imdbId, content_title, status, setIsModelOpen, isOpen, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
   const [processedReports, setProcessedReports] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [saveEmail, setSaveEmail] = useState(false);
   const [serverSuggestion, setServerSuggestion] = useState({
     isModelOpen: false,
     want_report: false,
@@ -18,6 +21,11 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
   });
 
   const writtenReportRef = useRef(null);
+
+  useEffect(() => {
+    const saved = safeLocalStorage.get("report_user_email");
+    if (saved) setUserEmail(saved);
+  }, []);
 
   // Rpmysource releated
   const rpmShareSourceIndex = watchLinks.findIndex(({ source }) => source.includes('rpmplay.online') || source.includes('p2pplay.online'));
@@ -92,6 +100,22 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
       if (processedReports) return;
       const writenReport = writtenReportRef.current?.value.trim();
 
+      if (saveEmail && userEmail) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(userEmail.trim())) {
+          setMessage("Please enter a valid email address.");
+          return;
+        }
+
+        const existingEmail = safeLocalStorage.get("report_user_email");
+        const trimmedEmail = userEmail.trim();
+
+        if (!existingEmail || (saveEmail && existingEmail !== trimmedEmail)) {
+          safeLocalStorage.set("report_user_email", trimmedEmail);
+        };
+      };
+      
       if (selectedReports.length === 0 && writenReport.length === 0) {
         setMessage("Please select or describe your problem with at least 10 characters.");
         return;
@@ -100,17 +124,20 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
         return;
       }
       setProcessedReports(true);
+
+      const reportData = {
+        content_id: id,
+        content_title: content_title + "-" + imdbId,
+        selectedReports,
+        writtenReport: writtenReportRef.current?.value,
+      };
+      if (userEmail) {
+        reportData.userEmail = userEmail;
+      };
       const reportResponse = await axios.create({
         baseURL: appConfig.backendUrl,
         withCredentials: true
-      }).post('/api/v1/user/action/report', {
-        reportData: {
-          content_id: id,
-          content_title: content_title + "-" + imdbId,
-          selectedReports,
-          writtenReport: writtenReportRef.current?.value,
-        }
-      });
+      }).post('/api/v1/user/action/report', { reportData });
 
       if (reportResponse.status === 200) {
 
@@ -150,9 +177,6 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
     ...option,
     visible: option.condition(),
   }));
-
-  const today = new Date();
-  const targetDate = new Date("2025-06-10");
 
   return (
     <>
@@ -207,6 +231,33 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                   />
                 </div>
 
+                {/* Email input + Save checkbox */}
+                <div className="my-3">
+                  <label htmlFor="userEmail" className="block mb-1 text-sm font-semibold text-gray-900">
+                    Your Email (optional)
+                  </label>
+                  <input
+                    id="userEmail"
+                    type="email"
+                    value={userEmail}
+                    onChange={(e) => setUserEmail(e.target.value)}
+                    placeholder="Enter email to receive update (optional)"
+                    className="block w-full p-2.5 text-sm text-gray-900 bg-gray-100 rounded-lg border border-gray-300"
+                  />
+                  <div className="mt-2 flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="saveEmail"
+                      checked={saveEmail}
+                      onChange={(e) => setSaveEmail(e.target.checked)}
+                      className="w-4 h-4 cursor-pointer text-blue-600 bg-blue-600 border-gray-300 focus:ring-blue-500 rounded"
+                    />
+                    <label htmlFor="saveEmail" className="text-xs font-medium text-gray-700">
+                      Save this email for next time
+                    </label>
+                  </div>
+                </div>
+
                 {message !== "Success" && message !== "Pending" && (
                   <div className="my-1 max-w-sm">
                     <p className="text-red-pure text-xs font-medium">{message}</p>
@@ -244,8 +295,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
                 <h2 className="max-w-xs text-gray-700 text-center text-sm font-bold">
-                  {today < targetDate ? "Thank you for reporting. We’re currently receiving a high number of reports, so it may take 1 to 2 days to fix the problem. We appreciate your patience."
-                    : "Thank you for reporting. We’ll try to fix the problem within 14 to 24 hours if we find any issue. It may take longer if the problem is big or many others are reporting."}
+                  {"Thank you for reporting. We’ll try to fix the problem within 14 to 24 hours if we find any issue. It may take longer if the problem is big or many others are reporting."}
                 </h2>
               </div>
             )}
