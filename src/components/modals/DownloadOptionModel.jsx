@@ -312,6 +312,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                             }}
                           >
                             {sourceUrl.urls.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
+                            {source.includes('fdownload.php') && <span className="text-xs ml-2">{"(Stable)"}</span>}
                           </button>
                         )
                       ))}
