@@ -577,10 +577,7 @@ function PlayButton({
                           type="button"
                           onClick={() => {
                             setSelectedPlaySource(data.source);
-                            if (
-                              data.source.includes("rpmplay.online") ||
-                              data.source.includes("p2pplay.online")
-                            ) {
+                            if (data.source.includes("p2pplay.online")) {
                               setShowConfirmModal(true);
                             } else {
                               playHandler(data.source, hideDropDown);
