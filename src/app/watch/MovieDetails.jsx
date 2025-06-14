@@ -360,20 +360,35 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   )
 };
 
-function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, content_status, fullReleaseDateString, contentType, isContentRestricted, isInTheater, ticketBookLink }) {
-
+function PlayButton({
+  watchLinks,
+  playHandler,
+  currentPlaySource,
+  contentTitle,
+  content_status,
+  fullReleaseDateString,
+  contentType,
+  isContentRestricted,
+  isInTheater,
+  ticketBookLink,
+}) {
   const [showDropdown, setDropDown] = useState(false);
   const [isRpmplayOnline, setIsRpmplayOnline] = useState(false);
   const [isInstractionsModalOpen, setInstractionsModalOpen] = useState(false);
-  const { isUserRestricted, UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedPlaySource, setSelectedPlaySource] = useState(null);
 
-  const findIndex = watchLinks.findIndex(({ source }) => source.includes('rpmplay.online') || source.includes('p2pplay.online'));
+  const { isUserRestricted, UserRestrictedChecking } = useSelector(
+    (state) => state.fullWebAccessState
+  );
+
+  const findIndex = watchLinks.findIndex(({ source }) =>
+    source.includes("rpmplay.online") || source.includes("p2pplay.online")
+  );
 
   const play = () => {
-
     if (isUserRestricted && isContentRestricted) {
       setDropDown((prev) => !prev);
-      // Open direct ad link 
       openDirectLink();
       return;
     }
@@ -381,32 +396,40 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
     if (!watchLinks || watchLinks.length === 0) {
       creatToastAlert({
         message: "Playback is disabled by mistake please report us",
-        visibilityTime: 6000
+        visibilityTime: 6000,
       });
-      return
-    };
+      return;
+    }
 
-    const findRpmplayOnline = watchLinks.filter(({ source }) => source.includes('rpmplay.online') || source.includes('p2pplay.online'));
+    const findRpmplayOnline = watchLinks.filter(({ source }) =>
+      source.includes("rpmplay.online") || source.includes("p2pplay.online")
+    );
     if (findRpmplayOnline.length > 0 || content_status === "coming soon") {
       setIsRpmplayOnline(findRpmplayOnline.length > 0);
-
-      // Open direct ad link 
       openDirectLink();
-    };
-    setDropDown((prev) => !prev);
+    }
 
+    setDropDown((prev) => !prev);
   };
 
   const hideDropDown = () => {
     setDropDown(false);
   };
 
-  const currentPlayHlsDomain = currentPlaySource ? new URL(currentPlaySource).hostname : null;
+  const currentPlayHlsDomain = currentPlaySource
+    ? new URL(currentPlaySource).hostname
+    : null;
 
-  const findCurrentPlayHlsDomainIndex = watchLinks?.findIndex(({ source }) => source?.startsWith('https://' + currentPlayHlsDomain));
+  const findCurrentPlayHlsDomainIndex = watchLinks?.findIndex(({ source }) =>
+    source?.startsWith("https://" + currentPlayHlsDomain)
+  );
 
-  const isOnlyRpmPlaySource = (watchLinks.length === 1 || watchLinks.length === 2) && watchLinks?.some(({ source }) => source.includes('rpmplay.online') || source.includes('p2pplay.online'));
-
+  const isOnlyRpmPlaySource =
+    (watchLinks.length === 1 || watchLinks.length === 2) &&
+    watchLinks?.some(
+      ({ source }) =>
+        source.includes("rpmplay.online") || source.includes("p2pplay.online")
+    );
 
   return (
     <>
@@ -432,7 +455,38 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
         </button>
       </div>
 
-      {/* Loading Modal */}
+      {/* Confirmation Modal Before Play */}
+      {showConfirmModal && selectedPlaySource && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
+          <div className="bg-white rounded-xl p-6 max-w-sm mx-4 shadow-lg text-center relative space-y-4">
+           <button
+              onClick={()=> setShowConfirmModal(false)}
+              type="button"
+              className="bg-gray-400 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-400 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 absolute top-2 right-3"
+              aria-label="Close"
+            >
+              <i className="bi bi-x-lg text-base"></i>
+            </button>
+            <h2 className="text-lg font-bold text-gray-800 pt-1.5">
+              Playback Guide For Server <span className="text-blue-700">{findIndex + 1}</span>
+            </h2>
+            <p className="text-sm text-gray-600 font-semibold">
+             If the video buffers, just tap the <strong>10 second</strong> skip button to continue playback. You can also use the 10 second back button to catch any skipped scenes. This trick works best when the video keeps buffering.
+            </p>
+            <button
+              onClick={() => {
+                setShowConfirmModal(false);
+                playHandler(selectedPlaySource, hideDropDown);
+              }}
+              className="mt-3 px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition"
+            >
+              Continue to Play
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Modal Logic */}
       {showDropdown && UserRestrictedChecking ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-xl max-w-md w-full text-center relative mx-4 py-8 px-6 flex items-center justify-center flex-col space-y-4">
@@ -451,7 +505,9 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
             >
               <path d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z" />
             </svg>
-            <span className="text-base font-semibold text-gray-800">Please wait, we are verifying...</span>
+            <span className="text-base font-semibold text-gray-800">
+              Please wait, we are verifying...
+            </span>
           </div>
         </div>
       ) : showDropdown && isUserRestricted && isContentRestricted ? (
@@ -484,25 +540,34 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                   <div className="text-base text-gray-200 my-1.5 text-center flex flex-col space-y-2">
                     {isRpmplayOnline && (
                       <small className="text-xs text-gray-200 font-medium">
-                        &#8226; If you choose <span className="text-yellow-500 font-semibold">server {findIndex + 1}</span> Try to play at least 3/4 times. Sometimes the video may take time to load, please be patient.
+                        &#8226; If you choose{" "}
+                        <span className="text-yellow-500 font-semibold">
+                          server {findIndex + 1}
+                        </span>{" "}
+                        Try to play at least 3/4 times. Sometimes the video may
+                        take time to load, please be patient.
                       </small>
                     )}
                     {watchLinks.length > 1 && (
                       <small className="font-medium">
-                        &#8226; Video not playing? <span className="font-semibold">Try another server.</span>
+                        &#8226; Video not playing?{" "}
+                        <span className="font-semibold">Try another server.</span>
                       </small>
                     )}
                     <small className="font-medium">
-                      &#8226; Video stop in middle? <span className="font-semibold">Go back and pick same server again.</span>
+                      &#8226; Video stop in middle?{" "}
+                      <span className="font-semibold">
+                        Go back and pick same server again.
+                      </span>
                     </small>
-
                   </div>
 
                   <p
                     onClick={() => setInstractionsModalOpen(true)}
                     className="text-blue-400 cursor-pointer underline underline-offset-2 my-4 text-sm"
                   >
-                    ✅ Click here to Learn how to use player features like changing audio, quality, and more
+                    ✅ Click here to Learn how to use player features like
+                    changing audio, quality, and more
                   </p>
 
                   <div className="space-y-3 my-4 px-1">
@@ -510,17 +575,30 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                       <div key={data.data || index}>
                         <button
                           type="button"
-                          onClick={() => playHandler(data.source, hideDropDown)}
+                          onClick={() => {
+                            setSelectedPlaySource(data.source);
+                            if (
+                              data.source.includes("rpmplay.online") ||
+                              data.source.includes("p2pplay.online")
+                            ) {
+                              setShowConfirmModal(true);
+                            } else {
+                              playHandler(data.source, hideDropDown);
+                            }
+                          }}
                           className="flex items-center justify-between w-full px-3 py-2 bg-[#2d3644] text-white font-medium text-sm rounded-md hover:bg-gray-700 transition capitalize"
                         >
                           <span>
                             {data.label}
-                            {watchLinks.length > 1 && findCurrentPlayHlsDomainIndex === index && (
-                              <i className="bi bi-check-circle-fill text-teal-500 text-xs mx-2.5"></i>
-                            )}
+                            {watchLinks.length > 1 &&
+                              findCurrentPlayHlsDomainIndex === index && (
+                                <i className="bi bi-check-circle-fill text-teal-500 text-xs mx-2.5"></i>
+                              )}
                           </span>
                           {data.labelTag && (
-                            <span className="text-gray-200 font-normal">{data.labelTag}</span>
+                            <span className="text-gray-200 font-normal">
+                              {data.labelTag}
+                            </span>
                           )}
                         </button>
                       </div>
@@ -529,7 +607,8 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
 
                   <div className="mt-4 text-center">
                     <small className="text-xs text-gray-200">
-                      <i className="bi bi-earbuds"></i> Use earphones for better audio.
+                      <i className="bi bi-earbuds"></i> Use earphones for better
+                      audio.
                     </small>
                   </div>
                 </>
@@ -547,20 +626,32 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                   <div className="pt-6 space-y-4 max-w-md">
                     {content_status === "coming soon" ? (
                       <>
-                        <h2 className="text-xl font-bold text-gray-100">{`Coming Soon – Releases on ${fullReleaseDateString}`}</h2>
+                        <h2 className="text-xl font-bold text-gray-100">
+                          {`Coming Soon – Releases on ${fullReleaseDateString}`}
+                        </h2>
 
                         <p className="text-sm text-gray-200 font-medium">
-                          Expected release: <span className="text-yellow-300">{fullReleaseDateString}</span>. If it&lsquo;s not available at the release time, please check back later and stay tuned.
+                          Expected release:{" "}
+                          <span className="text-yellow-300">
+                            {fullReleaseDateString}
+                          </span>
+                          . If it&lsquo;s not available at the release time, please
+                          check back later and stay tuned.
                         </p>
 
                         <p className="text-xs text-gray-300">
-                          <strong>Note:</strong> Release dates may occasionally be delayed or extended. While we strive to provide accurate information,
-                          schedules are subject to change. We recommend bookmark this page or add to watch later and returning later for updates.
+                          <strong>Note:</strong> Release dates may occasionally
+                          be delayed or extended. While we strive to provide
+                          accurate information, schedules are subject to
+                          change. We recommend bookmark this page or add to
+                          watch later and returning later for updates.
                         </p>
                       </>
                     ) : (
                       <div className="my-5">
-                        <h2 className="text-sm font-semibold text-gray-200">{content_status}</h2>
+                        <h2 className="text-sm font-semibold text-gray-200">
+                          {content_status}
+                        </h2>
                       </div>
                     )}
 
@@ -573,22 +664,18 @@ function PlayButton({ watchLinks, playHandler, currentPlaySource, contentTitle, 
                       </button>
                     </Link>
                   </div>
-
                 </div>
-
-
               )}
             </div>
           </div>
         </ModelsController>
       )}
+
       <PlayerGuideModal
         guidePlayerIndex={isOnlyRpmPlaySource ? 2 : 1}
         isOpen={isInstractionsModalOpen}
         handleClose={() => setInstractionsModalOpen(false)}
       />
-
     </>
   );
-};
-
+}
