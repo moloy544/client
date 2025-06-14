@@ -32,7 +32,7 @@ function IframeObserver() {
         childList: true,
         subtree: true,
       });
-    }, 60000); // Delay of 60s
+    }, 80000); // Delay of 1 minute 20 seconds
 
     return () => {
       clearTimeout(startObserverTimer);
