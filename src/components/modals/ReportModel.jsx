@@ -263,7 +263,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                     <p className="text-red-pure text-xs font-medium">{message}</p>
                   </div>
                 )}
-                <div className="py-3 flex gap-5 mobile:my-3">
+                <div className="py-1 flex gap-5 mobile:my-3">
                   <button
                     type="button"
                     onClick={handleReportSubmit}

@@ -148,25 +148,88 @@ function Footer() {
                 </div>
             </div>
 
-            <div className="bg-gray-700 px-4 py-5 rounded-xl mobile:rounded-md space-y-5 text-gray-300 my-3">
-                <h3 className="text-xl mobile:text-base font-bold text-gray-200">Facing Issues Accessing MoviesBazar? Here&apos;s a Quick Fix for Future Problems!</h3>
+            <div className="bg-gray-700 px-4 py-6 rounded-xl mobile:rounded-md space-y-6 text-gray-100 my-4">
+                <h3 className="text-2xl mobile:text-lg font-bold text-white">
+                    Facing Issues Accessing MoviesBazar? Here&apos;s a Quick Fix!
+                </h3>
 
-                <p className="text-sm text-gray-200 font-semibold">
-                    If MoviesBazar isn&apos;t opening, don&apos;t worry! This doesn&apos;t mean MoviesBazar has stopped working. It might be a problem with your network or DNS settings. Follow the steps below to fix it and access the site. You can also save this guide in case you face this issue again in the future.
+                <p className="text-sm font-medium leading-relaxed">
+                    If MoviesBazar isn&apos;t opening, don&apos;t worry — the website is still online. The issue is most likely related to your network or DNS configuration. Please follow the steps below to resolve it and restore access. Save this guide in case the problem occurs again in the future.
                 </p>
 
-                <ol className="list-decimal list-inside space-y-3">
-                    <li>Open your browser and go to <strong>Settings</strong>.</li>
-                    <li>Scroll down and find <strong>Security & Privacy</strong> (or <strong>Network Settings</strong>, depending on the browser).</li>
-                    <li>Click on that, then scroll down to find <strong>DNS settings</strong>.</li>
-                    <li>
-                        You&apos;ll see an option for <strong>Use current service provider</strong>. Change this by clicking on <strong>Choose a service provider</strong>. In the input placeholder, you may see suggestions like <strong>Cloudflare</strong> or <strong>Google</strong>. Select <strong>Cloudflare</strong> for improved speed and security.
-                    </li>
-                </ol>
+                <div>
+                    <h4 className="text-lg font-semibold text-white mb-2">Steps for Chrome Mobile Users (Android only):</h4>
+                    <ol className="list-decimal list-inside space-y-2 text-sm leading-snug">
+                        <li>Open the <strong>Chrome</strong> browser.</li>
+                        <li>Tap the <strong>three-dot menu</strong> at the top-right corner.</li>
+                        <li>Go to <strong>Settings</strong>.</li>
+                        <li>Select <strong>Privacy and security</strong>.</li>
+                        <li>Tap <strong>Use secure DNS</strong>.</li>
+                        <li>
+                            Choose <strong>&quot;Custom&quot;</strong> or <strong>&quot;Another provider&quot;</strong>. Then tap the input field, and you&apos;ll see a list of DNS options.
+                        </li>
+                        <li>Select <strong>Cloudflare (1.1.1.1)</strong> from the list or manually enter <strong>1.1.1.1</strong>.</li>
+                        <li>Restart Chrome by closing and reopening it.</li>
+                    </ol>
+                    <p className="text-sm font-medium mt-3">Now try accessing <strong>MoviesBazar</strong>.</p>
+                </div>
 
-                <p className="text-sm text-gray-300">
-                    If you&apos;re unsure about how to do this, search <strong>How to change DNS in [Your Browser Name]</strong> (e.g., Chrome, Firefox, Safari) on YouTube for simple instructions. Keep this in mind if you face this issue in the future.
-                </p>
+                <div>
+                    <p className="text-sm font-semibold">
+                        Still facing trouble? Watch a step-by-step video tutorial below based on your browser:
+                    </p>
+
+                    <div className="grid gap-2 mt-3 text-sm">
+                        <p>
+                            <strong>For Chrome on Android:</strong>{' '}
+                            <a
+                                href="https://www.youtube.com/shorts/tmoW2q8tp5Q"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-400 underline hover:text-blue-300"
+                            >
+                                Watch Tutorial
+                            </a>
+                        </p>
+                        <p>
+                            <strong>For Firefox on Windows:</strong>{' '}
+                            <a
+                                href="https://www.youtube.com/watch?v=_ndW2LJDXRc"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-400 underline hover:text-blue-300"
+                            >
+                                Watch Tutorial
+                            </a>
+                        </p>
+                        <p>
+                            <strong>For Chrome on Windows:</strong>{' '}
+                            <a
+                                href="https://www.youtube.com/watch?v=_bufsVKvkow"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-400 underline hover:text-blue-300"
+                            >
+                                Watch Tutorial
+                            </a>
+                        </p>
+                        <p>
+                            <strong>For Microsoft Edge on Windows:</strong>{' '}
+                            <a
+                                href="https://www.youtube.com/shorts/tmoW2q8tp5Q"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-400 underline hover:text-blue-300"
+                            >
+                                Watch Tutorial
+                            </a>
+                        </p>
+                    </div>
+
+                    <p className="text-sm mt-3">
+                        Alternatively, search <strong>&quot;How to change DNS in [Your Browser Name]&quot;</strong> on YouTube for detailed guides.
+                    </p>
+                </div>
             </div>
 
             <div className="bg-gray-900 px-2.5 rounded-xl space-y-5 text-gray-300 my-3">
