@@ -459,8 +459,8 @@ function PlayButton({
       {showConfirmModal && selectedPlaySource && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
           <div className="bg-white rounded-xl p-6 max-w-sm mx-4 shadow-lg text-center relative space-y-4">
-           <button
-              onClick={()=> setShowConfirmModal(false)}
+            <button
+              onClick={() => setShowConfirmModal(false)}
               type="button"
               className="bg-gray-400 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:bg-gray-400 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400 absolute top-2 right-3"
               aria-label="Close"
@@ -471,7 +471,10 @@ function PlayButton({
               Playback Guide For Server <span className="text-blue-700">{findIndex + 1}</span>
             </h2>
             <p className="text-sm text-gray-600 font-semibold">
-             If the video buffers, just tap the <strong>10 second</strong> skip button to continue playback. You can also use the 10 second back button to catch any skipped scenes. This trick works best when the video keeps buffering.
+              If the video buffers, just tap the <strong>10 second</strong> skip button to continue playback. Use 10 second back button to catch skipped scenes. This trick works best when the video keeps buffering.
+            </p>
+            <p className="text-sm text-gray-600 font-semibold">
+              If you see <strong>Oops! Our player is sandboxed and not allowed</strong> in the video player, please avoid using adblock browsers or adblock apps. For the best experience, use the Chrome browser.
             </p>
             <button
               onClick={() => {

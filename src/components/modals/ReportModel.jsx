@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
-import { transformToCapitalize } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 
 export default function ReportModel({ id, imdbId, content_title, status, setIsModelOpen, isOpen, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
