@@ -467,14 +467,14 @@ function PlayButton({
             >
               <i className="bi bi-x-lg text-base"></i>
             </button>
-            <h2 className="text-lg font-bold text-gray-800 pt-1.5">
-              Playback Guide For Server <span className="text-blue-700">{findIndex + 1}</span>
-            </h2>
+              <h2 className="text-lg font-bold text-gray-800 pt-1.5">
+                Playback Guide For This Server
+              </h2>
             <p className="text-sm text-gray-600 font-semibold">
               If the video buffers, just tap the <strong>10 second</strong> skip button to continue playback. Use 10 second back button to catch skipped scenes. This trick works best when the video keeps buffering.
             </p>
             <p className="text-sm text-gray-600 font-semibold">
-              If you see <strong>Oops! Our player is sandboxed and not allowed</strong> in the video player, please avoid using adblock browsers or adblock apps. For the best experience, use the Chrome browser.
+              If you see <strong>Opss! Sandboxed our player is not allowed</strong> in the video player, please avoid using adblock browsers or adblock apps. For the best experience, use the Chrome browser.
             </p>
             <button
               onClick={() => {
