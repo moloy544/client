@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useRef } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useOrientation } from "@/hooks/hook";
 import { isMobileDevice } from "@/utils";
 import { useSelector } from "react-redux";
@@ -125,6 +125,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
   const playerRef = useRef(null);
   const containerRef = useRef(null);
+  const [isIframeLoading, setIsIframeLoading] = useState(false);
 
   const isPortrait = useOrientation();
   const { userRealIp } = useSelector((state) => state.fullWebAccessState);
@@ -167,12 +168,14 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
         }
       } else {
         //load embed iframe if is not hls url
+        setIsIframeLoading(true); // show loader
         const iframe = document.createElement("iframe");
         iframe.className = "w-full aspect-video my-auto";
         iframe.id = "player-embedded-iframe";
         iframe.allow = "autoplay; fullscreen";
         iframe.src = source;
         iframe.title = title || "Movies Bazar Streaming Iframe";
+        iframe.onload = () => setIsIframeLoading(false); // hide loader when iframe fully loaded
         playerRef.current.appendChild(iframe);
       }
 
@@ -287,11 +290,15 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
         ref={containerRef}
         className="bg-transparent transition-all duration-500"
       >
-        <div id="player" ref={playerRef} className="w-full h-fit transition-all duration-500 rounded-md">
+        <div id="player" ref={playerRef} className="w-full h-fit relative transition-all duration-500 rounded-md">
+          {isIframeLoading && (
+            <div className="absolute inset-0 z-20 bg-black/70 backdrop-blur-md flex flex-col items-center justify-center">
+              <p className="text-white text-sm font-medium tracking-wide animate-pulse">Please wait a moment...</p>
+            </div>
+          )}
 
         </div>
       </div>
-
     </>
   );
 }, areEqual);
