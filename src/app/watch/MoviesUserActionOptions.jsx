@@ -168,6 +168,8 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
           imdbId={imdbId}
           content_title={title}
           status={status}
+          isContentSaved={isSaved}
+          handleSaveContent={saveInLocalStorage}
           watchLinks={watchLink}
           playHandler={playHandler}
           currentPlaySource={currentPlaySource}

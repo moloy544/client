@@ -23,7 +23,6 @@ const primaryPlayerImageGuidedata = [
         title: "Fit Video to Screen",
         description: "Tap the Scale option to adjust the video size. Use the -5% option to zoom out and +5% to zoom in. This helps you fit the video properly on your mobile screen. 100% option for original size.",
     },
-    
     {
         title: "Skip Playback by 10 Seconds",
         description: "Double tap on the right side to skip forward 10 seconds, or or double tap on the left side to go 10 seconds back."
@@ -70,6 +69,10 @@ const secondary2PlayerImageGuidedata = [
         title: "Change Video Quality",
         description: "Tap the quality option to adjust video resolution.",
     },
+    {
+        title: "Skip or Back 10 Seconds",
+        description: "Tap the red arrow marked 10s button to skip forward or go back 10 seconds."
+    }
 ];
 
 export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex = 1 }) {
@@ -112,8 +115,10 @@ export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex = 1 }) 
                                                 src={require(`@/assets/images/primary-player-image-${index + 1}.png`)}
                                                 alt={`Primary Player Guide - ${title}`}
                                             />
-                                            <h4 className="text-base text-gray-800 font-semibold">{title}</h4>
-                                            <p className="text-sm text-gray-700 font-medium">{description}</p>
+                                            <div className="my-2 text-center">
+                                                <h4 className="text-base text-gray-800 font-semibold">{title}</h4>
+                                                <p className="text-sm text-gray-700 font-medium">{description}</p>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -126,21 +131,6 @@ export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex = 1 }) 
                                 </p>
 
                                 <div className="grid grid-cols-1 space-y-6 items-center mt-4">
-                                    {secondaryPlayerImageGuidedata.map(({ title, description }, index) => (
-                                        <div
-                                            className="w-auto flex items-center justify-center flex-col spacey-3"
-                                            key={index}
-                                        >
-                                            <Image
-                                                src={require(`@/assets/images/secondary-player-image-${index + 1}.png`)}
-                                                alt={`Secondary Player Guide - ${title}`}
-                                            />
-                                            <h4 className="text-base text-gray-800 font-semibold">{title}</h4>
-                                            <p className="text-sm text-gray-700 font-medium">{description}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="grid grid-cols-1 space-y-6 items-center mt-4">
                                     {secondary2PlayerImageGuidedata.map(({ title, description }, index) => (
                                         <div
                                             className="w-auto flex items-center justify-center flex-col spacey-3"
@@ -150,8 +140,27 @@ export function PlayerGuideModal({ isOpen, handleClose, guidePlayerIndex = 1 }) 
                                                 src={require(`@/assets/images/3rd-player-image-${index + 1}.png`)}
                                                 alt={`3rd Player Guide - ${title}`}
                                             />
-                                            <h4 className="text-base text-gray-800 font-semibold">{title}</h4>
-                                            <p className="text-sm text-gray-700 font-medium">{description}</p>
+                                            <div className="my-2 text-center">
+                                                <h4 className="text-base text-gray-800 font-semibold">{title}</h4>
+                                                <p className="text-sm text-gray-700 font-medium">{description}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="grid grid-cols-1 space-y-6 items-center mt-4">
+                                    {secondaryPlayerImageGuidedata.map(({ title, description }, index) => (
+                                        <div
+                                            className="w-auto flex items-center justify-center flex-col spacey-3"
+                                            key={index}
+                                        >
+                                            <Image
+                                                src={require(`@/assets/images/secondary-player-image-${index + 1}.png`)}
+                                                alt={`Secondary Player Guide - ${title}`}
+                                            />
+                                            <div className="my-2 text-center">
+                                                <h4 className="text-base text-gray-800 font-semibold">{title}</h4>
+                                                <p className="text-sm text-gray-700 font-medium">{description}</p>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>

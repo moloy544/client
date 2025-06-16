@@ -6,7 +6,7 @@ import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 
-export default function ReportModel({ id, imdbId, content_title, status, setIsModelOpen, isOpen, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
+export default function ReportModel({ id, imdbId, content_title, status, setIsModelOpen, isOpen, isContentSaved = false, handleSaveContent, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
   const [message, setMessage] = useState("Pending");
@@ -114,7 +114,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
           safeLocalStorage.set("report_user_email", trimmedEmail);
         };
       };
-      
+
       if (selectedReports.length === 0 && writenReport.length === 0) {
         setMessage("Please select or describe your problem with at least 10 characters.");
         return;
@@ -143,11 +143,6 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
         setSelectedReports([]);
         writtenReportRef.current.value = "";
         setMessage("Success");
-
-        setTimeout(() => {
-          setMessage("Pending");
-          closeModel();
-        }, 24000);
       } else {
         setMessage(reportResponse.data.message);
       }
@@ -191,7 +186,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                 <div className="space-y-2 mb-4 max-w-sm">
                   <h2 className="text-base font-bold leading-4">Are you sure you want to report?</h2>
                   <p className="mt-2 text-xs text-gray-600 font-medium">
-                    Please select the issue or describe the problem. We do our best to resolve your issue within 14 to 24 hours.
+                    Please select or describe your issue. We try to fix problems in 14 to 24 hours. Sometimes it may take longer, so please wait patiently.
                   </p>
                 </div>
 
@@ -281,7 +276,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                 </div>
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center space-y-3 py-6 px-4 relative">
+              <div className="flex flex-col items-center justify-center space-y-3 py-6 px-1.5 relative">
                 <button
                   onClick={() => closeModel()}
                   type="button"
@@ -293,9 +288,32 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                 <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
-                <h2 className="max-w-xs text-gray-700 text-center text-sm font-bold">
+                <h2 className="max-w-xs text-gray-600 text-center text-base font-bold">
                   {"Thank you for reporting. We’ll try to fix the problem within 14 to 24 hours if we find any issue. It may take longer if the problem is big or many others are reporting."}
                 </h2>
+                {!isContentSaved ? (
+                  <>
+                    <p className="text-gray-800 text-sm text-center font-semibold">
+                      Want to easily check later if this issue is resolved? Save this content in your <strong>Watch Later</strong> list.
+                    </p>
+                    <button
+                      onClick={handleSaveContent}
+                      className="mt-3 px-5 py-2 rounded-full bg-teal-600 hover:bg-teal-700 active:scale-95 transition-all duration-300 text-white text-sm font-semibold shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                      <i className="bi bi-save2-fill text-white mr-1"></i> Save for Easy Access
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-green-700 text-sm text-center font-medium">
+                      ✅ This content has been saved to your Watch Later. You can check it anytime in your <strong>Watch Later</strong> list for easy access in the future.
+                    </p>
+                    <p className="text-gray-600 text-xs text-center font-medium mt-1">
+                      📌 You can find the <strong>Watch Later</strong> option at the top right corner of our homepage.
+                    </p>
+                  </>
+                )}
+
               </div>
             )}
           </div>
