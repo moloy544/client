@@ -298,9 +298,11 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                     </p>
                     <button
                       onClick={handleSaveContent}
-                      className="mt-3 px-5 py-2 rounded-full bg-teal-600 hover:bg-teal-700 active:scale-95 transition-all duration-300 text-white text-sm font-semibold shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      className="mt-3 px-5 py-2 rounded-full bg-teal-600 hover:bg-teal-700 active:scale-95 transition-all duration-300 text-white text-sm font-semibold shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 inline-flex items-center gap-2"
                     >
-                      <i className="bi bi-save2-fill text-white mr-1"></i> Save for Easy Access
+                       <svg fill="#d1d5db" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" focusable="false">
+              <path d="M22 13h-4v4h-2v-4h-4v-2h4V7h2v4h4v2zm-8-6H2v1h12V7zM2 12h8v-1H2v1zm0 4h8v-1H2v1z"></path>
+            </svg> <span>Save for Easy Access</span>
                     </button>
                   </>
                 ) : (
