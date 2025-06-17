@@ -7,7 +7,7 @@ import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 import { categoryArray } from "@/constant/constsnt";
 
 const otherExpectedCategories = [
-  'international','hindi', 'hindi dubbed', 'tollywood', 'bengali dubbed', 'english', 'punjabi',
+  'international','hindi', 'hindi dubbed', 'tollywood', 'bengali dubbed', 'english', 'pollywood', 'punjabi',
   'tamil', 'telugu', 'malayalam', 'kannada', 'dubbed', 'korean',
   'japanese', 'chinese', 'french', 'german', 'spanish', 'italian',
   'portuguese', 'arabic', 'turkish', 'thai', 'vietnamese',
