@@ -32,7 +32,7 @@ export default async function Page({ params }) {
     dateSort: -1,
     genre: "all",
   };
- 
+
   const { data, dataIsEnd } = await loadMoreFetch({
 
     apiPath: apiUrl,
@@ -51,15 +51,16 @@ export default async function Page({ params }) {
 
       <div className="w-full h-full min-h-[90vh]">
 
-          <LoadMoreMoviesGirdWarper
+        <LoadMoreMoviesGirdWarper
           title={title + ' Latest Released'}
-            apiUrl={apiUrl}
-            initialFilter={filterData}
-            limitPerPage={40}
-            serverResponseExtraFilter={filterOptions || []}
-            initialMovies={moviesData || []}
-            isDataEnd={dataIsEnd}
-          />
+          description={params.slug === 'hollywood' ? 'Includes international  content' : null}
+          apiUrl={apiUrl}
+          initialFilter={filterData}
+          limitPerPage={40}
+          serverResponseExtraFilter={filterOptions || []}
+          initialMovies={moviesData || []}
+          isDataEnd={dataIsEnd}
+        />
 
       </div>
 

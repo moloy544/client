@@ -96,6 +96,7 @@ export default async function Page({ params }) {
 
         <LoadMoreMoviesGirdWarper
           title={categoryName + ' Collection'}
+          description={category === 'hollywood' ? 'Includes international content' : null}
           apiUrl={apiUrl}
           limitPerPage={40}
           serverResponseExtraFilter={filterOptions || []}

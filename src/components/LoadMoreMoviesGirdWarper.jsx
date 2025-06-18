@@ -13,7 +13,7 @@ import { useInfiniteScroll } from "@/hooks/observers";
 
 const LoadContentError = dynamic(() => import('@/components/errors/LoadContentError'), { ssr: false });
 
-function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd, apiError = false }) {
+function LoadMoreMoviesGirdWarper({ title, description, apiUrl, apiBodyData, limitPerPage, initialFilter, serverResponseExtraFilter, initialMovies, isDataEnd, apiError = false }) {
 
     const patname = usePathname();
 
@@ -126,7 +126,10 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
             <main className="w-full h-auto bg-transparent overflow-x-hidden">
                 {title && (
                     <div className="bg-gray-900 py-1.5 px-2 border-t border-t-gray-800">
-                        <h1 className="text-center font-bold text-[#dcdcde] text-base mobile:text-xs line-clamp-1">{title}</h1>
+                        <h1 className="text-center font-bold text-[#c5c5c6] text-base mobile:text-xs line-clamp-1">{title}</h1>
+                        {description && (
+                            <p className="text-center text-gray-400 text-xs mobile:text-[10px] font-semibold line-clamp-1">{description}</p>
+                        )}
                     </div>
                 )}
                 {!apiError ? (
@@ -168,11 +171,11 @@ function LoadMoreMoviesGirdWarper({ title, apiUrl, apiBodyData, limitPerPage, in
                     </div>
                 ) : (
                     <div className="w-full h-full min-h-[450px] bg-custom-dark-bg flex items-center justify-center">
-                    <LoadContentError
-                        errorDescription="We are unable to load the movies right now. Please try refreshing the page or come back later."
-                        customRefreshFunction={() => window.location.reload()}
-                        customRefreshTitle="Reload Page"
-                    />
+                        <LoadContentError
+                            errorDescription="We are unable to load the movies right now. Please try refreshing the page or come back later."
+                            customRefreshFunction={() => window.location.reload()}
+                            customRefreshTitle="Reload Page"
+                        />
                     </div>
                 )}
 
