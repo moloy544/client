@@ -296,7 +296,7 @@ export default function SearchPage() {
                                 )}
 
                                 {!loading && seatrchResult.length < 1 && searchQuery !== " " && (
-                                    <div className="flex flex-col justify-center my-40 space-y-2 px-4 max-w-3xl justify-self-center">
+                                    <div className="flex flex-col justify-center my-20 space-y-2 px-4 max-w-3xl justify-self-center">
                                         <h2 className="text-gray-100 text-xl mobile:text-base text-center font-semibold">
                                             No results found.
                                         </h2>
@@ -305,6 +305,19 @@ export default function SearchPage() {
                                         <Link href="/request-form" className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md">
                                             <i className="bi bi-send"></i> Request content
                                         </Link>
+                                        <div className="w-full flex flex-col items-center py-5">
+                                        <p className="text-gray-300 text-sm mobile:text-xs mb-2 font-medium text-center">
+                                            For exploring full site and more content, click the button below to go to our home page.
+                                        </p>
+                                        <Link
+                                            href="/"
+                                            title="Explore home page"
+                                            className="w-fit inline-block px-5 py-2.5 space-x-1 bg-gray-800 text-gray-100 text-sm font-medium rounded-md border border-gray-700 hover:bg-gray-700 hover:text-white transition duration-200"
+                                        >
+                                            <i className="bi bi-house-fill"></i>
+                                            <span>Explore More Content</span>
+                                        </Link>
+                                        </div>
                                     </div>
                                 )}
 
@@ -315,7 +328,24 @@ export default function SearchPage() {
                     </>
                 ) : (
                     <div className="w-full h-full my-40">
-                        <h2 className="text-gray-200 text-xl mobile:text-base text-center font-semibold">Search and watch movies and series</h2>
+                        <h2 className="text-gray-200 text-xl mobile:text-base text-center font-semibold">
+                            Search what you want by typing query in the search input
+                        </h2>
+
+                        <div className="text-center mt-4">
+                            <p className="text-gray-300 text-sm mobile:text-xs mb-2 font-medium">
+                                For exploring full site and more content, click the button below to go to our home page.
+                            </p>
+                            <Link
+                                href="/"
+                                title="Explore home page"
+                                className="inline-block px-5 py-2.5 space-x-1 bg-gray-800 text-gray-100 text-sm font-medium rounded-md border border-gray-700 hover:bg-gray-700 hover:text-white transition duration-200"
+                            >
+                                <i className="bi bi-house-fill"></i>
+                                <span>Explore More Content</span>
+                            </Link>
+                        </div>
+
                     </div>
                 )}
 
@@ -356,6 +386,20 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         const data = getLocalStorageSearchHistory();
         setSearchHistory(data);
         setFilteredHistory(data);
+        const input = document.querySelector('#search-bar-input');
+        if (input) {
+            input.focus()
+        };
+        // Blur input on scroll
+        const handleScroll = () => {
+            if (document.activeElement === input) {
+                input.blur();
+            }
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
     }, []);
 
     const searchInputChange = (event) => {
