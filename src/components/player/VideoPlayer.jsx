@@ -125,7 +125,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
   const playerRef = useRef(null);
   const containerRef = useRef(null);
-  const [isIframeLoading, setIsIframeLoading] = useState(false);
+  const [isIframeLoading, setIsIframeLoading] = useState(null);
 
   const isPortrait = useOrientation();
   const { userRealIp } = useSelector((state) => state.fullWebAccessState);
@@ -133,7 +133,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
   const isMobile = isMobileDevice();
 
   useEffect(() => {
-
+    let checkTimer = null;
     let ip = userRealIp || userIp;
 
     if (!ip || ip === '0.0.0.0' || !isValidIp(ip)) {
@@ -167,20 +167,40 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           new MoviesbazarPlayer(playerOptions);
         }
       } else {
-        //load embed iframe if is not hls url
-        setIsIframeLoading(true); // show loader
+        setIsIframeLoading("Please wait a moment...");
+
+        const startTime = Date.now();
+
         const iframe = document.createElement("iframe");
         iframe.className = "w-full aspect-video my-auto";
         iframe.id = "player-embedded-iframe";
         iframe.allow = "autoplay; fullscreen";
         iframe.src = source;
         iframe.title = title || "Movies Bazar Streaming Iframe";
-        iframe.onload = () => setIsIframeLoading(false); // hide loader when iframe fully loaded
-        playerRef.current.appendChild(iframe);
-      }
 
-      // Cleanup function
+        iframe.onload = () => {
+          clearInterval(checkTimer);
+          setIsIframeLoading(null);
+        };
+
+        playerRef.current.appendChild(iframe);
+
+        checkTimer = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          if (elapsed >= 50000) {
+            setIsIframeLoading("Can't load video. Please check your connection or report the issue.");
+            clearInterval(checkTimer);
+          } else if (elapsed >= 25000) {
+            setIsIframeLoading("Slow network... please wait a bit more.");
+          } else if (elapsed >= 15000) {
+            setIsIframeLoading("Loading is taking longer than expected. Please wait...");
+          }
+
+        }, 1000);
+      };
+      
       return () => {
+        clearInterval(checkTimer);
 
         const playerJsScript = document.querySelector("#playerjs-script");
 
@@ -292,8 +312,8 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
       >
         <div id="player" ref={playerRef} className="w-full h-fit relative transition-all duration-500 rounded-md">
           {isIframeLoading && (
-            <div className="absolute inset-0 z-20 bg-black/70 backdrop-blur-md flex flex-col items-center justify-center">
-              <p className="text-white text-sm font-medium tracking-wide animate-pulse">Please wait a moment...</p>
+            <div className="absolute inset-0 z-20 bg-black/70 backdrop-blur-md flex flex-col items-center justify-center px-2">
+              <p className="text-white text-sm font-medium tracking-wide animate-pulse text-center">{isIframeLoading}</p>
             </div>
           )}
 

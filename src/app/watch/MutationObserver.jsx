@@ -42,6 +42,9 @@ function IframeObserver() {
 
     // Inject AdMaven script after 2 minutes
     const injectAdMaven = () => {
+      if (process.env.NODE_ENV === 'development') {
+        return;
+      }
       admavenScript = document.createElement("script");
       admavenScript.src = partnerIntegration.adMaven.inpagePushScriptSrc;
       admavenScript.async = true;
