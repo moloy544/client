@@ -99,13 +99,18 @@ export default function CustomLoadingAds() {
       // Create adcash script tag
       const script = document.createElement("script");
       script.type = "text/javascript";
-      script.id='partnerIntegration-script'
+      script.id = 'partnerIntegration-script'
       script.async = true;
       script.src = partnerIntegration.seconderyAccounts.dipti544.socialBarScript;
       body.appendChild(script);
     }, 20000); // 20 seconds delay for ad load
 
     return () => {
+      // Cleanup the script if it exists
+      const existingScript = document.getElementById('partnerIntegration-script');
+      if (existingScript) {
+        body.removeChild(existingScript);
+      }
       clearTimeout(scriptAppendTimer);
     }
   }, []);

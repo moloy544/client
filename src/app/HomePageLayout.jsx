@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import { creatUrlLink, editActorsImageUrl, resizeImage } from "@/utils";
+import { creatUrlLink, editActorsImageUrl } from "@/utils";
 import { updateHomePageState } from "@/context/HomePageState/homePageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SliderShowcase from "@/components/SliderShowcase";
@@ -50,6 +50,7 @@ function HomePageLayout({ initialLayoutData }) {
             }
         };
     }, [offset, loading, isAllLoad]);
+
 
     useEffect(() => {
 

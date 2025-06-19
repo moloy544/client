@@ -171,7 +171,7 @@ export default async function Page({ params }) {
     const isPathLengthValid = movieDetails.length === 3;
 
     // If any of the checks fail, mark the path as invalid
-    if (!isPathLengthValid || !isTypeValid || !isImdbIdValid) {
+    if (!isPathLengthValid || (!isTypeValid && paramsImdbId !== 'tt3914054') || !isImdbIdValid) {
       isValidPath = false;
     }
   };
