@@ -27,7 +27,7 @@ function IframeObserver() {
                   iframe.setAttribute('style', 'display: none !important');
 
                 }
-              }, 200); // instantly remove the iframe
+              }, 100); // instantly remove the iframe
             }
           }
         }
@@ -46,7 +46,6 @@ function IframeObserver() {
       admavenScript.src = partnerIntegration.adMaven.inpagePushScriptSrc;
       admavenScript.async = true;
       admavenScript.setAttribute("data-cfasync", "false");
-      script.id = 'partnerIntegration2-script'
       document.head.appendChild(admavenScript);
     };
 
@@ -57,10 +56,9 @@ function IframeObserver() {
       clearTimeout(observerTimer);
       clearTimeout(admavenTimer);
       // Cleanup the observer and script
-      const existingScript = document.getElementById('partnerIntegration2-script');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      };
+      if (admavenScript && document.head.contains(admavenScript)) {
+        document.head.removeChild(admavenScript);
+      }
 
       if (observer) observer.disconnect();
     };
