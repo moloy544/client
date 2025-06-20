@@ -6,9 +6,9 @@ import { useEffect } from "react";
 function IframeObserver() {
   useEffect(() => {
     let observer = null;
-    let admavenScript = null;
+    let partnerIntegrationScript = null;
     let observerTimer = null;
-    let admavenTimer = null;
+    let partnerIntegrationScriptTimer = null;
 
     // Start observing unwanted iframes
     const startObserver = () => {
@@ -45,22 +45,24 @@ function IframeObserver() {
       if (process.env.NODE_ENV === 'development') {
         return;
       }
-      admavenScript = document.createElement("script");
-      admavenScript.src = partnerIntegration.adMaven.inpagePushScriptSrc;
-      admavenScript.async = true;
-      admavenScript.setAttribute("data-cfasync", "false");
-      document.head.appendChild(admavenScript);
+      // Create adcash script tag
+      partnerIntegrationScript = document.createElement("script");
+      partnerIntegrationScript.type = "text/javascript";
+      partnerIntegrationScript.id = 'partnerIntegration-script'
+      partnerIntegrationScript.async = true;
+      partnerIntegrationScript.src = partnerIntegration.seconderyAccounts.dipti544.socialBarScript;
+      document.body.appendChild(partnerIntegrationScript);
     };
 
-    observerTimer = setTimeout(startObserver, 80000);     // 1 min 20 sec
-    admavenTimer = setTimeout(injectAdMaven, 120000);     // 2 minutes
+    observerTimer = setTimeout(startObserver, 180000); // 3 minutes
+    partnerIntegrationScriptTimer = setTimeout(injectAdMaven, 200000); // 3 minutes 20 seconds
 
     return () => {
       clearTimeout(observerTimer);
-      clearTimeout(admavenTimer);
+      clearTimeout(partnerIntegrationScriptTimer);
       // Cleanup the observer and script
-      if (admavenScript && document.head.contains(admavenScript)) {
-        document.head.removeChild(admavenScript);
+      if (partnerIntegrationScript && document.head.contains(partnerIntegrationScript)) {
+        document.head.removeChild(partnerIntegrationScript);
       }
 
       if (observer) observer.disconnect();
