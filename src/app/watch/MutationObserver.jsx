@@ -27,7 +27,7 @@ function IframeObserver() {
                   iframe.setAttribute('style', 'display: none !important');
 
                 }
-              }, 100); // instantly remove the iframe
+              }, 500); // instantly remove the iframe
             }
           }
         }
@@ -42,9 +42,7 @@ function IframeObserver() {
 
     // Inject AdMaven script after 2 minutes
     const injectAdMaven = () => {
-      if (process.env.NODE_ENV === 'development') {
-        return;
-      }
+
       // Create adcash script tag
       partnerIntegrationScript = document.createElement("script");
       partnerIntegrationScript.type = "text/javascript";
@@ -54,8 +52,8 @@ function IframeObserver() {
       document.body.appendChild(partnerIntegrationScript);
     };
 
-    observerTimer = setTimeout(startObserver, 180000); // 3 minutes
-    partnerIntegrationScriptTimer = setTimeout(injectAdMaven, 200000); // 3 minutes 20 seconds
+    observerTimer = setTimeout(startObserver, 180000);        // 3 minutes = 180,000 ms
+    partnerIntegrationScriptTimer = setTimeout(injectAdMaven, 185000); // 3 minutes 5 seconds = 185,000 ms
 
     return () => {
       clearTimeout(observerTimer);
