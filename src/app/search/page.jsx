@@ -305,7 +305,7 @@ export default function SearchPage() {
                                         <Link href="/request-form" className="w-fit mx-auto h-auto py-2 px-4 text-gray-100 font-medium text-sm bg-gray-900 hover:bg-gray-950 rounded-md">
                                             <i className="bi bi-send"></i> Request content
                                         </Link>
-                                        <div className="w-full flex flex-col items-center py-5">
+                                        <div className="w-full flex flex-col items-center py-5 px-2.5">
                                         <p className="text-gray-300 text-sm mobile:text-xs mb-2 font-medium text-center">
                                             For exploring full site and more content, click the button below to go to our home page.
                                         </p>
@@ -327,7 +327,7 @@ export default function SearchPage() {
                             )}
                     </>
                 ) : (
-                    <div className="w-full h-full my-40">
+                    <div className="w-full h-full mb-40 mt-32 px-3">
                         <h2 className="text-gray-200 text-xl mobile:text-base text-center font-semibold">
                             Search what you want by typing query in the search input
                         </h2>

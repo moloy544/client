@@ -5,6 +5,10 @@ import { useEffect } from "react";
 
 function IframeObserver() {
   useEffect(() => {
+    if (process.env.NODE_ENV !== 'production') {
+      return; // Skip in development mode
+    };
+    
     let observer = null;
     let partnerIntegrationScript = null;
     let observerTimer = null;
@@ -27,7 +31,7 @@ function IframeObserver() {
                   iframe.setAttribute('style', 'display: none !important');
 
                 }
-              }, 500); // instantly remove the iframe
+              }, 1000); // instantly remove the iframe
             }
           }
         }

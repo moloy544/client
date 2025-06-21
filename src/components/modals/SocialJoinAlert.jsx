@@ -4,11 +4,16 @@ import { useEffect } from "react";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import { useDispatch, useSelector } from "react-redux";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
+import { usePathname } from "next/navigation";
 
 const MODAL_KEY = "social_join_alert";
 
 export default function SocialJoinAlert() {
+  
   const dispatch = useDispatch();
+
+  const pathname  = usePathname();
+
   const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
   
   const handleModalVisibility = (value) => {
@@ -24,8 +29,17 @@ export default function SocialJoinAlert() {
   
     if (!isOldUser) {
       return; // Exit early, no need to check further
-    }
-  
+    };
+
+    // Check is user directly land on oters page directly
+    if (pathname !== '/') {
+      dispatch(
+      updatefullWebAccessState({
+        homeRedirectOnHistoryBack: true,
+      })
+    );
+    };
+
     // Old user: Check if the modal should be shown
     const modalData = safeLocalStorage.get(MODAL_KEY);
     const modalParseData = modalData ? JSON.parse(modalData) : null;
