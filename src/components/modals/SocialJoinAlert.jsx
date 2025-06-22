@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { safeLocalStorage } from "@/utils/errorHandlers";
+import { safeLocalStorage, safeSessionStorage } from "@/utils/errorHandlers";
 import { useDispatch, useSelector } from "react-redux";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
 import { usePathname } from "next/navigation";
@@ -9,13 +9,13 @@ import { usePathname } from "next/navigation";
 const MODAL_KEY = "social_join_alert";
 
 export default function SocialJoinAlert() {
-  
+
   const dispatch = useDispatch();
 
-  const pathname  = usePathname();
+  const pathname = usePathname();
 
   const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
-  
+
   const handleModalVisibility = (value) => {
     dispatch(
       updatefullWebAccessState({
@@ -26,19 +26,16 @@ export default function SocialJoinAlert() {
 
   useEffect(() => {
     const isOldUser = safeLocalStorage.get('utId');
-  
+
     if (!isOldUser) {
       return; // Exit early, no need to check further
     };
 
-    // Check is user directly land on oters page directly
-    if (pathname !== '/') {
-      dispatch(
-      updatefullWebAccessState({
-        homeRedirectOnHistoryBack: true,
-      })
-    );
-    };
+    // Check is user directly land on oters page directly first time
+    if (typeof sessionStorage.getItem('homeRedirectOnHistoryBack') !== 'string') {
+    
+      safeSessionStorage.set('homeRedirectOnHistoryBack', String(pathname !== '/'));
+    }
 
     // Old user: Check if the modal should be shown
     const modalData = safeLocalStorage.get(MODAL_KEY);
@@ -56,7 +53,7 @@ export default function SocialJoinAlert() {
       handleModalVisibility(false);
     }
   }, []);
-  
+
 
   const handleDontShowAgain = () => {
     handleModalVisibility(false);

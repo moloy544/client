@@ -18,7 +18,7 @@ const videoType = ["hd", "cam", "hd-cam"]
 const statusOptions = ['released', 'coming soon']
 const languageOptions = ['hindi', 'hindi dubbed', 'english', 'bengali', 'bengali dubbed', 'punjabi', 'tamil', 'telugu', 'malayalam', 'kannada'];
 const industryOptions = ['bollywood', 'hollywood', 'south', 'tollywood', 'international', 'bangladeshi', 'pollywood'];
-const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Apple TV', 'Cartoons', 'Animes'];
+const tagOptions = ['Netflix', 'Amazon Prime', 'Amazon Mini Tv', 'HotStar', 'Zee5', 'Marvel Studio', 'Apple TV', 'Cartoons', 'Animes', 'MaxPlayer'];
 const videoSource = process.env.VIDEO_SERVER_URL;
 
 const initialMoviesData = {
@@ -49,10 +49,12 @@ export default function AdminPage() {
     const [imagePreview, setImagePreview] = useState("");
     const [processing, setProcessing] = useState(false);
     const dateInputRef = useRef(null);
+    const [skip, setSkip] = useState(0);
 
     const getMovieOneByOne = async () => {
         try {
-            const response = await axios.get(`${appConfig.backendUrl}/api/v1/admin/movies/one_by_one`);
+           
+            const response = await axios.get(`${appConfig.backendUrl}/api/v1/admin/movies/one_by_one?skip=${skip}`);
             if (response.status === 200) {
                 const data = response.data.movie;
 
@@ -74,6 +76,7 @@ export default function AdminPage() {
                 if (!isCreatedDateUpdate) {
                     setIsCreatedDateUpdate("no");
                 }
+                setSkip(prevSkip => prevSkip + 1);
             } else {
                 alert("No more movies found with audioType and video typ no exist");
             }

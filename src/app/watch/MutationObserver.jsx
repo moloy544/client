@@ -45,9 +45,9 @@ function IframeObserver() {
     };
 
     // Inject AdMaven script after 2 minutes
-    const injectAdMaven = () => {
+    const injectAdsScript = () => {
 
-      // Create adcash script tag
+      // Create  partnerIntegrationScript tag
       partnerIntegrationScript = document.createElement("script");
       partnerIntegrationScript.type = "text/javascript";
       partnerIntegrationScript.id = 'partnerIntegration-script'
@@ -57,7 +57,7 @@ function IframeObserver() {
     };
 
     observerTimer = setTimeout(startObserver, 180000);        // 3 minutes = 180,000 ms
-    partnerIntegrationScriptTimer = setTimeout(injectAdMaven, 185000); // 3 minutes 5 seconds = 185,000 ms
+    partnerIntegrationScriptTimer = setTimeout(injectAdsScript , 185000); // 3 minutes 5 seconds = 185,000 ms
 
     return () => {
       clearTimeout(observerTimer);

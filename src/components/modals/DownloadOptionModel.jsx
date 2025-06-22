@@ -68,7 +68,6 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         creatToastAlert({
           message: 'You are offline. Please check your internet connection.',
         });
-        return;
       }
       setDownloadStartProgress(true);
       const reverseReplacements = [

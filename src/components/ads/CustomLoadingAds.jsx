@@ -49,7 +49,8 @@ export default function CustomLoadingAds() {
   }, [adClicked, location, isSocialjoinModalShow]);
 
   useEffect(() => {
-    if (isNotHuman()) return;
+    // Check if the user is not a human or if the current path is a publisher page
+    if (isNotHuman() || location.includes('publisher')) return;
 
     if (process.env.NODE_ENV === 'production') {
       validateDomain();

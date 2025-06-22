@@ -6,7 +6,6 @@ const initialState = {
    UserRestrictedChecking: false,
    isUserRestricted: false,
    userRealIp: null,
-   homeRedirectOnHistoryBack: false
 };
 
 export const fullWebAccessStateSlice = createSlice({
