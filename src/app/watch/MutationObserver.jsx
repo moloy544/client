@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 function IframeObserver() {
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV === 'development') {
       return; // Skip in development mode
     };
 
