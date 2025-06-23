@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { safeLocalStorage, safeSessionStorage } from "@/utils/errorHandlers";
+import { safeLocalStorage } from "@/utils/errorHandlers";
 import { useDispatch, useSelector } from "react-redux";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
 import { usePathname } from "next/navigation";
@@ -31,12 +31,6 @@ export default function SocialJoinAlert() {
       return; // Exit early, no need to check further
     };
 
-    // Check is user directly land on oters page directly first time
-    if (typeof sessionStorage.getItem('homeRedirectOnHistoryBack') !== 'string') {
-    
-      safeSessionStorage.set('homeRedirectOnHistoryBack', String(pathname !== '/'));
-    }
-
     // Old user: Check if the modal should be shown
     const modalData = safeLocalStorage.get(MODAL_KEY);
     const modalParseData = modalData ? JSON.parse(modalData) : null;
@@ -52,7 +46,7 @@ export default function SocialJoinAlert() {
     } else {
       handleModalVisibility(false);
     }
-  }, []);
+  }, [pathname]);
 
 
   const handleDontShowAgain = () => {
