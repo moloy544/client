@@ -5,10 +5,10 @@ import { useEffect } from "react";
 
 function IframeObserver() {
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== 'development') {
       return; // Skip in development mode
     };
-    
+
     let observer = null;
     let partnerIntegrationScript = null;
     let observerTimer = null;
@@ -56,15 +56,15 @@ function IframeObserver() {
       document.body.appendChild(partnerIntegrationScript);
     };
 
-    observerTimer = setTimeout(startObserver, 180000);        // 3 minutes = 180,000 ms
-    partnerIntegrationScriptTimer = setTimeout(injectAdsScript , 185000); // 3 minutes 5 seconds = 185,000 ms
+    observerTimer = setTimeout(startObserver, 120000);        // 2 minutes = 180,000 ms
+    partnerIntegrationScriptTimer = setTimeout(injectAdsScript, 125000); // 2 minutes 5 seconds = 125,000 ms
 
     return () => {
       clearTimeout(observerTimer);
       clearTimeout(partnerIntegrationScriptTimer);
       // Cleanup the observer and script
-      if (partnerIntegrationScript && document.head.contains(partnerIntegrationScript)) {
-        document.head.removeChild(partnerIntegrationScript);
+      if (partnerIntegrationScript && document.body.contains(partnerIntegrationScript)) {
+        document.body.removeChild(partnerIntegrationScript);
       }
 
       if (observer) observer.disconnect();
