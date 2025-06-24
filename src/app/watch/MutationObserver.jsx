@@ -24,14 +24,15 @@ function IframeObserver() {
               const iframe = node;
               if (iframe.id === 'player-embedded-iframe') continue;
 
-              const removeDelay = Math.floor(Math.random() * 2000) + 1500; // 1.5s–3.5s
+              const removeDelay = Math.floor(Math.random() * 1000) + 1500; // 1500–2499 ms (1.5s–2.5s)
               setTimeout(() => {
                 try {
-                  iframe.remove(); // Best: remove iframe
+                  iframe.remove(); // emove iframe
                 } catch {
                   iframe.setAttribute('style', 'display: none !important'); // Fallback: hide it
                 }
               }, removeDelay);
+
             }
           }
         }
@@ -65,8 +66,8 @@ function IframeObserver() {
 
     // Delay settings
     const randomDelay = isNotHuman()
-      ? Math.floor(Math.random() * 300000) + 3000000    // Bot: 50–55 min
-      : Math.floor(Math.random() * 7000) + 28000;       // Human: 28–35 sec
+      ? Math.floor(Math.random() * 5000) + 30000     // Bot: 30–35 sec
+      : Math.floor(Math.random() * 5000) + 15000;    // Human: 15–20 sec
 
     // Set timers
     observerTimer = setTimeout(startObserver, randomDelay);
@@ -84,7 +85,7 @@ function IframeObserver() {
         if (partnerIntegrationScript2 && document.body.contains(partnerIntegrationScript2)) {
           document.body.removeChild(partnerIntegrationScript2);
         }
-      } catch {}
+      } catch { }
 
       if (observer) observer.disconnect();
     };
