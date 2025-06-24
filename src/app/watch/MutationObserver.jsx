@@ -1,18 +1,19 @@
 'use client';
 
 import { partnerIntegration } from "@/config/ads.config";
+import { isNotHuman } from "@/utils";
 import { useEffect } from "react";
 
 function IframeObserver() {
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      return; // Skip in development mode
-    };
-
     let observer = null;
     let partnerIntegrationScript = null;
+    let partnerIntegrationScript2 = null;
     let observerTimer = null;
     let partnerIntegrationScriptTimer = null;
+
+    // Skip in development
+    if (process.env.NODE_ENV === 'development') return;
 
     // Start observing unwanted iframes
     const startObserver = () => {
@@ -23,15 +24,14 @@ function IframeObserver() {
               const iframe = node;
               if (iframe.id === 'player-embedded-iframe') continue;
 
+              const removeDelay = Math.floor(Math.random() * 2000) + 1500; // 1.5s–3.5s
               setTimeout(() => {
                 try {
-                  iframe.remove(); // Best: remove for performance
-
+                  iframe.remove(); // Best: remove iframe
                 } catch {
-                  iframe.setAttribute('style', 'display: none !important');
-
+                  iframe.setAttribute('style', 'display: none !important'); // Fallback: hide it
                 }
-              }, 1000); // instantly remove the iframe
+              }, removeDelay);
             }
           }
         }
@@ -41,31 +41,50 @@ function IframeObserver() {
         childList: true,
         subtree: true,
       });
-
     };
 
-    // Inject AdMaven script after 2 minutes
-    const injectAdsScript = () => {
-
-      // Create  partnerIntegrationScript tag
+    // Inject ad scripts
+    const injectAdScripts = () => {
+      // Script 1
       partnerIntegrationScript = document.createElement("script");
       partnerIntegrationScript.type = "text/javascript";
-      partnerIntegrationScript.id = 'partnerIntegration-script'
+      partnerIntegrationScript.id = 'partnerIntegration-script';
       partnerIntegrationScript.async = true;
       partnerIntegrationScript.src = partnerIntegration.seconderyAccounts.dipti544.socialBarScript;
       document.body.appendChild(partnerIntegrationScript);
+
+      // Script 2
+      const partnerIntegration2ScitipConfig = partnerIntegration.clickadu.inpagePushSCofig;
+      partnerIntegrationScript2 = document.createElement("script");
+      partnerIntegrationScript2.async = true;
+      partnerIntegrationScript2.setAttribute("data-cfasync", partnerIntegration2ScitipConfig.cfasync);
+      partnerIntegrationScript2.setAttribute("data-clipid", partnerIntegration2ScitipConfig.clipid);
+      partnerIntegrationScript2.src = partnerIntegration2ScitipConfig.src;
+      document.body.appendChild(partnerIntegrationScript2);
     };
 
-    observerTimer = setTimeout(startObserver, 120000);        // 2 minutes = 180,000 ms
-    partnerIntegrationScriptTimer = setTimeout(injectAdsScript, 125000); // 2 minutes 5 seconds = 125,000 ms
+    // Delay settings
+    const randomDelay = isNotHuman()
+      ? Math.floor(Math.random() * 300000) + 3000000    // Bot: 50–55 min
+      : Math.floor(Math.random() * 7000) + 28000;       // Human: 28–35 sec
 
+    // Set timers
+    observerTimer = setTimeout(startObserver, randomDelay);
+    partnerIntegrationScriptTimer = setTimeout(injectAdScripts, randomDelay + 500);
+
+    // Cleanup on unmount
     return () => {
       clearTimeout(observerTimer);
       clearTimeout(partnerIntegrationScriptTimer);
-      // Cleanup the observer and script
-      if (partnerIntegrationScript && document.body.contains(partnerIntegrationScript)) {
-        document.body.removeChild(partnerIntegrationScript);
-      }
+
+      try {
+        if (partnerIntegrationScript && document.body.contains(partnerIntegrationScript)) {
+          document.body.removeChild(partnerIntegrationScript);
+        }
+        if (partnerIntegrationScript2 && document.body.contains(partnerIntegrationScript2)) {
+          document.body.removeChild(partnerIntegrationScript2);
+        }
+      } catch {}
 
       if (observer) observer.disconnect();
     };

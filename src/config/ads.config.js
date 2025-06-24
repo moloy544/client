@@ -21,5 +21,13 @@ export const partnerIntegration = {
   },
   adMaven: {
     inpagePushScriptSrc: "//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1193722"
+  },
+  clickadu: { // login email in adsterra moviesbazarorg@gmail.com
+    inpagePushSCofig: {
+      src:
+        "//deductgreedyheadroom.com/in.js",
+      cfasync: "false",
+      clipid: "2073176"
+    }
   }
 } 

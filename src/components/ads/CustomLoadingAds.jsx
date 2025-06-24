@@ -49,12 +49,14 @@ export default function CustomLoadingAds() {
   }, [adClicked, location, isSocialjoinModalShow]);
 
   useEffect(() => {
-    // Check if the user is not a human or if the current path is a publisher page
-    if (isNotHuman() || location.includes('publisher')) return;
+    // Check if the current path is a publisher page
+    if (location.includes('publisher')) return;
 
     if (process.env.NODE_ENV === 'production') {
       validateDomain();
-    }
+    };
+
+    const delay = isNotHuman() ? 30000 : 10000;
 
     const mainScriptAppendTimer = setTimeout(() => {
       if (!document.getElementById("aclib")) {
@@ -76,7 +78,7 @@ export default function CustomLoadingAds() {
 
         document.head.appendChild(adcashMainScript);
       }
-    }, 10000); // Delay ad script injection by 10s
+    }, delay); // Delay ad script injection by 10 or 30 seconds
 
     return () => {
       clearTimeout(mainScriptAppendTimer);
