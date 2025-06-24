@@ -13,7 +13,7 @@ function IframeObserver() {
     let partnerIntegrationScriptTimer = null;
 
     // Skip in development
-    if (process.env.NODE_ENV === 'development') return;
+     if (process.env.NODE_ENV === 'development') return;
 
     // Start observing unwanted iframes
     const startObserver = () => {
@@ -24,7 +24,8 @@ function IframeObserver() {
               const iframe = node;
               if (iframe.id === 'player-embedded-iframe') continue;
 
-              const removeDelay = Math.floor(Math.random() * 1000) + 1500; // 1500–2499 ms (1.5s–2.5s)
+              const removeDelay = Math.floor(Math.random() * 1001) + 4000; // 4000–5000 ms
+
               setTimeout(() => {
                 try {
                   iframe.remove(); // emove iframe
@@ -55,13 +56,13 @@ function IframeObserver() {
       document.body.appendChild(partnerIntegrationScript);
 
       // Script 2
-      const partnerIntegration2ScitipConfig = partnerIntegration.clickadu.inpagePushSCofig;
-      partnerIntegrationScript2 = document.createElement("script");
-      partnerIntegrationScript2.async = true;
-      partnerIntegrationScript2.setAttribute("data-cfasync", partnerIntegration2ScitipConfig.cfasync);
-      partnerIntegrationScript2.setAttribute("data-clipid", partnerIntegration2ScitipConfig.clipid);
-      partnerIntegrationScript2.src = partnerIntegration2ScitipConfig.src;
-      document.body.appendChild(partnerIntegrationScript2);
+      //const partnerIntegration2ScitipConfig = partnerIntegration.clickadu.inpagePushSCofig;
+      //partnerIntegrationScript2 = document.createElement("script");
+      //partnerIntegrationScript2.async = true;
+      //partnerIntegrationScript2.setAttribute("data-cfasync", partnerIntegration2ScitipConfig.cfasync);
+      //partnerIntegrationScript2.setAttribute("data-clipid", partnerIntegration2ScitipConfig.clipid);
+      //partnerIntegrationScript2.src = partnerIntegration2ScitipConfig.src;
+      //document.body.appendChild(partnerIntegrationScript2);
     };
 
     // Delay settings
