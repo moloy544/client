@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { motion } from "framer-motion";
 import { appConfig } from "@/config/config";
 import { handleEmailUs, isAndroid, isIOS } from "@/helper/helper";
 import { ModelsController } from "@/lib/EventsHandler"
@@ -280,42 +281,11 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                       </div>
                     )}
                     <div className="font-semibold my-2 text-gray-600">Quality: {sourceUrl.quality}</div>
-                    <div className="space-y-3">
-                      {sourceUrl.urls?.map((source, index) => (
-                        isAdzOpen ? (
-                          <a
-                            key={index}
-                            href={source}
-                            target="_blank"
-                            rel="nofollow noopener noreferrer"
-                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold text-sm`}
-                          >
-                            {sourceUrl.urls.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
-                            {source.includes('fdownload.php') && <span className="text-xs ml-2">{"(Stable)"}</span>}
-                          </a>
-                        ) : (
-                          <button
-                            type="button"
-                            className={`block w-full ${index === 0 ? "bg-gray-600 hover:bg-gray-700" : "bg-slate-600 hover:bg-slate-700"} text-white py-2 rounded transition font-semibold text-sm`}
-                            key={index}
-                            onClick={() => {
-                              openDirectLink(
-                                () => {
-                                  setIsAdzOpen(true);
-                                  creatToastAlert({
-                                    message: "Now you can download the content.",
-
-                                  })
-                                }
-                              );
-                            }}
-                          >
-                            {sourceUrl.urls.length > 1 ? `Server ${index + 1} - Download Now` : "Download Now"}
-                            {source.includes('fdownload.php') && <span className="text-xs ml-2">{"(Stable)"}</span>}
-                          </button>
-                        )
-                      ))}
-                    </div>
+                    <WaitTimerDownloadOptions
+                      sourceUrl={sourceUrl}
+                      isAdzOpen={isAdzOpen}
+                      setIsAdzOpen={setIsAdzOpen}
+                    />
                     <button
                       onClick={() => setSourceUrl(null)}
                       className="mt-5 text-base font-medium text-red-pure hover:text-red-700 py-1.5 px-4 my-3"
@@ -484,3 +454,92 @@ const LanguageGuideModal = ({ isOpen, handleClose }) => {
     </ModelsController>
   );
 };
+
+function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
+  const [timeLeft, setTimeLeft] = useState(15);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setIsReady(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="text-sm text-gray-300 font-semibold my-4 text-center">
+      {!isReady ? (
+        <motion.span
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="text-gray-800 font-semibold"
+        >
+          Please wait <span className="text-blue-700">{timeLeft} second{timeLeft > 1 ? "s" : ""}</span> to get your download link.
+        </motion.span>
+      ) : (
+        <motion.div
+          className="space-y-3"
+          initial={{ opacity: 0, y: 40, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.5, ease: "backOut" }}
+        >
+
+          {sourceUrl.urls?.map((source, index) =>
+            isAdzOpen ? (
+              <a
+                key={index}
+                href={source}
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                className={`block w-full ${index === 0
+                  ? "bg-gray-600 hover:bg-gray-700"
+                  : "bg-slate-600 hover:bg-slate-700"
+                  } text-white py-2 rounded transition font-semibold text-sm`}
+              >
+                {sourceUrl.urls.length > 1
+                  ? `Server ${index + 1} - Download Now`
+                  : "Download Now"}
+                {source.includes("fdownload.php") && (
+                  <span className="text-xs ml-2">(Stable)</span>
+                )}
+              </a>
+            ) : (
+              <button
+                type="button"
+                key={index}
+                className={`block w-full ${index === 0
+                  ? "bg-gray-600 hover:bg-gray-700"
+                  : "bg-slate-600 hover:bg-slate-700"
+                  } text-white py-2 rounded transition font-semibold text-sm`}
+                onClick={() => {
+                  openDirectLink(() => {
+                    setIsAdzOpen(true);
+                    creatToastAlert({
+                      message: "Now you can download the content.",
+                    });
+                  });
+                }}
+              >
+                {sourceUrl.urls.length > 1
+                  ? `Server ${index + 1} - Download Now`
+                  : "Download Now"}
+                {source.includes("fdownload.php") && (
+                  <span className="text-xs ml-2">(Stable)</span>
+                )}
+              </button>
+            )
+          )}
+        </motion.div>
+      )}
+    </div>
+  );
+}

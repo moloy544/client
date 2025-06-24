@@ -10,7 +10,6 @@ import MovieDetails from "../MovieDetails";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
 import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
-import IframeObserver from "../MutationObserver";
 
 const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWrongError'), { ssr: false });
 
@@ -197,7 +196,7 @@ export default async function Page({ params }) {
           suggestions={suggestions}
           userIp={userIp}
         />
-        <IframeObserver />
+        
         <Footer />
       </InspectPreventer>
     </div>

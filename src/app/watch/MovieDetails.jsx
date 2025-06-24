@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import Script from "next/script";
 import Image from "next/image";
 import { creatToastAlert, resizeImage, transformToCapitalize } from "@/utils";
 import { ModelsController } from "@/lib/EventsHandler";
@@ -18,7 +19,7 @@ import RestrictedModal from "@/components/modals/RestrictedModal";
 import { useSelector } from "react-redux";
 import RestrictionsCheck from "@/components/RestrictionsCheck";
 import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
-import Script from "next/script";
+import IframeObserver from "./MutationObserver";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 
@@ -356,6 +357,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
           strategy="afterInteractive"
         />
       )}
+
+      <IframeObserver />
     </>
   )
 };
