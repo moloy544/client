@@ -157,15 +157,6 @@ function editActorsImageUrl(imageUrl, transformValue) {
  return imageUrl; // Return the original URL if it's not a TMDb image
 }
 
-const isMobileDevice = () => {
-  if (navigator.userAgentData) {
-    return navigator.userAgentData.mobile;
-  } else {
-    // Fallback to older method
-    return /Mobi|Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  }
-};
-
 
 function isNotHuman() {
 
@@ -207,6 +198,5 @@ export {
   creatToastAlert,
   resizeImage,
   editActorsImageUrl,
-  isMobileDevice,
   isNotHuman
 }

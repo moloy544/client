@@ -1,19 +1,3 @@
-
-export function isIOS() {
-  let userAgent;
-  if (typeof window!=="undefined") {
-     userAgent = window.navigator.userAgent.toLowerCase();
-  }else{
-    userAgent = navigator.userAgent.toLowerCase();
-  }
-    
-    return /iphone|ipad|ipod/.test(userAgent);
-};
-
-export function isAndroid() {
-    return /android/i.test(navigator.userAgent);
-};
-
 export function generateRandomID(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';

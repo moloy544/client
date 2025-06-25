@@ -11,6 +11,7 @@ import { creatToastAlert } from "@/utils";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
 import RestrictedModal from "./RestrictedModal";
 import { openDirectLink } from "@/utils/ads.utility";
+import { useDeviceType } from "@/hooks/deviceChecker";
 
 const formatQualityType = (quality, qualityType) => {
 
@@ -62,6 +63,8 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   const [isAdzOpen, setIsAdzOpen] = useState(false);
   const [backupServerResponseSource, setBackupServerResponseSource] = useState({});
   const { UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
+
+  const { isIOS, isAndroid, isDesktop } = useDeviceType();
 
   const handleDownload = async (sourceIndex, url, quality) => {
     try {
@@ -157,6 +160,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   if (!links || !Array.isArray(links) || links.length === 0) {
     return null
   };
+
   return (
     <>
       {isOpen && UserRestrictedChecking ? (
@@ -210,7 +214,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                   <p className="break-words whitespace-normal">{title}</p>
                 </div>
 
-                {isIOS() ? (
+                {isIOS ? (
                   <p className="text-xs text-gray-600 font-semibold my-4">
                     <span className="text-gray-800 font-bold">Note:</span> We detected you&rsquo;re using an iPhone.
                     To play this file, install <span className="font-bold text-yellow-600">VLC Player</span> from the App Store,
@@ -219,13 +223,18 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                       Click here to install VLC Player
                     </a>.
                   </p>
-                ) : isAndroid() && (
+                ) : isAndroid ? (
                   <p className="text-xs text-gray-600 font-semibold my-4">
                     <span className="text-gray-800 font-bold">Note:</span> If the downloaded file is not playing properly on your phone,
                     install <span className="font-bold text-yellow-600">VLC Player</span> from the Play Store.
                     <a className="text-blue-700 font-semibold underline" href="https://play.google.com/store/apps/details?id=org.videolan.vlc" target="_blank" rel="nofollow">
                       Click here to install VLC Player
                     </a>.
+                  </p>
+                ) : (
+                  <p className="text-xs text-gray-600 font-semibold my-4">
+                    <span className="text-gray-800 font-bold">Note:</span> If the downloaded file is not playing properly on your device, install the <span className="font-bold text-yellow-600">VLC Player</span> from the official website.
+                    <a className="text-blue-700 font-semibold underline ml-1" href="https://www.videolan.org/vlc/" target="_blank" rel="nofollow">Click here to download VLC Player</a>.
                   </p>
                 )}
 

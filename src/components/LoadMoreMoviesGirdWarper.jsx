@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { isMobileDevice, loadMoreFetch } from "@/utils";
+import { loadMoreFetch } from "@/utils";
 import { updateLoadMovies } from "@/context/loadMoviesState/loadMoviesSlice";
 import FilterModel from "./modals/FilterModel";
 import BacktoTopButton from "./buttons/BacktoTopButton";

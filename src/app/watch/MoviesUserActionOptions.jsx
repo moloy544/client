@@ -8,7 +8,6 @@ import { safeLocalStorage } from "@/utils/errorHandlers";
 import { useSelector } from "react-redux";
 import FullScreenBackdropLoading from "@/components/loadings/BackdropLoading";
 
-
 // Report content model dinamic import
 const ReportModel = dynamic(() => import('@/components/modals/ReportModel'), {
   ssr: false,
@@ -50,7 +49,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
         text: `Watch ${title + " " + '(' + releaseYear + ')' + " " + type} online free only on moviesbazar`,
         url: `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`,
       })
-        .catch((error) => console.error('Error sharing movie:', error));
+        .catch((error) => console.error('Error sharing content:', error));
     };
   };
 

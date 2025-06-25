@@ -2,11 +2,11 @@
 
 import { memo, useCallback, useEffect, useRef } from "react";
 import { useOrientation } from "@/hooks/hook";
-import { isMobileDevice } from "@/utils";
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
 import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
+import { useDeviceType } from "@/hooks/deviceChecker";
 
 //Memoization to avoid unnecessary re-renders
 const areEqual = (prevProps, nextProps) => {
@@ -23,7 +23,7 @@ const VidStackPlayer = memo(({ title, source }) => {
 
     const isPortrait = useOrientation();
 
-    const isMobile = isMobileDevice();
+    const { isMobile } = useDeviceType();
 
     const handleObservers = useCallback(async (entries) => {
 
