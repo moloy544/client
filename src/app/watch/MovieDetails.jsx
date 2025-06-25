@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import RestrictionsCheck from "@/components/RestrictionsCheck";
 import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
 import IframeObserver from "./MutationObserver";
+import { safeSessionStorage } from "@/utils/errorHandlers";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 
@@ -43,6 +44,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     multiAudio,
     isContentRestricted,
     permanentDisabled,
+    isAdult,
     isInTheater,
     ticketBookLink
   } = movieDetails || {};
@@ -224,6 +226,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               contentTitle={title}
               contentType={type || "content"}
               isContentRestricted={isContentRestricted}
+              isAdult={isAdult}
               isInTheater={isInTheater}
               ticketBookLink={ticketBookLink}
             />
@@ -374,12 +377,14 @@ function PlayButton({
   isContentRestricted,
   isInTheater,
   ticketBookLink,
+  isAdult
 }) {
   const [showDropdown, setDropDown] = useState(false);
   const [isRpmplayOnline, setIsRpmplayOnline] = useState(false);
   const [isInstractionsModalOpen, setInstractionsModalOpen] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [selectedPlaySource, setSelectedPlaySource] = useState(null);
+  const [adultAlert, setAdultAlert] = useState(false)
 
   const { isUserRestricted, UserRestrictedChecking } = useSelector(
     (state) => state.fullWebAccessState
@@ -402,7 +407,7 @@ function PlayButton({
         visibilityTime: 6000,
       });
       return;
-    }
+    };
 
     const findRpmplayOnline = watchLinks.filter(({ source }) =>
       source.includes("rpmplay.online") || source.includes("p2pplay.online")
@@ -413,6 +418,23 @@ function PlayButton({
     }
 
     setDropDown((prev) => !prev);
+  };
+
+  const checkAdult = () => {
+    const isAdultConfirm = safeSessionStorage.get("isAdultConfirmed");
+    if (isAdultConfirm) {
+
+    }
+    if (isAdult) {
+      if (isAdultConfirm) {
+        play();
+      } else {
+        setAdultAlert(true)
+      }
+
+    } else {
+      play()
+    }
   };
 
   const hideDropDown = () => {
@@ -440,7 +462,7 @@ function PlayButton({
       <div className="w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <button
           type="button"
-          onClick={play}
+          onClick={checkAdult}
           title="Play"
           className="bg-gray-950 bg-opacity-70 text-gray-100 hover:text-cyan-500 w-12 h-12 flex justify-center items-center rounded-full transition-transform duration-300 hover:scale-110"
         >
@@ -458,6 +480,35 @@ function PlayButton({
         </button>
       </div>
 
+      <ModelsController visibility={adultAlert} windowScroll={false}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-[2px] px-3 py-2">
+          <div className="bg-zinc-900 p-6 rounded-2xl shadow-2xl max-w-sm w-full text-center relative">
+            <h2 className="text-2xl mobile:text-xl font-bold text-red-600 mb-4">🔞 18+ Age Warning</h2>
+            <p className="text-gray-300 mb-6 text-base">
+              This content is intended only for viewers aged 18 and above. By clicking continue, you confirm that you are 18 years or older.
+            </p>
+            <div className="flex justify-around text-sm">
+              <button
+                onClick={() => {
+                  setAdultAlert(false)
+                  play();
+                  safeSessionStorage.set("isAdultConfirmed", "true")
+                }}
+                className="py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition duration-300"
+              >
+                I am 18+ Continue
+              </button>
+              <button
+                onClick={() => setAdultAlert(false)}
+                className="py-2 px-4 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-xl transition duration-300"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </ModelsController>
+
       {/* Confirmation Modal Before Play */}
       {showConfirmModal && selectedPlaySource && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
@@ -470,9 +521,9 @@ function PlayButton({
             >
               <i className="bi bi-x-lg text-base"></i>
             </button>
-              <h2 className="text-lg font-bold text-gray-800 pt-1.5">
-                Playback Guide For This Server
-              </h2>
+            <h2 className="text-lg font-bold text-gray-800 pt-1.5">
+              Playback Guide For This Server
+            </h2>
             <p className="text-sm text-gray-600 font-semibold">
               If the video buffers, just tap the <strong>10 second</strong> skip button to continue playback. Use 10 second back button to catch skipped scenes. This trick works best when the video keeps buffering.
             </p>

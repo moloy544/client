@@ -37,6 +37,7 @@ const initialMoviesData = {
     videoTrim: 0,
     castDetails: [],
     tags: [],
+    isAdult: false,
 };
 
 export default function AdminPage() {
@@ -204,8 +205,13 @@ export default function AdminPage() {
             if(details.displayTitle.trim() === ""){
                 delete details.displayTitle;
             };
+        
             if (details.videoTrim === 0) {
                 delete details.videoTrim;
+            };
+
+            if (typeof details.isAdult === "boolean" && details.isAdult !==true) {
+                delete details.isAdult
             };
 
             // add movie data sate in form data
@@ -665,6 +671,46 @@ export default function AdminPage() {
                                                 className="sr-only"
                                                 onChange={() => handleInputChange(true, 'multiAudio')}
                                                 checked={state.multiAudio === true}
+                                            />
+
+                                            <p className="text-xs font-medium capitalize">Yes</p>
+                                        </label>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div className="flex flex-col my-3 gap-2 space-y-2">
+                                <label className="font-bold text-gray-800">Mark as adult</label>
+                                <fieldset className="flex flex-wrap gap-3">
+                                    <div>
+                                        <label
+                                            htmlFor="isAdult-false"
+                                            className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${!state.isAdult ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                id="isAdult-false"
+                                                value="false"
+                                                className="sr-only"
+                                                onChange={() => handleInputChange(false, 'isAdult')}
+                                                checked={state.isAdult === false}
+                                            />
+
+                                            <p className="text-xs font-medium capitalize">No</p>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label
+                                            htmlFor="isAdult-true"
+                                            className={`flex cursor-pointer items-center justify-center rounded-md border px-2.5 py-1.5 text-gray-900 ${state.isAdult ? "border-blue-500 bg-blue-500 text-white" : "bg-white border-gray-200 hover:border-gray-300"}`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                id="isAdult-true"
+                                                value="true"
+                                                className="sr-only"
+                                                onChange={() => handleInputChange(true, 'isAdult')}
+                                                checked={state.isAdult === true}
                                             />
 
                                             <p className="text-xs font-medium capitalize">Yes</p>
