@@ -22,23 +22,10 @@ export async function middleware(req) {
       return NextResponse.redirect(new URL('/publisher', req.url));
     }
   }
-
-  // 🔒 Protect DMCA admin routes
-  if (path.startsWith("/dmca-admin")) {
-    // If not logged in and not on login page
-    if (!dmcaAdminCookie && path !== "/dmca-admin/login") {
-      return NextResponse.redirect(new URL('/dmca-admin/login', req.url));
-    }
-    // If logged in and tries to access login page again
-    if (dmcaAdminCookie && path === "/dmca-admin/login") {
-      return NextResponse.redirect(new URL('/dmca-admin', req.url));
-    }
-  }
-
   return NextResponse.next();
 }
 
 // ✅ Apply to both paths
 export const config = {
-  matcher: ['/publisher/:path*', '/dmca-admin/:path*'],
+  matcher: ['/publisher/:path*'],
 };

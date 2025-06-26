@@ -120,6 +120,7 @@ export default function DMCAAdminLoginPage() {
                         height={50}
                         alt="Movies Bazar Logo"
                         className="mx-auto mb-4 rounded-md w-20 h-20"
+                        priority
                     />
                     <h2 className="text-2xl mobile:text-xl font-bold text-gray-800">DMCA Admin Login</h2>
                     <p className="text-gray-600 text-base mobile:text-sm font-medium">Sign in to MoviesBazar DMCA Panel</p>
