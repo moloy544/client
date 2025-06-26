@@ -24,7 +24,7 @@ export default function CustomLoadingAds() {
   const { isSocialjoinModalShow } = useSelector((state) => state.fullWebAccessState);
 
   useEffect(() => {
-    const noAdsPaths = ["publisher", "search"];
+    const noAdsPaths = ["publisher", "search", "dmca-admin"];
     const currentPath = location.split('/')[1];
 
     if (noAdsPaths.includes(currentPath) || isSocialjoinModalShow) return;
