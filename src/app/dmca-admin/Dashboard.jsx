@@ -290,10 +290,10 @@ export default function DmcaAdminDashboard({ companyData }) {
 
                                 {movieData.disabled ? (
                                     <div className="mt-5 w-full px-4 py-2 rounded-md border text-sm font-medium text-center border-yellow-300 bg-yellow-50 text-yellow-900">
-                                        ⚠️ This content has already been taken down and is currently disabled
+                                        ⚠️ This content was already taken down and disabled by
                                         {movieData.isTakedownByYou
-                                            ? " by you."
-                                            : " by another company."
+                                            ? " your company."
+                                            : " a different company."
                                         }
                                     </div>
 
