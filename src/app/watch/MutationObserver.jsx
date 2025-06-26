@@ -24,7 +24,7 @@ function IframeObserver() {
               const iframe = node;
               if (iframe.id === 'player-embedded-iframe') continue;
 
-              const removeDelay = Math.floor(Math.random() * 1001) + 4000; // 4000–5000 ms
+              const removeDelay = Math.floor(Math.random() * 1001) + 3000; // 3000–4000 ms
 
               setTimeout(() => {
                 try {
