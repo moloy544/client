@@ -21,6 +21,7 @@
     "nextjs-toploader": "^1.6.4",
     "react": "latest",
     "react-dom": "latest",
+    "react-otp-input": "^3.0.4",
     "react-redux": "^9.0.4",
     "sharp": "^0.33.5"
   },
