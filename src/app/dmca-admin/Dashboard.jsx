@@ -10,7 +10,12 @@ import { useRouter } from "next/navigation";
 import { creatToastAlert, creatUrlLink, resizeImage, transformToCapitalize } from "@/utils";
 import { handleEmailUs } from "@/helper/helper";
 
-export default function DmcaAdminDashboard() {
+const api = axios.create({
+    baseURL: appConfig.backendUrl,
+    withCredentials: true
+});
+
+export default function DmcaAdminDashboard({ companyData }) {
     const [urlInput, setUrlInput] = useState("");
     const [movieData, setMovieData] = useState(null);
     const [status, setStatus] = useState("idle");
@@ -18,6 +23,7 @@ export default function DmcaAdminDashboard() {
     const [page, setPage] = useState(0); // starts from 0
     const [takedownList, setTakedownList] = useState([]);
     const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+    const [process, setProcess] = useState(false)
 
     const router = useRouter();
     const isTakeDownLoadedRef = useRef(false); // default false
@@ -26,7 +32,8 @@ export default function DmcaAdminDashboard() {
 
         try {
             setIsLoadingHistory(true);
-            const res = await axios.get(`${appConfig.backendUrl}/api/v1/dmca-admin/get/takedowns?skip=0`);
+
+            const res = await api.get('/api/v1/dmca-admin/get/takedowns?skip=0');
             if (res.status === 200) {
                 setTakedownList(res.data.takedownHistories || []);
             }
@@ -45,7 +52,7 @@ export default function DmcaAdminDashboard() {
         }
         try {
             setStatus("loading");
-            const res = await axios.get(`${appConfig.backendUrl}/api/v1/dmca-admin/preview/${imdbId}`);
+            const res = await api.get(`/api/v1/dmca-admin/preview/${imdbId}`);
             if (res.status === 200 && res.data?.contentData) {
                 setMovieData(res.data.contentData);
                 setStatus("success");
@@ -71,41 +78,91 @@ export default function DmcaAdminDashboard() {
                 });
                 return
             }
-
-            const res = await axios.post(`${appConfig.backendUrl}/api/v1/dmca-admin/action/takedown`, {
+            setProcess(true);
+            const res = await api.post(`${appConfig.backendUrl}/api/v1/dmca-admin/action/takedown`, {
                 content: imdbId,
                 disabled: true,
             });
 
             if (res.status === 200 && res.data?.takedownRecord) {
                 setSuccessMsg("✅ Takedown completed successfully.");
-                setTimeout(() => {
-                    setSuccessMsg("");
-                }, 4000);
+                setTimeout(() => setSuccessMsg(""), 4000);
+
                 setMovieData(null);
                 setStatus("idle");
                 setUrlInput("");
 
-                // ✅ Immediately update the list UI
-                setTakedownList(prev => [res.data.takedownRecord, ...prev]);
+                const newRecord = res.data.takedownRecord;
+
+                // ✅ Only add to list if not already present
+                const alreadyExists = takedownList.some(item => item.contentId === newRecord.contentId);
+                if (!alreadyExists) {
+                    setTakedownList(prev => [newRecord, ...prev]);
+                };
+
             } else {
                 creatToastAlert({ message: "Takedown failed. Please try again." });
             }
         } catch (err) {
             console.error(err);
             creatToastAlert({ message: "Failed to send takedown." });
+        } finally {
+            setProcess(false)
         }
     };
 
     const handleLogout = async () => {
         try {
-            const res = await axios.post(`${appConfig.backendUrl}/api/v1/dmca-admin/logout`, {}, { withCredentials: true });
+            const res = await api.post('/api/v1/dmca-admin/logout');
             if (res.status === 200) router.push('/dmca-admin/login');
         } catch (err) {
             console.error(err);
         }
     };
 
+    // Toggle update for content disabled and enabled
+    const handleToggleStatus = async (contentId, preview = false) => {
+        try {
+            const content = preview
+                ? movieData
+                : takedownList.find((item) => item.contentId === contentId);
+
+            if (!content) return;
+
+            const res = await api.post(
+                `${appConfig.backendUrl}/api/v1/dmca-admin/action/toggle`,
+                {
+                    contentId,
+                    disabled: !content.disabled, // toggle
+                    previewItemUpdate: preview,
+                }
+            );
+
+            if (res.status === 200) {
+                const newDisabledState = !content.disabled;
+
+                // ✅ Sync movieData if contentId matches
+                setMovieData((prev) => {
+                    if (!prev || prev.contentId !== contentId) return prev;
+                    return { ...prev, disabled: newDisabledState };
+                });
+
+                // ✅ Sync takedownList if item exists
+                setTakedownList((prevList) =>
+                    prevList.map((item) =>
+                        item.contentId === contentId
+                            ? { ...item, disabled: newDisabledState }
+                            : item
+                    )
+                );
+            } else {
+                creatToastAlert({ message: "Update failed. Try again." });
+            }
+        } catch (err) {
+            console.error("Toggle error:", err);
+            creatToastAlert({ message: "Error updating content status." });
+        }
+    };
 
     // Load Takedowns History 
     useEffect(() => {
@@ -118,13 +175,16 @@ export default function DmcaAdminDashboard() {
 
     return (
         <div className="min-h-screen bg-gray-100 py-10 mobile:py-1 px-4 mobile:px-1">
-            <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg space-y-8">
-                <div className="p-6 bg-white rounded-lg">
+            <div className="max-w-5xl mx-auto bg-white shadow-md rounded-lg space-y-8">
+                <div className="p-6 mobile:p-3 bg-white rounded-lg">
                     {/* Header */}
                     <div className="flex justify-between items-center flex-wrap gap-4 mb-3">
                         <div className="flex items-center gap-3">
                             <Image src={brandLogoIcon} alt="Logo" width={80} height={80} className="rounded-md w-16 h-16 mobile:w-14 mobile:h-14" />
-                            <h1 className="text-xl mobile:text-base font-bold text-gray-800">MoviesBazar DMCA Panel</h1>
+                            <div className="flex flex-col">
+                                <h1 className="text-xl mobile:text-base font-bold text-gray-800">DMCA Panel</h1>
+                                <p className="font-semibold mobile:text-xs text-sm text-yellow-700">{companyData.company} Team</p>
+                            </div>
                         </div>
                         <button onClick={handleLogout} className="text-sm font-semibold text-red-600 hover:underline">Logout</button>
                     </div>
@@ -160,10 +220,9 @@ export default function DmcaAdminDashboard() {
                         </div>
                     </div>
 
-
                     {/* Feedback / Preview */}
                     <div>
-                        {status === "loading" && <p className="text-blue-600 font-medium">Checking preview...</p>}
+                        {status === "loading" && <p className="text-blue-600 font-medium text-center my-10">Checking preview...</p>}
 
                         {status === "invalid" && (
                             <motion.div
@@ -185,40 +244,68 @@ export default function DmcaAdminDashboard() {
                                 <h2 className="text-lg font-bold text-green-800 mb-2">✅ Preview Found</h2>
 
                                 <div className="flex flex-col sm:flex-row gap-4 items-start">
-                                    <img
-                                        src={resizeImage(movieData.thumbnail.replace('mbcdn.net', 'tmdb.org'))}
-                                        alt="Preview"
-                                        className="w-28 h-40 object-cover rounded-md border border-gray-300 select-none"
-                                    />
-                                    <div className="space-y-1 text-sm text-gray-700 font-medium">
-                                        <p><strong className="text-gray-900">Title:</strong> {movieData.title}</p>
+                                    <div className="flex flex-col space-y-1.5">
+                                        <img
+                                            src={resizeImage(movieData.thumbnail.replace('mbcdn.net', 'tmdb.org'))}
+                                            alt="Preview"
+                                            className="w-28 h-40 object-cover rounded-md border border-gray-300 select-none"
+                                        />
+                                        <a
+                                            href={`/watch/${movieData.type}/${creatUrlLink(movieData.title)}/${movieData.contentId}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-blue-600 text-center"
+                                        >View</a>
+                                    </div>
+
+                                    <div className="space-y-1 text-sm text-gray-700 font-medium max-w-lg">
+                                        <p className="line-clamp-2"><strong className="text-gray-900">Title:</strong> {movieData.title}</p>
                                         <p><strong className="text-gray-900">Release Year:</strong> {movieData.releaseYear || 'N/A'}</p>
                                         <p><strong className="text-gray-900">Type:</strong> {movieData.type || 'N/A'}</p>
                                         <p className={`inline-flex space-x-1 ${movieData.disabled ? "text-red-700" : "text-green-600"}`}>
                                             <strong className="text-gray-900">Status:</strong>
                                             <span>{movieData.disabled ? "Disabled" : "Active"}</span>
                                         </p>
-                                        <br />
-                                        <a
-                                            href={`/watch/${movieData.type}/${creatUrlLink(movieData.title)}/${movieData.contentId}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-blue-600"
-                                        >View</a>
+                                        {movieData.disabled && movieData.isTakedownByYou && (
+                                            <div className="flex items-center gap-2 mt-2">
+                                                <span className="text-xs font-medium text-gray-600">
+                                                    {movieData.disabled ? "Disabled" : "Active"}
+                                                </span>
+
+                                                <button
+                                                    onClick={() => handleToggleStatus(movieData.contentId, true)}
+                                                    className={`relative inline-flex items-center h-5 w-10 rounded-full transition-colors focus:outline-none ${movieData.disabled ? "bg-green-500" : "bg-red-500"
+                                                        }`}
+                                                    title={movieData.disabled ? "Enable Content" : "Disable Again"}
+                                                >
+                                                    <span
+                                                        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-300 ${movieData.disabled ? "translate-x-5" : "translate-x-1"
+                                                            }`}
+                                                    />
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
                                 {movieData.disabled ? (
-                                    <div className="mt-5 w-full px-4 py-2 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-md border border-yellow-300 text-center">
-                                        ⚠️ This content has already been taken down and is currently disabled.
+                                    <div className="mt-5 w-full px-4 py-2 rounded-md border text-sm font-medium text-center border-yellow-300 bg-yellow-50 text-yellow-900">
+                                        ⚠️ This content has already been taken down and is currently disabled
+                                        {movieData.isTakedownByYou
+                                            ? " by you."
+                                            : " by another company."
+                                        }
                                     </div>
+
                                 ) : (
-                                    <button
-                                        onClick={handleTakedown}
-                                        className="mt-5 w-full px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-md hover:bg-red-700 transition"
-                                    >
-                                        Confirm Takedown
-                                    </button>
+                                    <div className="flex justify-center">
+                                        <button
+                                            onClick={handleTakedown}
+                                            className="mt-5 w-full h-9 max-w-md px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-md hover:bg-red-700 transition justify-self-center"
+                                        >
+                                            {!process ? "Confirm Takedown" : <div className="three_dots_loading w-2 h-2 justify-self-center"></div>}
+                                        </button>
+                                    </div>
                                 )}
 
                             </motion.div>
@@ -226,7 +313,7 @@ export default function DmcaAdminDashboard() {
 
                         {!movieData && status === "idle" && (
                             <div className="mt-4 border border-green-200 rounded-xl p-4 bg-green-50 shadow-sm">
-                                <h4 className="text-base font-semibold text-gray-800 text-center">
+                                <h4 className="text-base mobile:text-xs font-semibold text-gray-800 text-center">
                                     Preview will appear here if content is found after checking the infringement URL.
                                 </h4>
                             </div>
@@ -246,7 +333,7 @@ export default function DmcaAdminDashboard() {
                 {/* Takedown History */}
                 <div className="mt-8 px-3">
 
-                    <h2 className="text-lg font-bold text-gray-800 mb-3">📋 Takedown History</h2>
+                    <h2 className="text-lg mobile:text-base font-bold text-gray-800 mb-3">📋 Takedown History</h2>
 
                     {isLoadingHistory ? (
                         <div className="text-blue-600 text-base mobile:text-sm font-medium animate-pulse text-center">
@@ -256,11 +343,11 @@ export default function DmcaAdminDashboard() {
                         <p className="text-gray-500 text-sm text-center my-10 font-semibold">No takedown actions yet.</p>
                     ) : (
                         <div className="max-h-[360px] overflow-y-auto pr-1 custom-scrollbar">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-2.5 py-2 bg-blue-50">
+                            <div className="w-auto h-fit gap-2.5 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] px-2.5 py-2 bg-blue-50">
                                 {takedownList.map((item) => (
                                     <div
                                         key={item.contentId}
-                                        className="flex gap-4 items-start p-3 border border-gray-200 bg-white rounded-lg shadow-sm overflow-hidden"
+                                        className="flex items-center gap-4 p-3 bg-white rounded-lg shadow-sm overflow-hidden max-w-sm"
                                     >
                                         <div className="relative group w-20 h-28 rounded-md overflow-hidden border cursor-pointer flex-none">
                                             <a
@@ -282,7 +369,7 @@ export default function DmcaAdminDashboard() {
                                             </a>
                                         </div>
 
-                                        <div className="flex flex-col justify-between text-sm text-gray-700">
+                                        <div className="flex flex-col justify-between text-sm mobile:text-xs text-gray-700">
                                             <div className="space-y-1">
                                                 <p className="font-semibold text-gray-900 w-auto line-clamp-2">{item.title}</p>
                                                 <p>Year: {item.releaseYear}</p>
@@ -298,13 +385,31 @@ export default function DmcaAdminDashboard() {
                                                         hour12: true,
                                                     })}
                                                 </p>
+                                                <div className="flex items-center gap-2 mt-2">
+                                                    <span className="text-xs font-medium text-gray-600">
+                                                        {item.disabled ? "Disabled" : "Active"}
+                                                    </span>
 
+                                                    <button
+                                                        onClick={() => handleToggleStatus(item.contentId, false)}
+                                                        className={`relative inline-flex items-center h-5 w-10 rounded-full transition-colors focus:outline-none ${item.disabled ? "bg-green-500" : "bg-red-500"
+                                                            }`}
+                                                        title={item.disabled ? "Enable Content" : "Disable Again"}
+                                                    >
+                                                        <span
+                                                            className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-300 ${item.disabled ? "translate-x-5" : "translate-x-1"
+                                                                }`}
+                                                        />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
+
                         </div>
+
                     )}
                 </div>
 

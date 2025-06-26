@@ -103,7 +103,7 @@ export default function DMCAAdminLoginPage() {
             } else {
                 creatToastAlert({ message: res.data.message || "Invalid OTP" });
             }
-        } catch(err) {
+        } catch (err) {
             creatToastAlert({ message: err?.response?.data?.message || "OTP verification failed" });
         } finally {
             setProcess(false);
@@ -127,18 +127,30 @@ export default function DMCAAdminLoginPage() {
                 </div>
 
                 {/* Toggle Buttons */}
+                <p className="text-sm font-semibold text-gray-800 mb-2 text-center">Login By</p>
                 <div className="mb-6 flex justify-center gap-4">
                     <button
                         onClick={() => setIsOtpLogin(false)}
-                        className={`px-4 py-1.5 rounded-md text-sm font-medium ${!isOtpLogin ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                        Password Login
+                        aria-pressed={!isOtpLogin}
+                        className={`px-5 py-2 rounded-md text-sm font-medium border transition duration-200
+      ${!isOtpLogin
+                                ? 'bg-gray-900 text-white border-gray-900'
+                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                    >
+                        Password
                     </button>
                     <button
                         onClick={() => setIsOtpLogin(true)}
-                        className={`px-4 py-1.5 rounded-md text-sm font-medium ${isOtpLogin ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                        OTP Login
+                        aria-pressed={isOtpLogin}
+                        className={`px-5 py-2 rounded-md text-sm font-medium border transition duration-200
+      ${isOtpLogin
+                                ? 'bg-gray-900 text-white border-gray-900'
+                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                    >
+                        OTP
                     </button>
                 </div>
+
 
                 <AnimatePresence mode="wait">
                     {!isOtpLogin ? (

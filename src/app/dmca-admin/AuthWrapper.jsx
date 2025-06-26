@@ -5,21 +5,24 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { appConfig } from '@/config/config';
 import { motion, AnimatePresence } from 'framer-motion';
+import DmcaAdminDashboard from './Dashboard';
 
-export default function AuthWrapper({ children }) {
+export default function AuthWrapper() {
   const router = useRouter();
   const pathname = usePathname();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [companyData, setCompnayData] = useState(null)
 
   useEffect(() => {
     axios
       .get(`${appConfig.backendUrl}/api/v1/dmca-admin/check-auth`, {
         withCredentials: true,
       })
-      .then(() => {
+      .then((data) => {
         setLoading(false);
+        setCompnayData(data.data)
         if (pathname !== '/dmca-admin') {
           router.replace('/dmca-admin');
         }
@@ -68,7 +71,7 @@ export default function AuthWrapper({ children }) {
         )}
       </AnimatePresence>
 
-      {!loading && !error && <>{children}</>}
+      {!loading && !error && <DmcaAdminDashboard companyData={companyData} />}
     </>
   );
 }
