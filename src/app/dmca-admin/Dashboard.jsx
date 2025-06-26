@@ -9,6 +9,7 @@ import brandLogoIcon from "../../assets/images/brand_logo.png";
 import { useRouter } from "next/navigation";
 import { creatToastAlert, creatUrlLink, resizeImage, transformToCapitalize } from "@/utils";
 import { handleEmailUs } from "@/helper/helper";
+import FullScreenBackdropLoading from "@/components/loadings/BackdropLoading";
 
 const api = axios.create({
     baseURL: appConfig.backendUrl,
@@ -23,7 +24,8 @@ export default function DmcaAdminDashboard({ companyData }) {
     const [page, setPage] = useState(0); // starts from 0
     const [takedownList, setTakedownList] = useState([]);
     const [isLoadingHistory, setIsLoadingHistory] = useState(true);
-    const [process, setProcess] = useState(false)
+    const [process, setProcess] = useState(false);
+    const [backdropMessage, setBackDropMessage] = useState(null)
 
     const router = useRouter();
     const isTakeDownLoadedRef = useRef(false); // default false
@@ -128,6 +130,7 @@ export default function DmcaAdminDashboard({ companyData }) {
                 : takedownList.find((item) => item.contentId === contentId);
 
             if (!content) return;
+            setBackDropMessage(`${content.disabled ? "Disabling content, please wait..." : "Enabling content, please wait..."}`);
 
             const res = await api.post(
                 `${appConfig.backendUrl}/api/v1/dmca-admin/action/toggle`,
@@ -161,6 +164,8 @@ export default function DmcaAdminDashboard({ companyData }) {
         } catch (err) {
             console.error("Toggle error:", err);
             creatToastAlert({ message: "Error updating content status." });
+        } finally {
+            setBackDropMessage(null)
         }
     };
 
@@ -228,9 +233,10 @@ export default function DmcaAdminDashboard({ companyData }) {
                             <motion.div
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="text-red-600 font-medium"
+                                className="text-red-600 font-medium text-base mobile:text-sm mt-2"
                             >
-                                Invalid or unavailable content. Please double-check the link.
+                                Content not found or unavailable. Please check the link.
+                                For help, contact <span onClick={handleEmailUs} className="text-blue-600 underline cursor-pointer ml-1">moviesbazarorg@gmail.com</span>.
                             </motion.div>
                         )}
 
@@ -420,6 +426,14 @@ export default function DmcaAdminDashboard({ companyData }) {
                 </div>
 
             </div>
+
+            {backdropMessage && (
+                <FullScreenBackdropLoading
+                    loadingSpinner={true}
+                    loadingMessage={backdropMessage}
+                />
+            )}
+
         </div>
     );
 }
