@@ -49,8 +49,11 @@ export default function CustomLoadingAds() {
   }, [adClicked, location, isSocialjoinModalShow]);
 
   useEffect(() => {
-    // Check if the current path is a publisher page
-    if (location.includes('publisher')) return;
+
+    const noAdsPaths = ["publisher", "dmca-admin"];
+    const currentPath = location.split('/')[1];
+
+    if (noAdsPaths.includes(currentPath)) return;
 
     if (process.env.NODE_ENV === 'production') {
       validateDomain();
