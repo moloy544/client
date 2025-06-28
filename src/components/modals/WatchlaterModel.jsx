@@ -5,7 +5,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
-import { creatToastAlert, creatUrlLink, resizeImage } from "@/utils";
+import { createToastAlert, creatUrlLink, resizeImage } from "@/utils";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 
@@ -109,7 +109,7 @@ export default function WatchlaterModel({ visibility, functions }) {
 
                 // get the data title for showing title in toast message
                 const title = watchLaterData[index].title;
-                creatToastAlert({
+                createToastAlert({
                     message: `Removed ${title} from Watch later`
                 })
                 setTimeout(() => {
@@ -170,7 +170,7 @@ export default function WatchlaterModel({ visibility, functions }) {
                     if (safeLocalStorage.get('saved-movies-data')) {
                         safeLocalStorage.remove('saved-movies-data'); // Remove localStorage key from browser
                     }
-                    creatToastAlert({
+                    createToastAlert({
                         message: 'Cleared all movies and series from Watch later',
                     });
                 }, intersectingCards.length * 300); // Time based only on intersecting cards

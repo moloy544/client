@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { appConfig } from '@/config/config';
-import { creatToastAlert } from '@/utils';
+import { createToastAlert } from '@/utils';
 import Footer from '@/components/Footer';
 import NavigateBackTopNav from '@/components/NavigateBackTopNav';
 import NavigateBack from '@/components/NavigateBack';
@@ -43,14 +43,14 @@ export default function RequestContentPage() {
 
             // Form validation
             if (!contentTitle || !industry || !languageNeed || !userEmail) {
-                creatToastAlert({
+                createToastAlert({
                     message: "Please enter title, industry, your preferred language and your email."
                 });
                 return;
             };
 
             if (!isValidEmail(userEmail)) {
-                creatToastAlert({
+                createToastAlert({
                     message: "Please enter valid email."
                 });
                 return;
@@ -70,13 +70,13 @@ export default function RequestContentPage() {
                     behavior: 'smooth',
                 });
             } else {
-                creatToastAlert({
+                createToastAlert({
                     message: "An error occurred while submitting your request."
                 });
             }
         } catch (error) {
             console.error(error);
-            creatToastAlert({
+            createToastAlert({
                 message: "An error occurred while submitting your request."
             });
         } finally {

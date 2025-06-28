@@ -6,7 +6,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { appConfig } from "@/config/config";
-import { creatToastAlert, loadMoreFetch } from "@/utils";
+import { createToastAlert, loadMoreFetch } from "@/utils";
 import { useInfiniteScroll } from "@/hooks/observers";
 import { ModelsController } from "@/lib/EventsHandler";
 import NavigateBack from "@/components/NavigateBack";
@@ -448,7 +448,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         const searchValue = formJson.searchText?.trim();
 
         if (tryCount >= 5) {
-            creatToastAlert({
+            createToastAlert({
                 message: "You've reached the max attempts for this search term.",
             });
             return;
@@ -459,7 +459,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
             handleSearch(searchValue)
             setTryCount((prevCount) => prevCount + 1);
         } else {
-            creatToastAlert({
+            createToastAlert({
                 message: 'Please enter a search term',
             });
         };

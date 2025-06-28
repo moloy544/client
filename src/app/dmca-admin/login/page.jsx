@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { creatToastAlert } from "@/utils";
+import { createToastAlert } from "@/utils";
 import Image from "next/image";
 import brandLogoIcon from "../../../assets/images/brand_logo.png";
 import { appConfig } from "@/config/config";
@@ -49,7 +49,7 @@ export default function DMCAAdminLoginPage() {
         const { username, password } = Object.fromEntries(formData.entries());
 
         if (!username || !password) {
-            return creatToastAlert({ message: "Please enter all required fields" });
+            return createToastAlert({ message: "Please enter all required fields" });
         }
 
         try {
@@ -62,17 +62,17 @@ export default function DMCAAdminLoginPage() {
             if (res.status === 200) {
                 router.replace("/dmca-admin");
             } else {
-                creatToastAlert({ message: res.data.message || "Invalid login details" });
+                createToastAlert({ message: res.data.message || "Invalid login details" });
             }
         } catch (error) {
-            creatToastAlert({ message: error?.response?.data?.message || "Login failed" });
+            createToastAlert({ message: error?.response?.data?.message || "Login failed" });
         } finally {
             setProcess(false);
         }
     };
 
     const handleSendOtp = async () => {
-        if (!email) return creatToastAlert({ message: "Enter your email first" });
+        if (!email) return createToastAlert({ message: "Enter your email first" });
 
         try {
             setProcess(true);
@@ -80,19 +80,19 @@ export default function DMCAAdminLoginPage() {
             if (res.status === 200) {
                 setOtpSent(true);
                 setResendTimer(60);
-                creatToastAlert({ message: "OTP sent to your email" });
+                createToastAlert({ message: "OTP sent to your email" });
             } else {
-                creatToastAlert({ message: res.data.message || "OTP not sent" });
+                createToastAlert({ message: res.data.message || "OTP not sent" });
             }
         } catch (err) {
-            creatToastAlert({ message: err?.response?.data?.message || "Failed to send OTP" });
+            createToastAlert({ message: err?.response?.data?.message || "Failed to send OTP" });
         } finally {
             setProcess(false);
         }
     };
 
     const handleVerifyOtp = async () => {
-        if (otp.length !== 4) return creatToastAlert({ message: "Enter the 4-digit OTP" });
+        if (otp.length !== 4) return createToastAlert({ message: "Enter the 4-digit OTP" });
 
         try {
             setProcess(true);
@@ -101,10 +101,10 @@ export default function DMCAAdminLoginPage() {
             if (res.status === 200) {
                 router.replace("/dmca-admin");
             } else {
-                creatToastAlert({ message: res.data.message || "Invalid OTP" });
+                createToastAlert({ message: res.data.message || "Invalid OTP" });
             }
         } catch (err) {
-            creatToastAlert({ message: err?.response?.data?.message || "OTP verification failed" });
+            createToastAlert({ message: err?.response?.data?.message || "OTP verification failed" });
         } finally {
             setProcess(false);
         }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import { creatToastAlert } from "@/utils";
+import { createToastAlert } from "@/utils";
 
 // text or number input style properties
 const inputStyle = "border-2 border-blue-700 rounded-md p-1";
@@ -66,10 +66,10 @@ export default function ActorControllerSection() {
             const isAnyFieldMissing = fieldsToValidate.some(field => field === '');
 
             if (isAnyFieldMissing) {
-                creatToastAlert({ message: 'Some fields are missing' });
+                createToastAlert({ message: 'Some fields are missing' });
                 return;
             } else if (imdbId.length < 5) {
-                creatToastAlert({ message: 'Invalid IMDB ID or its too short' });
+                createToastAlert({ message: 'Invalid IMDB ID or its too short' });
                 return;
             };
 
@@ -98,7 +98,7 @@ export default function ActorControllerSection() {
             const { message } = addResponse.data;
 
             if (addResponse.status === 200) {
-                creatToastAlert({ message });
+                createToastAlert({ message });
                 setActorState({
                     imdbId: '',
                     name: '',
@@ -107,7 +107,7 @@ export default function ActorControllerSection() {
                 fileInput.value = '';
                 setImagePreview(null);
             } else {
-                creatToastAlert({ message: message || "An error occurred while adding actor" });
+                createToastAlert({ message: message || "An error occurred while adding actor" });
             };
 
 

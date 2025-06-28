@@ -3,7 +3,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { creatToastAlert } from "@/utils";
+import { createToastAlert } from "@/utils";
 import Image from "next/image";
 import brandLogoIcon from "../../../assets/images/brand_logo.png"
 
@@ -21,7 +21,7 @@ export default function AdminLoginPage() {
 
         try {
             if (password?.trim() === "" || username?.trim() === "") {
-                creatToastAlert({
+                createToastAlert({
                     message: "Please enter all required fields"
                 });
                 return;
@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
             if (res.status === 200) {
                 router.replace('/publisher');
             } else {
-                creatToastAlert({
+                createToastAlert({
                     message: res.data.message || "Invalid login details"
                 });
             }
@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
         } catch (error) {
             //console.log(error);
             if (error.response.data.message) {
-                creatToastAlert({
+                createToastAlert({
                     message: error.response.data.message || "Failed to login"
                 });
             }

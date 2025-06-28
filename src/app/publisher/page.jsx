@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
-import { creatToastAlert, resizeImage } from "@/utils";
+import { createToastAlert, resizeImage } from "@/utils";
 import { getTodayDate, isValidImageUrl, validateMovieDetailsInput } from "./utils/admin.utils";
 import UpdateMoviesPage from "./components/UpdateMoviesPage";
 import ActorControllerSection from "./components/ActorControllerSection";
@@ -117,7 +117,7 @@ export default function AdminPage() {
                         year: 'numeric',
                     });
 
-                    creatToastAlert({ message: "Movie is already exist" });
+                    createToastAlert({ message: "Movie is already exist" });
                     if (movieData._id) {
                         delete movieData._id;
                     };
@@ -185,7 +185,7 @@ export default function AdminPage() {
             // validate movie details before sending to backend
             const validationMessage = validateMovieDetailsInput(state);
             if (validationMessage) {
-                creatToastAlert({ message: validationMessage });
+                createToastAlert({ message: validationMessage });
                 return
             };
 
@@ -237,7 +237,7 @@ export default function AdminPage() {
 
             if (addResponse.status === 200) {
 
-                creatToastAlert({ message: responseMessage || "Movie added successfully" });
+                createToastAlert({ message: responseMessage || "Movie added successfully" });
 
                 setState(initialMoviesData);
                 fileInput.value = '';
@@ -254,10 +254,10 @@ export default function AdminPage() {
             console.error('Error sending movies to backend:', error);
             if (error.response && error.response.data) {
                 if (error.response.data.message) {
-                    creatToastAlert({ message: error.response.data.message });
+                    createToastAlert({ message: error.response.data.message });
                 }
             } else {
-                creatToastAlert({ message: "An error occurred while adding movies" });
+                createToastAlert({ message: "An error occurred while adding movies" });
             }
         } finally {
             setProcessing(false);
@@ -293,7 +293,7 @@ export default function AdminPage() {
             const urlRegex = /^(https?:\/\/)?([a-z0-9.-]+\.[a-z]{2,}\/)?([a-z0-9.-]+\.[a-z]{2,}\/)?([a-z0-9.-]+\.[a-z]{2,})\/?([^\/#?]+)(\#?([^\/#]*))?$/;
             const match = urlRegex.exec(value);
             if (!match) {
-                creatToastAlert({ message: "Invalid video source URL format" });
+                createToastAlert({ message: "Invalid video source URL format" });
                 return
             };
             // remove extra spaces form video source
@@ -318,7 +318,7 @@ export default function AdminPage() {
 
             if (!inputText || inputText === "") {
 
-                creatToastAlert({ message: "Input value is required" });
+                createToastAlert({ message: "Input value is required" });
                 return;
             };
 
@@ -328,7 +328,7 @@ export default function AdminPage() {
             const isExist = state[arrayFiled]?.some(data => inputText?.toLowerCase() == data?.toLowerCase())
 
             if (isExist) {
-                creatToastAlert({ message: `${inputText} in ${arrayFiled} filed is already exists` });
+                createToastAlert({ message: `${inputText} in ${arrayFiled} filed is already exists` });
                 return
             };
 
@@ -807,7 +807,7 @@ export default function AdminPage() {
                                         const isExist = state.tags.some(data => data?.toLowerCase() == value?.toLowerCase())
 
                                         if (isExist) {
-                                            creatToastAlert({ message: `${value} in tags filed is already exists` });
+                                            createToastAlert({ message: `${value} in tags filed is already exists` });
                                             return
                                         }
 

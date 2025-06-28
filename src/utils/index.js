@@ -95,7 +95,7 @@ const imageToBase64Url = (file) => {
 // ******** Creat Toast Message Alert In Dom For Temporarily *******/
 //Creat Tooltip Popup Messages 
 let currentTooltip = null;
-const creatToastAlert = ({ message, visibilityTime = 8000 }) => {
+const createToastAlert = ({ message, visibilityTime = 8000 }) => {
   if (currentTooltip?.element) {
     document.body.removeChild(currentTooltip.element);
     clearTimeout(currentTooltip.timerId);
@@ -195,7 +195,7 @@ export {
   transformToCapitalize,
   formatNumberCounter,
   imageToBase64Url,
-  creatToastAlert,
+  createToastAlert,
   resizeImage,
   editActorsImageUrl,
   isNotHuman

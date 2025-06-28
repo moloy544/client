@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { appConfig } from "@/config/config";
 import { handleEmailUs, isAndroid, isIOS } from "@/helper/helper";
 import { ModelsController } from "@/lib/EventsHandler"
-import { creatToastAlert } from "@/utils";
+import { createToastAlert } from "@/utils";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
 import RestrictedModal from "./RestrictedModal";
 import { openDirectLink } from "@/utils/ads.utility";
@@ -69,7 +69,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   const handleDownload = async (sourceIndex, url, quality) => {
     try {
       if (!isOnline) {
-        creatToastAlert({
+        createToastAlert({
           message: 'You are offline. Please check your internet connection.',
         });
       }
@@ -120,7 +120,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_source/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
 
       if (response.status !== 200) {
-        creatToastAlert({
+        createToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
           visibilityTime: 12000
         });
@@ -130,7 +130,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       const { downloadUrl } = response.data || {};
 
       if (!downloadUrl || downloadUrl.length === 0) {
-        creatToastAlert({
+        createToastAlert({
           message: 'Download failed. Please try again later, or report the issue to us.',
           visibilityTime: 12000
         });
@@ -147,7 +147,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
 
     } catch (error) {
       console.error('Error fetching download option URLs:', error);
-      creatToastAlert({
+      createToastAlert({
         message: 'Download failed. Please try again later, or report the issue to us.',
         visibilityTime: 12000
       });
@@ -532,7 +532,7 @@ function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
                 onClick={() => {
                   openDirectLink(() => {
                     setIsAdzOpen(true);
-                    creatToastAlert({
+                    createToastAlert({
                       message: "Now you can download the content.",
                     });
                   });

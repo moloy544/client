@@ -5,7 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import Script from "next/script";
 import Image from "next/image";
-import { creatToastAlert, resizeImage, transformToCapitalize } from "@/utils";
+import { createToastAlert, resizeImage, transformToCapitalize } from "@/utils";
 import { ModelsController } from "@/lib/EventsHandler";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -55,12 +55,12 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   const isOnline = useOnlineStatus({
     onlineCallback: () => {
-      creatToastAlert({
+      createToastAlert({
         message: 'Connection restored. You are back online.',
       });
     },
     offlineCallback: () => {
-      creatToastAlert({
+      createToastAlert({
         message: 'You are offline. Please check your internet connection.',
       });
     }
@@ -70,14 +70,14 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     // Internet connection check 
     if (!isOnline) {
-      creatToastAlert({
+      createToastAlert({
         message: "You are offline. Please check your internet connection.",
         visibilityTime: 6000
       });
     }
     // Validate if no video source and show report message
     if (!source) {
-      creatToastAlert({
+      createToastAlert({
         message: `Can't play this ${type}. Please report to us.`,
       });
       return;
@@ -402,7 +402,7 @@ function PlayButton({
     }
 
     if (!watchLinks || watchLinks.length === 0) {
-      creatToastAlert({
+      createToastAlert({
         message: "Playback is disabled by mistake please report us",
         visibilityTime: 6000,
       });

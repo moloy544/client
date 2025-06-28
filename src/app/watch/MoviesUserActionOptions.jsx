@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { appConfig } from "@/config/config";
-import { creatToastAlert, creatUrlLink } from "@/utils";
+import { createToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import { useSelector } from "react-redux";
 import FullScreenBackdropLoading from "@/components/loadings/BackdropLoading";
@@ -63,7 +63,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
       setIsSaved(true);
       const dateNow = new Date();
       parseData.unshift({ imdbId, addAt: dateNow });
-      creatToastAlert({
+      createToastAlert({
         message: `Add ${title + ' ' + type} To Watch Later`
       });
 
@@ -71,7 +71,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
       // Movie found, remove it
       parseData.splice(index, 1);
       setIsSaved(false);
-      creatToastAlert({
+      createToastAlert({
         message: `Remove ${title + ' ' + type} From Watch Later`
       })
     }
