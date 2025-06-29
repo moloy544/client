@@ -465,7 +465,7 @@ const LanguageGuideModal = ({ isOpen, handleClose }) => {
 };
 
 function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(process.env.NODE_ENV === 'development' ? 0: 15);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {

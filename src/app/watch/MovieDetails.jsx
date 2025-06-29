@@ -46,13 +46,13 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     permanentDisabled,
     isAdult,
     isInTheater,
+    seriesData,
     ticketBookLink
   } = movieDetails || {};
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
   const pathname = usePathname();
-
   const isOnline = useOnlineStatus({
     onlineCallback: () => {
       createToastAlert({
@@ -197,7 +197,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                   <VideoPlayer
                     title={title}
                     hlsSourceDomain={hlsSourceDomain}
-                    source={videoSource}
+                    source={!seriesData ? videoSource : seriesData}
                     userIp={userIp}
                     imdbId={imdbId}
                     videoTrim={videoTrim}
@@ -227,6 +227,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               contentType={type || "content"}
               isContentRestricted={isContentRestricted}
               isAdult={isAdult}
+              seriesData={seriesData}
               isInTheater={isInTheater}
               ticketBookLink={ticketBookLink}
             />
@@ -354,9 +355,9 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         )}
 
 
-      {isHLSPlayListAvailble && (
+      {(isHLSPlayListAvailble || seriesData) && (
         <Script
-          src="/static/js/player_v2.1.js"
+          src={`/static/js/${seriesData ? 'series_player_v1.js' : 'player_v2.1.js'}`}
           strategy="afterInteractive"
         />
       )}
@@ -401,7 +402,7 @@ function PlayButton({
       return;
     }
 
-    if (!watchLinks || watchLinks.length === 0) {
+    if (!watchLinks || watchLinks.length === 0 && !seriesData) {
       createToastAlert({
         message: "Playback is disabled by mistake please report us",
         visibilityTime: 6000,

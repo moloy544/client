@@ -14,6 +14,22 @@ const areEqual = (prevProps, nextProps) => {
   )
 };
 
+function createPlaybleSoure(hlsProviderDomain, seriesData, ip) {
+  if (!Array.isArray(seriesData)) {
+    return generateSourceURL(hlsProviderDomain, seriesData, ip)
+
+  }
+  return seriesData.map(lang => ({
+    title: lang.language,
+    folder: lang.seasons.map(season => ({
+      title: `Season ${season.seasonNumber}`,
+      folder: season.episodes.map((episodeUrl, index) => ({
+        title: `Episode ${index + 1}`,
+        file: generateSourceURL(hlsProviderDomain, `${season.basePath}${episodeUrl}`, ip)
+      }))
+    }))
+  }));
+};
 
 function generateCountrySpecificIp() {
   const countryRanges = [
@@ -116,7 +132,10 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
   // Replace IP segment in the originalURL with expiration timestamp and user IP
   const modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
 
-  return modifiedURL;
+  const finalUrl = modifiedURL.trim().endsWith('.m3u8') ? modifiedURL : `${modifiedURL}.m3u8`;
+
+
+  return finalUrl;
 }
 
 
@@ -131,7 +150,6 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
   const { isMobile, isIOS } = useDeviceType();
 
-
   useEffect(() => {
     let checkTimer = null;
     let ip = userRealIp || userIp;
@@ -143,12 +161,14 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
     if (source && ip) {
 
-      if (source.includes('.m3u8') || source.includes('.mkv')) {
-        const newSource = generateSourceURL(hlsSourceDomain, source, ip);
+      if (source.includes('.m3u8') || source.includes('.mkv') || Array.isArray(source)) {
+        const newSource = createPlaybleSoure(hlsSourceDomain, source, ip);
+    
         const playerOptions = {
           id: 'player',
           file: newSource,
         };
+       
         if (videoTrim && typeof videoTrim === 'number') {
           playerOptions.start = videoTrim;
         };
@@ -198,7 +218,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
         }, 1000);
       };
-      
+
       return () => {
         clearInterval(checkTimer);
 
