@@ -75,10 +75,12 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       }
       setDownloadStartProgress(true);
       const reverseReplacements = [
+        { from: 'anony', to: 'pixeldrain' },
         { from: 'anony.nl', to: 'pixeldrain.net' },
         { from: 'vgm', to: 'Vegamovies' },
         { from: 'm4', to: 'Movies4u' },
-        { from: 'fdl.st', to: 'filesdl.site' },
+        { from: 'fdl', to: 'filesdl' },
+         { from: 'fdl.st', to: 'filesdl.site' },
       ];
 
       // Apply all reverse replacements
@@ -90,7 +92,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         }
 
         // Add back '?download' if it's a pixeldrain URL
-        if (url.includes('pixeldrain.net') && !url.includes('?download')) {
+        if (url.includes('pixeldrain') && !url.includes('?download')) {
           url += '?download';
         }
       };

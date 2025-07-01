@@ -13,7 +13,7 @@ const primaryPlayerImageGuidedata = [
     },
     {
         title: "Change Video Quality",
-        description: "Tap the quality option to select the video resolution for the best experience.",
+        description: "Tap the quality option to select the video resolution for the best experience. Note: Tap the quality option after the video starts. If the video shows 'Auto' quality by default before playback, you can't change to 480p, 720p or 1080p. Please wait for the video to play first, then change quality.",
     },
     {
         title: "Adjust Playback Speed",
