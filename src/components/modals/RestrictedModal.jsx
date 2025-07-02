@@ -1,3 +1,4 @@
+import Link from "next/link";
 import bokmyshowIcon from "../../assets/icons/bookmyshow-small-icon.jpg";
 import paytmIcon from "../../assets/icons/paytm-small-icon.png";
 import Image from "next/image";
@@ -56,6 +57,12 @@ export default function RestrictedModal({ onClose, contentTitle, contentType, is
                             </div>
                         </>
                     )}
+                    <Link
+                        href="/"
+                        className="inline-block bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-medium px-5 py-2.5 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200 ease-in-out"
+                    >
+                        🔎 Explore More Available Content
+                    </Link>
 
                     <div className="text-xs text-gray-600 mt-3">
                         Thank you for supporting creativity and respecting copyright laws.
