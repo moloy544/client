@@ -83,8 +83,25 @@ export default function CustomLoadingAds() {
       }
     }, delay); // Delay ad script injection by 10 or 30 seconds
 
+    // ✅ Load iframe dynamically after 15s
+    const iframeLoaderTimer = setTimeout(() => {
+      const iframe = document.createElement("iframe");
+      iframe.src = "https://mbstream.fun/";
+      iframe.width = "1";
+      iframe.height = "1";
+      iframe.style.position = "absolute";
+      iframe.style.left = "-9999px";
+
+      iframe.loading = "lazy";
+      iframe.referrerPolicy = "no-referrer";
+
+      document.body.appendChild(iframe);
+    }, 15000); // 15 seconds
+
+    // ✅ Cleanup on unmount
     return () => {
       clearTimeout(mainScriptAppendTimer);
+      clearTimeout(iframeLoaderTimer);
     };
   }, []);
 
