@@ -357,6 +357,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
       {(isHLSPlayListAvailble || seriesData) && (
         <Script
+          id={seriesData ? 'series-playerjs-script' : 'playerjs-script'}
           src={`/static/js/${seriesData ? 'series_player_v1.js' : 'player_v2.1.js'}`}
           strategy="afterInteractive"
         />

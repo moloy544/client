@@ -173,19 +173,30 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           playerOptions.start = videoTrim;
         };
 
-        // Load player js if it's load fail form parent component by next script
-        if (typeof MoviesbazarPlayer !== "function") {
+        const playerInstance = {
+          functionName: Array.isArray(newSource) ? 'MoviesbazarSeriesPlayer' : 'MoviesbazarPlayer',
+          id: Array.isArray(newSource) ? "series-playerjs-script" : "playerjs-script",
+          src: `/static/js/${Array.isArray(newSource) ? 'series_player_v1.js' : 'player_v2.1.js'}`
+        };
+
+        // Load player JS if it failed to load from parent component
+        if (typeof window[playerInstance.functionName] !== "function") {
           const script = document.createElement("script");
-          script.id = "playerjs-script";
-          script.src = "/static/js/player_v2.1.js";
+          script.id = playerInstance.id;
+          script.src = playerInstance.src;
           script.async = true;
           script.onload = () => {
-            new MoviesbazarPlayer(playerOptions);
+            if (typeof window[playerInstance.functionName] === "function") {
+              new window[playerInstance.functionName](playerOptions);
+            } else {
+              console.error(`Function ${playerInstance.functionName} not found after script load.`);
+            }
           };
           document.body.appendChild(script);
         } else {
-          new MoviesbazarPlayer(playerOptions);
+          new window[playerInstance.functionName](playerOptions);
         }
+
       } else {
         setIsIframeLoading("Please wait a moment...");
 
