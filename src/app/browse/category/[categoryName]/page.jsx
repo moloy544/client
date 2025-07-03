@@ -53,6 +53,9 @@ export async function generateMetadata({ params }) {
       description: `Explore a vast collection of ${editParamsQuery} ${editParamsQuery !== "Movies" ? "movies": ''} available for free streaming on Movies Bazar. Watch your favorite ${editParamsQuery !== "Movies" ? "movies": ''} online today!`,
       url: `${appConfig.appDomain}/browse/category/${params.categoryName}`,
     },
+    alternates: {
+      canonical: `${appConfig.appDomain}/browse/category/${params.categoryName}`
+    },
   };
   
 

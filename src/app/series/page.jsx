@@ -18,6 +18,9 @@ export const metadata = {
         description: 'Explore an extensive collection of top web series from Hollywood, Bollywood, South Indian cinema, and popular platforms like Netflix, Hotstar, and Amazon Prime at Movies Bazar.',
         url: `${appConfig.appDomain}/series`,
     },
+    alternates: {
+      canonical: `${appConfig.appDomain}/series`
+    },
 };
 
 

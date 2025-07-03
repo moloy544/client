@@ -31,6 +31,9 @@ export async function generateMetadata({ params }) {
       description: `Watch a diverse collection of ${editParamsQuery} series online at Movies Bazar. Enjoy top-rated titles from various genres without any cost!`,
       url: `${appConfig.appDomain}/series/${params.category}`,
     },
+    alternates: {
+      canonical: `${appConfig.appDomain}/series/${params.category}`
+    },
   };
 
   return metaData;

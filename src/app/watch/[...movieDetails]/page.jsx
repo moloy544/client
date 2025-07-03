@@ -139,6 +139,9 @@ export async function generateMetadata({ params }) {
       url: metaOgUrl,
       images: thumbnail || BASE_OG_IMAGE_URL,
     },
+    alternates: {
+      canonical: `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${paramsImdbId?.replace('tt', '')}`
+    },
   }
 
   return metaDataObject
@@ -196,7 +199,7 @@ export default async function Page({ params }) {
           suggestions={suggestions}
           userIp={userIp}
         />
-        
+
         <Footer />
       </InspectPreventer>
     </div>

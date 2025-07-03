@@ -25,7 +25,7 @@ function createPlaybleSoure(hlsProviderDomain, seriesData, ip) {
       title: `Season ${season.seasonNumber}`,
       folder: season.episodes.map((episodeUrl, index) => ({
         title: `Episode ${index + 1}`,
-        file: generateSourceURL(hlsProviderDomain, `${season.basePath}${episodeUrl}`, ip)
+        file: generateSourceURL(hlsProviderDomain, `${episodeUrl.includes('https://') ? episodeUrl : season.basePath + episodeUrl}`, ip)
       }))
     }))
   }));
@@ -163,12 +163,12 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
       if (source.includes('.m3u8') || source.includes('.mkv') || Array.isArray(source)) {
         const newSource = createPlaybleSoure(hlsSourceDomain, source, ip);
-    
+
         const playerOptions = {
           id: 'player',
           file: newSource,
         };
-       
+
         if (videoTrim && typeof videoTrim === 'number') {
           playerOptions.start = videoTrim;
         };

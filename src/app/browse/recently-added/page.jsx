@@ -9,7 +9,10 @@ const SomthingWrongError = dynamicLoading(() => import('@/components/errors/Somt
 export const metadata = {
   title:{
     absolute: 'Recently Added Movies | Explore the Latest Picks at Movies Bazar'
-  } 
+  },
+  alternates: {
+      canonical: `${appConfig.appDomain}/browse/recently-added`
+    },
 };
 
 //export const revalidate = 7200 // revalidate at most every 2 hours

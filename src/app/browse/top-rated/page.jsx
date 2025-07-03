@@ -21,7 +21,10 @@ export const metadata = {
       absolute: 'Top IMDb Rated Movies | Watch the Best Films Online at Movies Bazar'
     },
     description: 'Watch top IMDB rated movies movies online Movies Bazaar',
-    url: appConfig.appDomain + '/browse/top-rated'
+    url: `${appConfig.appDomain}/browse/top-rated`
+  },
+  alternates: {
+    canonical: `${appConfig.appDomain}/browse/top-rated`
   },
 };
 

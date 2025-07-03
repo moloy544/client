@@ -19,6 +19,9 @@ export async function generateMetadata({ params }) {
       description: `Watch resently release ${editParamsQuery} movies online Movies Bazaar`,
       url: `${appConfig.appDomain}/browse/latest/${params.slug}`
     },
+    alternates: {
+      canonical: `${appConfig.appDomain}/browse/latest/${params.slug}`
+    },
   };
 
   return metaData;

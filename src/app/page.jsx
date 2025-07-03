@@ -15,6 +15,13 @@ const getHomePageData = async () => {
   }
 };
 
+export const metadata = {
+  alternates: {
+    canonical: `${appConfig.appDomain}`
+  },
+};
+
+
 // revalidate at most every 1 hours to avoid unnecessary API calls and improve performance
 //export const revalidate = 3600;
 /// force to dinamic 

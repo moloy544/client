@@ -45,7 +45,9 @@ export async function generateMetadata({ params }) {
       absolute: `Explore The ${editParamsQuery} Collection | Stream Free Online at Movies Bazar`
     },
     description: `Explore a vast collection of ${editParamsQuery} available for free streaming on Movies Bazar. Watch your favorite ${editParamsQuery} online free!`,
-
+    alternates: {
+      canonical: `${appConfig.appDomain}/browse/listings/${listSlug}`
+    },
   };
 
 
@@ -62,7 +64,7 @@ export default async function Page({ params }) {
   if (!isValidSlug) {
     return notFound();
   };
-  
+
   const apiUrl = handleApiPath(listSlug);
 
   const filterData = {

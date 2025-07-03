@@ -6,7 +6,7 @@ import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
 
 export async function generateMetadata({ params }) {
 
-    const editParamsQuery = transformToCapitalize(params.genre);
+    const editParamsQuery = transformToCapitalize(params.genre)?.replace('Sci Fi', 'Sci-Fi');
 
     const metaData = {
         title: `${editParamsQuery} movies collaction`,
@@ -18,6 +18,9 @@ export async function generateMetadata({ params }) {
             title: `${editParamsQuery} movies collaction`,
             description: `Watch ${editParamsQuery} movies, series online free of cost Movies Bazaar have lot of ${editParamsQuery} movies and series collaction`,
             url: `${appConfig.appDomain}/browse/genre/${params.genre}`
+        },
+        alternates: {
+            canonical: `${appConfig.appDomain}/browse/genre/${params.genre}`
         },
     };
 
@@ -41,7 +44,7 @@ export default async function Page({ params }) {
         limitPerPage: 40
     });
 
-    const capitalizeGenre = transformToCapitalize(genre);
+    const capitalizeGenre = transformToCapitalize(genre)?.replace('Sci Fi', 'Sci-Fi');
 
     const { filterOptions, moviesData } = data;
 
@@ -52,7 +55,7 @@ export default async function Page({ params }) {
             <div className="w-full h-full min-h-[90vh]">
 
                 <LoadMoreMoviesGirdWarper
-                title={capitalizeGenre+ ' Genre Based Movies and Series Collection'}
+                    title={capitalizeGenre + ' Genre Based Movies and Series Collection'}
                     apiUrl={apiUrl}
                     limitPerPage={40}
                     initialFilter={filterData}
