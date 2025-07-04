@@ -139,7 +139,7 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
 }
 
 
-const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = null }) => {
+const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = null, watermark=false }) => {
 
   const playerRef = useRef(null);
   const containerRef = useRef(null);
@@ -166,7 +166,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
         const playerOptions = {
           id: 'player',
-          file: newSource,
+          file: newSource
         };
 
         if (videoTrim && typeof videoTrim === 'number') {
@@ -179,6 +179,32 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           src: `/static/js/${Array.isArray(newSource) ? 'series_player_v1.js' : 'player_v2.1.js'}`
         };
 
+        function addWatermarkOverlay() {
+          if (!watermark) {
+            return
+          }
+          setTimeout(() => {
+            const videoElement = document.querySelector("#player video");
+            const positions = [
+              { top: "0px", left: "0px" },
+              { top: "0px", right: "0px" },
+              { bottom: "0px", left: "0px" },
+              { bottom: "0px", right: "0px" }
+            ];
+            if (videoElement) {
+              const parent = videoElement.parentElement;
+              if (parent && parent.style.position !== "relative") parent.style.position = "relative";
+              positions.forEach((pos, i) => {
+                const overlay = document.createElement("div");
+                overlay.id = `wm-block-${i}`;
+                overlay.setAttribute("style", `position: absolute; width: 100%; height: 11%; background-color: rgba(0, 0, 0, 0.8); border-radius: 2px; z-index: 9999; pointer-events: none;`);
+                Object.assign(overlay.style, pos);
+                parent?.appendChild(overlay);
+              });
+            }
+          }, 600);
+        }
+
         // Load player JS if it failed to load from parent component
         if (typeof window[playerInstance.functionName] !== "function") {
           const script = document.createElement("script");
@@ -188,6 +214,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           script.onload = () => {
             if (typeof window[playerInstance.functionName] === "function") {
               new window[playerInstance.functionName](playerOptions);
+              addWatermarkOverlay();
             } else {
               console.error(`Function ${playerInstance.functionName} not found after script load.`);
             }
@@ -195,6 +222,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           document.body.appendChild(script);
         } else {
           new window[playerInstance.functionName](playerOptions);
+          addWatermarkOverlay()
         }
 
       } else {

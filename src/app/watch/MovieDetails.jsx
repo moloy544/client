@@ -41,6 +41,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     status,
     hlsSourceDomain,
     videoTrim,
+    watermark,
     multiAudio,
     isContentRestricted,
     permanentDisabled,
@@ -201,6 +202,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                     userIp={userIp}
                     imdbId={imdbId}
                     videoTrim={videoTrim}
+                    watermark={watermark}
                   />
                 )}
               </>
