@@ -53,6 +53,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
+  const [takeScreenshot, setTakeScreenshot] = useState(false);
   const pathname = usePathname();
   const isOnline = useOnlineStatus({
     onlineCallback: () => {
@@ -132,6 +133,9 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       } else if (!playQuery && playerVisibility) {
         // If 'play' is removed from the URL and player is visible, hide the player
         setPlayerVisibility(false);
+        if (takeScreenshot) {
+          setTakeScreenshot(false)
+        }
       }
 
       // If the page was opened directly with 'play=true' but no video source is set, remove 'play=true' from the URL
@@ -153,7 +157,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     return () => {
       window.removeEventListener("popstate", checkPlayQuery);
     };
-  }, [playerVisibility, videoSource]);
+  }, [playerVisibility, videoSource, takeScreenshot]);
 
   const originalDate = new Date(fullReleaseDate);
 
@@ -201,6 +205,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                     source={!seriesData ? videoSource : seriesData}
                     userIp={userIp}
                     imdbId={imdbId}
+                    onVideoLoad={() => setTakeScreenshot(true)}
                     videoTrim={videoTrim}
                     watermark={watermark}
                   />
@@ -330,6 +335,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               reportButton={status?.toLowerCase() === "copyright remove" ? false : true}
               playHandler={handleVideoSourcePlay}
               currentPlaySource={videoSource}
+              takeScreenshot={takeScreenshot}
               isContentRestricted={isContentRestricted}
             />
           </div>

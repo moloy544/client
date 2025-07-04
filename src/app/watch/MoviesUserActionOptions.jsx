@@ -19,12 +19,30 @@ const DownloadOptionModel = dynamic(() => import('@/components/modals/DownloadOp
   loading: () => <FullScreenBackdropLoading loadingMessage="Loading..., Please wait" />
 });
 
+// Screenshot model dinamic import
+const ScreenshotModal = dynamic(() => import('@/components/modals/ScreenshotModal'), {
+  ssr: false,
+  loading: () => <FullScreenBackdropLoading loadingMessage="Loading..., Please wait" />
+});
+
 const buttonsClass = "flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-gray-300 rounded-xl cursor-pointer transition-colors duration-300 hover:bg-[#18212b]";
 
-export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true, playHandler, currentPlaySource }) {
+function formatTime(seconds) {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  return [
+    h > 0 ? h.toString().padStart(2, "0") : "00",
+    m.toString().padStart(2, "0"),
+    s.toString().padStart(2, "0")
+  ].join(":");
+}
+
+export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true, playHandler, currentPlaySource, takeScreenshot = false }) {
 
   const [isSaved, setIsSaved] = useState(false);
   const [isReportModelOpen, setIsReportModelOpen] = useState(false);
+  const [screenshotData, setScreenshotData] = useState(null);
 
   const { isUserRestricted } = useSelector((state) => state.fullWebAccessState);
 
@@ -82,6 +100,33 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
       safeLocalStorage.set('saved-movies-data', JSON.stringify(parseData));
     }
   };
+
+ function openScreenshotTakeModal() {
+  try {
+    if (!window.player || typeof window.player.api !== "function") {
+      createToastAlert({ message: "Screenshot not available. Try after video loads." });
+      return;
+    }
+
+    try {
+      window.player.api("pause");
+    } catch (err) {
+      console.warn("Pause failed", err);
+    }
+
+    const result = window.player.api("screenshot");
+    const quality = window.player.api("quality") || "auto";
+
+    if (result && typeof result === "string") {
+      setScreenshotData({ src: result, quality });
+    } else {
+      createToastAlert({ message: "Failed to capture screenshot." });
+    }
+  } catch (error) {
+    console.error("Screenshot error:", error);
+    createToastAlert({ message: "Something went wrong." });
+  }
+};
 
   useEffect(() => {
 
@@ -160,6 +205,19 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
           </div>
         )}
 
+        {takeScreenshot && (
+          <div
+            onClick={openScreenshotTakeModal}
+            role="button"
+            title="Capture Video Screenshot"
+            className={buttonsClass}
+          >
+            <i className="bi bi-camera2"></i>
+            <span className="text-xs font-semibold">Capture</span>
+          </div>
+        )}
+
+
       </div>
       {isReportModelOpen && (
         <ReportModel
@@ -177,6 +235,17 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
           isOpen={isReportModelOpen}
           isAllRestricted={isAllRestricted}
         />
+      )}
+
+      {screenshotData && currentPlaySource && (
+        <div className="relative w-full h-full">
+          <ScreenshotModal
+            src={screenshotData.src}
+            quality={screenshotData.quality}
+            fileName={movieData.title + '-' + movieData.releaseYear}
+            onClose={() => { window.player.api("play"); setScreenshotData(null) }}
+          />
+        </div>
       )}
 
     </>
