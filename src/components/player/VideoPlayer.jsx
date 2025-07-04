@@ -59,7 +59,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
         const playerOptions = {
           id: 'player',
-          file:newSource,
+          file: newSource,
 
         };
 
@@ -109,7 +109,9 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
             if (typeof window[playerInstance.functionName] === "function") {
               window.player = new window[playerInstance.functionName](playerOptions);
               addWatermarkOverlay();
-              onVideoLoad();
+              if (!isIOS) {
+                onVideoLoad();
+              };
             } else {
               console.error(`Function ${playerInstance.functionName} not found after script load.`);
             }
@@ -118,8 +120,10 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
         } else {
           window.player = new window[playerInstance.functionName](playerOptions);
           addWatermarkOverlay();
-          onVideoLoad();
-        }
+          if (!isIOS) {
+            onVideoLoad();
+          };
+        };
 
       } else {
         setIsIframeLoading("Please wait a moment...");

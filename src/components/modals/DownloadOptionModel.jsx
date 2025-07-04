@@ -64,7 +64,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
   const [backupServerResponseSource, setBackupServerResponseSource] = useState({});
   const { UserRestrictedChecking } = useSelector((state) => state.fullWebAccessState);
 
-  const { isIOS, isAndroid, isDesktop } = useDeviceType();
+  const { isIOS, isAndroid } = useDeviceType();
 
   const handleDownload = async (sourceIndex, url, quality) => {
     try {
