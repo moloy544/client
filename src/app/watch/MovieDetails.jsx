@@ -19,7 +19,6 @@ import RestrictedModal from "@/components/modals/RestrictedModal";
 import { useSelector } from "react-redux";
 import RestrictionsCheck from "@/components/RestrictionsCheck";
 import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
-import IframeObserver from "./MutationObserver";
 import { safeSessionStorage } from "@/utils/errorHandlers";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
@@ -371,7 +370,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
         />
       )}
 
-      <IframeObserver />
     </>
   )
 };
