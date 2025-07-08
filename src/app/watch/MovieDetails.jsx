@@ -493,7 +493,8 @@ function PlayButton({
           <div className="bg-zinc-900 p-6 rounded-2xl shadow-2xl max-w-sm w-full text-center relative">
             <h2 className="text-2xl mobile:text-xl font-bold text-red-600 mb-4">🔞 18+ Age Warning</h2>
             <p className="text-gray-300 mb-6 text-base">
-              This content is intended only for viewers aged 18 and above. By clicking continue, you confirm that you are 18 years or older.
+              This video is for adults only. It may include sexual scenes, strong language, violence, or other mature content.
+              Click Continue only if you are 18 or older and comfortable with such material.
             </p>
             <div className="flex justify-around text-sm">
               <button
