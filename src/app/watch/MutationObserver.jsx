@@ -1,6 +1,5 @@
 'use client';
 
-import { partnerIntegration } from "@/config/ads.config";
 import { isNotHuman } from "@/utils";
 import { useEffect } from "react";
 
@@ -13,7 +12,7 @@ function IframeObserver() {
     let partnerIntegrationScriptTimer = null;
 
     // Skip in development
-     if (process.env.NODE_ENV === 'development') return;
+    //if (process.env.NODE_ENV === 'development') return;
 
     // Start observing unwanted iframes
     const startObserver = () => {
@@ -24,7 +23,7 @@ function IframeObserver() {
               const iframe = node;
               if (iframe.id === 'player-embedded-iframe') continue;
 
-              const removeDelay = Math.floor(Math.random() * 1001) + 3000; // 3000–4000 ms
+              const removeDelay = Math.floor(Math.random() * 3001) + 12000; // 12000 to 15000 ms
 
               setTimeout(() => {
                 try {
@@ -52,14 +51,14 @@ function IframeObserver() {
       partnerIntegrationScript.type = "text/javascript";
       partnerIntegrationScript.id = 'partnerIntegration-script';
       partnerIntegrationScript.async = true;
-      partnerIntegrationScript.src = partnerIntegration.seconderyAccounts.dipti544.socialBarScript;
+      partnerIntegrationScript.src = "https://udzpel.com/pw/waWQiOjExOTcwNjgsInNpZCI6MTUzMTMzMCwid2lkIjo3MTY5MzAsInNyYyI6Mn0=eyJ.js";
       document.body.appendChild(partnerIntegrationScript);
 
       // Script 2
       //const partnerIntegration2ScitipConfig = partnerIntegration.clickadu.inpagePushSCofig;
       //partnerIntegrationScript2 = document.createElement("script");
       //partnerIntegrationScript2.async = true;
-      //partnerIntegrationScript2.setAttribute("data-cfasync", partnerIntegration2ScitipConfig.cfasync);
+      //partnerIntegrationScript2
       //partnerIntegrationScript2.setAttribute("data-clipid", partnerIntegration2ScitipConfig.clipid);
       //partnerIntegrationScript2.src = partnerIntegration2ScitipConfig.src;
       //document.body.appendChild(partnerIntegrationScript2);
