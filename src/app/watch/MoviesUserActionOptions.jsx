@@ -7,6 +7,7 @@ import { createToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import { useSelector } from "react-redux";
 import FullScreenBackdropLoading from "@/components/loadings/BackdropLoading";
+import { useDeviceType } from "@/hooks/deviceChecker";
 
 // Report content model dinamic import
 const ReportModel = dynamic(() => import('@/components/modals/ReportModel'), {
@@ -45,6 +46,8 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
   const [screenshotData, setScreenshotData] = useState(null);
 
   const { isUserRestricted } = useSelector((state) => state.fullWebAccessState);
+
+  const { isIOS } = useDeviceType();
 
   const {
     _id,
@@ -205,7 +208,7 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
           </div>
         )}
 
-        {takeScreenshot && (
+        {takeScreenshot && !isIOS && (
           <div
             onClick={openScreenshotTakeModal}
             role="button"
