@@ -12,7 +12,7 @@ function IframeObserver() {
     let partnerIntegrationScriptTimer = null;
 
     // Skip in development
-    //if (process.env.NODE_ENV === 'development') return;
+    if (process.env.NODE_ENV === 'development') return;
 
     // Start observing unwanted iframes
     const startObserver = () => {

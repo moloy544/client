@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import RestrictionsCheck from "@/components/RestrictionsCheck";
 import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
 import { safeSessionStorage } from "@/utils/errorHandlers";
+import IframeObserver from "./MutationObserver";
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 
@@ -361,7 +362,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
           <RestrictionsCheck urgentCheck={permanentDisabled ? true : false} />
         )}
 
-
       {(isHLSPlayListAvailble || seriesData) && (
         <Script
           id={seriesData ? 'series-playerjs-script' : 'playerjs-script'}
@@ -369,7 +369,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
           strategy="afterInteractive"
         />
       )}
-
+      <IframeObserver />
     </>
   )
 };
