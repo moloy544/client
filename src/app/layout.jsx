@@ -37,7 +37,11 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-
+      <head>
+        <link rel="preconnect" href="https://image.tmdb.org" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://m.media-amazon.com" crossOrigin="anonymous" />
+      </head>
       <body className={inter.className}>
         <NextTopLoader
           color="#08D5BB"
@@ -55,9 +59,9 @@ export default function RootLayout({ children }) {
           <SocialJoinAlert />
           {children}
           {process.env.NODE_ENV === 'production' && (
-              <Suspense>
-                <CustomLoadingAds />
-              </Suspense>
+            <Suspense>
+              <CustomLoadingAds />
+            </Suspense>
           )}
 
         </ReduxStatePrivider>
