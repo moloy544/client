@@ -6,6 +6,8 @@ import { appConfig } from "@/config/config";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
 import { safeSessionStorage } from "@/utils/errorHandlers";
 import { isNotHuman } from "@/utils";
+import axios from "axios";
+import { isValidIp } from "@/helper/helper";
 
 // Get current IST time
 const getCurrentISTTime = () => {
@@ -15,32 +17,43 @@ const getCurrentISTTime = () => {
     return new Date(currentDate.getTime() + utcOffset + istOffset);
 };
 
-export default function RestrictionsCheck({ urgentCheck = false }) {
+export default function RestrictionsCheck({ isRestricted = false, urgentCheck = false }) {
     const dispatch = useDispatch();
     const didRun = useRef(false);
 
     useEffect(() => {
+
         if (didRun.current || isNotHuman()) return;
         didRun.current = true;
 
-        const currentISTTime = getCurrentISTTime();
-        const currentHour = currentISTTime.getHours();
+        const fetchUserIp = async () => {
+
+            //Check if IP already saved in session
+            const localSavedIp = safeSessionStorage.get("mb-uip")
+
+            if (localSavedIp && isValidIp(localSavedIp)) {
+                //Use cached IP → avoid network call
+                dispatch(updatefullWebAccessState({ userRealIp: localSavedIp }));
+                return;
+            }
+
+            // No IP saved → call Worker
+            const res = await axios.get('https://uip.moviesbazarorg.workers.dev/');
+            const ip = res.headers['x-user-ip'];
+
+            if (res.status === 200 && ip) {
+                // Save to Redux and session
+                dispatch(updatefullWebAccessState({ userRealIp: ip }));
+                safeSessionStorage.set("mb-uip", ip);
+            }
+
+            return;
+        };
 
         const fetchGeoInfo = async () => {
             try {
-                const cached = safeSessionStorage.get("x9_user_tkn_check");
-                const UserRestrictedData = cached ? JSON.parse(cached) : null;
 
-                if (UserRestrictedData?.isRestricted) {
-                    dispatch(updatefullWebAccessState({
-                        isUserRestricted: true,
-                        userRealIp: UserRestrictedData.geo
-                    }));
-                    return;
-                } else if (UserRestrictedData) {
-                    return;
-                }
-
+                //Case: IS restricted → skip IP fetch, call backend only
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: true }));
 
                 const response = await fetch(`${appConfig.backendUrl}/api/v1/user/restrictionsCheck`, {
@@ -55,12 +68,15 @@ export default function RestrictionsCheck({ urgentCheck = false }) {
                 }
 
                 const data = await response.json();
-                const isRestricted = data?.isRestricted || false;
+                const isRestrictedFromAPI = data?.isRestricted || false;
                 const geo = data?.geo;
 
-                safeSessionStorage.set("x9_user_tkn_check", JSON.stringify({ isRestricted, geo }));
+                safeSessionStorage.set("x9_user_tkn_check", JSON.stringify({ isRestricted: isRestrictedFromAPI, geo }));
 
-                dispatch(updatefullWebAccessState({ isUserRestricted: isRestricted, userRealIp: geo }));
+                dispatch(updatefullWebAccessState({
+                    isUserRestricted: isRestrictedFromAPI,
+                    userRealIp: geo,
+                }));
 
             } catch (err) {
                 console.error("Geo check failed:", err);
@@ -69,15 +85,19 @@ export default function RestrictionsCheck({ urgentCheck = false }) {
             }
         };
 
-        // Call API only between 7:00 AM and 08:00 PM IST
-        if (currentHour >= 7 && currentHour < 20) {
-            fetchGeoInfo();
-        } else if (urgentCheck) {
-            // If urgent check is required, force the fetch regardless of time
-            fetchGeoInfo();
-        }
+        if (!isRestricted) {
+            fetchUserIp();
+        } else {
 
-    }, [dispatch]);
+            const currentISTTime = getCurrentISTTime();
+            const currentHour = currentISTTime.getHours();
+            // Only run during 7 AM – 8 PM IST or if urgentCheck is true
+            if ((currentHour >= 7 && currentHour < 20) || urgentCheck) {
+                fetchGeoInfo();
+            };
+        };
+
+    }, [dispatch, isRestricted, urgentCheck]);
 
     return null;
 }
