@@ -52,6 +52,11 @@ export default function RestrictionsCheck({ isRestricted = false, urgentCheck = 
         const fetchGeoInfo = async () => {
             try {
 
+                const isAlredyRestrictedCheck = safeSessionStorage.get("x9_user_tkn_check");
+                if (isAlredyRestrictedCheck) {
+                    return;
+                }
+
                 //Case: IS restricted → skip IP fetch, call backend only
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: true }));
 
