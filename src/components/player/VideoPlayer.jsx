@@ -145,10 +145,10 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
         checkTimer = setInterval(() => {
           const elapsed = Date.now() - startTime;
-          if (elapsed >= 50000) {
+          if (elapsed >= 60000) {
             setIsIframeLoading("Can't load video. Please check your connection or report the issue.");
             clearInterval(checkTimer);
-          } else if (elapsed >= 25000) {
+          } else if (elapsed >= 28000) {
             setIsIframeLoading("Slow network... please wait a bit more.");
           } else if (elapsed >= 15000) {
             setIsIframeLoading("Loading is taking longer than expected. Please wait...");

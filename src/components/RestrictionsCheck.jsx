@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { appConfig } from "@/config/config";
 import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAccessSlice";
 import { safeSessionStorage } from "@/utils/errorHandlers";
 import { isNotHuman } from "@/utils";
@@ -56,10 +55,9 @@ export default function RestrictionsCheck({ isRestricted = false, urgentCheck = 
                 //Case: IS restricted → skip IP fetch, call backend only
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: true }));
 
-                const response = await fetch(`${appConfig.backendUrl}/api/v1/user/restrictionsCheck`, {
-                    method: "POST",
+                const response = await fetch(`https://geo-check.moviesbazarorg.workers.dev/`, {
+                    method: "GET",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ check: "true" }),
                 });
 
                 if (!response.ok) {
@@ -69,7 +67,7 @@ export default function RestrictionsCheck({ isRestricted = false, urgentCheck = 
 
                 const data = await response.json();
                 const isRestrictedFromAPI = data?.isRestricted || false;
-                const geo = data?.geo;
+                const geo = data?.ip;
 
                 safeSessionStorage.set("x9_user_tkn_check", JSON.stringify({ isRestricted: isRestrictedFromAPI, geo }));
 
