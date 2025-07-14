@@ -49,30 +49,35 @@ export default function CustomLoadingAds() {
   }, [adClicked, location, isSocialjoinModalShow]);
 
   useEffect(() => {
-
     const noAdsPaths = ["publisher", "dmca-admin"];
-    const currentPath = location.split('/')[1];
+    const currentPath = location.split("/")[1];
 
-    if (noAdsPaths.includes(currentPath)) return;
+    if (noAdsPaths.includes(currentPath) || process.env.NODE_ENV === "development") return;
 
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== "development") {
       validateDomain();
     };
 
     const delay = isNotHuman() ? 20000 : 10000;
 
+    const adcashScriptId = "aclib";
+    const unativeScriptId = "partnerIntegration-script-221";
+    const nativeAdClass = "682178b6";
+
     const mainScriptAppendTimer = setTimeout(() => {
-      if (!document.getElementById("aclib")) {
+      // Inject AdCash
+      if (document.getElementById(adcashScriptId)) {
+        
         const adcashMainScript = document.createElement("script");
-        adcashMainScript.id = "aclib";
-        adcashMainScript.type = "text/javascript";
-        adcashMainScript.async = true;
+        adcashMainScript.id = adcashScriptId;
         adcashMainScript.src = "//acscdn.com/script/aclib.js";
+        adcashMainScript.async = true;
+        adcashMainScript.type = "text/javascript";
 
         adcashMainScript.onload = () => {
           if (window.aclib) {
             window.aclib.runInPagePush({
-              zoneId: '9775202',
+              zoneId: "9775202",
               refreshRate: 30,
               maxAds: 2,
             });
@@ -81,11 +86,41 @@ export default function CustomLoadingAds() {
 
         document.head.appendChild(adcashMainScript);
       }
-    }, delay); // Delay ad script injection by 10 or 20 seconds
+
+      // Inject uNative
+      if (!document.getElementById(unativeScriptId)) {
+        const unativeScript = document.createElement("script");
+        unativeScript.id = unativeScriptId;
+        unativeScript.src = "https://cdn77.aj2532.bid/95316cff.js";
+        unativeScript.async = true;
+        unativeScript.type = "text/javascript";
+        document.body.appendChild(unativeScript);
+      }
+
+      if (!document.querySelector(`ins[class="${nativeAdClass}"]`)) {
+        const adElement = document.createElement("ins");
+        adElement.className = nativeAdClass;
+        adElement.setAttribute("data-key", "365e2fe5cca86b5aba924b700a8fad31");
+        document.body.appendChild(adElement);
+      }
+    }, delay);
 
     // ✅ Cleanup on unmount
     return () => {
       clearTimeout(mainScriptAppendTimer);
+
+      // Remove injected scripts & ad elements if needed
+      const removeById = (id) => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      };
+
+      removeById(adcashScriptId);
+      removeById(unativeScriptId);
+
+      const nativeAd = document.querySelector(`ins[class="${nativeAdClass}"]`);
+
+      if (nativeAd) nativeAd.remove();
     };
   }, []);
 

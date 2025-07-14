@@ -8,8 +8,70 @@
   
   .scrollbar-hidden::-webkit-scrollbar-track {
     background: transparent;
-  }
-  
+  };
+
+  a[href*="unative.com"] {
+  display: none !important;
+}
+
+a[href*="unative.com"]::before,
+a[href*="unative.com"]::after,
+a[href*="unative.com"] * {
+  display: none !important;
+}
+
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+/* Extra: hide any direct parent */
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+a[href*="unative.com"]::before,
+a[href*="unative.com"]::after,
+a[href*="unative.com"] * {
+  display: none !important;
+}
+
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+/* Extra: hide any direct parent */
+a[href*="unative.com"] {
+  display: none !important;
+}
+
+a[href*="unative.com"] {
+  display: none !important;
+}
+
   
 .scrollbar-hidden::-webkit-scrollbar-thumb {
     background: transparent;
