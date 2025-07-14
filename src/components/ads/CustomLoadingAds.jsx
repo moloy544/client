@@ -66,7 +66,7 @@ export default function CustomLoadingAds() {
 
     const mainScriptAppendTimer = setTimeout(() => {
       // Inject AdCash
-      if (document.getElementById(adcashScriptId)) {
+      if (!document.getElementById(adcashScriptId)) {
         
         const adcashMainScript = document.createElement("script");
         adcashMainScript.id = adcashScriptId;
