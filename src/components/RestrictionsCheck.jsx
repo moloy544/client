@@ -6,7 +6,6 @@ import { updatefullWebAccessState } from "@/context/fullWebAccessState/fullWebAc
 import { safeSessionStorage } from "@/utils/errorHandlers";
 import { isNotHuman } from "@/utils";
 import axios from "axios";
-import { isValidIp } from "@/helper/helper";
 
 // Get current IST time
 const getCurrentISTTime = () => {
@@ -25,12 +24,16 @@ export default function RestrictionsCheck({ isRestricted = false, urgentCheck = 
         if (didRun.current || isNotHuman()) return;
         didRun.current = true;
 
+        if (process.env.NODE_ENV === 'development') {
+          return; // Skip in development mode  
+        }
+
         const fetchUserIp = async () => {
 
             //Check if IP already saved in session
             const localSavedIp = safeSessionStorage.get("mb-uip")
 
-            if (localSavedIp && isValidIp(localSavedIp)) {
+            if (localSavedIp) {
                 //Use cached IP → avoid network call
                 dispatch(updatefullWebAccessState({ userRealIp: localSavedIp }));
                 return;

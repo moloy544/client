@@ -167,15 +167,26 @@ export default async function Page({ params }) {
 
     const movieDataImdbId = movieData.imdbId || null;
 
+
+    const validatePath = movieData.validatePath || null;
+
     // Validate URL path components
     const isTypeValid = paramsType && paramsType === movieDataType;
     const isImdbIdValid = paramsImdbId && imdbIdPattern.test(paramsImdbId) && paramsImdbId === movieDataImdbId;
     const isPathLengthValid = movieDetails.length === 3;
 
-    // If any of the checks fail, mark the path as invalid
-    if (!isPathLengthValid || (!isTypeValid && paramsImdbId !== 'tt3914054') || !isImdbIdValid) {
-      isValidPath = false;
+    const preventValidation = movieData.hasOwnProperty("validatePath") && movieData.validatePath === false;
+
+    if (!preventValidation) {
+      if (
+        !isPathLengthValid ||
+        !isTypeValid ||
+        !isImdbIdValid
+      ) {
+        isValidPath = false;
+      }
     }
+
   };
 
   // show not found if path is invalid or content is not found
