@@ -61,8 +61,8 @@ export default function CustomLoadingAds() {
     const delay = isNotHuman() ? 20000 : 10000;
 
     const adcashScriptId = "aclib";
-    const unativeScriptId = "partnerIntegration-script-221";
-    const nativeAdClass = "682178b6";
+    //const unativeScriptId = "partnerIntegration-script-221";
+    //const nativeAdClass = "682178b6";
 
     const mainScriptAppendTimer = setTimeout(() => {
       // Inject AdCash
@@ -88,21 +88,21 @@ export default function CustomLoadingAds() {
       }
 
       // Inject uNative
-      if (!document.getElementById(unativeScriptId)) {
+      /**if (!document.getElementById(unativeScriptId)) {
         const unativeScript = document.createElement("script");
         unativeScript.id = unativeScriptId;
         unativeScript.src = "https://cdn77.aj2532.bid/95316cff.js";
         unativeScript.async = true;
         unativeScript.type = "text/javascript";
         document.body.appendChild(unativeScript);
-      }
+      }**/
 
-      if (!document.querySelector(`ins[class="${nativeAdClass}"]`)) {
+      /**if (!document.querySelector(`ins[class="${nativeAdClass}"]`)) {
         const adElement = document.createElement("ins");
         adElement.className = nativeAdClass;
         adElement.setAttribute("data-key", "365e2fe5cca86b5aba924b700a8fad31");
         document.body.appendChild(adElement);
-      }
+      }**/
     }, delay);
 
     // ✅ Cleanup on unmount
@@ -116,11 +116,11 @@ export default function CustomLoadingAds() {
       };
 
       removeById(adcashScriptId);
-      removeById(unativeScriptId);
+     // removeById(unativeScriptId);
 
-      const nativeAd = document.querySelector(`ins[class="${nativeAdClass}"]`);
+      //const nativeAd = document.querySelector(`ins[class="${nativeAdClass}"]`);
 
-      if (nativeAd) nativeAd.remove();
+      //if (nativeAd) nativeAd.remove();
     };
   }, []);
 
