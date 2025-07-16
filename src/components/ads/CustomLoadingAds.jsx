@@ -108,7 +108,7 @@ export default function CustomLoadingAds() {
 
         document.body.appendChild(partnerIntegrationScript);
       }
-    }, delay + 90000); // 90,000 ms = 1.5 minutes
+    }, delay + 50000);
 
     // ✅ Cleanup on unmount
     return () => {
