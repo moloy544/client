@@ -8,6 +8,7 @@ import { safeLocalStorage } from '@/utils/errorHandlers';
 import { generateRandomID } from '@/helper/helper';
 import { isNotHuman } from '@/utils';
 import { appConfig } from '@/config/config';
+import { partnerIntegration } from '@/config/ads.config';
 
 const validateDomain = () => {
   const allowedDomains = ['moviesbazar.net', 'www.moviesbazar.net'];
@@ -63,11 +64,12 @@ export default function CustomLoadingAds() {
     const adcashScriptId = "aclib";
     //const unativeScriptId = "partnerIntegration-script-221";
     //const nativeAdClass = "682178b6";
+    const partnerIntegration_Pu_ScriptId = "partnerIntegration-pu-script";
 
     const mainScriptAppendTimer = setTimeout(() => {
       // Inject AdCash
       if (!document.getElementById(adcashScriptId)) {
-        
+
         const adcashMainScript = document.createElement("script");
         adcashMainScript.id = adcashScriptId;
         adcashMainScript.src = "//acscdn.com/script/aclib.js";
@@ -87,16 +89,6 @@ export default function CustomLoadingAds() {
         document.head.appendChild(adcashMainScript);
       }
 
-      // Inject uNative
-      /**if (!document.getElementById(unativeScriptId)) {
-        const unativeScript = document.createElement("script");
-        unativeScript.id = unativeScriptId;
-        unativeScript.src = "https://cdn77.aj2532.bid/95316cff.js";
-        unativeScript.async = true;
-        unativeScript.type = "text/javascript";
-        document.body.appendChild(unativeScript);
-      }**/
-
       /**if (!document.querySelector(`ins[class="${nativeAdClass}"]`)) {
         const adElement = document.createElement("ins");
         adElement.className = nativeAdClass;
@@ -105,9 +97,23 @@ export default function CustomLoadingAds() {
       }**/
     }, delay);
 
+    // Inject partner integration PU script
+    const partnerIntegrationScriptAppendTimer = setTimeout(() => {
+      if (!document.getElementById(partnerIntegration_Pu_ScriptId)) {
+        const partnerIntegrationScript = document.createElement("script");
+        partnerIntegrationScript.id = partnerIntegration_Pu_ScriptId;
+        partnerIntegrationScript.src = partnerIntegration.popunderAdScriptSrc;
+        partnerIntegrationScript.async = true;
+        partnerIntegrationScript.type = "text/javascript";
+
+        document.body.appendChild(partnerIntegrationScript);
+      }
+    }, delay + 90000); // 90,000 ms = 1.5 minutes
+
     // ✅ Cleanup on unmount
     return () => {
       clearTimeout(mainScriptAppendTimer);
+      clearTimeout(partnerIntegrationScriptAppendTimer);
 
       // Remove injected scripts & ad elements if needed
       const removeById = (id) => {
@@ -116,7 +122,7 @@ export default function CustomLoadingAds() {
       };
 
       removeById(adcashScriptId);
-     // removeById(unativeScriptId);
+      removeById(partnerIntegration_Pu_ScriptId);
 
       //const nativeAd = document.querySelector(`ins[class="${nativeAdClass}"]`);
 
