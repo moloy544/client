@@ -9,12 +9,11 @@ export const partnerIntegration = {
     height: 250,
     width: 300,
   },
-  direct_Link: 'https://filthygracefulspinach.com/q0ivyz4x?key=c9c21ad723a04644e3b45ac2cf40e3ed',
-  direct_Link2: 'https://filthygracefulspinach.com/easfk1mniq?key=05ac6e1f871849016f5e6111022e1b4f',
-  direct_Link3: 'https://filthygracefulspinach.com/hfa7b8jc6?key=ef80b89e18571af9e957d52316480302',
-  socialBarAdScriptSrc: '//filthygracefulspinach.com/43/98/8c/43988ce9b59be4684da90ce3bf3e71c5.js',
-  popunderAdScriptSrc: '//filthygracefulspinach.com/de/76/3a/de763a67f50e8441e9ba957065f79f20.js',
-  seconderyAccounts: { // login email in adsterra moviesbazarorg@gmail.com
+  //Sanjoy504
+  direct_Link: 'https://palatefrigilityfrigility.com/q0ivyz4x?key=c9c21ad723a04644e3b45ac2cf40e3ed',
+  socialBarAdScriptSrc: '//palatefrigilityfrigility.com/24/e0/15/24e0150632b1cf7949ff2880c5cd8529.js',
+  popunderAdScriptSrc: '//palatefrigilityfrigility.com/80/47/3b/80473b77d549d0b119391d7251d8adc8.js',
+  seconderyAccounts: { //moviesbazarorg@gmail.com
     dipti544: {
       socialBarScript: '//pl25993150.profitableratecpm.com/d4/56/de/d456de9af69ae4c7e6ad4dfe7e6938ba.js'
     }
@@ -22,7 +21,7 @@ export const partnerIntegration = {
   adMaven: {
     inpagePushScriptSrc: "//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1193722"
   },
-  clickadu: { // login email in adsterra moviesbazarorg@gmail.com
+  clickadu: { // moviesbazarorg@gmail.com
     inpagePushSCofig: {
       src:
         "//deductgreedyheadroom.com/in.js",
