@@ -64,15 +64,22 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
 
   //Share movie function
   const handleShare = () => {
+    const shareUrl = `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`;
+
     if (navigator.share) {
       navigator.share({
         title: document.title,
-        text: `Watch ${title + " " + '(' + releaseYear + ')' + " " + type} online free only on moviesbazar`,
-        url: `${appConfig.appDomain}/watch/${type}/${creatUrlLink(title)}/${imdbId?.replace('tt', '')}`,
-      })
-        .catch((error) => console.error('Error sharing content:', error));
-    };
+        text: `Watch ${title} (${releaseYear}) ${type} online free only on moviesbazar`,
+        url: shareUrl,
+      }).catch((error) => console.error('Error sharing content:', error));
+    } else {
+      // Fallback: Copy link to clipboard
+      navigator.clipboard.writeText(shareUrl)
+        .then(() => createToastAlert({ message: "Link copied! Paste it where you want to share.", visibilityTime: 10000 }))
+        .catch(() => createToastAlert({ message: "Could not copy link. Please copy manually." }));
+    }
   };
+
 
   const saveInLocalStorage = () => {
     const localStorageData = safeLocalStorage.get('saved-movies-data');
@@ -104,32 +111,32 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
     }
   };
 
- function openScreenshotTakeModal() {
-  try {
-    if (!window.player || typeof window.player.api !== "function") {
-      createToastAlert({ message: "Screenshot not available. Try after video loads." });
-      return;
-    }
-
+  function openScreenshotTakeModal() {
     try {
-      window.player.api("pause");
-    } catch (err) {
-      console.warn("Pause failed", err);
-    }
+      if (!window.player || typeof window.player.api !== "function") {
+        createToastAlert({ message: "Screenshot not available. Try after video loads." });
+        return;
+      }
 
-    const result = window.player.api("screenshot");
-    const quality = window.player.api("quality") || "auto";
+      try {
+        window.player.api("pause");
+      } catch (err) {
+        console.warn("Pause failed", err);
+      }
 
-    if (result && typeof result === "string") {
-      setScreenshotData({ src: result, quality });
-    } else {
-      createToastAlert({ message: "Failed to capture screenshot." });
+      const result = window.player.api("screenshot");
+      const quality = window.player.api("quality") || "auto";
+
+      if (result && typeof result === "string") {
+        setScreenshotData({ src: result, quality });
+      } else {
+        createToastAlert({ message: "Failed to capture screenshot." });
+      }
+    } catch (error) {
+      console.error("Screenshot error:", error);
+      createToastAlert({ message: "Something went wrong." });
     }
-  } catch (error) {
-    console.error("Screenshot error:", error);
-    createToastAlert({ message: "Something went wrong." });
-  }
-};
+  };
 
   useEffect(() => {
 
