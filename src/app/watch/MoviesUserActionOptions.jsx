@@ -7,6 +7,7 @@ import { createToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 import FullScreenBackdropLoading from "@/components/loadings/BackdropLoading";
 import { useDeviceType } from "@/hooks/deviceChecker";
+import { openDirectLink, runPopunder } from "@/utils/ads.utility";
 
 // Report content model dinamic import
 const ReportModel = dynamic(() => import('@/components/modals/ReportModel'), {
@@ -262,6 +263,8 @@ function DownloadButton({ isOnline, imdbId, downloadLinks, isAllRestricted, isIn
 
   const openDownloadOptionModel = () => {
     setIsModalOpen(true);
+    runPopunder();
+    openDirectLink();
   };
 
   return (

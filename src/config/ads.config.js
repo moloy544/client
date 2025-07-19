@@ -11,8 +11,11 @@ export const partnerIntegration = {
   },
   //Sanjoy504
   direct_Link: 'https://palatefrigilityfrigility.com/q0ivyz4x?key=c9c21ad723a04644e3b45ac2cf40e3ed',
-  socialBarAdScriptSrc: '//palatefrigilityfrigility.com/24/e0/15/24e0150632b1cf7949ff2880c5cd8529.js',
-  popunderAdScriptSrc: '//palatefrigilityfrigility.com/80/47/3b/80473b77d549d0b119391d7251d8adc8.js',
+  socialBarScriptSrc: '//palatefrigilityfrigility.com/24/e0/15/24e0150632b1cf7949ff2880c5cd8529.js',
+  popunderScript: {
+    src: '//palatefrigilityfrigility.com/80/47/3b/80473b77d549d0b119391d7251d8adc8.js',
+    id: 'partnerIntegration-pu-script'
+  },
   seconderyAccounts: { //moviesbazarorg@gmail.com
     dipti544: {
       socialBarScript: '//pl25993150.profitableratecpm.com/d4/56/de/d456de9af69ae4c7e6ad4dfe7e6938ba.js'

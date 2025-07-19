@@ -205,3 +205,17 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
     }
   }, 1000);
 };
+
+
+export const runPopunder = () => {
+  const scriptId = partnerIntegration.popunderScript.id;
+  if (!document.getElementById(scriptId)) {
+    const partnerIntegrationScript = document.createElement("script");
+    partnerIntegrationScript.id = scriptId;
+    partnerIntegrationScript.src = partnerIntegration.popunderScript.src;
+    partnerIntegrationScript.async = true;
+    partnerIntegrationScript.type = "text/javascript";
+
+    document.body.appendChild(partnerIntegrationScript);
+  };
+};

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { openDirectLink } from '@/utils/ads.utility';
+import { openDirectLink, runPopunder } from '@/utils/ads.utility';
 import { useSelector } from 'react-redux';
 import { safeLocalStorage } from '@/utils/errorHandlers';
 import { generateRandomID } from '@/helper/helper';
@@ -64,7 +64,6 @@ export default function CustomLoadingAds() {
     const adcashScriptId = "aclib";
     //const unativeScriptId = "partnerIntegration-script-221";
     //const nativeAdClass = "682178b6";
-    const partnerIntegration_Pu_ScriptId = "partnerIntegration-pu-script";
 
     const mainScriptAppendTimer = setTimeout(() => {
       // Inject AdCash
@@ -99,16 +98,8 @@ export default function CustomLoadingAds() {
 
     // Inject partner integration PU script
     const partnerIntegrationScriptAppendTimer = setTimeout(() => {
-      if (!document.getElementById(partnerIntegration_Pu_ScriptId)) {
-        const partnerIntegrationScript = document.createElement("script");
-        partnerIntegrationScript.id = partnerIntegration_Pu_ScriptId;
-        partnerIntegrationScript.src = partnerIntegration.popunderAdScriptSrc;
-        partnerIntegrationScript.async = true;
-        partnerIntegrationScript.type = "text/javascript";
-
-        document.body.appendChild(partnerIntegrationScript);
-      }
-    }, delay + 50000);
+      runPopunder();
+    }, delay + 40000);
 
     // ✅ Cleanup on unmount
     return () => {
@@ -122,7 +113,7 @@ export default function CustomLoadingAds() {
       };
 
       removeById(adcashScriptId);
-      removeById(partnerIntegration_Pu_ScriptId);
+      removeById(partnerIntegration.popunderScript.id);
 
       //const nativeAd = document.querySelector(`ins[class="${nativeAdClass}"]`);
 
