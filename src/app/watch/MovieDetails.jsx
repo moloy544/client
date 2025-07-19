@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Script from "next/script";
 import Image from "next/image";
+import { useSelector } from "react-redux";
 import { createToastAlert, resizeImage, transformToCapitalize } from "@/utils";
 import { ModelsController } from "@/lib/EventsHandler";
 import MoviesUserActionOptions from "./MoviesUserActionOptions";
@@ -15,13 +16,12 @@ import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
 import { openDirectLink } from "@/utils/ads.utility";
 import { removeScrollbarHidden } from "@/helper/helper";
+import { safeLocalStorage, safeSessionStorage } from "@/utils/errorHandlers";
 import RestrictedModal from "@/components/modals/RestrictedModal";
-import { useSelector } from "react-redux";
 import RestrictionsCheck from "@/components/RestrictionsCheck";
 import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
-import { safeSessionStorage } from "@/utils/errorHandlers";
-const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
+const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
 export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
@@ -53,6 +53,11 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
   const [takeScreenshot, setTakeScreenshot] = useState(false);
+  const [isAllRestricted, setIsAllRestricted] = useState(false);
+
+  const { isUserRestricted, UserRestrictedChecking } = useSelector(
+    (state) => state.fullWebAccessState
+  );
   const pathname = usePathname();
   const isOnline = useOnlineStatus({
     onlineCallback: () => {
@@ -119,6 +124,35 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       handlePlayerVisibility();
     };
   };
+
+  // check is the user report the disabled content 
+  useEffect(() => {
+  if (isContentRestricted && isUserRestricted && !UserRestrictedChecking) {
+    const id = imdbId?.replace("tt", "");
+
+    if (!id) return; // Skip if no valid ID
+
+    const existingRaw = safeLocalStorage.get("report_history");
+    let history = [];
+
+    try {
+      const parsed = JSON.parse(existingRaw);
+      history = Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      history = [];
+    }
+
+    if (history.includes(id)) {
+      setIsAllRestricted(false);
+      createToastAlert({
+        message: "Content is now available for you.",
+      });
+    } else {
+      setIsAllRestricted(true);
+    }
+  }
+}, [isUserRestricted, imdbId, UserRestrictedChecking]);
+
 
   useEffect(() => {
     // Check for 'play' query on initial load or URL change (popstate triggered)
@@ -231,7 +265,8 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               currentPlaySource={videoSource}
               contentTitle={title}
               contentType={type || "content"}
-              isContentRestricted={isContentRestricted}
+              isAllRestricted={isAllRestricted}
+              UserRestrictedChecking={UserRestrictedChecking}
               isAdult={isAdult}
               seriesData={seriesData}
               isInTheater={isInTheater}
@@ -335,7 +370,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               playHandler={handleVideoSourcePlay}
               currentPlaySource={videoSource}
               takeScreenshot={takeScreenshot}
-              isContentRestricted={isContentRestricted}
+              isAllRestricted={isAllRestricted}
             />
           </div>
 
@@ -382,30 +417,29 @@ function PlayButton({
   content_status,
   fullReleaseDateString,
   contentType,
-  isContentRestricted,
+  isAllRestricted,
   isInTheater,
   ticketBookLink,
-  isAdult
+  isAdult,
+  UserRestrictedChecking = false,
 }) {
   const [showDropdown, setDropDown] = useState(false);
   const [isRpmplayOnline, setIsRpmplayOnline] = useState(false);
   const [isInstractionsModalOpen, setInstractionsModalOpen] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [selectedPlaySource, setSelectedPlaySource] = useState(null);
-  const [adultAlert, setAdultAlert] = useState(false)
-
-  const { isUserRestricted, UserRestrictedChecking } = useSelector(
-    (state) => state.fullWebAccessState
-  );
+  const [adultAlert, setAdultAlert] = useState(false);
 
   const findIndex = watchLinks.findIndex(({ source }) =>
     source.includes("rpmplay.online") || source.includes("p2pplay.online")
   );
 
   const play = () => {
-    if (isUserRestricted && isContentRestricted) {
+    if (isAllRestricted) {
       setDropDown((prev) => !prev);
+
       openDirectLink();
+
       return;
     }
 
@@ -576,7 +610,7 @@ function PlayButton({
             </span>
           </div>
         </div>
-      ) : showDropdown && isUserRestricted && isContentRestricted ? (
+      ) : showDropdown && isAllRestricted ? (
         <RestrictedModal
           onClose={hideDropDown}
           contentTitle={contentTitle}

@@ -24,7 +24,7 @@ export default function RestrictionsCheck({ isRestricted = false, urgentCheck = 
         if (didRun.current || isNotHuman()) return;
         didRun.current = true;
 
-        if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
           return; // Skip in development mode  
         }
 
@@ -56,14 +56,18 @@ export default function RestrictionsCheck({ isRestricted = false, urgentCheck = 
             try {
 
                 const isAlredyRestrictedCheck = safeSessionStorage.get("x9_user_tkn_check");
-                if (isAlredyRestrictedCheck) {
+                const isUserAlredyRestricted = JSON.parse(isAlredyRestrictedCheck || "{}").isRestricted;
+                // If already restricted, skip further checks
+           
+                if (isUserAlredyRestricted) {
+                    dispatch(updatefullWebAccessState({ isUserRestricted: true }));
                     return;
                 }
 
                 //Case: IS restricted → skip IP fetch, call backend only
                 dispatch(updatefullWebAccessState({ UserRestrictedChecking: true }));
 
-                const response = await fetch(`https://geo-check.moviesbazarorg.workers.dev/`, {
+                const response = await fetch(`https://restriction.moviesbazarorg.workers.dev/`, {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
                 });
@@ -97,10 +101,11 @@ export default function RestrictionsCheck({ isRestricted = false, urgentCheck = 
 
             const currentISTTime = getCurrentISTTime();
             const currentHour = currentISTTime.getHours();
-            // Only run during 7 AM – 8 PM IST or if urgentCheck is true
+             // Only run during 7 AM – 8 PM IST or if urgentCheck is true
             if ((currentHour >= 7 && currentHour < 20) || urgentCheck) {
                 fetchGeoInfo();
             };
+
         };
 
     }, [dispatch, isRestricted, urgentCheck]);

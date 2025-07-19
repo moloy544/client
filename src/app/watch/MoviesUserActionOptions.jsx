@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { appConfig } from "@/config/config";
 import { createToastAlert, creatUrlLink } from "@/utils";
 import { safeLocalStorage } from "@/utils/errorHandlers";
-import { useSelector } from "react-redux";
 import FullScreenBackdropLoading from "@/components/loadings/BackdropLoading";
 import { useDeviceType } from "@/hooks/deviceChecker";
 
@@ -39,13 +38,11 @@ function formatTime(seconds) {
   ].join(":");
 }
 
-export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true, playHandler, currentPlaySource, takeScreenshot = false }) {
+export default function MoviesUserActionOptions({ isOnline, movieData, reportButton = true, playHandler, currentPlaySource, isAllRestricted, takeScreenshot = false }) {
 
   const [isSaved, setIsSaved] = useState(false);
   const [isReportModelOpen, setIsReportModelOpen] = useState(false);
   const [screenshotData, setScreenshotData] = useState(null);
-
-  const { isUserRestricted } = useSelector((state) => state.fullWebAccessState);
 
   const { isIOS } = useDeviceType();
 
@@ -58,7 +55,6 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
     type,
     secondTypeSource: downloadLinks,
     watchLink,
-    isContentRestricted,
     isInTheater
   } = movieData || {};
 
@@ -149,8 +145,6 @@ export default function MoviesUserActionOptions({ isOnline, movieData, reportBut
     setIsSaved(isAvailable);
 
   }, []);
-
-  const isAllRestricted = isUserRestricted && isContentRestricted;
 
   return (
     <>
