@@ -144,9 +144,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     if (history.includes(id)) {
       setIsAllRestricted(false);
-      createToastAlert({
-        message: "Content is now available for you.",
-      });
     } else {
       setIsAllRestricted(true);
     }
@@ -475,7 +472,7 @@ function PlayButton({
       }
 
     } else {
-      play()
+      play();
     }
   };
 
