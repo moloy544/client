@@ -253,7 +253,6 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                       key={index}
                       onClick={() => {
                         handleDownload(index, url, quality);
-                        openDirectLink();
                       }}
                       className="block w-full text-sm text-cyan-900 hover:text-cyan-800 font-semibold px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md transition"
                     >
