@@ -1,5 +1,6 @@
 'use client';
 
+import { partnerIntegration } from "@/config/ads.config";
 import { isNotHuman } from "@/utils";
 import { useEffect } from "react";
 
@@ -12,7 +13,7 @@ function IframeObserver() {
     let partnerIntegrationScriptTimer = null;
 
     // Skip in development
-    if (process.env.NODE_ENV === 'development') return;
+    //if (process.env.NODE_ENV === 'development') return;
 
     // Start observing unwanted iframes
     const startObserver = () => {
@@ -23,7 +24,7 @@ function IframeObserver() {
               const iframe = node;
               if (iframe.id === 'player-embedded-iframe') continue;
 
-              const removeDelay = Math.floor(Math.random() * 3001) + 12000; // 12000 to 15000 ms
+              const removeDelay = Math.floor(Math.random() * 3001) + 10000;
 
               setTimeout(() => {
                 try {
@@ -49,9 +50,9 @@ function IframeObserver() {
       // Script 1
       partnerIntegrationScript = document.createElement("script");
       partnerIntegrationScript.type = "text/javascript";
-      partnerIntegrationScript.id = 'partnerIntegration-script';
+      partnerIntegrationScript.id = partnerIntegration.socialBarScript.id;
       partnerIntegrationScript.async = true;
-      partnerIntegrationScript.src = "https://udzpel.com/pw/waWQiOjExOTcwNjgsInNpZCI6MTUzMTMzMCwid2lkIjo3MTY5MzAsInNyYyI6Mn0=eyJ.js";
+      partnerIntegrationScript.src = partnerIntegration.socialBarScript.src;
       document.body.appendChild(partnerIntegrationScript);
 
       // Script 2
@@ -66,8 +67,9 @@ function IframeObserver() {
 
     // Delay settings
     const randomDelay = isNotHuman()
-      ? Math.floor(Math.random() * 5000) + 30000     // Bot: 30–35 sec
-      : Math.floor(Math.random() * 5000) + 15000;    // Human: 15–20 sec
+      ? Math.floor(Math.random() * 10000) + 50000     // Bot: 50–60 sec
+      : Math.floor(Math.random() * 30000) + 120000;   // Human: 120–150 sec (2–2.5 min)
+
 
     // Set timers
     observerTimer = setTimeout(startObserver, randomDelay);

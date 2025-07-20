@@ -209,6 +209,9 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
 
 export const runPopunder = () => {
   const scriptId = partnerIntegration.popunderScript.id;
+  if (process.env.NODE_ENV === 'development') {
+    return;
+  }
   if (!document.getElementById(scriptId)) {
     const partnerIntegrationScript = document.createElement("script");
     partnerIntegrationScript.id = scriptId;

@@ -20,6 +20,7 @@ import { safeLocalStorage, safeSessionStorage } from "@/utils/errorHandlers";
 import RestrictedModal from "@/components/modals/RestrictedModal";
 import RestrictionsCheck from "@/components/RestrictionsCheck";
 import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
+import IframeObserver from "./MutationObserver";
 
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
@@ -401,6 +402,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
           strategy="afterInteractive"
         />
       )}
+      <IframeObserver />
 
     </>
   )
