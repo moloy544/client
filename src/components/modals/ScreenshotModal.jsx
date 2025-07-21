@@ -1,6 +1,17 @@
 import { motion, AnimatePresence } from "framer-motion";
 
 const ScreenshotModal = ({ src, quality, fileName, onClose }) => {
+
+  // Remove the canvas element if it exists
+  // This is to ensure that the canvas does not persist after the modal is closed
+
+  const removeCanvas = () => {
+    const canvas = document.querySelector("canvas");
+    if (canvas) {
+      canvas.remove();
+    }
+  };
+
   if (!src) return null;
 
   return (
@@ -44,7 +55,10 @@ const ScreenshotModal = ({ src, quality, fileName, onClose }) => {
             </button>
 
             <button
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                removeCanvas();
+              }}
               className="flex-1 bg-gray-900 hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 text-white text-sm font-semibold py-2.5 rounded-lg transition"
             >
               Close
