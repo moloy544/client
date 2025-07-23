@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, AnimatePresence } from "framer-motion";
 
 const ScreenshotModal = ({ src, quality, fileName, onClose }) => {
