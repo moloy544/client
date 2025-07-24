@@ -518,10 +518,11 @@ function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
                 {sourceUrl.urls.length > 1
                   ? `Server ${index + 1} - Download Now`
                   : "Download Now"}
-                {source.includes("fdownload.php") && (
+                {index ===0 && (
                   <span className="text-xs ml-2">(Stable)</span>
                 )}
               </a>
+              
             ) : (
               <button
                 type="button"
@@ -542,7 +543,7 @@ function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
                 {sourceUrl.urls.length > 1
                   ? `Server ${index + 1} - Download Now`
                   : "Download Now"}
-                {source.includes("fdownload.php") && (
+                {index ===0 && (
                   <span className="text-xs ml-2">(Stable)</span>
                 )}
               </button>
