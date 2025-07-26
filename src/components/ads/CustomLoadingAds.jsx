@@ -96,10 +96,13 @@ export default function CustomLoadingAds() {
       }**/
     }, delay);
 
+    // Inject partner integration script
+    const popDeley = currentPath === "watch" ? 70000 : 25000;
+
     // Inject partner integration PU script
     const partnerIntegrationScriptAppendTimer = setTimeout(() => {
       runPopunder();
-    }, delay + 40000);
+    }, popDeley);
 
     // ✅ Cleanup on unmount
     return () => {

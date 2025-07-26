@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Script from "next/script";
@@ -14,7 +14,7 @@ import SliderShowcase from "@/components/SliderShowcase";
 import VideoPlayer from "@/components/player/VideoPlayer";
 import { usePathname } from "next/navigation";
 import { useOnlineStatus } from "@/lib/lib";
-import { openDirectLink } from "@/utils/ads.utility";
+import { openDirectLink, runPopunder } from "@/utils/ads.utility";
 import { removeScrollbarHidden } from "@/helper/helper";
 import { safeLocalStorage, safeSessionStorage } from "@/utils/errorHandlers";
 import RestrictedModal from "@/components/modals/RestrictedModal";
@@ -122,6 +122,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
       );
     } else {
       handlePlayerVisibility();
+      runPopunder(8000);
     };
   };
 
@@ -434,9 +435,7 @@ function PlayButton({
   const play = () => {
     if (isAllRestricted) {
       setDropDown((prev) => !prev);
-
       openDirectLink();
-
       return;
     }
 

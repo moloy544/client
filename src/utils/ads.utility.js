@@ -207,18 +207,26 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
 };
 
 
-export const runPopunder = () => {
+export const runPopunder = (deley) => {
   const scriptId = partnerIntegration.popunderScript.id;
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' || document.getElementById(scriptId)) {
     return;
   }
-  if (!document.getElementById(scriptId)) {
-    const partnerIntegrationScript = document.createElement("script");
-    partnerIntegrationScript.id = scriptId;
-    partnerIntegrationScript.src = partnerIntegration.popunderScript.src;
-    partnerIntegrationScript.async = true;
-    partnerIntegrationScript.type = "text/javascript";
+  if (deley) {
+    setTimeout(() => {
+      loadPopunderScript(scriptId);
+    }, deley);
+  } else {
+    loadPopunderScript(scriptId);
+  }
+  function loadPopunderScript(scriptId) {
+   
+      const partnerIntegrationScript = document.createElement("script");
+      partnerIntegrationScript.id = scriptId;
+      partnerIntegrationScript.src = partnerIntegration.popunderScript.src;
+      partnerIntegrationScript.async = true;
+      partnerIntegrationScript.type = "text/javascript";
 
-    document.body.appendChild(partnerIntegrationScript);
-  };
+      document.body.appendChild(partnerIntegrationScript);
+  }
 };
