@@ -80,7 +80,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         { from: 'vgm', to: 'Vegamovies' },
         { from: 'm4', to: 'Movies4u' },
         { from: 'fdl', to: 'filesdl' },
-         { from: 'fdl.st', to: 'filesdl.site' },
+        { from: 'fdl.st', to: 'filesdl.site' },
       ];
 
       // Apply all reverse replacements
@@ -466,7 +466,7 @@ const LanguageGuideModal = ({ isOpen, handleClose }) => {
 };
 
 function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
-  const [timeLeft, setTimeLeft] = useState(process.env.NODE_ENV === 'development' ? 0: 15);
+  const [timeLeft, setTimeLeft] = useState(process.env.NODE_ENV === 'development' ? 0 : 15);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -518,11 +518,11 @@ function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
                 {sourceUrl.urls.length > 1
                   ? `Server ${index + 1} - Download Now`
                   : "Download Now"}
-                {index ===0 && (
+                {sourceUrl.length > 1 && index === 0 && (
                   <span className="text-xs ml-2">(Stable)</span>
                 )}
               </a>
-              
+
             ) : (
               <button
                 type="button"
@@ -543,7 +543,7 @@ function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
                 {sourceUrl.urls.length > 1
                   ? `Server ${index + 1} - Download Now`
                   : "Download Now"}
-                {index ===0 && (
+                {sourceUrl.length > 1 && index === 0 && (
                   <span className="text-xs ml-2">(Stable)</span>
                 )}
               </button>
