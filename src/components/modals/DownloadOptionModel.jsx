@@ -518,7 +518,7 @@ function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
                 {sourceUrl.urls.length > 1
                   ? `Server ${index + 1} - Download Now`
                   : "Download Now"}
-                {sourceUrl.length > 1 && index === 0 && (
+                {sourceUrl.urls.length > 1 && index === 0 && (
                   <span className="text-xs ml-2">(Stable)</span>
                 )}
               </a>
@@ -543,7 +543,7 @@ function WaitTimerDownloadOptions({ sourceUrl, isAdzOpen, setIsAdzOpen }) {
                 {sourceUrl.urls.length > 1
                   ? `Server ${index + 1} - Download Now`
                   : "Download Now"}
-                {sourceUrl.length > 1 && index === 0 && (
+                {sourceUrl.urls.length > 1 && index === 0 && (
                   <span className="text-xs ml-2">(Stable)</span>
                 )}
               </button>
