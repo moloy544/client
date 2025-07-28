@@ -15,6 +15,16 @@ const areEqual = (prevProps, nextProps) => {
   )
 };
 
+function removeSkipQueryParam(url) {
+  if (!url || !url.includes('skip=') || typeof url !== "string") return url;
+
+  const urlObj = new URL(url, 'https://fallback.com');
+  if (urlObj.searchParams.has('skip')) {
+    urlObj.searchParams.delete('skip');
+  }
+  return urlObj.toString();
+};
+
 function createPlaybleSoure(hlsProviderDomain, seriesData, ip) {
   if (!Array.isArray(seriesData)) {
     return generateSourceURL(hlsProviderDomain, seriesData, ip)
@@ -58,7 +68,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
         const playerOptions = {
           id: 'player',
-          file: newSource,
+          file: removeSkipQueryParam(newSource),
 
         };
         let skipValue = 0;
@@ -67,9 +77,9 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           skipValue = parseInt(getSkipValue, 10);
         };
 
-       if (skipValue > 0) {
+        if (skipValue > 0) {
           playerOptions.start = skipValue;
-        }else if (videoTrim && typeof videoTrim === 'number') {
+        } else if (videoTrim && typeof videoTrim === 'number') {
           playerOptions.start = videoTrim;
         }
         const playerInstance = {
@@ -152,10 +162,9 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
         checkTimer = setInterval(() => {
           const elapsed = Date.now() - startTime;
           if (elapsed >= 64000) {
-            setIsIframeLoading("Can't load video. Please check your connection or report the issue.");
-            clearInterval(checkTimer);
+            setIsIframeLoading("Taking too much time. Please wait more or come back later.");
           } else if (elapsed >= 30000) {
-            setIsIframeLoading("Slow network... please wait a bit more.");
+            setIsIframeLoading("May be slow network or server delay.... please wait a bit more.");
           } else if (elapsed >= 18000) {
             setIsIframeLoading("Loading is taking longer than expected. Please wait...");
           }
