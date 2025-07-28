@@ -61,11 +61,17 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           file: newSource,
 
         };
-
-        if (videoTrim && typeof videoTrim === 'number') {
-          playerOptions.start = videoTrim;
+        let skipValue = 0;
+        const getSkipValue = new URL(newSource, 'https://fallback.com').searchParams.get('skip');
+        if (getSkipValue) {
+          skipValue = parseInt(getSkipValue, 10);
         };
 
+       if (skipValue > 0) {
+          playerOptions.start = skipValue;
+        }else if (videoTrim && typeof videoTrim === 'number') {
+          playerOptions.start = videoTrim;
+        }
         const playerInstance = {
           functionName: Array.isArray(newSource) ? 'MoviesbazarSeriesPlayer' : 'MoviesbazarPlayer',
           id: Array.isArray(newSource) ? "series-playerjs-script" : "playerjs-script",

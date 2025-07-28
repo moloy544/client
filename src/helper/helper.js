@@ -1,27 +1,27 @@
 export function generateRandomID(length) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 };
 
 export function removeScrollbarHidden() {
-    const body = document.querySelector('body');
+  const body = document.querySelector('body');
 
-    if (body.classList.contains('scrollbar-hidden')) {
-      body.classList.remove('scrollbar-hidden');
-      body.style.overflow = '';
+  if (body.classList.contains('scrollbar-hidden')) {
+    body.classList.remove('scrollbar-hidden');
+    body.style.overflow = '';
   }
 
 };
 
 // Email us for any query
 export const handleEmailUs = () => {
-    const email = 'moviesbazarorg@gmail.com';
-    window.location.href = `mailto:${email}`;
+  const email = 'moviesbazarorg@gmail.com';
+  window.location.href = `mailto:${email}`;
 };
 
 export async function captureScreen() {
@@ -76,9 +76,15 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
   // Replace IP segment in the originalURL with expiration timestamp and user IP
   const modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
 
-  const finalUrl = modifiedURL.trim().endsWith('.m3u8') ? modifiedURL : `${modifiedURL}.m3u8`;
+  let finalUrl = modifiedURL.includes('.m3u8') ? modifiedURL : `${modifiedURL}.m3u8`;
 
-
+  if (finalUrl.includes('skip=')) {
+    const urlObj = new URL(finalUrl, 'https://fallback.com');
+    if (urlObj.searchParams.has('skip')) {
+      urlObj.searchParams.delete('skip');
+    }
+    finalUrl = urlObj.toString();
+  }
   return finalUrl;
 };
 
