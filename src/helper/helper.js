@@ -74,18 +74,11 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
   const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
 
   // Replace IP segment in the originalURL with expiration timestamp and user IP
-  const modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
+  let modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
 
-  let finalUrl = modifiedURL.includes('.m3u8') ? modifiedURL : `${modifiedURL}.m3u8`;
+  modifiedURL = modifiedURL.includes('.m3u8') ? modifiedURL : `${modifiedURL}.m3u8`;
 
-  if (finalUrl.includes('skip=')) {
-    const urlObj = new URL(finalUrl, 'https://fallback.com');
-    if (urlObj.searchParams.has('skip')) {
-      urlObj.searchParams.delete('skip');
-    }
-    finalUrl = urlObj.toString();
-  }
-  return finalUrl;
+  return modifiedURL;
 };
 
 export function generateCountrySpecificIp() {

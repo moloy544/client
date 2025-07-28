@@ -54,7 +54,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   const [videoSource, setVideoSource] = useState(null);
   const [takeScreenshot, setTakeScreenshot] = useState(false);
   const [isAllRestricted, setIsAllRestricted] = useState(false);
-
+  
   const { isUserRestricted, UserRestrictedChecking } = useSelector(
     (state) => state.fullWebAccessState
   );
@@ -91,7 +91,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     setVideoSource(source);
 
-    const findRpmplayOnline = movieDetails.watchLink?.filter(({ source }) => source.includes('rpmplay.online') || source.includes('p2pplay.online'));
+    const findRpmplayOnline = movieDetails.watchLink?.filter((data) => data.source.includes('rpmplay.online') || data.source.includes('p2pplay.online'));
 
     const handlePlayerVisibility = () => {
 
@@ -128,28 +128,28 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
   // check is the user report the disabled content 
   useEffect(() => {
-  if (isContentRestricted && isUserRestricted && !UserRestrictedChecking) {
-    const id = imdbId?.replace("tt", "");
+    if (isContentRestricted && isUserRestricted && !UserRestrictedChecking) {
+      const id = imdbId?.replace("tt", "");
 
-    if (!id) return; // Skip if no valid ID
+      if (!id) return; // Skip if no valid ID
 
-    const existingRaw = safeLocalStorage.get("report_history");
-    let history = [];
+      const existingRaw = safeLocalStorage.get("report_history");
+      let history = [];
 
-    try {
-      const parsed = JSON.parse(existingRaw);
-      history = Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
-      history = [];
+      try {
+        const parsed = JSON.parse(existingRaw);
+        history = Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        history = [];
+      }
+
+      if (history.includes(id)) {
+        setIsAllRestricted(false);
+      } else {
+        setIsAllRestricted(true);
+      }
     }
-
-    if (history.includes(id)) {
-      setIsAllRestricted(false);
-    } else {
-      setIsAllRestricted(true);
-    }
-  }
-}, [isUserRestricted, imdbId, UserRestrictedChecking]);
+  }, [isUserRestricted, imdbId, UserRestrictedChecking]);
 
 
   useEffect(() => {
@@ -209,7 +209,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
     }
   ];
 
-  const isHLSPlayListAvailble = movieDetails.watchLink.some(({ source }) => source.includes('.m3u8') || source.includes('.mkv') || source.includes('.txt'))
+  const isHLSPlayListAvailble = movieDetails.watchLink.some(({ source }) => source.includes('.m3u8') || source.includes('.mkv') || source.includes('.txt'));
 
   return (
     <>
@@ -260,7 +260,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
               content_status={status}
               fullReleaseDateString={formattedDate}
               playHandler={handleVideoSourcePlay}
-              currentPlaySource={videoSource}
               contentTitle={title}
               contentType={type || "content"}
               isAllRestricted={isAllRestricted}
@@ -410,7 +409,6 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 function PlayButton({
   watchLinks,
   playHandler,
-  currentPlaySource,
   contentTitle,
   content_status,
   fullReleaseDateString,
@@ -428,7 +426,7 @@ function PlayButton({
   const [selectedPlaySource, setSelectedPlaySource] = useState(null);
   const [adultAlert, setAdultAlert] = useState(false);
 
-  const findIndex = watchLinks.findIndex(({ source }) =>
+  const rpmShareSourceIndex = watchLinks.findIndex(({ source }) =>
     source.includes("rpmplay.online") || source.includes("p2pplay.online")
   );
 
@@ -479,13 +477,6 @@ function PlayButton({
     setDropDown(false);
   };
 
-  const currentPlayHlsDomain = currentPlaySource
-    ? new URL(currentPlaySource).hostname
-    : null;
-
-  const findCurrentPlayHlsDomainIndex = watchLinks?.findIndex(({ source }) =>
-    source?.startsWith("https://" + currentPlayHlsDomain)
-  );
 
   const isOnlyRpmPlaySource =
     (watchLinks.length === 1 || watchLinks.length === 2) &&
@@ -493,6 +484,8 @@ function PlayButton({
       ({ source }) =>
         source.includes("rpmplay.online") || source.includes("p2pplay.online")
     );
+
+  const selectedSourceIndex = watchLinks?.findIndex(({ source }) => source === selectedPlaySource)
 
   return (
     <>
@@ -638,7 +631,7 @@ function PlayButton({
                       <small className="text-xs text-gray-200 font-medium">
                         &#8226; If you choose{" "}
                         <span className="text-yellow-500 font-semibold">
-                          server {findIndex + 1}
+                          server {rpmShareSourceIndex + 1}
                         </span>{" "}
                         Try to play at least 3/4 times. Sometimes the video may
                         take time to load, please be patient.
@@ -684,7 +677,7 @@ function PlayButton({
                           <span>
                             {data.label}
                             {watchLinks.length > 1 &&
-                              findCurrentPlayHlsDomainIndex === index && (
+                              selectedSourceIndex === index && (
                                 <i className="bi bi-check-circle-fill text-teal-500 text-xs mx-2.5"></i>
                               )}
                           </span>
