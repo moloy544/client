@@ -66,14 +66,17 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
 
   const { isIOS, isAndroid } = useDeviceType();
 
-  const handleDownload = async (sourceIndex, url, quality) => {
+  const handleDownload = async (sourceIndex, url, quality, index) => {
     try {
       if (!isOnline) {
         createToastAlert({
           message: 'You are offline. Please check your internet connection.',
         });
+        return;
       }
+
       setDownloadStartProgress(true);
+
       const reverseReplacements = [
         { from: 'anony', to: 'pixeldrain' },
         { from: 'anony.nl', to: 'pixeldrain.net' },
@@ -83,7 +86,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         { from: 'fdl.st', to: 'filesdl.site' },
       ];
 
-      // Apply all reverse replacements
+      // Apply replacements
       if (typeof url === 'string') {
         for (const { from, to } of reverseReplacements) {
           if (url.includes(from)) {
@@ -91,34 +94,40 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
           }
         }
 
-        // Add back '?download' if it's a pixeldrain URL
         if (url.includes('pixeldrain') && !url.includes('?download')) {
           url += '?download';
         }
-      };
+      }
 
-      // Use cached backup source if already fetched
-      if (backupServerResponseSource?.[quality]) {
-        setSourceUrl({ quality, urls: backupServerResponseSource[quality] });
+      // Composite key: sourceIndex_quality
+      const cacheKey = `${sourceIndex}_${quality}`;
+
+      // Use cached if already fetched
+      if (backupServerResponseSource?.[cacheKey]) {
+        setSourceUrl({ index, urls: backupServerResponseSource[cacheKey], quality });
         return;
-      };
+      }
 
-      // If it's not filesdl.site link, simulate loading without calling the API
+      // If it's not filesdl.site, simulate loading
       if (!url.includes("filesdl.site")) {
         const delayOptions = [1500, 2000, 2500];
         const randomDelay = delayOptions[Math.floor(Math.random() * delayOptions.length)];
         await wait(randomDelay);
+
+        const result = [url];
+
         setSourceUrl({
+          index,
+          urls: result,
           quality,
-          urls: [url]
         });
-        // Backup the source
-        setBackupServerResponseSource(prev => ({ ...prev, [quality]: [url] }));
 
+        // Cache result
+        setBackupServerResponseSource(prev => ({ ...prev, [cacheKey]: result }));
         return;
-      };
+      }
 
-      // Fetch the HTML content from the URL
+      // If it's filesdl.site, fetch from API
       const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_source/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
 
       if (response.status !== 200) {
@@ -137,14 +146,17 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
           visibilityTime: 12000
         });
         return;
-      };
+      }
 
-      // Cache the fetched backup source
-      setBackupServerResponseSource(prev => ({ ...prev, [quality]: downloadUrl }));
+      setBackupServerResponseSource(prev => ({
+        ...prev,
+        [cacheKey]: downloadUrl
+      }));
 
       setSourceUrl({
+        index,
+        urls: downloadUrl,
         quality,
-        urls: downloadUrl
       });
 
     } catch (error) {
@@ -252,7 +264,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
                       type="button"
                       key={index}
                       onClick={() => {
-                        handleDownload(index, url, quality);
+                        handleDownload(index, url, quality, index);
                       }}
                       className="block w-full text-sm text-cyan-900 hover:text-cyan-800 font-semibold px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-md transition"
                     >
