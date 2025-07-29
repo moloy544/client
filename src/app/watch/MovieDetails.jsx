@@ -659,7 +659,7 @@ function PlayButton({
                     changing audio, quality, and more
                   </p>
 
-                  <div className="space-y-3 my-4 px-1">
+                  <div className={`space-y-3 my-4 px-1 max-h-52 overflow-y-scroll ${watchLinks.length <= 4 ? "scrollbar-hidden" : ""}`}>
                     {watchLinks?.map((data, index) => (
                       <div key={data.data || index}>
                         <button
