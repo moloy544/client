@@ -54,7 +54,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
   const [videoSource, setVideoSource] = useState(null);
   const [takeScreenshot, setTakeScreenshot] = useState(false);
   const [isAllRestricted, setIsAllRestricted] = useState(false);
-  
+
   const { isUserRestricted, UserRestrictedChecking } = useSelector(
     (state) => state.fullWebAccessState
   );
@@ -233,7 +233,11 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
                   <VideoPlayer
                     title={title}
                     hlsSourceDomain={hlsSourceDomain}
-                    source={!seriesData ? videoSource : seriesData}
+                    source={
+                      videoSource.includes('?backup_stream=1') || !seriesData
+                        ? videoSource
+                        : seriesData
+                    }
                     userIp={userIp}
                     imdbId={imdbId}
                     onVideoLoad={() => setTakeScreenshot(true)}

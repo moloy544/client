@@ -16,14 +16,24 @@ const areEqual = (prevProps, nextProps) => {
 };
 
 function removeSkipQueryParam(url) {
-  if (!url || !url.includes('skip=') || typeof url !== "string") return url;
+  const removalsQuery = ["skip", "backup_stream"];
 
-  const urlObj = new URL(url, 'https://fallback.com');
-  if (urlObj.searchParams.has('skip')) {
-    urlObj.searchParams.delete('skip');
+  if (!url || typeof url !== "string" || !url.includes("?")) return url;
+
+  try {
+    const urlObj = new URL(url, "https://fallback.com");
+
+    removalsQuery.forEach((key) => {
+      if (urlObj.searchParams.has(key)) {
+        urlObj.searchParams.delete(key);
+      }
+    });
+
+    return urlObj.toString();
+  } catch (e) {
+    return url; // Fallback in case of invalid URL
   }
-  return urlObj.toString();
-};
+}
 
 function createPlaybleSoure(hlsProviderDomain, seriesData, ip) {
   if (!Array.isArray(seriesData)) {
@@ -69,7 +79,6 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
         const playerOptions = {
           id: 'player',
           file: removeSkipQueryParam(newSource),
-
         };
         let skipValue = 0;
         const getSkipValue = new URL(newSource, 'https://fallback.com').searchParams.get('skip');
@@ -149,7 +158,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
         iframe.className = "w-full aspect-video my-auto";
         iframe.id = "player-embedded-iframe";
         iframe.allow = "autoplay; fullscreen";
-        iframe.src = source;
+        iframe.src = removeSkipQueryParam(source);
         iframe.title = title || "Movies Bazar Streaming Iframe";
 
         iframe.onload = () => {
