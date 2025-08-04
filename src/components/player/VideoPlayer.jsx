@@ -45,7 +45,7 @@ function createPlaybleSoure(hlsProviderDomain, seriesData, ip) {
     folder: lang.seasons.map(season => ({
       title: `Season ${season.seasonNumber}`,
       folder: season.episodes.map((episodeUrl, index) => ({
-        title: `Episode ${index + 1}`,
+        title: `EP ${index + 1}`,
         file: generateSourceURL(hlsProviderDomain, `${episodeUrl.includes('https://') ? episodeUrl : season.basePath + episodeUrl}`, ip)
       }))
     }))
