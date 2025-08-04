@@ -23,7 +23,7 @@ import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
 
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
-export default function MovieDetails({ movieDetails, suggestions, userIp }) {
+export default function MovieDetailsComponent({ movieDetails, suggestions, userIp }) {
 
   const {
     imdbRating,
@@ -91,7 +91,7 @@ export default function MovieDetails({ movieDetails, suggestions, userIp }) {
 
     setVideoSource(source);
 
-    const findRpmplayOnline = movieDetails.watchLink?.filter((data) => data.source.includes('rpmplay.online') || data.source.includes('p2pplay.online'));
+    const findRpmplayOnline = movieDetails.watchLink?.filter((data) => data.source.includes('rpmplay.online') || data.source.includes('p2pplay.online') || data.source.includes('mivalyo.com'));
 
     const handlePlayerVisibility = () => {
 
@@ -431,7 +431,7 @@ function PlayButton({
   const [adultAlert, setAdultAlert] = useState(false);
 
   const rpmShareSourceIndex = watchLinks.findIndex(({ source }) =>
-    source.includes("rpmplay.online") || source.includes("p2pplay.online")
+    source.includes("rpmplay.online") || source.includes("p2pplay.online") || source.includes('mivalyo.com')
   );
 
   const play = () => {
@@ -450,7 +450,7 @@ function PlayButton({
     };
 
     const findRpmplayOnline = watchLinks.filter(({ source }) =>
-      source.includes("rpmplay.online") || source.includes("p2pplay.online")
+      source.includes("rpmplay.online") || source.includes("p2pplay.online") || source.includes('mivalyo.com')
     );
     if (findRpmplayOnline.length > 0 || content_status === "coming soon") {
       setIsRpmplayOnline(findRpmplayOnline.length > 0);
@@ -486,7 +486,7 @@ function PlayButton({
     (watchLinks.length === 1 || watchLinks.length === 2) &&
     watchLinks?.some(
       ({ source }) =>
-        source.includes("rpmplay.online") || source.includes("p2pplay.online")
+        source.includes("rpmplay.online") || source.includes("p2pplay.online") || source.includes('mivalyo.com')
     );
 
   const selectedSourceIndex = watchLinks?.findIndex(({ source }) => source === selectedPlaySource)

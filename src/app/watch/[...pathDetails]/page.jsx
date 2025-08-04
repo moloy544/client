@@ -6,7 +6,7 @@ import axios from "axios";
 import { creatUrlLink, transformToCapitalize } from "@/utils";
 import { appConfig } from "@/config/config";
 import { InspectPreventer } from "@/lib/lib";
-import MovieDetails from "../MovieDetails";
+import MovieDetailsComponents from "../MovieDetailsComponent";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import Footer from "@/components/Footer";
 import { BASE_OG_IMAGE_URL } from "@/constant/assets_links";
@@ -71,16 +71,16 @@ const getMovieDeatils = async (imdbId, suggestion = true) => {
 // Generate metadata for content
 export async function generateMetadata({ params }) {
 
-  const { movieDetails } = params;
+  const { pathDetails } = params;
 
   // Construct IMDb ID from params, ensuring it has the 'tt' prefix
-  const paramsImdbId = movieDetails[2] ? `tt${movieDetails[2]}` : null;
+  const paramsImdbId = pathDetails[2] ? `tt${pathDetails[2]}` : null;
 
   // Fetch movie data based on the IMDb ID
   const { movieData, status } = await getMovieDeatils(paramsImdbId, false);
 
   // Early return if the API response is not valid, movie details are missing, or there's no movie data
-  if (status !== 200 || movieDetails.length !== 3 || !movieData) {
+  if (status !== 200 || pathDetails.length !== 3 || !movieData) {
     return;
   }
 
@@ -88,13 +88,13 @@ export async function generateMetadata({ params }) {
   const { imdbId, title, thumbnail, releaseYear, type, genre, language, category, castDetails, multiAudio } = movieData || {};
 
   // Convert type from params and movie data to lowercase for comparison
-  const paramsType = movieDetails[0]?.toLowerCase();
+  const paramsType = pathDetails[0]?.toLowerCase();
   const movieType = type?.toLowerCase();
 
   // Validate URL path components
   const isTypeValid = paramsType && paramsType === movieType;
   const isImdbIdValid = paramsImdbId && imdbIdPattern.test(paramsImdbId) && paramsImdbId === imdbId;
-  const isPathLengthValid = movieDetails.length === 3;
+  const isPathLengthValid = pathDetails.length === 3;
 
   // If any of the checks fail, mark the path as invalid
   if (!isPathLengthValid || !isTypeValid || !isImdbIdValid) {
@@ -149,9 +149,9 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
 
-  const { movieDetails } = params;
+  const { pathDetails } = params;
 
-  const paramsImdbId = movieDetails[2] ? `tt${movieDetails[2]}` : null;
+  const paramsImdbId = pathDetails[2] ? `tt${pathDetails[2]}` : null;
 
   const { status, userIp, movieData, suggestions } = await getMovieDeatils(paramsImdbId, true);
 
@@ -162,18 +162,17 @@ export default async function Page({ params }) {
   // If not, set isValidPath to false and call notFound.
   if (status === 200 && movieData) {
     // Extract params and movie data types, converting them to lowercase
-    const paramsType = movieDetails[0]?.toLowerCase() || null;
+    const paramsType = pathDetails[0]?.toLowerCase() || null;
     const movieDataType = movieData.type?.toLowerCase() || null;
 
     const movieDataImdbId = movieData.imdbId || null;
 
-
-    const validatePath = movieData.validatePath || null;
+    //const validatePath = movieData.validatePath || null;
 
     // Validate URL path components
     const isTypeValid = paramsType && paramsType === movieDataType;
     const isImdbIdValid = paramsImdbId && imdbIdPattern.test(paramsImdbId) && paramsImdbId === movieDataImdbId;
-    const isPathLengthValid = movieDetails.length === 3;
+    const isPathLengthValid = pathDetails.length === 3;
 
     const preventValidation = movieData.hasOwnProperty("validatePath") && movieData.validatePath === false;
 
@@ -199,13 +198,25 @@ export default async function Page({ params }) {
     )
   };
 
+  const { fullReleaseDate } = movieData || {};
+
+  if (fullReleaseDate) {
+    const originalDate = new Date(fullReleaseDate);
+
+    const formattedDate = originalDate.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+    movieData.fullReleaseDate = formattedDate;
+  }
 
   return (
 
     <div className="min-w-full min-h-screen bg-custom-dark-bg">
       <InspectPreventer>
         <NavigateBackTopNav title={`Watch ${movieData?.type}`} />
-        <MovieDetails
+        <MovieDetailsComponents
           movieDetails={movieData}
           suggestions={suggestions}
           userIp={userIp}
