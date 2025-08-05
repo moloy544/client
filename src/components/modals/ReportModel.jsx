@@ -350,7 +350,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
 
       <ModelsController visibility={serverSuggestion.isModelOpen} windowScroll={false}>
         <div className="fixed inset-0 z-[62] bg-black/60 flex justify-center items-center px-4">
-          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200 p-2.5 space-y-6">
+          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-200 p-2.5 space-y-6 pb-4">
 
             {/* Header */}
             <div className="flex items-start gap-4">
@@ -374,19 +374,15 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-wrap justify-center space-y-1.5 gap-2 sm:gap-3">
+            {/* Server Buttons */}
+            <div className={`grid mobile:grid-cols-1 grid-cols-2 gap-3 w-full max-w-3xl mx-auto ${serverSuggestion?.serversData?.length > 4 ? "mobile:max-h-56 max-h-full mobile:overflow-y-scroll overflow-y-auto" : ""}`}>
               {serverSuggestion.serversData?.map(({ source, label, labelTag }, index) => (
                 <button
                   key={index}
                   onClick={() => playAlterNativeServer(source)}
-                  className="flex items-center bg-teal-600 hover:bg-teal-700 text-white text-[13px] sm:text-sm font-medium px-3 py-2 rounded-lg transition-all shadow shadow-teal-300/20"
+                  className="bg-gray-600 hover:bg-gray-700 text-white text-[13px] font-medium px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md text-center break-words whitespace-normal leading-snug"
                 >
-                  <span>{label}</span>
-                  {labelTag && (
-                    <span className="ml-2 capitalize break-words text-teal-100">
-                      {labelTag}
-                    </span>
-                  )}
+                  {labelTag}
                 </button>
               ))}
             </div>
@@ -399,7 +395,7 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
                   serversData: null,
                 })
               }
-              className="bg-gray-700 block ml-auto mr-auto hover:bg-gray-800 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all shadow-sm"
+              className="bg-gray-800 block ml-auto mr-auto hover:bg-gray-800 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all shadow-sm"
             >
               No, I will report it
             </button>
