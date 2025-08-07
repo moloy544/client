@@ -198,19 +198,6 @@ export default async function Page({ params }) {
     )
   };
 
-  const { fullReleaseDate } = movieData || {};
-
-  if (fullReleaseDate) {
-    const originalDate = new Date(fullReleaseDate);
-
-    const formattedDate = originalDate.toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
-    movieData.fullReleaseDate = formattedDate;
-  }
-
   return (
 
     <div className="min-w-full min-h-screen bg-custom-dark-bg">

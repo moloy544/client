@@ -23,6 +23,21 @@ import { PlayerGuideModal } from "@/components/modals/PlayerGuideModal";
 
 const VidStackPlayer = dynamic(() => import("@/components/player/VidStackPlayer"), { ssr: false });
 
+function formatDateToString(fullReleaseDate) {
+
+  if (fullReleaseDate) {
+    const originalDate = new Date(fullReleaseDate);
+
+    const formattedDate = originalDate.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+    return formattedDate
+  };
+  return "N/A"
+}
+
 export default function MovieDetailsComponent({ movieDetails, suggestions, userIp }) {
 
   const {
@@ -49,6 +64,9 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
     seriesData,
     ticketBookLink
   } = movieDetails || {};
+  
+  // Fotmat date to string 
+  const fullReleaseDateString = formatDateToString(fullReleaseDate);
 
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [videoSource, setVideoSource] = useState(null);
@@ -189,15 +207,8 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
       window.removeEventListener("popstate", checkPlayQuery);
     };
   }, [playerVisibility, videoSource, takeScreenshot]);
-
-  const originalDate = new Date(fullReleaseDate);
-
-  const formattedDate = originalDate.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-
+ 
+  // Create Breadcrumb
   const breadcrumbData = [
     {
       name: type === 'movie' ? type.replace('movie', 'movies') : type,
@@ -262,7 +273,7 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
             <PlayButton
               watchLinks={movieDetails.watchLink}
               content_status={status}
-              fullReleaseDateString={formattedDate}
+              fullReleaseDateString={fullReleaseDateString}
               playHandler={handleVideoSourcePlay}
               contentTitle={title}
               contentType={type || "content"}
@@ -304,7 +315,7 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
                     <strong className="text-base text-gray-200 font-bold">
                       {status === "released" ? "Released:" : "Expected Release:"}
                     </strong>
-                    <div className="text-sm text-gray-300 font-semibold mt-1">{formattedDate}</div>
+                    <div className="text-sm text-gray-300 font-semibold mt-1">{fullReleaseDateString}</div>
                   </div>
                 )}
 
@@ -480,7 +491,6 @@ function PlayButton({
   const hideDropDown = () => {
     setDropDown(false);
   };
-
 
   const isOnlyRpmPlaySource =
     (watchLinks.length === 1 || watchLinks.length === 2) &&
