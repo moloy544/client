@@ -207,26 +207,39 @@ export const openDirectLinkWithCountdown = ({ actionTypeMessage = "steaming", ca
 };
 
 
-export const runPopunder = (deley) => {
+export const runPopunder = (delay) => {
   const scriptId = partnerIntegration.popunderScript.id;
   if (process.env.NODE_ENV === 'development' || document.getElementById(scriptId)) {
     return;
   }
-  if (deley) {
+
+  if (delay) {
     setTimeout(() => {
       loadPopunderScript(scriptId);
-    }, deley);
+    }, delay);
   } else {
     loadPopunderScript(scriptId);
   }
-  function loadPopunderScript(scriptId) {
-   
-      const partnerIntegrationScript = document.createElement("script");
-      partnerIntegrationScript.id = scriptId;
-      partnerIntegrationScript.src = partnerIntegration.popunderScript.src;
-      partnerIntegrationScript.async = true;
-      partnerIntegrationScript.type = "text/javascript";
 
-      document.body.appendChild(partnerIntegrationScript);
+  function loadPopunderScript(scriptId) {
+    const partnerIntegrationScript = document.createElement("script");
+    partnerIntegrationScript.id = scriptId;
+    partnerIntegrationScript.src = partnerIntegration.popunderScript.src;
+    partnerIntegrationScript.async = true;
+    partnerIntegrationScript.type = "text/javascript";
+    document.body.appendChild(partnerIntegrationScript);
+
+    const rollerScriptId = partnerIntegration.rollerNetwork.popUnderAdScript.id;
+
+    if (!document.getElementById(rollerScriptId)) {
+      setTimeout(() => {
+        const partnerIntegrationScript2 = document.createElement("script");
+        partnerIntegrationScript2.id = rollerScriptId;
+        partnerIntegrationScript2.src = partnerIntegration.rollerNetwork.popUnderAdScript.src;
+        partnerIntegrationScript2.async = true;
+        partnerIntegrationScript2.type = "text/javascript";
+        document.body.appendChild(partnerIntegrationScript2);
+      }, (delay || 0) + 50000); // Safely handle undefined delay
+    }
   }
 };

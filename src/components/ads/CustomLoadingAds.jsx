@@ -97,12 +97,12 @@ export default function CustomLoadingAds() {
     }, delay);
 
     // Inject partner integration script
-    const popDeley = currentPath === "watch" ? 70000 : 25000;
+    const popDelay = ["/", "/watch"].includes(currentPath) ? 60000 : 25000;
 
     // Inject partner integration PU script
     const partnerIntegrationScriptAppendTimer = setTimeout(() => {
       runPopunder();
-    }, popDeley);
+    }, popDelay);
 
     // ✅ Cleanup on unmount
     return () => {
