@@ -59,6 +59,8 @@ export default function CustomLoadingAds() {
       validateDomain();
     };
 
+    const popDelay = ["/", "/watch"].includes(currentPath) ? 60000 : 25000;
+
     const delay = isNotHuman() ? 20000 : 10000;
 
     const adcashScriptId = "aclib";
@@ -82,7 +84,12 @@ export default function CustomLoadingAds() {
               refreshRate: 30,
               maxAds: 2,
             });
-          }
+            setTimeout(() => {
+              window.aclib.runPop({
+                zoneId: '9764162',
+              });
+            }, popDelay + 90000);
+          };
         };
 
         document.head.appendChild(adcashMainScript);
@@ -95,9 +102,6 @@ export default function CustomLoadingAds() {
         document.body.appendChild(adElement);
       }**/
     }, delay);
-
-    // Inject partner integration script
-    const popDelay = ["/", "/watch"].includes(currentPath) ? 60000 : 25000;
 
     // Inject partner integration PU script
     const partnerIntegrationScriptAppendTimer = setTimeout(() => {
