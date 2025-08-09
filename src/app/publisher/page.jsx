@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { appConfig } from "@/config/config";
@@ -34,7 +34,6 @@ const initialMoviesData = {
     language: 'hindi',
     genre: [],
     watchLink: [],
-    videoTrim: 0,
     castDetails: [],
     tags: [],
     isAdult: false,
@@ -54,7 +53,7 @@ export default function AdminPage() {
 
     const getMovieOneByOne = async () => {
         try {
-           
+
             const response = await axios.get(`${appConfig.backendUrl}/api/v1/admin/movies/one_by_one?skip=${skip}`);
             if (response.status === 200) {
                 const data = response.data.movie;
@@ -99,7 +98,7 @@ export default function AdminPage() {
 
             if (state.imdbId.length >= 8) {
 
-                if (state._id || state.tags>0) {
+                if (state._id || state.tags > 0) {
                     setState(initialMoviesData)
                 }
 
@@ -140,20 +139,25 @@ export default function AdminPage() {
 
                 if (omdbApiResponse.data.Title) {
 
-                    const { imdbRating, Title, Released, Poster, Genre, Actors } = omdbApiResponse.data;
+                    const { imdbRating, Title, Released, Poster, Genre, Actors, playList } = omdbApiResponse.data;
 
                     const genreAray = Genre.split(',').map(genre => genre.trim());
 
                     const actorsArray = Actors.split(',').map(actor => actor.trim());
 
-                    setState(prevState => ({
-                        ...prevState,
+                    const responseDataToSet = {
                         imdbRating: imdbRating !== "N/A" ? Number(imdbRating) : 0,
                         title: Title,
                         fullReleaseDate: Released,
                         genre: genreAray,
                         castDetails: actorsArray
-                    }));
+                    };
+
+                    if (playList) {
+                        responseDataToSet.playList = playList;
+
+                    }
+                    setState(prevState => ({ ...prevState, ...responseDataToSet }));
                     if (Released && Released !== "N/A") {
                         handleDateChange(Released)
                     }
@@ -202,15 +206,11 @@ export default function AdminPage() {
                 delete details.videoType;
                 delete details.multiAudio;
             };
-            if(details.displayTitle.trim() === ""){
+            if (details.displayTitle.trim() === "") {
                 delete details.displayTitle;
             };
-        
-            if (details.videoTrim === 0) {
-                delete details.videoTrim;
-            };
 
-            if (typeof details.isAdult === "boolean" && details.isAdult !==true) {
+            if (typeof details.isAdult === "boolean" && details.isAdult !== true) {
                 delete details.isAdult
             };
 
@@ -289,7 +289,7 @@ export default function AdminPage() {
 
         // validate video source
         if (field === "watchLink") {
-            
+
             const urlRegex = /^(https?:\/\/)?([a-z0-9.-]+\.[a-z]{2,}\/)?([a-z0-9.-]+\.[a-z]{2,}\/)?([a-z0-9.-]+\.[a-z]{2,})\/?([^\/#?]+)(\#?([^\/#]*))?$/;
             const match = urlRegex.exec(value);
             if (!match) {
@@ -499,12 +499,7 @@ export default function AdminPage() {
                             </div>
 
                             <div className="flex flex-col my-3">
-                                <label className="font-bold text-gray-800">Video Trim Duration Value</label>
-                                <input type="number" value={state.videoTrim} data-field="videoTrim" id="video-trim-input" onChange={(e) => handleInputChange(Number(e.target.value), 'videoTrim')} className={inputStyle} placeholder="Video trim duration" />
-                            </div>
-
-                            <div className="flex flex-col my-3">
-                            <small>Title Length:{state.title?.length}</small>
+                                <small>Title Length:{state.title?.length}</small>
                                 <label className="font-bold text-gray-800">Title</label>
                                 <input className={inputStyle} type="text" value={state.title} onChange={(e) => handleInputChange(e.target.value, 'title')} placeholder="Enter title" />
                             </div>
@@ -792,37 +787,37 @@ export default function AdminPage() {
                                             <i className="bi bi-x absolute top-0 right-0 cursor-pointer text-lg" onClick={() => removeFromCreatadArrayData('tags', tag)}></i>
                                         </div>
                                     ))}
-                                </div> 
+                                </div>
                             )}
 
                             <div className="flex flex-col my-3">
                                 <label className="font-bold text-gray-800">Tags/Keywords</label>
                                 <div className="inline-flex">
-                                <input type="text" id="tags-input" data-field="tags" className={inputStyle} placeholder="Enter tags" defaultValue="" />
-                                <select
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        if (!value || value === '' || value === ' ') return
+                                    <input type="text" id="tags-input" data-field="tags" className={inputStyle} placeholder="Enter tags" defaultValue="" />
+                                    <select
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (!value || value === '' || value === ' ') return
 
-                                        const isExist = state.tags.some(data => data?.toLowerCase() == value?.toLowerCase())
+                                            const isExist = state.tags.some(data => data?.toLowerCase() == value?.toLowerCase())
 
-                                        if (isExist) {
-                                            createToastAlert({ message: `${value} in tags filed is already exists` });
-                                            return
-                                        }
+                                            if (isExist) {
+                                                createToastAlert({ message: `${value} in tags filed is already exists` });
+                                                return
+                                            }
 
-                                        setState((prevState) => ({
-                                            ...prevState,
-                                            tags: [...prevState.tags, value.toLowerCase()],
-                                        }));
-                                    }}
-                                    className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
-                                >
-                                    <option value="">Options</option>
-                                    {tagOptions.map((tag, i) => (
-                                        <option key={i} value={tag}>{tag}</option>
-                                    ))}
-                                </select>
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                tags: [...prevState.tags, value.toLowerCase()],
+                                            }));
+                                        }}
+                                        className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
+                                    >
+                                        <option value="">Options</option>
+                                        {tagOptions.map((tag, i) => (
+                                            <option key={i} value={tag}>{tag}</option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <button type="button" onClick={() => creatInputValueToArrayHandler('tags-input')} className="w-fit h-5 bg-blue-600 text-sm text-white px-2 my-1 rounded-sm">Add</button>
                             </div>
@@ -863,6 +858,9 @@ export default function AdminPage() {
                     </div>
                 </form>
 
+                <UpdatePlaylistSource
+                    playListData={state.playList} />
+
                 {/** Other Update or Add Data Section **/}
                 <ActorControllerSection />
                 <UpdateMoviesPage />
@@ -870,3 +868,153 @@ export default function AdminPage() {
         </>
     );
 };
+
+
+function UpdatePlaylistSource({ playListData }) {
+    
+    const [imdbId, setImdbId] = useState('');
+    const [playlist, setPlaylist] = useState(playListData || [{ label: '', source: '' }]);
+    const [loading, setLoading] = useState(false);
+
+    const handlePlaylistChange = (index, field, value) => {
+        const updated = [...playlist];
+        updated[index][field] = value;
+        setPlaylist(updated);
+    };
+
+    const addPlaylistField = () => {
+        setPlaylist([...playlist, { label: '', source: '' }]);
+    };
+
+    const removePlaylistField = (index) => {
+        if (playlist.length === 1) return; // Prevent removing the last one
+        const updated = [...playlist];
+        updated.splice(index, 1);
+        setPlaylist(updated);
+    };
+
+    const createToastAlert = ({ message }) => {
+        alert(message); // Replace with your toast system if needed
+    };
+
+    const updatePlaylist = async () => {
+        if (
+            !imdbId ||
+            imdbId.trim().length < 6 ||
+            playlist.some((item) => !item.label || !item.source)
+        ) {
+            createToastAlert({
+                message: 'Please fill all fields correctly',
+            });
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const response = await axios.put(
+                `${appConfig.backendUrl}/api/v1/admin/update/playlist`,
+                {
+                    imdbId: imdbId.trim(),
+                    playList: playlist,
+                }
+            );
+
+            createToastAlert({
+                message: response.data.message || 'Playlist updated successfully',
+            });
+        } catch (error) {
+            console.error('Error updating playlist:', error);
+            createToastAlert({
+                message: 'Failed to update playlist',
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+     useEffect(() => {
+        if (playListData && Array.isArray(playListData) && playListData.length > 0) {
+
+            setPlaylist(playListData);
+        }
+    }, [playListData]);
+
+    return (
+        <section className="mx-3 my-5 bg-white border border-gray-200 px-5 py-5 shadow-md rounded-lg">
+            <div className="max-w-2xl mx-auto">
+                <h3 className="text-center text-xl font-bold text-gray-800 mb-4">
+                    Add or Update Playlist Source
+                </h3>
+
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        IMDb ID
+                    </label>
+                    <input
+                        type="text"
+                        className="w-full border border-gray-400 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., tt12345678"
+                        value={imdbId}
+                        onChange={(e) => setImdbId(e.target.value)}
+                    />
+                </div>
+
+                <div className="mb-5">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Playlist Sources
+                    </label>
+                    <div className="space-y-3">
+                        {playlist.map((item, index) => (
+                            <div key={index} className="flex gap-2 items-center">
+                                <input
+                                    type="text"
+                                    className="w-1/3 border border-gray-400 rounded-md px-2 py-1 text-sm"
+                                    placeholder="Label (e.g., Hindi)"
+                                    value={item.label}
+                                    onChange={(e) =>
+                                        handlePlaylistChange(index, 'label', e.target.value)
+                                    }
+                                />
+                                <input
+                                    type="text"
+                                    className="w-2/3 border border-gray-400 rounded-md px-2 py-1 text-sm"
+                                    placeholder="Source URL"
+                                    value={item.source}
+                                    onChange={(e) =>
+                                        handlePlaylistChange(index, 'source', e.target.value)
+                                    }
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => removePlaylistField(index)}
+                                    className="text-red-600 text-lg font-bold px-2"
+                                    title="Delete"
+                                >
+                                    <i className="bi bi-trash" />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                    <button
+                        type="button"
+                        onClick={addPlaylistField}
+                        className="mt-3 text-blue-600 text-sm font-medium underline"
+                    >
+                        + Add Another Source
+                    </button>
+                </div>
+
+                <div className="text-center">
+                    <button
+                        type="button"
+                        onClick={updatePlaylist}
+                        className="px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
+                        disabled={loading}
+                    >
+                        {loading ? 'Updating...' : 'Update Playlist'}
+                    </button>
+                </div>
+            </div>
+        </section>
+    );
+}
