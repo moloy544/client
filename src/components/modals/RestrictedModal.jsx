@@ -27,7 +27,7 @@ export default function RestrictedModal({ onClose, contentTitle, contentType, is
 
                     <div className="text-sm md:text-base text-gray-700 mb-3 font-medium">
                         <div className="text-sm md:text-base text-gray-700 mb-3">
-                            This {contentType} is not available because it is currently running in theatres, or access has been disabled at the request of the rightful owner.
+                            We’re sorry, but this {contentType} is not available at the moment, as access has been restricted following a request from the rightful owner.
                         </div>
                     </div>
                     {isInTheater && (
