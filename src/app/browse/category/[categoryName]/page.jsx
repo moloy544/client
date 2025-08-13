@@ -8,7 +8,7 @@ import { categoryArray } from "@/constant/constsnt";
 
 const otherExpectedCategories = [
   'international','hindi', 'hindi dubbed', 'tollywood', 'bengali dubbed', 'english', 'pollywood', 'punjabi',
-  'tamil', 'telugu', 'malayalam', 'kannada', 'dubbed', 'korean',
+  'tamil', 'telugu', 'malayalam', 'kannada', 'marathi', 'dubbed', 'korean',
   'japanese', 'chinese', 'french', 'german', 'spanish', 'italian',
   'portuguese', 'arabic', 'turkish', 'thai', 'vietnamese',
   'indonesian', 'filipino', 'swedish', 'norwegian', 'danish',
