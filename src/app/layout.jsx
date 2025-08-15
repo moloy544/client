@@ -2,12 +2,18 @@ import './globals.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
+import dynamic from 'next/dynamic';
 import NextTopLoader from 'nextjs-toploader';
 import ReduxStatePrivider from '@/context/ReduxStatePrivider';
 import { appConfig } from '@/config/config';
 import CustomLoadingAds from '@/components/ads/CustomLoadingAds';
 import { BASE_OG_IMAGE_URL } from '@/constant/assets_links';
 import SocialJoinAlert from '@/components/modals/SocialJoinAlert';
+
+const IndependenceDayCelebration = dynamic(
+  () => import('../../festivals/IndependenceDayCelebration'),
+  { ssr: false }
+);
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -65,7 +71,7 @@ export default function RootLayout({ children }) {
           )}
 
         </ReduxStatePrivider>
-
+        <IndependenceDayCelebration />
       </body>
     </html>
   );
