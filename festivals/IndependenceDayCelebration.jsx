@@ -52,7 +52,7 @@ export default function IndependenceDayCelebration() {
     };
 
     useEffect(() => {
-        const stored = safeLocalStorage.get('independence_day_wis');
+        const stored = safeLocalStorage.get('independence_day_wish');
 
         if (!isCelebrationTime()) {
             if (stored) safeLocalStorage.remove('independence_day_wish');
