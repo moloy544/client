@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:lan": "next dev -H 192.168.31.240 -p 3000"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
@@ -15,6 +16,7 @@
     "@vidstack/react": "^1.12.13",
     "axios": "^1.7.7",
     "bootstrap-icons": "^1.10.5",
+    "canvas-confetti": "^1.9.3",
     "framer-motion": "^11.11.16",
     "hls.js": "^1.5.20",
     "next": "^14.1.4",
