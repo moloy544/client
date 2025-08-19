@@ -7,8 +7,8 @@ const nextConfig = {
     APP_VERSION: '18.4.0',
     DOMAIN: 'https://www.moviesbazar.net',
     API_SERVER_URL: process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://moviesbazar-api-v8.vercel.app',
-    VIDEO_SERVER_URL: 'https://comte372suc.com/play/', 
-    SECOND_VIDEO_SERVER_URL: 'https://lefig371jos.com/play/'
+    VIDEO_SERVER_URL: 'https://fuhho374key.com/play/', 
+    SECOND_VIDEO_SERVER_URL: 'https://deand373use.com/play/'
   },
 
   images: {
