@@ -40,11 +40,15 @@ export const categoryArray = [
     name: "Hindi Dubbed"
   },
   {
-    id: 10,
-    name: "Bengali"
+    id:10, 
+    name: "Punjabi"
   },
   {
     id: 11,
+    name: "Bengali"
+  },
+  {
+    id: 12,
     name: "Bangladeshi",
     visiblity: false
   }
