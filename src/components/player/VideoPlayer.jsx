@@ -52,7 +52,7 @@ function createPlaybleSoure(hlsProviderDomain, seriesData, ip) {
   }));
 };
 
-const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = null, watermark = false, onVideoLoad }) => {
+const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = null, default_audio, watermark = false, onVideoLoad }) => {
 
   const playerRef = useRef(null);
   const containerRef = useRef(null);
@@ -75,11 +75,13 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
       if (source.includes('.m3u8') || source.includes('.mkv') || Array.isArray(source)) {
         const newSource = createPlaybleSoure(hlsSourceDomain, source, ip);
-
         const playerOptions = {
           id: 'player',
           file: removeSkipQueryParam(newSource),
         };
+        if (default_audio && typeof default_audio === 'string') {
+          playerOptions.default_audio = default_audio;
+        }
         let skipValue = 0;
         const getSkipValue = new URL(newSource, 'https://fallback.com').searchParams.get('skip');
         if (getSkipValue) {
@@ -139,6 +141,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
             } else {
               console.error(`Function ${playerInstance.functionName} not found after script load.`);
             }
+           
           };
           document.body.appendChild(script);
         } else {
