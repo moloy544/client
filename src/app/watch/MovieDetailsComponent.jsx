@@ -57,6 +57,7 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
     videoTrim,
     watermark,
     multiAudio,
+    default_audio,
     isContentRestricted,
     permanentDisabled,
     isAdult,
@@ -64,7 +65,7 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
     seriesData,
     ticketBookLink
   } = movieDetails || {};
-  
+
   // Fotmat date to string 
   const fullReleaseDateString = formatDateToString(fullReleaseDate);
 
@@ -72,7 +73,6 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
   const [videoSource, setVideoSource] = useState(null);
   const [takeScreenshot, setTakeScreenshot] = useState(false);
   const [isAllRestricted, setIsAllRestricted] = useState(false);
-
   const { isUserRestricted, UserRestrictedChecking } = useSelector(
     (state) => state.fullWebAccessState
   );
@@ -207,7 +207,7 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
       window.removeEventListener("popstate", checkPlayQuery);
     };
   }, [playerVisibility, videoSource, takeScreenshot]);
- 
+
   // Create Breadcrumb
   const breadcrumbData = [
     {
@@ -244,6 +244,7 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
                   <VideoPlayer
                     title={title}
                     hlsSourceDomain={hlsSourceDomain}
+                    default_audio={default_audio}
                     source={
                       videoSource.includes('?backup_stream=1') || !seriesData
                         ? videoSource
@@ -408,7 +409,6 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
       <RestrictionsCheck
         isRestricted={isContentRestricted && isContentRestricted === true ? true : false}
         urgentCheck={permanentDisabled ? true : false} />
-
       {(isHLSPlayListAvailble || seriesData) && (
         <Script
           id={seriesData ? 'series-playerjs-script' : 'playerjs-script'}
@@ -416,7 +416,6 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
           strategy="afterInteractive"
         />
       )}
-
     </>
   )
 };
