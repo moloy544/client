@@ -64,7 +64,7 @@ export default function CustomLoadingAds() {
     const delay = isNotHuman() ? 20000 : 10000;
 
     const adcashScriptId = "aclib";
-   
+
     const mainScriptAppendTimer = setTimeout(() => {
       // Inject AdCash
       if (!document.getElementById(adcashScriptId)) {
@@ -76,7 +76,13 @@ export default function CustomLoadingAds() {
         adcashMainScript.type = "text/javascript";
 
         adcashMainScript.onload = () => {
-
+          if (window.aclib) {
+            window.aclib.runInPagePush({
+              zoneId: "9775202",
+              refreshRate: 30,
+              maxAds: 2,
+            });
+          }
           setTimeout(() => {
             const script = document.createElement("script");
             script.async = true;
