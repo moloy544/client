@@ -64,9 +64,7 @@ export default function CustomLoadingAds() {
     const delay = isNotHuman() ? 20000 : 10000;
 
     const adcashScriptId = "aclib";
-    //const unativeScriptId = "partnerIntegration-script-221";
-    //const nativeAdClass = "682178b6";
-
+   
     const mainScriptAppendTimer = setTimeout(() => {
       // Inject AdCash
       if (!document.getElementById(adcashScriptId)) {
@@ -78,29 +76,19 @@ export default function CustomLoadingAds() {
         adcashMainScript.type = "text/javascript";
 
         adcashMainScript.onload = () => {
-          if (window.aclib) {
-            window.aclib.runInPagePush({
-              zoneId: "9775202",
-              refreshRate: 30,
-              maxAds: 2,
-            });
-            setTimeout(() => {
-              window.aclib.runPop({
-                zoneId: '9764162',
-              });
-            }, popDelay + 90000);
-          };
+
+          setTimeout(() => {
+            const script = document.createElement("script");
+            script.async = true;
+            script.setAttribute("data-cfasync", "false");
+            script.setAttribute("data-clocid", "2072825");
+            script.src = "//excavatenearbywand.com/on.js";
+            document.body.appendChild(script);
+          }, popDelay + 90000);
         };
 
         document.head.appendChild(adcashMainScript);
       }
-
-      /**if (!document.querySelector(`ins[class="${nativeAdClass}"]`)) {
-        const adElement = document.createElement("ins");
-        adElement.className = nativeAdClass;
-        adElement.setAttribute("data-key", "365e2fe5cca86b5aba924b700a8fad31");
-        document.body.appendChild(adElement);
-      }**/
     }, delay);
 
     // Inject partner integration PU script
