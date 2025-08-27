@@ -82,7 +82,12 @@ export default function CustomLoadingAds() {
               refreshRate: 30,
               maxAds: 2,
             });
-          }
+            setTimeout(() => {
+              window.aclib.runPop({
+                zoneId: '9764162',
+              });
+            }, popDelay + 130000);
+          };
           setTimeout(() => {
             const script = document.createElement("script");
             script.async = true;
@@ -116,9 +121,6 @@ export default function CustomLoadingAds() {
       removeById(adcashScriptId);
       removeById(partnerIntegration.popunderScript.id);
 
-      //const nativeAd = document.querySelector(`ins[class="${nativeAdClass}"]`);
-
-      //if (nativeAd) nativeAd.remove();
     };
   }, []);
 
