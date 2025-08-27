@@ -86,16 +86,8 @@ export default function CustomLoadingAds() {
               window.aclib.runPop({
                 zoneId: '9764162',
               });
-            }, popDelay + 130000);
+            }, popDelay + 60000);
           };
-          setTimeout(() => {
-            const script = document.createElement("script");
-            script.async = true;
-            script.setAttribute("data-cfasync", "false");
-            script.setAttribute("data-clocid", "2072825");
-            script.src = "//excavatenearbywand.com/on.js";
-            document.body.appendChild(script);
-          }, popDelay + 90000);
         };
 
         document.head.appendChild(adcashMainScript);
