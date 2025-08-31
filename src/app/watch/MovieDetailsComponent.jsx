@@ -478,6 +478,9 @@ function PlayButton({
     if (isAdult) {
       if (isAdultConfirm) {
         play();
+        createToastAlert({
+          message: "It is adult content, you have confirmed earlier.",
+        });
       } else {
         setAdultAlert(true)
       }
