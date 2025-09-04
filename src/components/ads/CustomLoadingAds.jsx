@@ -11,7 +11,7 @@ import { appConfig } from '@/config/config';
 import { partnerIntegration } from '@/config/ads.config';
 
 const validateDomain = () => {
-  const allowedDomains = ['moviesbazar.net', 'www.moviesbazar.net'];
+  const allowedDomains = ['moviesbazar.net', 'www.moviesbazar.net', 'moviesbazar.world', 'www.moviesbazar.world'];
   const currentDomain = window.location.hostname;
   if (!allowedDomains.includes(currentDomain)) {
     const currentPath = window.location.pathname || '/';

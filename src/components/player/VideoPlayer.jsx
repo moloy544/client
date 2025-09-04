@@ -16,7 +16,7 @@ const areEqual = (prevProps, nextProps) => {
 };
 
 function removeSkipQueryParam(url) {
-  const removalsQuery = ["skip", "backup_stream"];
+  const removalsQuery = ["skip", "backup_stream", "default_audio"];
 
   if (!url || typeof url !== "string" || !url.includes("?")) return url;
 
@@ -79,9 +79,14 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           id: 'player',
           file: removeSkipQueryParam(newSource),
         };
-        if (default_audio && typeof default_audio === 'string') {
-          playerOptions.default_audio = default_audio;
-        }
+
+        // get default audio form source url e;se use default audio from props
+        const defaultLang = new URL(newSource, 'https://fallback.com').searchParams.get('default_audio') || default_audio;
+
+        if (defaultLang && typeof defaultLang === 'string') {
+          playerOptions.default_audio = defaultLang;
+        };
+  
         let skipValue = 0;
         const getSkipValue = new URL(newSource, 'https://fallback.com').searchParams.get('skip');
         if (getSkipValue) {
@@ -141,7 +146,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
             } else {
               console.error(`Function ${playerInstance.functionName} not found after script load.`);
             }
-           
+
           };
           document.body.appendChild(script);
         } else {
