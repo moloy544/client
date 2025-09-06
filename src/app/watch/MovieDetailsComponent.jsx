@@ -718,7 +718,7 @@ function PlayButton({
                 <div className="flex flex-col items-center justify-center py-4 relative text-center">
                   <button
                     onClick={() => setDropDown(false)}
-                    className="text-gray-200 hover:text-white outline-none bg-gray-900 w-6 h-6 rounded-md absolute right-2 top-2 flex items-center justify-center"
+                    className="text-gray-200 hover:text-white outline-none bg-gray-900 w-8 h-8 rounded-full absolute right-2 top-2 flex items-center justify-center shadow-lg hover:bg-gray-700 hover:scale-105 active:scale-95 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-700"
                     type="button"
                     aria-label="Close"
                   >

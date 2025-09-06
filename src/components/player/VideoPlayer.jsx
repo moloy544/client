@@ -5,6 +5,7 @@ import { useOrientation } from "@/hooks/hook";
 import { useSelector } from "react-redux";
 import { useDeviceType } from "@/hooks/deviceChecker";
 import { generateCountrySpecificIp, generateSourceURL, isValidIp } from "@/helper/helper";
+import { safeLocalStorage } from "@/utils/errorHandlers";
 
 //Memoization to avoid unnecessary re-renders
 const areEqual = (prevProps, nextProps) => {
@@ -57,6 +58,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
   const playerRef = useRef(null);
   const containerRef = useRef(null);
   const [isIframeLoading, setIsIframeLoading] = useState(null);
+  const [playerPlaceholder, setPlayerPlaceHolder] = useState(false);
 
   const isPortrait = useOrientation();
   const { userRealIp } = useSelector((state) => state.fullWebAccessState);
@@ -86,7 +88,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
         if (defaultLang && typeof defaultLang === 'string') {
           playerOptions.default_audio = defaultLang;
         };
-  
+
         let skipValue = 0;
         const getSkipValue = new URL(newSource, 'https://fallback.com').searchParams.get('skip');
         if (getSkipValue) {
@@ -103,33 +105,11 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           id: Array.isArray(newSource) ? "series-playerjs-script" : "playerjs-script",
           src: `/static/js/${Array.isArray(newSource) ? 'series_player_v1.js' : 'player_v2.1.js'}`
         };
+        const playerjsIsLoadedBefore = safeLocalStorage.get('pljsuserid');
 
-        function addWatermarkOverlay() {
-          if (!watermark) {
-            return
-          }
-          setTimeout(() => {
-            const videoElement = document.querySelector("#player video");
-            const positions = [
-              { top: "0px", left: "0px" },
-              { top: "0px", right: "0px" },
-              { bottom: "0px", left: "0px" },
-              { bottom: "0px", right: "0px" }
-            ];
-            if (videoElement) {
-              const parent = videoElement.parentElement;
-              if (parent && parent.style.position !== "relative") parent.style.position = "relative";
-              positions.forEach((pos, i) => {
-                const overlay = document.createElement("div");
-                overlay.id = `wm-block-${i}`;
-                overlay.setAttribute("style", `position: absolute; width: 100%; height: 11%; background-color: rgba(0, 0, 0, 0.8); border-radius: 2px; z-index: 9999; pointer-events: none;`);
-                Object.assign(overlay.style, pos);
-                parent?.appendChild(overlay);
-              });
-            }
-          }, 600);
+        if (!playerjsIsLoadedBefore) {
+          setPlayerPlaceHolder("initializing player, please wait...");
         };
-
         // Load player JS if it failed to load from parent component
         if (typeof window[playerInstance.functionName] !== "function") {
           const script = document.createElement("script");
@@ -138,12 +118,17 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           script.async = true;
           script.onload = () => {
             if (typeof window[playerInstance.functionName] === "function") {
+
               window.player = new window[playerInstance.functionName](playerOptions);
-              addWatermarkOverlay();
+
               if (!isIOS) {
                 onVideoLoad();
               };
+              if (playerPlaceholder) {
+                setPlayerPlaceHolder(false);
+              };
             } else {
+              setPlayerPlaceHolder("Failed to load video, please try again later.");
               console.error(`Function ${playerInstance.functionName} not found after script load.`);
             }
 
@@ -151,10 +136,14 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
           document.body.appendChild(script);
         } else {
           window.player = new window[playerInstance.functionName](playerOptions);
-          addWatermarkOverlay();
           if (!isIOS) {
             onVideoLoad();
           };
+          if (playerPlaceholder && typeof window[playerInstance.functionName] !== "function") {
+            setPlayerPlaceHolder("Failed to load video, please try again later.");
+          }else if (playerPlaceholder) {
+            setPlayerPlaceHolder(false);  
+          }
         };
 
       } else {
@@ -202,7 +191,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
         if (playerJsScript) document.body.removeChild(playerJsScript);
       };
     }
-  }, [source, userRealIp, userIp, title]);
+  }, [source, userRealIp, userIp, title, playerPlaceholder]);
 
   const handleObservers = useCallback(async (entries) => {
 
@@ -280,7 +269,6 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
 
   }, [isPortrait, isMobile]);
 
-
   useEffect(() => {
     const observer = new IntersectionObserver(handleObservers, {
       root: null,
@@ -293,6 +281,24 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
       if (containerRef.current) observer.unobserve(containerRef.current);
     };
   }, [handleObservers]);
+
+  if (playerPlaceholder) {
+
+    return (
+      <div className="w-full aspect-video bg-black relative rounded-md overflow-hidden transition-all duration-500">
+        {/* Loading Overlay */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black">
+          {/* Spinner */}
+          <div className="w-8 h-8 border-4 border-gray-300 border-t-transparent rounded-full animate-spin mb-3"></div>
+
+          {/* Loading Text */}
+          <p className="text-white text-sm md:text-base font-medium tracking-wide animate-pulse text-center">
+            {playerPlaceholder}
+          </p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
