@@ -112,7 +112,7 @@ export default function SocialJoinAlert() {
                   </linearGradient>
                 </defs>
               </svg>
-              <span>Telegram Group</span>
+              <span>Telegram</span>
             </a>
 
             {/* Instagram Page Link */}
@@ -175,7 +175,7 @@ export default function SocialJoinAlert() {
                 <path fill="url(#Ld6sqrtcxMyckEl6xeDdMa_uLWV5A9vXIPu_gr1)" d="M24,4C12.954,4,4,12.954,4,24s8.954,20,20,20s20-8.954,20-20S35.046,4,24,4z"></path>
                 <path fill="#fff" d="M26.707,29.301h5.176l0.813-5.258h-5.989v-2.874c0-2.184,0.714-4.121,2.757-4.121h3.283V12.46 c-0.577-0.078-1.797-0.248-4.102-0.248c-4.814,0-7.636,2.542-7.636,8.334v3.498H16.06v5.258h4.948v14.452 C21.988,43.9,22.981,44,24,44c0.921,0,1.82-0.084,2.707-0.204V29.301z"></path>
               </svg>
-              <span>Facebook Page</span>
+              <span>Facebook</span>
             </a>
 
             {/* YouTube Calnnel Link */}
@@ -190,7 +190,7 @@ export default function SocialJoinAlert() {
                 <path fill="#FF3D00" d="M43.2,33.9c-0.4,2.1-2.1,3.7-4.2,4c-3.3,0.5-8.8,1.1-15,1.1c-6.1,0-11.6-0.6-15-1.1c-2.1-0.3-3.8-1.9-4.2-4C4.4,31.6,4,28.2,4,24c0-4.2,0.4-7.6,0.8-9.9c0.4-2.1,2.1-3.7,4.2-4C12.3,9.6,17.8,9,24,9c6.2,0,11.6,0.6,15,1.1c2.1,0.3,3.8,1.9,4.2,4c0.4,2.3,0.9,5.7,0.9,9.9C44,28.2,43.6,31.6,43.2,33.9z" />
                 <path fill="#FFF" d="M20 31L20 17 32 24z" />
               </svg>
-              <span>YouTube Channel</span>
+              <span>YouTube</span>
             </a>
 
           </div>
@@ -200,7 +200,7 @@ export default function SocialJoinAlert() {
         <div className="mt-6 flex justify-between space-x-3">
           <button
             onClick={handleDontShowAgain}
-            className="text-sm mobile:text-xs text-gray-600 font-semibold hover:text-red-500 transition-all"
+            className="text-sm mobile:text-xs text-gray-700 bg-gray-300 p-2 hover:bg-red-100 rounded-md font-semibold hover:text-red-500 transition-all"
           >
             Don&apos;t Show Again for 7 Days
           </button>
