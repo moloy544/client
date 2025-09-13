@@ -38,6 +38,7 @@ const getLocalStorageSearchHistory = () => {
 export default function SearchPage() {
 
     const backendServer = appConfig.backendUrl;
+    const backendServer2 = appConfig.backendUrl2;
 
     const limitPerPage = 30;
 
@@ -122,56 +123,70 @@ export default function SearchPage() {
         safeLocalStorage.set('searchHistory', JSON.stringify(existingHistoryArray));
         setSearchHistory(existingHistoryArray);
     };
-    // get serach items from database function
+    // get search items from database
     const getMovies = useCallback(async (q) => {
         try {
+            if (!q || q.trim() === "") return;
 
-            if (q === " " || q === "") {
-                return
-            };
-
-            if (error) {
-                setError(false);
-            };
+            if (error) setError(false);
 
             setLoading(true);
-            const { status, data, dataIsEnd } = await loadMoreFetch({
-                apiPath: `${backendServer}/api/v1/movies/search?q=${q}`,
-                limitPerPage,
-                skip: page === 1 ? 0 : page * limitPerPage,
-            });
+
+            const fetchFromApi = async (apiPath) => {
+                try {
+                    const { status, data, dataIsEnd } = await loadMoreFetch({
+                        apiPath,
+                        limitPerPage,
+                        skip: page === 1 ? 0 : page * limitPerPage,
+                    });
+                    return { status, data, dataIsEnd };
+                } catch (err) {
+                    if (err.response) return { status: err.response.status };
+                    return { status: 500 };
+                }
+            };
+
+            // 1st attempt
+            let response = await fetchFromApi(
+                `${backendServer}/api/v1/movies/search?q=${q}`
+            );
+
+            // Retry with backup only if first failed with 500
+            if (response.status === 500) {
+                response = await fetchFromApi(
+                    `${backendServer2}/api/v1/movies/search?q=${q}`
+                );
+            }
+
+            const { status, data, dataIsEnd } = response;
 
             if (status !== 200) {
                 setError(true);
-                setLoading(false);
-                return
+                return;
             }
 
             const { moviesData } = data || {};
 
             if (status === 200 && moviesData) {
-
                 if (page === 1) {
-                    // Add single array search results 
+                    // Add single array search results
                     setSearchResult(moviesData);
                     addToSearchHistory({ text: q });
-
                 } else {
-                    // Add new array search results to existing array 
-                    setSearchResult(prevData => [...prevData, ...moviesData]);
+                    // Add new array search results to existing array
+                    setSearchResult((prevData) => [...prevData, ...moviesData]);
                 }
-            };
+            }
 
             if (dataIsEnd) {
                 setEndOfData(true);
-            };
-
-        } catch (error) {
-            console.log(error);
+            }
+        } catch (err) {
+            console.error(err);
             setError(true);
         } finally {
             setLoading(false);
-        };
+        }
     }, [page, loading]);
 
     // get user searh query form url and add to search bar
@@ -306,17 +321,17 @@ export default function SearchPage() {
                                             <i className="bi bi-send"></i> Request content
                                         </Link>
                                         <div className="w-full flex flex-col items-center py-5 px-2.5">
-                                        <p className="text-gray-300 text-sm mobile:text-xs mb-2 font-medium text-center">
-                                            For exploring full site and more content, click the button below to go to our home page.
-                                        </p>
-                                        <Link
-                                            href="/"
-                                            title="Explore home page"
-                                            className="w-fit inline-block px-5 py-2.5 space-x-1 bg-gray-800 text-gray-100 text-sm font-medium rounded-md border border-gray-700 hover:bg-gray-700 hover:text-white transition duration-200"
-                                        >
-                                            <i className="bi bi-house-fill"></i>
-                                            <span>Explore More Content</span>
-                                        </Link>
+                                            <p className="text-gray-300 text-sm mobile:text-xs mb-2 font-medium text-center">
+                                                For exploring full site and more content, click the button below to go to our home page.
+                                            </p>
+                                            <Link
+                                                href="/"
+                                                title="Explore home page"
+                                                className="w-fit inline-block px-5 py-2.5 space-x-1 bg-gray-800 text-gray-100 text-sm font-medium rounded-md border border-gray-700 hover:bg-gray-700 hover:text-white transition duration-200"
+                                            >
+                                                <i className="bi bi-house-fill"></i>
+                                                <span>Explore More Content</span>
+                                            </Link>
                                         </div>
                                     </div>
                                 )}
@@ -357,112 +372,83 @@ export default function SearchPage() {
 };
 
 function SearchBar({ functions, searchHistory, setSearchHistory }) {
-
     const { handleSubmitForm } = functions;
-
     const pathname = usePathname();
 
     const [visibility, setVisibility] = useState(false);
     const [filteredHistory, setFilteredHistory] = useState(searchHistory);
     const [tryCount, setTryCount] = useState(0);
     const [isAdClick, setIsAdClick] = useState(false);
+    const [isRecording, setIsRecording] = useState(false);
 
     const handleInputClick = () => {
-
         setVisibility(true);
         if (!isAdClick) {
-
             openDirectLink();
             setIsAdClick(true);
         }
     };
 
-    const hideModel = () => {
-        setVisibility(false);
-    };
+    const hideModel = () => setVisibility(false);
 
-    // Set search history in state after component mount
+    // Initialize search history
     useEffect(() => {
         const data = getLocalStorageSearchHistory();
         setSearchHistory(data);
         setFilteredHistory(data);
         const input = document.querySelector('#search-bar-input');
-        if (input) {
-            input.focus()
-        };
-        // Blur input on scroll
+        if (input) input.focus();
+
         const handleScroll = () => {
-            if (document.activeElement === input) {
-                input.blur();
-            }
+            if (document.activeElement === input) input.blur();
         };
         window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     const searchInputChange = (event) => {
         const userSearchText = event.target.value?.replace(/ +/g, ' ').trimStart();
-
-        // Show the model if the input has any value
-        if (userSearchText !== '' && userSearchText !== ' ') {
+        if (userSearchText) {
             setVisibility(true);
-            // Filter search history based on user input
             const filtered = searchHistory.filter(item =>
                 item.searchKeyword.toLowerCase().includes(userSearchText.toLowerCase())
             );
             setFilteredHistory(filtered);
         } else {
-            // If input is empty, reset filtered history to original search history
             setVisibility(false);
             setFilteredHistory(searchHistory);
-        };
-        if (tryCount !== 0) {
-            setTryCount(0);
         }
+        if (tryCount !== 0) setTryCount(0);
     };
 
     function handleSearch(term) {
         if (typeof window !== 'undefined') {
             const params = new URLSearchParams(window.location.search);
-
-            // If the term is provided, set the 'query' param, otherwise remove it
-            if (term) {
-                params.set('query', term);
-            } else {
-                params.delete('query');
-            }
-
-            // Use history.pushState() to update the URL without reloading the page
+            if (term) params.set('query', term);
+            else params.delete('query');
             const newUrl = `${pathname}?${params.toString()}`;
             window.history.replaceState({}, '', newUrl);
-        };
+        }
     };
 
     const submit = (event) => {
         event.preventDefault();
-        // Get form data or search text value from form data
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         const searchValue = formJson.searchText?.trim();
 
         if (tryCount >= 5) {
-            createToastAlert({
-                message: "You've reached the max attempts for this search term.",
-            });
+            createToastAlert({ message: "You've reached the max attempts for this search term." });
             return;
-        };
+        }
 
-        if (searchValue !== '' && searchValue !== " ") {
+        if (searchValue) {
             handleSubmitForm(searchValue);
             handleSearch(searchValue)
-            setTryCount((prevCount) => prevCount + 1);
+            setTryCount(prev => prev + 1);
         } else {
-            createToastAlert({
-                message: 'Please enter a search term',
-            });
-        };
+            createToastAlert({ message: 'Please enter a search term' });
+        }
     };
 
     const deleteHistoryItem = (index) => {
@@ -482,12 +468,59 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
     const handleSelectHistoryItem = (q) => {
         const input = document.querySelector('input[type="text"]');
         input.value = q;
-        if (q !== '' && q !== " ") {
+        if (q) {
             handleSubmitForm(q);
             setVisibility(false);
-            handleSearch(q)
+            handleSearch(q);
         }
     };
+
+    // ------------------ VOICE SEARCH LOGIC ------------------
+    // ------------------ VOICE SEARCH LOGIC ------------------
+    const handleVoiceSearch = () => {
+        if (isRecording) return; // Prevent multiple clicks
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            createToastAlert({ message: 'Your browser does not support voice search' });
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = "en-US"; // change to "hi-IN" for Hindi, "en-IN" for Indian English, etc.
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = () => {
+            setIsRecording(true);
+            createToastAlert({ message: 'Listening...' });
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            const input = document.querySelector('#search-bar-input');
+            if (input) {
+                input.value = transcript;
+            }
+            handleSubmitForm(transcript);
+            handleSearch(transcript);
+            createToastAlert({ message: 'Voice search complete' });
+        };
+
+        recognition.onerror = (event) => {
+            console.error(event.error);
+            createToastAlert({ message: JSON.stringify(event.error) });
+            setIsRecording(false);
+        };
+
+        recognition.onend = () => {
+            setIsRecording(false);
+        };
+
+        recognition.start();
+    };
+
+    // ----------------------------------------------------------
 
     return (
         <div className="w-[45%] mobile:w-full h-auto relative">
@@ -500,8 +533,10 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                         <i className="bi bi-arrow-left"></i>
                     </button>
                 </NavigateBack>
+
+                {/* SEARCH INPUT */}
                 <input
-                    className="w-full h-12 mobile:h-10 bg-transparent border-2 border-gray-800 rounded-l-md px-3 text-base font-medium mobile:text-sm mobile:placeholder:text-xs text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-600 caret-teal-600 shadow-md transition-colors duration-200 pl-10" // Added padding-left for the icon
+                    className="w-full h-12 mobile:h-10 bg-transparent border-2 border-gray-800 rounded-l-md px-3 text-base font-medium mobile:text-sm mobile:placeholder:text-xs text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-600 caret-teal-600 shadow-md transition-colors duration-200 pl-10"
                     onChange={searchInputChange}
                     onClick={handleInputClick}
                     type="text"
@@ -511,6 +546,17 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                     autoComplete="off"
                     required
                 />
+
+                {/* VOICE SEARCH BUTTON */}
+                <button
+                    type="button"
+                    onClick={handleVoiceSearch}
+                    className={`flex items-center justify-center w-12 h-12 mobile:h-10 bg-teal-500 border-2 border-teal-600 text-white font-medium text-sm hover:bg-teal-400 transition-colors duration-200 rounded-r-md`}
+                    title={isRecording ? 'Recording...' : 'Voice Search'}
+                >
+                    <i className={`bi bi-mic${isRecording ? '-fill animate-pulse' : ''}`}></i>
+                </button>
+
                 <button
                     type="submit"
                     className="w-24 h-12 mobile:h-10 bg-teal-700 border-2 border-teal-800 text-gray-100 font-medium text-sm hover:bg-teal-600 rounded-md rounded-l-none transition-colors duration-200"
@@ -519,6 +565,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                 </button>
             </form>
 
+            {/* SEARCH HISTORY MODAL */}
             <ModelsController visibility={visibility} closeEvent={hideModel}>
                 <div className="w-full h-auto bg-white absolute top-12 z-50 rounded-b-md shadow-lg">
                     {filteredHistory.length > 0 ? (
@@ -535,7 +582,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                                     </button>
                                 </div>
                                 <small className="text-xs text-gray-500 font-medium w-[80%]">
-                                    Showing recent search keywords based on your search results with clcik.
+                                    Showing recent search keywords based on your search results with click.
                                 </small>
                             </div>
 
@@ -544,9 +591,7 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                                     <div key={index} className="group flex justify-between items-center h-auto hover:bg-slate-200 hover:bg-opacity-50 p-2 rounded-md">
                                         <div onClick={() => handleSelectHistoryItem(data.searchKeyword)} className="w-full mobile:text-xs text-sm text-gray-600 font-medium cursor-pointer flex items-center gap-3">
                                             <i className="bi bi-clock-history"></i>
-                                            <div className="line-clamp-2 max-w-xs">
-                                                {data.searchKeyword}
-                                            </div>
+                                            <div className="line-clamp-2 max-w-xs">{data.searchKeyword}</div>
                                         </div>
                                         <button onClick={() => deleteHistoryItem(index)} type="button" title="Remove" className="w-8 h-8 rounded-full hover:bg-blue-100 text-base text-center text-gray-900 hidden mobile:block group-hover:block px-2">
                                             <span className="sr-only"></span>

@@ -6,14 +6,37 @@ import HomePageLayout from "./HomePageLayout";
 import Footer from "@/components/Footer";
 const LoadContentError = dynamicLoad(() => import('@/components/errors/LoadContentError'), { ssr: false });
 
+// get home page data from backend server
 const getHomePageData = async () => {
-  try {
-    const response = await axios.post(`${appConfig.backendUrl}/api/v1/landing_page`, { offset: 1 });
-    return response;
-  } catch (error) {
-    return new Error("Failed to fetch home page data");
+  const fetchFromApi = async (url) => {
+    try {
+      const res = await axios.post(url, { offset: 1 });
+      return res;
+    } catch (err) {
+      if (err.response) {
+        return { status: err.response.status };
+      }
+      return { status: 500 };
+    }
+  };
+
+  // 1st attempt
+  let response = await fetchFromApi(`${appConfig.backendUrl}/api/v1/landing_page`);
+
+  // Retry with backup only if first failed with 500
+  if (response.status === 500) {
+    response = await fetchFromApi(`${appConfig.backendUrl2}/api/v1/landing_page`);
   }
+
+  // Success
+  if (response && response.status === 200) {
+    return response;
+  }
+
+  // If both fail
+  throw new Error("Failed to fetch home page data");
 };
+
 
 export const metadata = {
   alternates: {

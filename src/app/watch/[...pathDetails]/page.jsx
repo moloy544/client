@@ -28,44 +28,56 @@ const SomthingWrongError = dynamic(() => import('@/components/errors/SomthingWro
 // imdbId validating  using regex pattern
 const imdbIdPattern = /^tt\d{7,}$/;
 
-// get movie detais form backend server
+// get movie details from backend server
 const getMovieDeatils = async (imdbId, suggestion = true) => {
-
-  let status = 500; // Default status in case of an error
+  let status = 500; // Default status
   let movieData = null;
-  let suggestions = null
+  let suggestions = null;
   let userIp = null;
 
-  try {
-
-    if (!imdbId || !imdbIdPattern.test(imdbId.trim())) {
-      status = 400;
-      return { status, movieData, suggestions };
-    };
-
-    const ip = '0.0.0.0';
-
-    // get contet details form backend database
-    const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/details_movie/v2/${imdbId}`, {
-      params: { suggestion, ip }
-    });
-
-    if (response.status === 200) {
-      status = response.status;
-      movieData = response.data.movieData || null;
-      suggestions = response.data.suggestions || null;
-      userIp = null //userIp || response.data.userIp;
-    } else {
-      status = response.status
-    }
-
-  } catch (error) {
-    if (error.response) {
-      status = error.response.status;
-    }
-  } finally {
-    return { status, userIp, movieData, suggestions };
+  if (!imdbId || !imdbIdPattern.test(imdbId.trim())) {
+    return { status: 400, userIp, movieData, suggestions };
   }
+
+  const ip = '0.0.0.0';
+
+  // Function to make request
+  const fetchFromApi = async (url) => {
+    try {
+      const res = await axios.get(url, { params: { suggestion, ip } });
+      return res;
+    } catch (err) {
+      if (err.response) {
+        return { status: err.response.status };
+      }
+      return { status: 500 };
+    }
+  };
+
+  // 1st attempt
+  let response = await fetchFromApi(
+    `${appConfig.backendUrl}/api/v1/movies/details_movie/v2/${imdbId}`
+  );
+
+  // Retry with backup only if first failed with 500
+  if (response.status === 500) {
+   
+    response = await fetchFromApi(
+      `${appConfig.backendUrl2}/api/v1/movies/details_movie/v2/${imdbId}`
+    );
+  }
+
+  // Process successful response
+  if (response && response.status === 200) {
+    status = 200;
+    movieData = response.data.movieData || null;
+    suggestions = response.data.suggestions || null;
+    userIp = null; // or response.data.userIp if you want
+  } else if (response) {
+    status = response.status;
+  }
+
+  return { status, userIp, movieData, suggestions };
 };
 
 // Generate metadata for content

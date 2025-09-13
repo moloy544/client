@@ -59,10 +59,12 @@ function HomePageLayout({ initialLayoutData }) {
             try {
 
                 setLoading(true);
+                const api = appConfig.backendUrl;
+                const api2 = appConfig.backendUrl2;
 
-                const apiUrl = `${appConfig.backendUrl}/api/v1/landing_page`;
+                let response = await axios.post(`${api}/api/v1/landing_page`, { offset });
 
-                const response = await axios.post(apiUrl, { offset });
+              
 
                 if (response.status === 200) {
 
