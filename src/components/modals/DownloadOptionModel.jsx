@@ -127,8 +127,13 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
         return;
       }
 
-      // If it's filesdl.site, fetch from API
-      const response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_source/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
+      // If it's filesdl.site, fetch from API (1st attempt with primary backend)
+      let response = await axios.get(`${appConfig.backendUrl}/api/v1/movies/download_source/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
+
+      // Retry with backup backend if first fails with 500
+      if (response.status === 500) {
+        response = await axios.get(`${appConfig.backendUrl2}/api/v1/movies/download_source/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
+      }
 
       if (response.status !== 200) {
         createToastAlert({
