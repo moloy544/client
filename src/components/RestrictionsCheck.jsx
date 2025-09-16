@@ -102,7 +102,7 @@ export default function RestrictionsCheck({ isRestricted = false, urgentCheck = 
             const currentISTTime = getCurrentISTTime();
             const currentHour = currentISTTime.getHours();
              // Only run during 7 AM – 8 PM IST or if urgentCheck is true
-            if ((currentHour >= 7 && currentHour < 20) || urgentCheck) {
+            if ((currentHour >= 7 && currentHour < 21) || urgentCheck) {
                 fetchGeoInfo();
             };
 
