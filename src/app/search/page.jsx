@@ -379,7 +379,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
     const [filteredHistory, setFilteredHistory] = useState(searchHistory);
     const [tryCount, setTryCount] = useState(0);
     const [isAdClick, setIsAdClick] = useState(false);
-    const [isRecording, setIsRecording] = useState(false);
 
     const handleInputClick = () => {
         setVisibility(true);
@@ -475,53 +474,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
         }
     };
 
-    // ------------------ VOICE SEARCH LOGIC ------------------
-    // ------------------ VOICE SEARCH LOGIC ------------------
-    const handleVoiceSearch = () => {
-        if (isRecording) return; // Prevent multiple clicks
-
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-            createToastAlert({ message: 'Your browser does not support voice search' });
-            return;
-        }
-
-        const recognition = new SpeechRecognition();
-        recognition.lang = "en-US"; // change to "hi-IN" for Hindi, "en-IN" for Indian English, etc.
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-
-        recognition.onstart = () => {
-            setIsRecording(true);
-            createToastAlert({ message: 'Listening...' });
-        };
-
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            const input = document.querySelector('#search-bar-input');
-            if (input) {
-                input.value = transcript;
-            }
-            handleSubmitForm(transcript);
-            handleSearch(transcript);
-            createToastAlert({ message: 'Voice search complete' });
-        };
-
-        recognition.onerror = (event) => {
-            console.error(event.error);
-            createToastAlert({ message: JSON.stringify(event.error) });
-            setIsRecording(false);
-        };
-
-        recognition.onend = () => {
-            setIsRecording(false);
-        };
-
-        recognition.start();
-    };
-
-    // ----------------------------------------------------------
-
     return (
         <div className="w-[45%] mobile:w-full h-auto relative">
             <form onSubmit={submit} className="flex items-center w-auto h-auto relative">
@@ -534,7 +486,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                     </button>
                 </NavigateBack>
 
-                {/* SEARCH INPUT */}
                 <input
                     className="w-full h-12 mobile:h-10 bg-transparent border-2 border-gray-800 rounded-l-md px-3 text-base font-medium mobile:text-sm mobile:placeholder:text-xs text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-600 caret-teal-600 shadow-md transition-colors duration-200 pl-10"
                     onChange={searchInputChange}
@@ -546,16 +497,6 @@ function SearchBar({ functions, searchHistory, setSearchHistory }) {
                     autoComplete="off"
                     required
                 />
-
-                {/* VOICE SEARCH BUTTON */}
-                <button
-                    type="button"
-                    onClick={handleVoiceSearch}
-                    className={`flex items-center justify-center w-12 h-12 mobile:h-10 bg-teal-500 border-2 border-teal-600 text-white font-medium text-sm hover:bg-teal-400 transition-colors duration-200 rounded-r-md`}
-                    title={isRecording ? 'Recording...' : 'Voice Search'}
-                >
-                    <i className={`bi bi-mic${isRecording ? '-fill animate-pulse' : ''}`}></i>
-                </button>
 
                 <button
                     type="submit"

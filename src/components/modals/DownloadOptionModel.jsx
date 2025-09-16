@@ -1,11 +1,11 @@
 "use client"
 
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { appConfig } from "@/config/config";
-import { handleEmailUs, isAndroid, isIOS } from "@/helper/helper";
+import { handleEmailUs } from "@/helper/helper";
 import { ModelsController } from "@/lib/EventsHandler"
 import { createToastAlert } from "@/utils";
 import FullScreenBackdropLoading from "../loadings/BackdropLoading";
@@ -133,7 +133,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
       // Retry with backup backend if first fails with 500
       if (response.status === 500) {
         response = await axios.get(`${appConfig.backendUrl2}/api/v1/movies/download_source/${imdbId?.replace('tt', '')}?sourceIndex=${sourceIndex}`);
-      }
+      };
 
       if (response.status !== 200) {
         createToastAlert({
@@ -141,7 +141,7 @@ export default function DownloadOptionModel({ isOnline, imdbId, linksData, conte
           visibilityTime: 12000
         });
         return;
-      }
+      };
 
       const { downloadUrl } = response.data || {};
 
