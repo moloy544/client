@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumb";
 import NavigateBackTopNav from "@/components/NavigateBackTopNav";
 import { appConfig } from "@/config/config";
 
@@ -15,6 +16,11 @@ export default function PrivacyPractices() {
     return (
         <>
             <NavigateBackTopNav title="Privacy policy" />
+            <div className="bg-custom-dark-bg">
+            <Breadcrumb data={[{
+                name: 'Privacy Policy'
+            }]} />
+            </div>
             <main className="w-full px-12 mobile:px-3 py-8 mobile:py-5 bg-custom-dark-bg">
                 <h1 className="text-3xl font-bold text-gray-100 mb-6">Privacy Practices</h1>
 
@@ -28,7 +34,7 @@ export default function PrivacyPractices() {
                 <section className="mb-8">
                     <h2 className="text-2xl font-semibold text-gray-100 mb-4">Optional Contact Information</h2>
                     <p className="text-gray-200 leading-relaxed">
-                        Sometimes, we may ask for an email or contact info to keep you updated on new features or content. This is entirely optional and helps us communicate updates if you’re interested—there’s no obligation to share any details.
+                        Sometimes we may ask for your email or contact information so we can keep you updated on your reported content. Providing this information is entirely optional and helps us notify you when your content request is reviewed or updated. There is no obligation to share any details.
                     </p>
                 </section>
 
@@ -60,12 +66,12 @@ export default function PrivacyPractices() {
                 <section className="mb-8">
                     <h2 className="text-2xl font-semibold text-gray-100 mb-4">User Safety</h2>
                     <p className="text-gray-200 leading-relaxed">
-                        Our site may host content that includes copyrighted material. However, users can safely enjoy this content without concern. We take full responsibility for managing copyright issues, ensuring that our users have a secure and enjoyable viewing experience.
+                        Our site is designed to offer a smooth and secure viewing experience. All movies and shows are available for your enjoyment, and while users watch at their own discretion, we take copyright concerns seriously and handle them responsibly through our dedicated takedown process. This ensures you can enjoy content safely and with peace of mind.
                     </p>
                 </section>
 
                 <footer className="text-center text-gray-400 text-sm mt-8">
-                    <strong>Last Updated:</strong> 25/10/2024
+                    <strong>Last Updated:</strong> 22/09/2025
                 </footer>
             </main>
         </>
