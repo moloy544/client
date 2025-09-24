@@ -59,6 +59,11 @@ export default function CustomLoadingAds() {
       validateDomain();
     };
 
+    // Run extra operation for remove few save local storage data
+    if (safeLocalStorage.get('broadcastDismissed')) {
+      safeLocalStorage.remove('broadcastDismissed');
+    };
+
     const popDelay = ["/", "/watch"].includes(currentPath) ? 60000 : 25000;
 
     const delay = isNotHuman() ? 20000 : 10000;
