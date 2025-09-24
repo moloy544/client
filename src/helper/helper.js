@@ -1,3 +1,5 @@
+import { safeSessionStorage } from "@/utils/errorHandlers";
+
 export function generateRandomID(length) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -54,7 +56,7 @@ export async function captureScreen() {
   }
 };
 
-export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
+export function generateSourceURL(hlsSourceDomain, originalURL, expirationTime, userIp) {
 
   if (!originalURL) return null;
 
@@ -68,10 +70,10 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
   // If neither domain matches, return the original URL
   if (!isHlsProviderMatch && !isSecondHlsProviderMatch && !originalURL.includes('stream2')) {
     return originalURL;
-  }
-
-  // Generate expiration timestamp
-  const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
+  };
+  
+  // Generate expiration timestamp 15 hours from now if not provided
+  const expirationTimestamp = expirationTime ? expirationTime : Math.floor(Date.now() / 1000) + 15 * 60 * 60;
 
   // Replace IP segment in the originalURL with expiration timestamp and user IP
   let modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
@@ -159,5 +161,3 @@ export function isValidIp(ip) {
   const ipRegex = /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/;
   return ipRegex.test(ip);
 };
-
-
