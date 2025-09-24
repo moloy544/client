@@ -36,7 +36,7 @@ export default function Broadcast() {
       clearTimeout(showTimer);
       clearTimeout(hideTimer);
     };
-  }, [isSocialjoinModalShow, location]);
+  }, [isSocialjoinModalShow]);
 
   const handleClose = () => setVisible(false);
 
