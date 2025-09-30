@@ -4,8 +4,8 @@ const nextConfig = {
  
   // this env set for client side access
   env: {
-    APP_VERSION: '18.4.0',
-    DOMAIN: 'https://www.moviesbazar.net',
+    APP_VERSION: '22.1.0',
+    DOMAIN: 'https://www.moviesbazar.world',
     API_SERVER_URL: process.env.NODE_ENV === 'development' ? 'http://localhost:4000' : 'https://moviesbazar-api-v8.vercel.app',
     API_SERVER_URL2: process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://moviesbazar-api2-v8.vercel.app',
     VIDEO_SERVER_URL: 'https://joyra380som.com/play/', 
