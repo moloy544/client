@@ -54,7 +54,6 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
     type,
     status,
     hlsSourceDomain,
-    ETS, // Expiration Timestamp for the source URL
     videoTrim,
     watermark,
     multiAudio,
@@ -246,7 +245,6 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
                     title={title}
                     hlsSourceDomain={hlsSourceDomain}
                     default_audio={default_audio}
-                    expirationTime={ETS}
                     source={
                       videoSource.includes('?backup_stream=1') || !seriesData
                         ? videoSource

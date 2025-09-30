@@ -36,9 +36,9 @@ function removeSkipQueryParam(url) {
   }
 }
 
-function createPlaybleSoure(hlsProviderDomain, seriesData, expirationTime, ip) {
+function createPlaybleSoure(hlsProviderDomain, seriesData, ip) {
   if (!Array.isArray(seriesData)) {
-    return generateSourceURL(hlsProviderDomain, seriesData, expirationTime, ip)
+    return generateSourceURL(hlsProviderDomain, seriesData, ip)
 
   }
   return seriesData.map(lang => ({
@@ -47,13 +47,13 @@ function createPlaybleSoure(hlsProviderDomain, seriesData, expirationTime, ip) {
       title: `Season ${season.seasonNumber}`,
       folder: season.episodes.map((episodeUrl, index) => ({
         title: `EP ${index + 1}`,
-        file: generateSourceURL(hlsProviderDomain, `${episodeUrl.includes('https://') ? episodeUrl : season.basePath + episodeUrl}`, expirationTime, ip)
+        file: generateSourceURL(hlsProviderDomain, `${episodeUrl.includes('https://') ? episodeUrl : season.basePath + episodeUrl}`, ip)
       }))
     }))
   }));
 };
 
-const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = null, default_audio, expirationTime=null, onVideoLoad }) => {
+const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = null, default_audio, onVideoLoad }) => {
 
   const playerRef = useRef(null);
   const containerRef = useRef(null);
@@ -76,7 +76,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
     if (source && ip) {
 
       if (source.includes('.m3u8') || source.includes('.mkv') || Array.isArray(source)) {
-        const newSource = createPlaybleSoure(hlsSourceDomain, source, expirationTime, ip);
+        const newSource = createPlaybleSoure(hlsSourceDomain, source, ip);
         const playerOptions = {
           id: 'player',
           file: removeSkipQueryParam(newSource),
