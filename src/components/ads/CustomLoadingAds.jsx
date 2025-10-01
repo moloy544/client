@@ -83,13 +83,12 @@ export default function CustomLoadingAds() {
         adcashMainScript.onload = () => {
           if (window.aclib) {
             window.aclib.runInPagePush({
-              zoneId: "9775202",
-              refreshRate: 30,
+              zoneId: '10467050',
               maxAds: 2,
             });
             setTimeout(() => {
               window.aclib.runPop({
-                zoneId: '9764162',
+                zoneId: '10467058',
               });
             }, popDelay + 60000);
           };
