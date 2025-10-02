@@ -70,9 +70,9 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
   if (!isHlsProviderMatch && !isSecondHlsProviderMatch && !originalURL.includes('stream2')) {
     return originalURL;
   }
-  
-  // Generate expiration timestamp 12 hours from now (global)
-  const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
+
+  // Generate expiration timestamp 1 day (24 hours) from now (global)
+  const expirationTimestamp = Math.floor(Date.now() / 1000) + 1 * 24 * 60 * 60; // 86400 seconds
 
   // Replace IP segment in the originalURL with expiration timestamp and user IP
   let modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
