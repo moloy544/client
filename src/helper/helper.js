@@ -72,7 +72,7 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
   }
   
   // Generate expiration timestamp 12 hours from now (global)
-  const expirationTimestamp = Math.floor(Date.now() / 1000) + 12 * 60 * 60;
+  const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
 
   // Replace IP segment in the originalURL with expiration timestamp and user IP
   let modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
