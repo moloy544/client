@@ -1,5 +1,3 @@
-import { safeSessionStorage } from "@/utils/errorHandlers";
-
 export function generateRandomID(length) {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -57,6 +55,7 @@ export async function captureScreen() {
 };
 
 export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
+
   if (!originalURL) return null;
 
   const hlsProviderDomain = new URL(hlsSourceDomain || process.env.VIDEO_SERVER_URL).hostname;
@@ -71,17 +70,16 @@ export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
     return originalURL;
   }
 
-  // Generate expiration timestamp 1 day (24 hours) from now (global)
-  const expirationTimestamp = Math.floor(Date.now() / 1000) + 1 * 24 * 60 * 60; // 86400 seconds
+  // Generate expiration timestamp
+  const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
 
   // Replace IP segment in the originalURL with expiration timestamp and user IP
   let modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
 
-  // Ensure .m3u8 at the end
   modifiedURL = modifiedURL.includes('.m3u8') ? modifiedURL : `${modifiedURL}.m3u8`;
 
   return modifiedURL;
-}
+};
 
 
 export function generateCountrySpecificIp() {
