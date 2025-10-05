@@ -54,34 +54,6 @@ export async function captureScreen() {
   }
 };
 
-export function generateSourceURL(hlsSourceDomain, originalURL, userIp) {
-
-  if (!originalURL) return null;
-
-  const hlsProviderDomain = new URL(hlsSourceDomain || process.env.VIDEO_SERVER_URL).hostname;
-  const secondHlsProviderDomain = new URL(process.env.SECOND_VIDEO_SERVER_URL).hostname;
-
-  // Check if the originalURL contains either hlsProviderDomain or secondHlsProviderDomain
-  const isHlsProviderMatch = originalURL.includes(hlsProviderDomain);
-  const isSecondHlsProviderMatch = originalURL.includes(secondHlsProviderDomain);
-
-  // If neither domain matches, return the original URL
-  if (!isHlsProviderMatch && !isSecondHlsProviderMatch && !originalURL.includes('stream2')) {
-    return originalURL;
-  }
-
-  // Generate expiration timestamp
-  const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
-
-  // Replace IP segment in the originalURL with expiration timestamp and user IP
-  let modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
-
-  modifiedURL = modifiedURL.includes('.m3u8') ? modifiedURL : `${modifiedURL}.m3u8`;
-
-  return modifiedURL;
-};
-
-
 export function generateCountrySpecificIp() {
   const countryRanges = [
     {

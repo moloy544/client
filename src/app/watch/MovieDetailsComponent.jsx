@@ -53,7 +53,6 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
     category,
     type,
     status,
-    hlsSourceDomain,
     videoTrim,
     watermark,
     multiAudio,
@@ -243,7 +242,6 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
                 ) : (
                   <VideoPlayer
                     title={title}
-                    hlsSourceDomain={hlsSourceDomain}
                     default_audio={default_audio}
                     source={
                       videoSource.includes('?backup_stream=1') || !seriesData
@@ -406,7 +404,6 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
       </div>
 
       {/* Restriction Check Component */}
-
       <RestrictionsCheck
         isRestricted={isContentRestricted && isContentRestricted === true ? true : false}
         urgentCheck={permanentDisabled ? true : false} />

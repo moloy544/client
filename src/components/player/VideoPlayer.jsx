@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useOrientation } from "@/hooks/hook";
 import { useSelector } from "react-redux";
 import { useDeviceType } from "@/hooks/deviceChecker";
-import { generateCountrySpecificIp, generateSourceURL, isValidIp } from "@/helper/helper";
+import { generateCountrySpecificIp, isValidIp } from "@/helper/helper";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 
 //Memoization to avoid unnecessary re-renders
@@ -34,26 +34,48 @@ function removeSkipQueryParam(url) {
   } catch (e) {
     return url; // Fallback in case of invalid URL
   }
-}
+};
 
-function createPlaybleSoure(hlsProviderDomain, seriesData, ip) {
-  if (!Array.isArray(seriesData)) {
-    return generateSourceURL(hlsProviderDomain, seriesData, ip)
+// Function to generate source URL with expiration and user IP
+function generateSourceURL(originalURL, userIp) {
 
+  if (!originalURL) return null;
+
+  // If neither domain matches, return the original URL
+  if (!originalURL.includes('stream2')) {
+    return originalURL;
   }
-  return seriesData.map(lang => ({
+
+  // Generate expiration timestamp
+  const expirationTimestamp = Math.floor(Date.now() / 1000) + 10 * 60 * 60;
+
+  // Replace IP segment in the originalURL with expiration timestamp and user IP
+  let modifiedURL = originalURL.replace(/:\d+:\d+\.\d+\.\d+\.\d+:/, `:${expirationTimestamp}:${userIp}:`);
+
+  modifiedURL = modifiedURL.includes('.m3u8') ? modifiedURL : `${modifiedURL}.m3u8`;
+
+  return modifiedURL;
+};
+
+function createPlaybleSoure(source, ip) {
+  if (!Array.isArray(source)) {
+    return generateSourceURL(source, ip)
+  };
+
+
+  return source.map(lang => ({
     title: lang.language,
     folder: lang.seasons.map(season => ({
       title: `Season ${season.seasonNumber}`,
       folder: season.episodes.map((episodeUrl, index) => ({
         title: `EP ${index + 1}`,
-        file: generateSourceURL(hlsProviderDomain, `${episodeUrl.includes('https://') ? episodeUrl : season.basePath + episodeUrl}`, ip)
+        file: generateSourceURL(`${episodeUrl.includes('https://') ? episodeUrl : season.basePath + episodeUrl}`, ip)
       }))
     }))
   }));
 };
 
-const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = null, default_audio, onVideoLoad }) => {
+const VideoPlayer = memo(({ title, source, userIp, videoTrim = null, default_audio, onVideoLoad }) => {
 
   const playerRef = useRef(null);
   const containerRef = useRef(null);
@@ -76,7 +98,7 @@ const VideoPlayer = memo(({ title, hlsSourceDomain, source, userIp, videoTrim = 
     if (source && ip) {
 
       if (source.includes('.m3u8') || source.includes('.mkv') || Array.isArray(source)) {
-        const newSource = createPlaybleSoure(hlsSourceDomain, source, ip);
+        const newSource = createPlaybleSoure(source, ip);
         const playerOptions = {
           id: 'player',
           file: removeSkipQueryParam(newSource),

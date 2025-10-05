@@ -46,7 +46,7 @@ export default function SocialJoinAlert() {
     } else {
       handleModalVisibility(false);
     }
-  }, [pathname]);
+  }, []);
 
 
   const handleDontShowAgain = () => {
