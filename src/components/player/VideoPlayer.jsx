@@ -127,13 +127,13 @@ const VideoPlayer = memo(({ title, source, userIp, videoTrim = null, default_aud
           id: Array.isArray(newSource) ? "series-playerjs-script" : "playerjs-script",
           src: `/static/js/${Array.isArray(newSource) ? 'series_player_v1.js' : 'player_v2.1.js'}`
         };
-        const playerjsIsLoadedBefore = safeLocalStorage.get('pljsuserid');
-
-        if (!playerjsIsLoadedBefore) {
-          setPlayerPlaceHolder("initializing player, please wait...");
-        };
+       
+        
         // Load player JS if it failed to load from parent component
         if (typeof window[playerInstance.functionName] !== "function") {
+          
+          setPlayerPlaceHolder("initializing player, please wait...");
+      
           const script = document.createElement("script");
           script.id = playerInstance.id;
           script.src = playerInstance.src;
