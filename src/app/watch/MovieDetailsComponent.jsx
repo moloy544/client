@@ -248,7 +248,7 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
                         ? videoSource
                         : seriesData
                     }
-                    
+
                     userIp={userIp}
                     imdbId={imdbId}
                     onVideoLoad={() => setTakeScreenshot(true)}
@@ -658,9 +658,9 @@ function PlayButton({
                       </small>
                     )}
                     <small className="font-medium">
-                      &#8226; Video stop in middle?{" "}
+                      &#8226; Video stopped in the middle?{" "}
                       <span className="font-semibold">
-                        Go back and pick same server again.
+                        Skip a few seconds or select the same server again.
                       </span>
                     </small>
                   </div>
