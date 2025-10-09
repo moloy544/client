@@ -5,7 +5,6 @@ import { useOrientation } from "@/hooks/hook";
 import { useSelector } from "react-redux";
 import { useDeviceType } from "@/hooks/deviceChecker";
 import { generateCountrySpecificIp, isValidIp } from "@/helper/helper";
-import { safeLocalStorage } from "@/utils/errorHandlers";
 
 //Memoization to avoid unnecessary re-renders
 const areEqual = (prevProps, nextProps) => {
@@ -61,7 +60,6 @@ function createPlaybleSoure(source, ip) {
   if (!Array.isArray(source)) {
     return generateSourceURL(source, ip)
   };
-
 
   return source.map(lang => ({
     title: lang.language,
@@ -123,9 +121,9 @@ const VideoPlayer = memo(({ title, source, userIp, videoTrim = null, default_aud
           playerOptions.start = videoTrim;
         }
         const playerInstance = {
-          functionName: Array.isArray(newSource) ? 'MoviesbazarSeriesPlayer' : 'MoviesbazarPlayer',
-          id: Array.isArray(newSource) ? "series-playerjs-script" : "playerjs-script",
-          src: `/static/js/${Array.isArray(newSource) ? 'series_player_v1.js' : 'player_v2.1.js'}`
+          functionName: Array.isArray(newSource) ? 'MoviesbazarSeriesPlayer' : 'MoviesPlayer',
+          id: Array.isArray(newSource) ? "series_player-script" : "movies_player-script",
+          src: `/static/js/${Array.isArray(newSource) ? 'series_player_v1.js' : 'movies_player.js'}`
         };
        
         

@@ -409,8 +409,8 @@ export default function MovieDetailsComponent({ movieDetails, suggestions, userI
         urgentCheck={permanentDisabled ? true : false} />
       {(isHLSPlayListAvailble || seriesData) && (
         <Script
-          id={seriesData ? 'series-playerjs-script' : 'playerjs-script'}
-          src={`/static/js/${seriesData ? 'series_player_v1.js' : 'player_v2.1.js'}`}
+          id={seriesData ? 'series_player-script' : 'movies_player-script'}
+          src={`/static/js/${seriesData ? 'series_player_v1.js' : 'movies_player.js'}`}
           strategy="afterInteractive"
         />
       )}
