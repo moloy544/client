@@ -121,11 +121,10 @@ const VideoPlayer = memo(({ title, source, userIp, videoTrim = null, default_aud
           playerOptions.start = videoTrim;
         }
         const playerInstance = {
-          functionName: Array.isArray(newSource) ? 'MoviesbazarSeriesPlayer' : 'MoviesPlayer',
-          id: Array.isArray(newSource) ? "series_player-script" : "movies_player-script",
-          src: `/static/js/${Array.isArray(newSource) ? 'series_player_v1.js' : 'movies_player.js'}`
+          functionName: 'MoviesPlayer',
+          id: "movies_player-script",
+          src: "streaming_player.js"
         };
-       
         
         // Load player JS if it failed to load from parent component
         if (typeof window[playerInstance.functionName] !== "function") {
