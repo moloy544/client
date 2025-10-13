@@ -268,14 +268,14 @@ export default function DmcaAdminDashboard({ companyData }) {
                             <input
                                 id="url"
                                 type="text"
-                                placeholder="e.g. https://www.moviesbazar.net/watch/type/name/12345"
+                                placeholder={`e.g. ${appConfig.appDomain}/watch/type/name/12345`}
                                 value={urlInput}
                                 onChange={(e) => {
                                     const value = e.target.value?.split('?')[0].split('#')[0];
                                     setUrlInput(value);
 
                                     // Only clear error once user types
-                                    if (status !== "idle") {
+                                    if (status !== "idle" && status !== "success") {
                                         setStatus("idle");
                                     }
                                 }}
