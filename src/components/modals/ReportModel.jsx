@@ -6,6 +6,19 @@ import { ModelsController } from "@/lib/EventsHandler";
 import { appConfig } from "@/config/config";
 import { safeLocalStorage } from "@/utils/errorHandlers";
 
+function getUserDateTimeString() {
+  const now = new Date();
+
+  const day = now.getDate();
+  const month = now.toLocaleString("en-US", { month: "long" });
+  const hours = now.getHours();
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const hour12 = hours % 12 || 12; // convert to 12-hour format
+
+  return `${day} ${month} ${hour12}:${minutes}${ampm}`;
+};
+
 export default function ReportModel({ id, imdbId, content_title, status, setIsModelOpen, isOpen, isContentSaved = false, handleSaveContent, isDownloadOption, watchLinks = null, playHandler, currentPlaySource, isAllRestricted }) {
 
   const [selectedReports, setSelectedReports] = useState([]);
@@ -124,11 +137,14 @@ export default function ReportModel({ id, imdbId, content_title, status, setIsMo
       }
       setProcessedReports(true);
 
+      const deviceDateTime = getUserDateTimeString();
+
       const reportData = {
         content_id: id,
         content_title: content_title + "-" + imdbId,
         selectedReports,
         writtenReport: writtenReportRef.current?.value,
+        deviceDateTime,
       };
       if (userEmail) {
         reportData.userEmail = userEmail;
